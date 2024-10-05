@@ -1,5 +1,6 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Home() {
   return (
@@ -12,8 +13,13 @@ export default function Home() {
     >
       <Text>Home</Text>
 
-      <Link href="/settings">Settings</Link>
-      <Link href="/levels">Levels</Link>
+      <TouchableOpacity>
+        <Link href="/settings">Settings</Link>
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Link href="/levels">Levels</Link>
+      </TouchableOpacity>
     </View>
   );
 }
