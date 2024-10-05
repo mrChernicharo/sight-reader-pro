@@ -31,11 +31,9 @@ export default function Levels() {
         <Link
           key={level.id}
           href={{
-            pathname: "/levels/[id]",
-            params: { id: level.id },
+            pathname: "/levels/[levelId]",
+            params: { levelId: level.id },
           }}
-
-          // href={`/levels/${level.id}`}
         >
           {level.id}
         </Link>
