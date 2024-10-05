@@ -1,4 +1,5 @@
-import { MarkdownTest } from "@/components/MarkdownTest";
+import { AppView } from "@/components/AppView";
+import { MusicNote } from "@/components/MusicNote";
 import ReactNativeVexFlow from "@/components/ReactNativeVexFlow";
 import { Timer } from "@/components/Timer";
 import { useLocalSearchParams } from "expo-router";
@@ -15,8 +16,11 @@ export default function Level() {
 
       <Timer />
 
-      <ReactNativeVexFlow />
-      {/* <MarkdownTest /> */}
+      {/* <ReactNativeVexFlow /> */}
+
+      {/* <MusicNote keys={["c/3"]} clef="bass" />*/}
+      <MusicNote keys={["f/4", "db/5", "ab/5"]} clef="treble" />
+      <MusicNote keys={["c/5"]} clef="treble" />
     </View>
   );
 }
