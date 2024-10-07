@@ -1,6 +1,6 @@
 import { AppView } from "./AppView";
 
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 // @ts-ignore
 import { Accidental } from "vexflow/src/accidental";
 // @ts-ignore
@@ -19,19 +19,37 @@ import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context"
 import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { AppText } from "./AppText";
 
+export function MusicNote(props: { keys: string[]; clef: "treble" | "bass"; noteColor?: string }) {
+  const { height, width, scale, fontScale } = useWindowDimensions();
+  const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
+  runVexFlowCode2(context, props.clef, props.keys);
+  let result = context.render() as ReactNode;
+  if (props.noteColor) {
+    result = colorNoteOutput(result, props.noteColor);
+  }
+
+  return (
+    <AppView style={styles.container}>
+      <AppView style={styles.sheetMusic}>
+        <AppView style={styles.innerView}>{result}</AppView>
+      </AppView>
+    </AppView>
+  );
+}
+
 /*
 durations:
   w, h, q, 8, 16, 32, 64
 */
 
-//   const notes = [
-// new StaveNote({ clef, keys, duration: "w", align_center: true }),
-// new StaveNote({ clef, keys, duration: "h", stem_direction: -1 }),
-// new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
-//   ];
+// const notes = [
+//  new StaveNote({ clef, keys, duration: "w", align_center: true }),
+//  new StaveNote({ clef, keys, duration: "h", stem_direction: -1 }),
+//  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
+// ];
 
 function runVexFlowCode2(context: any, clef: "treble" | "bass", keys: string[]) {
-  const stave = new Stave(20, 0, 200);
+  const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);
   //   stave.setTimeSignature("4/4");
@@ -39,7 +57,13 @@ function runVexFlowCode2(context: any, clef: "treble" | "bass", keys: string[]) 
   stave.draw();
 
   const accidentsInfo = keys
-    .map((key, i) => (key.includes("#") || key.includes("b") ? { accident: key[1], idx: i } : null))
+    .map((key, i) => {
+      const note = key.split("/")[0];
+      if (note.length > 1) {
+        return { accident: note.charAt(1), idx: i };
+      }
+      return null;
+    })
     .filter(Boolean);
 
   const notes = [];
@@ -58,24 +82,50 @@ function runVexFlowCode2(context: any, clef: "treble" | "bass", keys: string[]) 
   voice.draw(context, stave);
 }
 
-export function MusicNote(props: { keys: string[]; clef: "treble" | "bass" }) {
-  const { height, width, scale, fontScale } = useWindowDimensions();
-  const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 120 });
-  runVexFlowCode2(context, props.clef, props.keys);
-  const result = context.render();
+function colorNoteOutput(svgStruct: any, color: string) {
+  const result = {
+    ...svgStruct,
+    props: {
+      ...svgStruct.props,
+      children: svgStruct.props.children.map((ch: any) => {
+        if (ch.props.className === "vf-stavenote") {
+          return {
+            ...ch,
+            props: {
+              ...ch.props,
+              children: ch.props.children.map((ich: any) => ({
+                ...ich,
+                props: {
+                  ...ich.props,
+                  children: ich.props.children.map((iich: any) => ({
+                    ...iich,
+                    props: {
+                      ...iich.props,
+                      fill: color,
+                      stroke: color,
+                      children: iich.props.children.map((iiich: any) => ({
+                        ...iiich,
+                        props: { ...iiich.props, fill: color, stroke: color },
+                      })),
+                    },
+                  })),
+                },
+              })),
+            },
+          };
+        } else {
+          return ch;
+        }
+      }),
+    },
+  };
 
-  return (
-    <AppView style={styles.container}>
-      <AppView style={styles.sheetMusic}>
-        <AppView style={styles.innerView}>{result}</AppView>
-      </AppView>
-    </AppView>
-  );
+  return result;
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 120,
+    height: 280,
     // borderWidth: 2,
     // borderStyle: "dashed",
     backgroundColor: "#F5FCFF",

@@ -1,22 +1,24 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
-type LevelAccidents = "none" | "#" | "b";
-type NoteRange = [string, string];
+export type LevelAccident = "none" | "#" | "b";
+export type NoteRange = `${string}/${number}:::${string}/${number}`;
 
-type LevelConfig = {
+export type LevelConfig = {
   id: number;
   range: NoteRange;
-  accidents: LevelAccidents;
+  accident: LevelAccident;
 };
 
 const LEVELS: LevelConfig[] = [
-  { id: 1, range: ["g/4", "c/5"], accidents: "none" },
-  { id: 2, range: ["e/4", "c/5"], accidents: "none" },
-  { id: 3, range: ["e/4", "d/5"], accidents: "none" },
-  { id: 4, range: ["d/4", "d/5"], accidents: "#" },
-  { id: 5, range: ["c/4", "e/5"], accidents: "b" },
-];
+  { range: "g/4:::c/5", accident: "none" },
+  { range: "e/4:::c/5", accident: "none" },
+  { range: "e/4:::d/5", accident: "none" },
+  { range: "d/4:::d/5", accident: "#" },
+  { range: "c/4:::e/5", accident: "b" },
+  { range: "c/3:::e/6", accident: "b" },
+  { range: "d/4:::b/6", accident: "#" },
+].map((levelInfo, i) => ({ id: i, ...levelInfo } as LevelConfig));
 
 export default function Levels() {
   return (
@@ -29,12 +31,12 @@ export default function Levels() {
     >
       <Text>Levels</Text>
 
-      {LEVELS.map(({ id, range, accidents }) => (
+      {LEVELS.map(({ id, range, accident }) => (
         <Link
           key={id}
           href={{
             pathname: "/levels/[levelId]",
-            params: { levelId: id, levelRange: range, levelAccidents: accidents },
+            params: { levelId: id, levelRange: range, levelAccident: accident },
           }}
         >
           {id}
