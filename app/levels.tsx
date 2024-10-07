@@ -1,47 +1,56 @@
+import { AppText } from "@/components/atoms/AppText";
+import { AppView } from "@/components/atoms/AppView";
+import { LEVELS, SECTIONED_LEVELS } from "@/constants/levels";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
-
-export type LevelAccident = "none" | "#" | "b";
-export type NoteRange = `${string}/${number}:::${string}/${number}`;
-
-export type LevelConfig = {
-  id: number;
-  range: NoteRange;
-  accident: LevelAccident;
-};
-
-const LEVELS: LevelConfig[] = [
-  { range: "g/4:::c/5", accident: "none" },
-  { range: "e/4:::c/5", accident: "none" },
-  { range: "e/4:::d/5", accident: "none" },
-  { range: "d/4:::d/5", accident: "#" },
-  { range: "c/4:::e/5", accident: "b" },
-  { range: "c/3:::e/6", accident: "b" },
-  { range: "d/4:::b/6", accident: "#" },
-].map((levelInfo, i) => ({ id: i, ...levelInfo } as LevelConfig));
+import { SectionList, StatusBar, StyleSheet, Text, View } from "react-native";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Levels() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Levels</Text>
+    <ScrollView style={styles.container}>
+      <AppView>
+        {SECTIONED_LEVELS.map((clefLevels) => (
+          <AppView key={clefLevels.title} style={styles.listSection}>
+            <AppText type="title">{clefLevels.title}</AppText>
 
-      {LEVELS.map(({ id, range, accident }) => (
-        <Link
-          key={id}
-          href={{
-            pathname: "/levels/[levelId]",
-            params: { levelId: id, levelRange: range, levelAccident: accident },
-          }}
-        >
-          {id}
-        </Link>
-      ))}
-    </View>
+            {clefLevels.data.map((item) => {
+              return (
+                <Link
+                  key={`${item.clef} ${item.id}`}
+                  href={{
+                    pathname: "/levels/[levelId]",
+                    params: { levelId: item.id, levelRange: item.range, levelAccident: item.accident, clef: item.clef },
+                  }}
+                >
+                  <AppView style={styles.item}>
+                    <AppText>{item.id}</AppText>
+                    {/* <AppText>{item.accident} </AppText> */}
+                    {/* <AppText>{item.range} </AppText> */}
+                    {/* <AppText>{item.clef}</AppText> */}
+                  </AppView>
+                </Link>
+              );
+            })}
+          </AppView>
+        ))}
+      </AppView>
+    </ScrollView>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // paddingTop: StatusBar.currentHeight,
+    padding: 16,
+  },
+  listSection: {
+    gap: 6,
+    padding: 16,
+  },
+  item: {
+    backgroundColor: "#f9c2ff",
+    paddingHorizontal: 36,
+    paddingVertical: 24,
+  },
+});

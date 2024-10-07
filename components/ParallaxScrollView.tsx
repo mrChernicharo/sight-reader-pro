@@ -2,7 +2,7 @@ import type { PropsWithChildren, ReactElement } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from "react-native-reanimated";
 
-import { AppView } from "@/components/AppView";
+import { AppView } from "@/components/atoms/AppView";
 
 const HEADER_HEIGHT = 250;
 

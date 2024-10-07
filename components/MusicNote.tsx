@@ -1,4 +1,4 @@
-import { AppView } from "./AppView";
+import { AppView } from "./atoms/AppView";
 
 import React, { Component, ReactNode } from "react";
 // @ts-ignore
@@ -17,21 +17,28 @@ import { Formatter } from "vexflow/src/formatter";
 import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context";
 
 import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
-import { AppText } from "./AppText";
+import { AppText } from "./atoms/AppText";
 
-export function MusicNote(props: { keys: string[]; clef: "treble" | "bass"; noteColor?: string }) {
+export interface MusicNoteProps {
+  keys: string[];
+  clef: "treble" | "bass";
+  noteColor?: string;
+}
+
+export function useMusicNote(props: MusicNoteProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
-  runVexFlowCode2(context, props.clef, props.keys);
-  let result = context.render() as ReactNode;
-  if (props.noteColor) {
-    result = colorNoteOutput(result, props.noteColor);
-  }
+  const renderResult = runVexFlowCode2(context, props.clef, props.keys, props.noteColor);
+  return renderResult;
+}
+
+export function MusicNote(props: MusicNoteProps) {
+  const svgResult = useMusicNote(props);
 
   return (
     <AppView style={styles.container}>
       <AppView style={styles.sheetMusic}>
-        <AppView style={styles.innerView}>{result}</AppView>
+        <AppView style={styles.innerView}>{svgResult}</AppView>
       </AppView>
     </AppView>
   );
@@ -48,7 +55,7 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowCode2(context: any, clef: "treble" | "bass", keys: string[]) {
+function runVexFlowCode2(context: any, clef: "treble" | "bass", keys: string[], noteColor?: string) {
   const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);
@@ -80,9 +87,12 @@ function runVexFlowCode2(context: any, clef: "treble" | "bass", keys: string[]) 
 
   new Formatter().joinVoices([voice]).formatToStave([voice], stave);
   voice.draw(context, stave);
+
+  const renderResult = context.render() as ReactNode;
+  return noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
 }
 
-function colorNoteOutput(svgStruct: any, color: string) {
+function addColorToNoteOutput(svgStruct: any, color: string) {
   const result = {
     ...svgStruct,
     props: {

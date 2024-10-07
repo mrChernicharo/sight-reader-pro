@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { AppText } from "./AppText";
-import { AppView } from "./AppView";
+import { AppText } from "./atoms/AppText";
+import { AppView } from "./atoms/AppView";
 
 const intl = new Intl.DateTimeFormat("en", { second: "2-digit", minute: "2-digit" });
 

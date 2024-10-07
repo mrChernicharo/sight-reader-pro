@@ -1,20 +1,28 @@
-import { AppText } from "@/components/AppText";
-import { AppView } from "@/components/AppView";
+import { AppText } from "@/components/atoms/AppText";
+import { AppView } from "@/components/atoms/AppView";
 import { MusicNote } from "@/components/MusicNote";
 import { Timer } from "@/components/Timer";
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { LevelAccident, NoteRange } from "../levels";
 import { ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES } from "@/constants/notes";
 import { getRandInRange, isNoteMatch } from "@/constants/helperFns";
 import { useState } from "react";
+import { NoteRange, LevelAccident } from "@/constants/levels";
 
 export enum GameState {
   Idle = "idle",
   Success = "success",
   Mistake = "mistake",
 }
+
+export interface GameScore {
+  successes: number;
+  mistakes: number;
+}
+
+const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
+const delay = 260;
 
 const BLACK_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
 // const SHARP_NOTES = ["c#", "d#", "f#", "g#", "a#"];
@@ -35,29 +43,34 @@ export function getRandomNoteInRange(range: NoteRange, accident: LevelAccident) 
 
 export default function Level() {
   const { height, width, scale, fontScale } = useWindowDimensions();
-  const keyboardMargin = width * 0.2;
-  const { levelId, levelRange, levelAccident } = useLocalSearchParams();
+  const { levelId, clef, levelRange, levelAccident } = useLocalSearchParams();
 
+  const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState(() =>
     getRandomNoteInRange(levelRange as NoteRange, levelAccident as LevelAccident)
   );
 
+  const keyboardMargin = width * 0.2;
   const pianoLocked = gameState !== GameState.Idle;
+  const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
+  const mean = gameScore.successes / attempts;
+  const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
 
   function onPianoKeyPress(userNote: string) {
     const key = currNote.split("/")[0];
     const success = isNoteMatch(userNote, key);
+    setGameScore((prev) =>
+      success ? { ...prev, successes: prev.successes + 1 } : { ...prev, mistakes: prev.mistakes + 1 }
+    );
     setGameState(success ? GameState.Success : GameState.Mistake);
 
     setTimeout(() => {
       const nextNote = getRandomNoteInRange(levelRange as NoteRange, levelAccident as LevelAccident);
       setGameState(GameState.Idle);
       setCurrNote(nextNote);
-    }, 800);
+    }, delay);
   }
-
-  // const currNote = getRandomNoteInRange(levelRange as NoteRange, levelAccident as LevelAccident);
 
   return (
     <AppView style={s.container}>
@@ -66,15 +79,19 @@ export default function Level() {
         <Text>range: {levelRange}</Text>
         <Text>accident: {levelAccident}</Text>
         <Text>gameState: {gameState}</Text>
+        <Text>successes: {gameScore.successes}</Text>
+        <Text>mistakes: {gameScore.mistakes}</Text>
+        <Text>attempts: {attempts}</Text>
+        <Text>accuracy: {accuracy}</Text>
 
         <Timer />
 
         {gameState === GameState.Idle ? (
-          <MusicNote keys={[currNote]} clef="treble" />
+          <MusicNote keys={[currNote]} clef={clef as "treble" | "bass"} />
         ) : (
           <MusicNote
             keys={[currNote]}
-            clef="treble"
+            clef={clef as "treble" | "bass"}
             noteColor={gameState === GameState.Success ? "mediumseagreen" : "red"}
           />
         )}
