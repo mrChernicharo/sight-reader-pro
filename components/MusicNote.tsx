@@ -24,55 +24,38 @@ durations:
   w, h, q, 8, 16, 32, 64
 */
 
+//   const notes = [
+// new StaveNote({ clef, keys, duration: "w", align_center: true }),
+// new StaveNote({ clef, keys, duration: "h", stem_direction: -1 }),
+// new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
+//   ];
+
 function runVexFlowCode2(context: any, clef: "treble" | "bass", keys: string[]) {
-  const stave = new Stave(100, 0, 200);
+  const stave = new Stave(20, 0, 200);
   stave.setContext(context);
   stave.setClef(clef);
   //   stave.setTimeSignature("4/4");
-  stave.setNoteStartX(80);
+  stave.setNoteStartX(0);
   stave.draw();
 
   const accidentsInfo = keys
     .map((key, i) => (key.includes("#") || key.includes("b") ? { accident: key[1], idx: i } : null))
     .filter(Boolean);
 
-  console.log(accidentsInfo);
-
-  //   const notes = [
-  // new StaveNote({ clef, keys, duration: "w", align_center: true }),
-  // new StaveNote({ clef, keys, duration: "h", stem_direction: -1 }),
-  // new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
-  //   ];
-
   const notes = [];
+  const staveNote = new StaveNote({ clef, keys, duration: "w", align_center: true });
   if (accidentsInfo.length > 0) {
-    let i = 0;
-    const staveNote = new StaveNote({ clef, keys, duration: "w", align_center: true });
-    while (i < accidentsInfo.length) {
-      staveNote.addAccidental(accidentsInfo[i]?.idx, new Accidental(accidentsInfo[i]?.accident));
-      i++;
-    }
-    notes.push(staveNote);
-  } else {
-    notes.push(new StaveNote({ clef, keys, duration: "w", align_center: true }));
+    accidentsInfo.forEach((accidentInfo) => {
+      staveNote.addAccidental(accidentInfo?.idx, new Accidental(accidentInfo?.accident));
+    });
   }
+  notes.push(staveNote);
 
   const voice = new Voice({ num_beats: 4, beat_value: 4 });
   voice.addTickables(notes);
 
-  //   new Formatter().joinVoices([voice]).format([voice], 300);
   new Formatter().joinVoices([voice]).formatToStave([voice], stave);
   voice.draw(context, stave);
-
-  //   console.log("--------------------------");
-  //   console.log("--------------------------");
-  //   console.log("stave >>>", stave);
-  //   console.log("--------------------------");
-  //   console.log("voice >>>", voice, "<<< voice attrs >>>", voice.attrs);
-  //   console.log("--------------------------");
-  //   console.log("notes >>>", notes);
-  //   console.log("--------------------------");
-  //   console.log("--------------------------");
 }
 
 export function MusicNote(props: { keys: string[]; clef: "treble" | "bass" }) {
@@ -84,7 +67,7 @@ export function MusicNote(props: { keys: string[]; clef: "treble" | "bass" }) {
   return (
     <AppView style={styles.container}>
       <AppView style={styles.sheetMusic}>
-        <AppView>{result}</AppView>
+        <AppView style={styles.innerView}>{result}</AppView>
       </AppView>
     </AppView>
   );
@@ -92,14 +75,17 @@ export function MusicNote(props: { keys: string[]; clef: "treble" | "bass" }) {
 
 const styles = StyleSheet.create({
   container: {
+    height: 120,
     // borderWidth: 2,
     // borderStyle: "dashed",
-    height: 120,
+    backgroundColor: "#F5FCFF",
   },
   sheetMusic: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF",
+  },
+  innerView: {
+    transform: "translateX(80px)",
   },
 });
