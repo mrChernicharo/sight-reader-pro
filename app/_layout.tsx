@@ -6,8 +6,9 @@ export default function RootLayout() {
     <GestureHandlerRootView>
       <Stack>
         <Stack.Screen name="index" />
-        <Stack.Screen name="settings" />
-        <Stack.Screen name="levels" />
+        {/* <Stack.Screen name="settings" /> */}
+        {/* <Stack.Screen name="practice-settings" /> */}
+        {/* <Stack.Screen name="practice-level" /> */}
       </Stack>
     </GestureHandlerRootView>
   );

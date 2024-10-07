@@ -6,7 +6,7 @@ import { SectionList, StatusBar, StyleSheet, Text, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Levels() {
+export default function LevelSelectionScreen() {
   return (
     <ScrollView style={styles.container}>
       <AppView>
@@ -19,7 +19,7 @@ export default function Levels() {
                 <Link
                   key={`${item.clef} ${item.id}`}
                   href={{
-                    pathname: "/levels/[levelId]",
+                    pathname: "/level/[levelId]",
                     params: { levelId: item.id, levelRange: item.range, levelAccident: item.accident, clef: item.clef },
                   }}
                 >

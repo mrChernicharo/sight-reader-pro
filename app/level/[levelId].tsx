@@ -1,7 +1,7 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { MusicNote } from "@/components/MusicNote";
-import { Timer } from "@/components/Timer";
+import { MusicNote } from "@/components/molecules/MusicNote";
+import { Timer } from "@/components/molecules/Timer";
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";

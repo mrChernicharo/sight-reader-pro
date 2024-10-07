@@ -12,7 +12,11 @@ export default function Home() {
       </TouchableOpacity>
 
       <TouchableOpacity>
-        <Link href="/levels">Levels</Link>
+        <Link href="/practice-settings">Practice</Link>
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Link href="/level-selection">Play</Link>
       </TouchableOpacity>
     </View>
   );

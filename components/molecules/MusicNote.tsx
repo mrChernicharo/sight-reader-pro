@@ -1,4 +1,4 @@
-import { AppView } from "./atoms/AppView";
+import { AppView } from "../atoms/AppView";
 
 import React, { Component, ReactNode } from "react";
 // @ts-ignore
@@ -17,7 +17,7 @@ import { Formatter } from "vexflow/src/formatter";
 import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context";
 
 import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
-import { AppText } from "./atoms/AppText";
+import { AppText } from "../atoms/AppText";
 
 export interface MusicNoteProps {
   keys: string[];
