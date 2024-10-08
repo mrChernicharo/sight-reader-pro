@@ -5,7 +5,7 @@ import { Timer } from "@/components/molecules/Timer";
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES } from "@/constants/notes";
+import { ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, Clef, WHITE_NOTES } from "@/constants/notes";
 import { getRandInRange, isNoteMatch } from "@/constants/helperFns";
 import { useState } from "react";
 import { NoteRange, LevelAccident } from "@/constants/levels";
@@ -43,7 +43,7 @@ export function getRandomNoteInRange(range: NoteRange, accident: LevelAccident) 
 
 export default function Level() {
   const { height, width, scale, fontScale } = useWindowDimensions();
-  const { levelId, clef, levelRange, levelAccident } = useLocalSearchParams();
+  const { id, clef, levelRange, levelAccident } = useLocalSearchParams();
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
@@ -75,7 +75,7 @@ export default function Level() {
   return (
     <AppView style={s.container}>
       <AppView>
-        <Text>Level {levelId}</Text>
+        <Text>Level {id}</Text>
         <Text>range: {levelRange}</Text>
         <Text>accident: {levelAccident}</Text>
         <Text>gameState: {gameState}</Text>
@@ -87,11 +87,11 @@ export default function Level() {
         <Timer />
 
         {gameState === GameState.Idle ? (
-          <MusicNote keys={[currNote]} clef={clef as "treble" | "bass"} />
+          <MusicNote keys={[currNote]} clef={clef as Clef} />
         ) : (
           <MusicNote
             keys={[currNote]}
-            clef={clef as "treble" | "bass"}
+            clef={clef as Clef}
             noteColor={gameState === GameState.Success ? "mediumseagreen" : "red"}
           />
         )}

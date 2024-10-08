@@ -1,12 +1,10 @@
 import { AppView } from "../atoms/AppView";
 
-import React, { Component, ReactNode } from "react";
+import React, { ReactNode } from "react";
 // @ts-ignore
 import { Accidental } from "vexflow/src/accidental";
 // @ts-ignore
 import { Stave } from "vexflow/src/stave";
-// @ts-ignore
-import { Stem } from "vexflow/src/stem";
 // @ts-ignore
 import { StaveNote } from "vexflow/src/stavenote";
 // @ts-ignore
@@ -14,21 +12,20 @@ import { Voice } from "vexflow/src/voice";
 // @ts-ignore
 import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
-import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context";
+import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
-import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
-import { AppText } from "../atoms/AppText";
+import { Clef } from "@/constants/notes";
+import { StyleSheet, useWindowDimensions } from "react-native";
 
 export interface MusicNoteProps {
   keys: string[];
-  clef: "treble" | "bass";
-  noteColor?: string;
+  clef: Clef;
 }
 
 export function useMusicNote(props: MusicNoteProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
-  const renderResult = runVexFlowCode2(context, props.clef, props.keys, props.noteColor);
+  const renderResult = runVexFlowCode(context, props.clef, props.keys);
   return renderResult;
 }
 
@@ -55,7 +52,7 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowCode2(context: any, clef: "treble" | "bass", keys: string[], noteColor?: string) {
+function runVexFlowCode(context: any, clef: Clef, keys: string[], noteColor?: string) {
   const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);

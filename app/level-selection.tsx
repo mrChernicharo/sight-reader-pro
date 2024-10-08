@@ -1,40 +1,68 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { LEVELS, SECTIONED_LEVELS } from "@/constants/levels";
+import { SECTIONED_LEVELS } from "@/constants/levels";
 import { Link } from "expo-router";
 import { SectionList, StatusBar, StyleSheet, Text, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function LevelSelectionScreen() {
-  return (
-    <ScrollView style={styles.container}>
-      <AppView>
-        {SECTIONED_LEVELS.map((clefLevels) => (
-          <AppView key={clefLevels.title} style={styles.listSection}>
-            <AppText type="title">{clefLevels.title}</AppText>
+function makeGrid<T>(nums: T[], cols = 2) {
+  const grid: T[][] = [];
+  nums.forEach((n, i) => {
+    if (i % cols == 0) {
+      grid.push([n]);
+    } else {
+      grid?.at(-1)?.push(n);
+    }
+  });
 
-            {clefLevels.data.map((item) => {
-              return (
-                <Link
-                  key={`${item.clef} ${item.id}`}
-                  href={{
-                    pathname: "/level/[levelId]",
-                    params: { levelId: item.id, levelRange: item.range, levelAccident: item.accident, clef: item.clef },
-                  }}
-                >
-                  <AppView style={styles.item}>
-                    <AppText>{item.id}</AppText>
-                    {/* <AppText>{item.accident} </AppText> */}
-                    {/* <AppText>{item.range} </AppText> */}
-                    {/* <AppText>{item.clef}</AppText> */}
+  return grid;
+}
+
+export default function LevelSelectionScreen() {
+  const cols = 3;
+  return (
+    <ScrollView>
+      <AppView style={styles.container}>
+        {SECTIONED_LEVELS.map((clefLevels) => {
+          const grid = makeGrid(clefLevels.data, cols);
+          console.log(grid);
+
+          return (
+            <AppView key={clefLevels.title}>
+              <AppText type="title" style={styles.sectionTitle}>
+                {clefLevels.title}
+              </AppText>
+
+              <AppView style={styles.gridSection}>
+                {grid.map((row) => (
+                  <AppView style={styles.gridRow}>
+                    {row.map((item) => {
+                      return (
+                        <Link
+                          key={`${item.clef} ${item.id}`}
+                          href={{
+                            pathname: "/level-details/[id]",
+                            params: {
+                              id: item.id,
+                              clef: item.clef,
+                            },
+                          }}
+                        >
+                          <AppView style={styles.item}>
+                            <AppText>{item.id}</AppText>
+                          </AppView>
+                        </Link>
+                      );
+                    })}
                   </AppView>
-                </Link>
-              );
-            })}
-          </AppView>
-        ))}
+                ))}
+              </AppView>
+            </AppView>
+          );
+        })}
       </AppView>
+      {/* <AppView style={styles.footerFiller}></AppView> */}
     </ScrollView>
   );
 }
@@ -42,15 +70,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // paddingTop: StatusBar.currentHeight,
-    padding: 16,
+    paddingHorizontal: 32,
+    paddingVertical: 48,
   },
-  listSection: {
-    gap: 6,
-    padding: 16,
+  sectionTitle: {
+    paddingVertical: 16,
+  },
+  gridSection: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 16,
+    gap: 16,
+  },
+  gridRow: {
+    flexDirection: "row",
+    gap: 16,
   },
   item: {
     backgroundColor: "#f9c2ff",
-    paddingHorizontal: 36,
-    paddingVertical: 24,
+    width: 100,
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    // paddingHorizontal: 36,
+    // paddingVertical: 24,
+  },
+
+  footerFiller: {
+    height: 100,
   },
 });
