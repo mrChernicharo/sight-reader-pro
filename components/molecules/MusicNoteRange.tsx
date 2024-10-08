@@ -18,7 +18,8 @@ import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context"
 
 import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
-import { Clef } from "@/constants/types";
+import { Clef, Note } from "@/constants/types";
+import { stemDown } from "@/constants/helperFns";
 
 export interface MusicNoteRangeProps {
   keys: string[];
@@ -68,8 +69,18 @@ function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], noteColor
 
   const notes = [];
   const [low, high] = [keys[0], keys[1]];
-  const staveNoteLow = new StaveNote({ clef, keys: [low], duration: "h" });
-  const staveNoteHigh = new StaveNote({ clef, keys: [high], duration: "h" });
+  const staveNoteLow = new StaveNote({
+    clef,
+    keys: [low],
+    duration: "h",
+    stem_direction: stemDown(low as Note, clef) ? -1 : 1,
+  });
+  const staveNoteHigh = new StaveNote({
+    clef,
+    keys: [high],
+    duration: "h",
+    stem_direction: stemDown(high as Note, clef) ? -1 : 1,
+  });
   const lowNote = low.split("/")[0];
   if (lowNote.length > 1) {
     const accident = lowNote[1];

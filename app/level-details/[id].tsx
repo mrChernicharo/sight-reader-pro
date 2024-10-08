@@ -24,6 +24,7 @@ export default function LevelDetails() {
       <AppText type="subtitle" style={s.rangeTitle}>
         Note Range
       </AppText>
+
       <MusicNoteRange clef={clef} keys={level?.range.split(":::")} />
 
       <Link
