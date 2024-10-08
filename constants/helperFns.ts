@@ -41,7 +41,7 @@ export function isNoteMatch(noteA: string, noteB: string) {
 
 export function stemDown(note: Note, clef: Clef) {
   const [key, octave] = note.split("/");
-  console.log({ note, key, octave, clef });
+  // console.log({ note, key, octave, clef });
   switch (clef) {
     case Clef.Treble:
       return +octave > 4 ? true : false;

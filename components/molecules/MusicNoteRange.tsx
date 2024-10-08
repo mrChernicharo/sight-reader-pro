@@ -30,7 +30,7 @@ export interface MusicNoteRangeProps {
 export function useMusicNoteRange(props: MusicNoteRangeProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
-  console.log(props.keys);
+  // console.log(props.keys);
   const renderResult = runVexFlowRangeCode(context, props.clef, props.keys, props.noteColor);
   return renderResult;
 }
