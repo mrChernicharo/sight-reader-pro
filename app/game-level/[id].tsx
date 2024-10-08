@@ -5,10 +5,11 @@ import { Timer } from "@/components/molecules/Timer";
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, Clef, WHITE_NOTES } from "@/constants/notes";
-import { getRandInRange, isNoteMatch } from "@/constants/helperFns";
+import { ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES } from "@/constants/notes";
+import { getLevel, getRandInRange, isNoteMatch } from "@/constants/helperFns";
 import { useState } from "react";
-import { NoteRange, LevelAccident } from "@/constants/levels";
+import { NoteRange, Accident, Clef } from "@/constants/types";
+import { SECTIONED_LEVELS } from "@/constants/levels";
 
 export enum GameState {
   Idle = "idle",
@@ -29,7 +30,7 @@ const BLACK_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
 // const BEMOL_NOTES = ["db", "eb", "gb", "ab", "bb"];
 
 let previousRandomNote = "";
-export function getRandomNoteInRange(range: NoteRange, accident: LevelAccident) {
+export function getRandomNoteInRange(range: NoteRange, accident: Accident) {
   const notesArr = accident === "b" ? ALL_NOTES_BEMOL_ALL_OCTAVES : ALL_NOTES_SHARP_ALL_OCTAVES;
   const [lowNote, highNote] = range.split(":::");
   const [lowIdx, highIdx] = [notesArr.findIndex((n) => n === lowNote), notesArr.findIndex((n) => n === highNote)];
@@ -43,12 +44,13 @@ export function getRandomNoteInRange(range: NoteRange, accident: LevelAccident) 
 
 export default function Level() {
   const { height, width, scale, fontScale } = useWindowDimensions();
-  const { id, clef, levelRange, levelAccident } = useLocalSearchParams();
+  const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
+  const level = getLevel(clef, id);
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState(() =>
-    getRandomNoteInRange(levelRange as NoteRange, levelAccident as LevelAccident)
+    getRandomNoteInRange(level.range as NoteRange, level.accident as Accident)
   );
 
   const keyboardMargin = width * 0.2;
@@ -66,7 +68,7 @@ export default function Level() {
     setGameState(success ? GameState.Success : GameState.Mistake);
 
     setTimeout(() => {
-      const nextNote = getRandomNoteInRange(levelRange as NoteRange, levelAccident as LevelAccident);
+      const nextNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident);
       setGameState(GameState.Idle);
       setCurrNote(nextNote);
     }, delay);
@@ -76,8 +78,8 @@ export default function Level() {
     <AppView style={s.container}>
       <AppView>
         <Text>Level {id}</Text>
-        <Text>range: {levelRange}</Text>
-        <Text>accident: {levelAccident}</Text>
+        <Text>range: {level.range}</Text>
+        <Text>accident: {level.accident}</Text>
         <Text>gameState: {gameState}</Text>
         <Text>successes: {gameScore.successes}</Text>
         <Text>mistakes: {gameScore.mistakes}</Text>
@@ -87,11 +89,11 @@ export default function Level() {
         <Timer />
 
         {gameState === GameState.Idle ? (
-          <MusicNote keys={[currNote]} clef={clef as Clef} />
+          <MusicNote keys={[currNote]} clef={clef} />
         ) : (
           <MusicNote
             keys={[currNote]}
-            clef={clef as Clef}
+            clef={clef}
             noteColor={gameState === GameState.Success ? "mediumseagreen" : "red"}
           />
         )}

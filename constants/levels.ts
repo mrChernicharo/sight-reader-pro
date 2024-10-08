@@ -1,19 +1,4 @@
-import { Clef } from "./notes";
-
-export type LevelAccident = "none" | "#" | "b";
-export type NoteRange = `${string}/${number}:::${string}/${number}`;
-
-export type LevelConfig = {
-  id: number;
-  clef: Clef;
-  range: NoteRange;
-  accident: LevelAccident;
-};
-
-export type SectionedLevelConfig = {
-  title: string;
-  data: LevelConfig[];
-};
+import { SectionedLevelConfig, LevelConfig } from "./types";
 
 export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
   {

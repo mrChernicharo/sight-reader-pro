@@ -18,7 +18,7 @@ import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context"
 
 import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
-import { Clef } from "@/constants/notes";
+import { Clef } from "@/constants/types";
 
 export interface MusicNoteRangeProps {
   keys: string[];
@@ -61,6 +61,7 @@ function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], noteColor
   const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);
+  // stave.setText("Note range", 3);
   //   stave.setTimeSignature("4/4");
   //   stave.setNoteStartX(80);
   stave.draw();

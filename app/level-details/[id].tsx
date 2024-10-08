@@ -1,23 +1,30 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { MusicNoteRange } from "@/components/molecules/MusicNoteRange";
+import { getLevel } from "@/constants/helperFns";
 import { SECTIONED_LEVELS } from "@/constants/levels";
-import { Clef } from "@/constants/notes";
+import { Clef } from "@/constants/types";
 import { Link, useLocalSearchParams } from "expo-router";
+import { StyleSheet } from "react-native";
 import { RectButton, TouchableOpacity } from "react-native-gesture-handler";
 
 export default function LevelDetails() {
-  const { id, clef } = useLocalSearchParams();
-  const level = SECTIONED_LEVELS.find((lvl) => lvl.data[0].clef === clef)?.data.find((lvl) => lvl.id === Number(id));
+  const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
+  const level = getLevel(clef, id);
 
   if (!level) return null;
 
   return (
-    <AppView>
+    <AppView style={s.container}>
+      <AppText>Level {level?.id}</AppText>
+      <AppText>Level {level?.id}</AppText>
+      <AppText>Level {level?.id}</AppText>
       <AppText>Level {level?.id}</AppText>
 
-      <AppText>Range</AppText>
-      <MusicNoteRange clef={clef as Clef} keys={level?.range.split(":::")} />
+      <AppText type="subtitle" style={s.rangeTitle}>
+        Note Range
+      </AppText>
+      <MusicNoteRange clef={clef} keys={level?.range.split(":::")} />
 
       <Link
         asChild
@@ -33,3 +40,14 @@ export default function LevelDetails() {
     </AppView>
   );
 }
+
+const s = StyleSheet.create({
+  container: {
+    padding: 24,
+  },
+  rangeTitle: {
+    marginTop: 52,
+    marginBottom: -80,
+    zIndex: 1000,
+  },
+});

@@ -14,18 +14,19 @@ import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
-import { Clef } from "@/constants/notes";
 import { StyleSheet, useWindowDimensions } from "react-native";
+import { Clef } from "@/constants/types";
 
 export interface MusicNoteProps {
   keys: string[];
   clef: Clef;
+  noteColor?: string;
 }
 
 export function useMusicNote(props: MusicNoteProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
-  const renderResult = runVexFlowCode(context, props.clef, props.keys);
+  const renderResult = runVexFlowCode(context, props.clef, props.keys, props.noteColor);
   return renderResult;
 }
 

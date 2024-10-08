@@ -31,9 +31,4 @@ while (oct < 9) {
   oct++;
 }
 
-export enum Clef {
-  Treble = "treble",
-  Bass = "bass",
-}
-
 // console.log(ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_BEMOL_ALL_OCTAVES.length);

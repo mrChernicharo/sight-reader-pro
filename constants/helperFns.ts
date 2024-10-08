@@ -1,3 +1,6 @@
+import { SECTIONED_LEVELS } from "./levels";
+import { Clef, Note } from "./types";
+
 export function getRandInRange(min: number, max: number) {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -34,4 +37,10 @@ export function isNoteMatch(noteA: string, noteB: string) {
   }
 
   return false;
+}
+
+export function stemDown(note: Note) {}
+
+export function getLevel(clef: Clef, id: string) {
+  return SECTIONED_LEVELS.find((lvl) => lvl.data[0].clef === clef)?.data.find((lvl) => lvl.id === Number(id))!;
 }
