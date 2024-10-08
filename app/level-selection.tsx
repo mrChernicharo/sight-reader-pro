@@ -6,19 +6,6 @@ import { SectionList, StatusBar, StyleSheet, Text, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-function makeGrid<T>(nums: T[], cols = 2) {
-  const grid: T[][] = [];
-  nums.forEach((n, i) => {
-    if (i % cols == 0) {
-      grid.push([n]);
-    } else {
-      grid?.at(-1)?.push(n);
-    }
-  });
-
-  return grid;
-}
-
 export default function LevelSelectionScreen() {
   const cols = 3;
   return (
@@ -100,3 +87,16 @@ const styles = StyleSheet.create({
     height: 100,
   },
 });
+
+function makeGrid<T>(nums: T[], cols = 2) {
+  const grid: T[][] = [];
+  nums.forEach((n, i) => {
+    if (i % cols == 0) {
+      grid.push([n]);
+    } else {
+      grid?.at(-1)?.push(n);
+    }
+  });
+
+  return grid;
+}

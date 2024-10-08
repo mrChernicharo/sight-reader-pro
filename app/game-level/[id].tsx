@@ -2,7 +2,7 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { MusicNote } from "@/components/molecules/MusicNote";
 import { CountdownTimer, Timer } from "@/components/molecules/Timer";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, router, Href } from "expo-router";
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES } from "@/constants/notes";
@@ -16,8 +16,8 @@ export enum GameState {
   Idle = "idle",
   Success = "success",
   Mistake = "mistake",
-  Win = "win",
-  Lose = "lose",
+  // Win = "win",
+  // Lose = "lose",
 }
 
 export interface GameScore {
@@ -26,9 +26,9 @@ export interface GameScore {
 }
 
 const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
-const delay = 320;
+const delay = 200;
 const winScore = 2;
-const countdownSeconds = 10;
+const countdownSeconds = 2;
 
 const BLACK_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
 // const SHARP_NOTES = ["c#", "d#", "f#", "g#", "a#"];
@@ -63,10 +63,9 @@ export default function GameLevel() {
   const mean = gameScore.successes / attempts;
   const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
   const hasWon = gameScore.successes >= winScore;
-  const gameOver = [GameState.Win, GameState.Lose].includes(gameState);
 
   function onPianoKeyPress(userNote: string) {
-    if (pianoLocked || gameOver) return;
+    if (pianoLocked) return;
 
     const key = currNote.split("/")[0];
     const success = isNoteMatch(userNote, key);
@@ -76,7 +75,6 @@ export default function GameLevel() {
     setGameState(success ? GameState.Success : GameState.Mistake);
 
     setTimeout(() => {
-      if (gameOver) return;
       const nextNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident);
       setGameState(GameState.Idle);
       setCurrNote(nextNote);
@@ -85,7 +83,12 @@ export default function GameLevel() {
 
   const onCountdownFinish = useCallback(() => {
     console.log("onCountdownFinish:::", { hasWon, gameState, successes: gameScore.successes, winScore });
-    setGameState(hasWon ? GameState.Win : GameState.Lose);
+    const finalState = hasWon ? "win" : "lose";
+
+    router.navigate({
+      pathname: "/game-over/[gameState]",
+      params: { gameState: finalState, levelId: id, clef },
+    });
   }, [hasWon, gameState, gameScore.successes, winScore]);
 
   return (
@@ -101,8 +104,10 @@ export default function GameLevel() {
         <Text>attempts: {attempts}</Text>
         <Text>accuracy: {accuracy}</Text>
 
-        <CountdownTimer seconds={countdownSeconds} onCountdownFinish={onCountdownFinish} />
-        {hasWon && <Text>you made it 🎉</Text>}
+        <AppView style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <CountdownTimer seconds={countdownSeconds} onCountdownFinish={onCountdownFinish} />
+          {hasWon && <Text>you made it 🎉</Text>}
+        </AppView>
 
         <AppView>
           {gameState === GameState.Idle ? <MusicNote keys={[currNote]} clef={clef} /> : null}
@@ -111,20 +116,6 @@ export default function GameLevel() {
             <MusicNote keys={[currNote]} clef={clef} noteColor={"mediumseagreen"} />
           ) : null}
           {gameState === GameState.Mistake ? <MusicNote keys={[currNote]} clef={clef} noteColor={"red"} /> : null}
-
-          {gameState === GameState.Win ? (
-            <AppView>
-              <AppText>Congratulations!</AppText>
-              <AppText>🎉</AppText>
-            </AppView>
-          ) : null}
-
-          {gameState === GameState.Lose ? (
-            <AppView>
-              <AppText>You Lose</AppText>
-              <AppText>😩</AppText>
-            </AppView>
-          ) : null}
         </AppView>
       </AppView>
 

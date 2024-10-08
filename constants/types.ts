@@ -14,6 +14,7 @@ export enum Clef {
 
 export type LevelConfig = {
   id: number;
+  name: string;
   clef: Clef;
   range: NoteRange;
   accident: Accident;
