@@ -8,19 +8,26 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Clef } from "@/constants/types";
 import { useAppStore } from "@/hooks/useStore";
 import AppButton from "@/components/atoms/AppButton";
+import { isNoteMatch } from "@/constants/helperFns";
 
 export default function GameOverScreen() {
+  const games = useAppStore((state) => state.games);
   const { gameState, levelId, clef } = useLocalSearchParams() as {
     gameState: "win" | "lose";
     levelId: string;
     clef: Clef;
   };
-  const games = useAppStore((state) => state.games);
 
   const message = gameState === "win" ? "Congratulations!" : "You Lose";
   const emoji = gameState === "win" ? " 🎉 " : " 😩 ";
 
-  console.log(JSON.stringify({ games }, null, 2));
+  const lastGame = games.at(-1);
+  const playerMoves = lastGame?.notes.map((gameNote) => ({
+    ...gameNote,
+    success: isNoteMatch(gameNote.attempt, gameNote.note),
+  }));
+
+  console.log({ lastGame }, JSON.stringify({ playerMoves }, null, 2));
 
   return (
     <SafeAreaView style={s.container}>

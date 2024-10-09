@@ -2,10 +2,14 @@ import { WHITE_NOTES } from "@/constants/notes";
 import { StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
-const BLACK_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
+import { Accident } from "@/constants/types";
+const BEMOL_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
+const SHARP_NOTES = ["c#", "d#", "", "f#", "g#", "a#"];
 
-export function Piano({ onPianoKeyPress }: { onPianoKeyPress: (note: string) => void }) {
+export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPianoKeyPress: (note: string) => void }) {
   const { width } = useWindowDimensions();
+
+  const BLACK_NOTES = accident === Accident.B ? BEMOL_NOTES : SHARP_NOTES;
 
   const keyboardMargin = width * 0.2;
   return (

@@ -5,11 +5,25 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { MusicNoteRange } from "@/components/molecules/MusicNoteRange";
 import { getLevel } from "@/constants/helperFns";
 import { SECTIONED_LEVELS } from "@/constants/levels";
-import { Clef } from "@/constants/types";
+import { Accident, Clef, Game } from "@/constants/types";
+import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
 import { RectButton, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+export function calcGameScore(game: Game) {}
+
+function getAccidentText(accident: Accident) {
+  switch (accident) {
+    case Accident.None:
+      return "no accidents";
+    case Accident["#"]:
+      return "♯ sharp accidents";
+    case Accident.B:
+      return "♭ flat accidents";
+  }
+}
 
 export default function LevelDetails() {
   const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
@@ -17,21 +31,33 @@ export default function LevelDetails() {
 
   if (!level) return null;
 
+  const accidentText = getAccidentText(level.accident);
+
   return (
     <SafeAreaView style={s.container}>
       <AppView style={s.top}>
         <BackLink to="/level-selection" />
         <AppText type="title" style={s.title}>
-          {level?.id}
+          {level.name}
+        </AppText>
+        <AppText type="subtitle" style={s.subtitle}>
+          {level.id}
         </AppText>
       </AppView>
 
-      <AppView style={s.rangeContainer}>
+      <AppView style={s.midContainer}>
+        <AppText>{accidentText}</AppText>
+        <AppText>
+          <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
+        </AppText>
+      </AppView>
+
+      <AppView style={s.midContainer}>
         <AppText type="subtitle" style={s.rangeTitle}>
           Note Range
         </AppText>
 
-        <MusicNoteRange clef={clef} keys={level?.range.split(":::")} />
+        <MusicNoteRange clef={clef} keys={level.range.split(":::")} />
       </AppView>
 
       <Link
@@ -42,9 +68,6 @@ export default function LevelDetails() {
         }}
       >
         <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} />
-        {/* <TouchableOpacity>
-          <AppText>Start Level</AppText>
-        </TouchableOpacity> */}
       </Link>
     </SafeAreaView>
   );
@@ -65,7 +88,12 @@ const s = StyleSheet.create({
   title: {
     textAlign: "center",
   },
-  rangeContainer: {
+  subtitle: {
+    color: "gray",
+    paddingTop: 6,
+    textAlign: "center",
+  },
+  midContainer: {
     alignItems: "center",
   },
   rangeTitle: {

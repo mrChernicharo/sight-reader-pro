@@ -18,6 +18,7 @@ export type LevelConfig = {
   clef: Clef;
   range: NoteRange;
   accident: Accident;
+  durationInSeconds: number;
 };
 
 export type SectionedLevelConfig = {
@@ -35,4 +36,5 @@ export type Game = {
   level_id: string;
   timestamp: number;
   notes: GameNote[];
+  durationInSeconds: number;
 };

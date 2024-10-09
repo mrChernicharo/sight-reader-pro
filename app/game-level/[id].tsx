@@ -18,8 +18,6 @@ export enum GameState {
   Idle = "idle",
   Success = "success",
   Mistake = "mistake",
-  // Win = "win",
-  // Lose = "lose",
 }
 
 export interface GameScore {
@@ -30,11 +28,6 @@ export interface GameScore {
 const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
 const delay = 200;
 const winScore = 5;
-const countdownSeconds = 10;
-
-const BLACK_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
-// const SHARP_NOTES = ["c#", "d#", "f#", "g#", "a#"];
-// const BEMOL_NOTES = ["db", "eb", "gb", "ab", "bb"];
 
 let previousRandomNote = "";
 export function getRandomNoteInRange(range: NoteRange, accident: Accident) {
@@ -44,27 +37,26 @@ export function getRandomNoteInRange(range: NoteRange, accident: Accident) {
   const chosenIdx = getRandInRange(lowIdx, highIdx);
   const chosenNote = notesArr[chosenIdx];
   // console.log({ range, lowIdx, highIdx, chosenIdx, chosenNote });
-  if (chosenNote === previousRandomNote) return getRandomNoteInRange(range, accident);
+  if (chosenNote === previousRandomNote) return getRandomNoteInRange(range, accident); // recurse if same note as before
   previousRandomNote = chosenNote;
   return chosenNote;
 }
 
 export default function GameLevel() {
   const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
+  const { addGame } = useAppStore();
+
   const level = getLevel(clef, id);
   const initialNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident);
-  const { addGame } = useAppStore();
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState(initialNote);
   const [gameNotes, setGameNotes] = useState<GameNote[]>([]);
 
+  const { accuracy, attempts, hasWon } = getGameStats(gameScore);
+
   const pianoLocked = gameState !== GameState.Idle;
-  const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
-  const mean = gameScore.successes / attempts;
-  const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
-  const hasWon = gameScore.successes >= winScore;
 
   function onPianoKeyPress(attempt: string) {
     if (pianoLocked) return;
@@ -95,6 +87,7 @@ export default function GameLevel() {
       notes: gameNotes,
       timestamp: Date.now(),
       id: randomUID(),
+      durationInSeconds: level.durationInSeconds,
     });
 
     router.navigate({
@@ -116,8 +109,8 @@ export default function GameLevel() {
         <Text>attempts: {attempts}</Text>
         <Text>accuracy: {accuracy}</Text>
 
-        <AppView style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <CountdownTimer seconds={countdownSeconds} onCountdownFinish={onCountdownFinish} />
+        <AppView style={s.countdownContainer}>
+          <CountdownTimer seconds={level.durationInSeconds} onCountdownFinish={onCountdownFinish} />
           {hasWon && <Text>you made it 🎉</Text>}
         </AppView>
 
@@ -132,7 +125,7 @@ export default function GameLevel() {
       </AppView>
 
       {/* PIANO */}
-      <Piano onPianoKeyPress={onPianoKeyPress} />
+      <Piano accident={level.accident} onPianoKeyPress={onPianoKeyPress} />
     </AppView>
   );
 }
@@ -142,7 +135,16 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
   },
+  countdownContainer: { flexDirection: "row", justifyContent: "space-between" },
 });
+
+function getGameStats(gameScore: GameScore) {
+  const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
+  const mean = gameScore.successes / attempts;
+  const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
+  const hasWon = gameScore.successes >= winScore;
+  return { attempts, accuracy, hasWon };
+}
 
 /* <ReactNativeVexFlow /> */
 /* <MusicNote keys={["f#/4", "a/4", "eb/5"]} clef="treble" /> */
