@@ -13,7 +13,7 @@ export enum Clef {
 }
 
 export type LevelConfig = {
-  id: number;
+  id: `${Clef}-${number}`;
   name: string;
   clef: Clef;
   range: NoteRange;
@@ -23,4 +23,16 @@ export type LevelConfig = {
 export type SectionedLevelConfig = {
   title: string;
   data: LevelConfig[];
+};
+
+export type GameNote = {
+  attempt: string;
+  note: string;
+};
+
+export type Game = {
+  id: string;
+  level_id: string;
+  timestamp: number;
+  notes: GameNote[];
 };

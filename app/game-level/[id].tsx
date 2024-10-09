@@ -27,8 +27,8 @@ export interface GameScore {
 
 const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
 const delay = 200;
-const winScore = 2;
-const countdownSeconds = 2;
+const winScore = 20;
+const countdownSeconds = 60;
 
 const BLACK_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
 // const SHARP_NOTES = ["c#", "d#", "f#", "g#", "a#"];

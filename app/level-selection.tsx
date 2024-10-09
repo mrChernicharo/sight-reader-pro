@@ -13,7 +13,7 @@ export default function LevelSelectionScreen() {
       <AppView style={styles.container}>
         {SECTIONED_LEVELS.map((clefLevels) => {
           const grid = makeGrid(clefLevels.data, cols);
-          console.log(grid);
+          // console.log(grid);
 
           return (
             <AppView key={clefLevels.title}>
@@ -22,8 +22,8 @@ export default function LevelSelectionScreen() {
               </AppText>
 
               <AppView style={styles.gridSection}>
-                {grid.map((row) => (
-                  <AppView style={styles.gridRow}>
+                {grid.map((row, rowIdx) => (
+                  <AppView key={`row-${rowIdx}`} style={styles.gridRow}>
                     {row.map((item) => {
                       return (
                         <Link

@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "sight-reading-pro",
-    "slug": "sight-reading-pro",
+    "name": "sight-reader-pro",
+    "slug": "sight-reader-pro",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/images/sight-reader-art.png",
+    "scheme": "sight-reader-pro",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash_2.png",
+      "image": "./assets/images/sight-reader-art.png",
       "resizeMode": "cover",
       "backgroundColor": "#000"
     },
@@ -17,10 +17,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/sight-reader-art.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.routerapp"
+      "package": "com.anonymous.sightreaderpro"
     },
     "web": {
       "bundler": "metro",
@@ -41,7 +41,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "23d662f1-050d-46bf-8111-9a8c0370bfb8"
+        "projectId": "2f9fca84-3023-4178-b59c-f9c2818a7c3b"
       }
     }
   }
