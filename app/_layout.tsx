@@ -17,10 +17,8 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView>
       <Stack>
-        <Stack.Screen name="index" />
-        {/* <Stack.Screen name="settings" /> */}
-        {/* <Stack.Screen name="practice-settings" /> */}
-        {/* <Stack.Screen name="practice-level" /> */}
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="level-selection" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );

@@ -1,8 +1,10 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
+import { BackLink } from "@/components/atoms/BackLink";
 import { SECTIONED_LEVELS } from "@/constants/levels";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link } from "expo-router";
-import { SectionList, StatusBar, StyleSheet, Text, View } from "react-native";
+import { SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -11,6 +13,8 @@ export default function LevelSelectionScreen() {
   return (
     <ScrollView>
       <AppView style={styles.container}>
+        <BackLink style={styles.backArrow} />
+
         {SECTIONED_LEVELS.map((clefLevels) => {
           const grid = makeGrid(clefLevels.data, cols);
           // console.log(grid);
@@ -59,6 +63,14 @@ const styles = StyleSheet.create({
     // paddingTop: StatusBar.currentHeight,
     paddingHorizontal: 32,
     paddingVertical: 48,
+  },
+  backArrow: {
+    // position: "absolute",
+    // top: 10,
+    // left: 16,
+    // zIndex: 100,
+    // height: 24,
+    // width: 100,
   },
   sectionTitle: {
     paddingVertical: 16,
