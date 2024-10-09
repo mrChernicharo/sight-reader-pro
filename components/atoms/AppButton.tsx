@@ -1,15 +1,15 @@
 import React, { forwardRef, useMemo } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native-gesture-handler";
 import { AppText } from "./AppText";
 
-interface CustomButtonProps {
+interface AppButtonProps extends TouchableOpacityProps {
   text: string;
   style?: any;
   textStyle?: any;
   disabled?: boolean;
 }
 
-const AppButton = forwardRef<TouchableOpacity, CustomButtonProps>((props, ref) => {
+const AppButton = forwardRef<TouchableOpacity, AppButtonProps>((props, ref) => {
   const { text, style, textStyle, disabled, ...otherProps } = props;
 
   const buttonStyle = useMemo(() => {

@@ -1,5 +1,8 @@
 import AppButton from "@/components/atoms/AppButton";
+import { AppLogo } from "@/components/atoms/AppLogo";
 import { AppText } from "@/components/atoms/AppText";
+import { AppTextLogo } from "@/components/atoms/AppTextLogo";
+import { AppView } from "@/components/atoms/AppView";
 import { Link, router } from "expo-router";
 import { Image, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -7,29 +10,47 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 export default function Home() {
   const { width, height } = useWindowDimensions();
   return (
-    <View style={s.container}>
+    <AppView style={s.container}>
       {/* <Image src="assets/images/logo.svg" style={{ width, height: height / 4 }} /> */}
-      <AppText type="title">Sight Reader Pro</AppText>
 
-      <TouchableOpacity>
-        <Link href="/settings">Settings</Link>
-      </TouchableOpacity>
+      {/* <Image source={require("@/assets/images/adaptive-icon.png")} style={s.titleImage} /> */}
 
-      <TouchableOpacity>
-        <Link href="/practice-settings">Practice</Link>
-      </TouchableOpacity>
+      <AppTextLogo subtitles="Level up your music reading!" />
+
+      <AppView>
+        <TouchableOpacity>
+          <Link href="/settings">Settings</Link>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <Link href="/practice-settings">Practice</Link>
+        </TouchableOpacity>
+      </AppView>
 
       <Link href="/level-selection" asChild>
-        <AppButton text="Play" style={{ width: 300 }} textStyle={{ color: "white" }} />
+        <AppButton
+          text="Play"
+          style={{ width: 300, height: 56 }}
+          textStyle={{ color: "white", fontSize: 24 }}
+          activeOpacity={0.7}
+        />
       </Link>
-    </View>
+    </AppView>
   );
 }
 
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
+    paddingVertical: 100,
+  },
+  titleImage: {
+    borderColor: "red",
+    borderWidth: 2,
+    borderStyle: "dashed",
+    // width: "100%",
+    // height: "100%",
   },
 });
