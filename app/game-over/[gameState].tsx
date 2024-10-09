@@ -6,6 +6,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native";
 import { Clef } from "@/constants/types";
+import { useAppStore } from "@/hooks/useStore";
 
 export default function GameOverScreen() {
   const { gameState, levelId, clef } = useLocalSearchParams() as {
@@ -13,6 +14,9 @@ export default function GameOverScreen() {
     levelId: string;
     clef: Clef;
   };
+  const games = useAppStore((state) => state.games);
+
+  console.log(JSON.stringify({ games }, null, 2));
 
   return (
     <ScrollView>

@@ -6,11 +6,13 @@ import { useLocalSearchParams, router, Href } from "expo-router";
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES } from "@/constants/notes";
-import { getLevel, getRandInRange, isNoteMatch } from "@/constants/helperFns";
+import { getLevel, getRandInRange, isNoteMatch, randomUID } from "@/constants/helperFns";
 import { useCallback, useEffect, useState } from "react";
-import { NoteRange, Accident, Clef } from "@/constants/types";
+import { NoteRange, Accident, Clef, GameNote } from "@/constants/types";
 import { SECTIONED_LEVELS } from "@/constants/levels";
 import { HelloWave } from "@/components/atoms/HelloWave";
+import { Piano } from "@/components/molecules/Piano";
+import { useAppStore } from "@/hooks/useStore";
 
 export enum GameState {
   Idle = "idle",
@@ -27,8 +29,8 @@ export interface GameScore {
 
 const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
 const delay = 200;
-const winScore = 20;
-const countdownSeconds = 60;
+const winScore = 5;
+const countdownSeconds = 10;
 
 const BLACK_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
 // const SHARP_NOTES = ["c#", "d#", "f#", "g#", "a#"];
@@ -48,27 +50,30 @@ export function getRandomNoteInRange(range: NoteRange, accident: Accident) {
 }
 
 export default function GameLevel() {
-  const { height, width, scale, fontScale } = useWindowDimensions();
   const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
   const level = getLevel(clef, id);
   const initialNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident);
+  const { addGame } = useAppStore();
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState(initialNote);
+  const [gameNotes, setGameNotes] = useState<GameNote[]>([]);
 
-  const keyboardMargin = width * 0.2;
   const pianoLocked = gameState !== GameState.Idle;
   const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
   const mean = gameScore.successes / attempts;
   const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
   const hasWon = gameScore.successes >= winScore;
 
-  function onPianoKeyPress(userNote: string) {
+  function onPianoKeyPress(attempt: string) {
     if (pianoLocked) return;
 
-    const key = currNote.split("/")[0];
-    const success = isNoteMatch(userNote, key);
+    const note = currNote.split("/")[0];
+    const success = isNoteMatch(attempt, note);
+
+    setGameNotes((prev) => [...prev, { note, attempt }]);
+
     setGameScore((prev) =>
       success ? { ...prev, successes: prev.successes + 1 } : { ...prev, mistakes: prev.mistakes + 1 }
     );
@@ -81,9 +86,16 @@ export default function GameLevel() {
     }, delay);
   }
 
-  const onCountdownFinish = useCallback(() => {
-    console.log("onCountdownFinish:::", { hasWon, gameState, successes: gameScore.successes, winScore });
+  const onCountdownFinish = useCallback(async () => {
+    // console.log("onCountdownFinish:::", { hasWon, gameState, successes: gameScore.successes, winScore });
     const finalState = hasWon ? "win" : "lose";
+
+    await addGame({
+      level_id: id,
+      notes: gameNotes,
+      timestamp: Date.now(),
+      id: randomUID(),
+    });
 
     router.navigate({
       pathname: "/game-over/[gameState]",
@@ -120,38 +132,7 @@ export default function GameLevel() {
       </AppView>
 
       {/* PIANO */}
-      <AppView style={[s.piano]}>
-        <AppView style={s.whiteNotes}>
-          {WHITE_NOTES.map((note) => (
-            <TouchableOpacity key={note} onPress={() => onPianoKeyPress(note)}>
-              <AppView style={[s.whiteNote, { width: (width - keyboardMargin) / 7 }]}>
-                <AppText>{note}</AppText>
-              </AppView>
-            </TouchableOpacity>
-          ))}
-        </AppView>
-
-        {/* TODO: SPLIT BLACK_NOTES IN 2 CHUNKS */}
-        <AppView style={s.blackNotes}>
-          {BLACK_NOTES.map((note) => (
-            <TouchableOpacity key={note} activeOpacity={0.7} onPress={() => onPianoKeyPress(note)}>
-              <AppView
-                style={[
-                  s.blackNote,
-                  {
-                    width: (width - keyboardMargin) / 7,
-                    ...(!note && { height: 0 }),
-                  },
-                ]}
-              >
-                <AppView style={[s.blackNoteInner]}>
-                  <AppText style={{ color: "white" }}>{note}</AppText>
-                </AppView>
-              </AppView>
-            </TouchableOpacity>
-          ))}
-        </AppView>
-      </AppView>
+      <Piano onPianoKeyPress={onPianoKeyPress} />
     </AppView>
   );
 }
@@ -160,46 +141,6 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-  },
-  piano: {
-    // borderWidth: 1,
-    // borderColor: "#bbb",
-    position: "relative",
-    paddingTop: 10,
-    paddingBottom: 100,
-  },
-  whiteNotes: {
-    flexDirection: "row",
-    // borderWidth: 1,
-    // borderColor: "#bbb",
-    // borderStyle: "dashed",
-    justifyContent: "center",
-  },
-  whiteNote: {
-    borderWidth: 1,
-    borderColor: "#bbb",
-    height: 160,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  blackNotes: {
-    flexDirection: "row",
-    position: "absolute",
-    left: 69,
-    top: 0,
-    backgroundColor: "transparent",
-  },
-  blackNote: {
-    height: 110,
-    backgroundColor: "transparent",
-  },
-  blackNoteInner: {
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "#333",
-    height: "100%",
-    width: "80%",
-    borderRadius: 6,
   },
 });
 

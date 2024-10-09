@@ -10,9 +10,9 @@ export interface AppState {
 }
 
 export interface AppActions {
-  setUsername: (name: string) => void;
-  addGame: (game: Game) => void;
-  setHydrated: (hydrated: boolean) => void;
+  setUsername: (name: string) => Promise<void>;
+  addGame: (game: Game) => Promise<void>;
+  setHydrated: (hydrated: boolean) => Promise<void>;
 }
 
 export const useAppStore = create<AppState & AppActions>()(
@@ -21,9 +21,9 @@ export const useAppStore = create<AppState & AppActions>()(
       _hydrated: false,
       username: "",
       games: [],
-      setUsername: (name: string) => set(() => ({ username: name })),
-      addGame: (game: Game) => set((state) => ({ games: [...state.games, game] })),
-      setHydrated: (hydrated: boolean) => set({ _hydrated: hydrated }),
+      setUsername: async (name: string) => set(() => ({ username: name })),
+      addGame: async (game: Game) => set((state) => ({ games: [...state.games, game] })),
+      setHydrated: async (hydrated: boolean) => set({ _hydrated: hydrated }),
     }),
     {
       name: "sight-reader-pro",

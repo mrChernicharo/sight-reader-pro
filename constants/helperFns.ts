@@ -1,6 +1,14 @@
 import { SECTIONED_LEVELS } from "./levels";
 import { Clef, Note } from "./types";
 
+const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+
+export const randomUID = (length = 12) =>
+  Array(length)
+    .fill(0)
+    .map((item) => ID_CHARS.split("")[Math.round(Math.random() * ID_CHARS.length)])
+    .join("");
+
 export function getRandInRange(min: number, max: number) {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -51,5 +59,5 @@ export function stemDown(note: Note, clef: Clef) {
 }
 
 export function getLevel(clef: Clef, id: string) {
-  return SECTIONED_LEVELS.find((lvl) => lvl.data[0].clef === clef)?.data.find((lvl) => lvl.id === Number(id))!;
+  return SECTIONED_LEVELS.find((lvl) => lvl.data[0].clef === clef)?.data.find((lvl) => lvl.id === id)!;
 }
