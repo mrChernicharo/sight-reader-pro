@@ -4,9 +4,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AppText } from "@/components/atoms/AppText";
 import { router, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
-import { TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Clef } from "@/constants/types";
 import { useAppStore } from "@/hooks/useStore";
+import AppButton from "@/components/atoms/AppButton";
 
 export default function GameOverScreen() {
   const { gameState, levelId, clef } = useLocalSearchParams() as {
@@ -16,51 +17,75 @@ export default function GameOverScreen() {
   };
   const games = useAppStore((state) => state.games);
 
+  const message = gameState === "win" ? "Congratulations!" : "You Lose";
+  const emoji = gameState === "win" ? " 🎉 " : " 😩 ";
+
   console.log(JSON.stringify({ games }, null, 2));
 
   return (
-    <ScrollView>
-      <AppView>
-        {gameState === "win" ? (
-          <AppView>
-            <AppText>Congratulations!</AppText>
-            <AppText>🎉</AppText>
-          </AppView>
-        ) : null}
-
-        {gameState === "lose" ? (
-          <AppView>
-            <AppText>You Lose</AppText>
-            <AppText>😩</AppText>
-          </AppView>
-        ) : null}
-
-        <TouchableOpacity>
+    <SafeAreaView style={s.container}>
+      <AppView style={s.messageContainer}>
+        <AppText type="title">{message}</AppText>
+        <AppView>
           <AppText
-            onPress={() => {
-              router.push({
-                pathname: "/game-level/[id]",
-                params: {
-                  id: levelId,
-                  clef,
-                },
-              });
+            type="title"
+            style={{
+              fontSize: 64,
+              // borderWidth: 2,
+              flexDirection: "column",
+              // height: 90,
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              lineHeight: 90,
             }}
           >
-            Play again
+            {emoji}
           </AppText>
-        </TouchableOpacity>
+        </AppView>
+      </AppView>
 
-        <TouchableOpacity
+      <AppView style={s.btnsContainer}>
+        <AppButton
+          text="Play again"
+          onPress={() => {
+            router.push({
+              pathname: "/game-level/[id]",
+              params: { id: levelId, clef },
+            });
+          }}
+        />
+        <AppButton
+          text="Level selection"
+          style={{ backgroundColor: "transparent" }}
+          textStyle={{ color: "gray" }}
           onPress={() => {
             router.navigate({
               pathname: "/level-selection",
             });
           }}
-        >
-          <AppText>Level selection</AppText>
-        </TouchableOpacity>
+        />
       </AppView>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
+
+const s = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 64,
+    paddingHorizontal: 32,
+  },
+  messageContainer: {
+    paddingVertical: 64,
+    gap: 16,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  btnsContainer: {
+    // flexDirection: "row",
+    gap: 12,
+  },
+});

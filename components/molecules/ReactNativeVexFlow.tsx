@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginTop: 64,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF",
+    // backgroundColor: "#F5FCFF",
   },
   welcome: {
     fontSize: 20,

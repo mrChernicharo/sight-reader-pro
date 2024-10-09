@@ -11,27 +11,22 @@ interface AppButtonProps extends TouchableOpacityProps {
 
 const AppButton = forwardRef<TouchableOpacity, AppButtonProps>((props, ref) => {
   const { text, style, textStyle, disabled, ...otherProps } = props;
-
-  const buttonStyle = useMemo(() => {
-    return [
-      style,
-      {
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 5,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        backgroundColor: disabled ? "gray" : "blue",
-        opacity: disabled ? 0.5 : 1,
-      },
-    ];
-  }, [style, disabled]);
+  const disabledStyles = { backgroundColor: disabled ? "gray" : "blue", opacity: disabled ? 0.5 : 1 };
+  const buttonStyle = [defaultStyles, disabledStyles, style];
 
   return (
-    <TouchableOpacity {...otherProps} ref={ref} style={buttonStyle} disabled={disabled}>
-      <AppText style={textStyle}>{text}</AppText>
+    <TouchableOpacity activeOpacity={0.7} {...otherProps} ref={ref} style={buttonStyle} disabled={disabled}>
+      <AppText style={[{ color: "white" }, textStyle]}>{text}</AppText>
     </TouchableOpacity>
   );
 });
+
+const defaultStyles = {
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 5,
+  paddingHorizontal: 16,
+  paddingVertical: 8,
+};
 
 export default AppButton;

@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     height: 280,
     // borderWidth: 2,
     // borderStyle: "dashed",
-    backgroundColor: "#F5FCFF",
+    // backgroundColor: "#F5FCFF",
   },
   sheetMusic: {
     flex: 1,

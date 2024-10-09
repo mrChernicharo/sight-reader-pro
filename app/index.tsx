@@ -6,9 +6,11 @@ import { AppView } from "@/components/atoms/AppView";
 import { Link, router } from "expo-router";
 import { Image, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Platform } from "react-native";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();
+
   return (
     <AppView style={s.container}>
       {/* <Image src="assets/images/logo.svg" style={{ width, height: height / 4 }} /> */}

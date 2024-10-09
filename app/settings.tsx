@@ -6,29 +6,54 @@ import { useAppStore } from "@/hooks/useStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link } from "expo-router";
 import { ComponentType, useRef, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function SettingsScreen() {
-  const { username, setUsername } = useAppStore();
+  const { username, setUsername, _resetStore } = useAppStore();
   const [localUsername, setLocalUsername] = useState(username);
+
+  const createTwoButtonAlert = () =>
+    Alert.alert("Are you sure?", "All your data will be erased. This action cannot be reverted", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          console.log("OK Pressed");
+          _resetStore();
+        },
+      },
+    ]);
 
   return (
     <AppView style={s.container}>
-      <BackLink />
+      <AppView style={s.top}>
+        <BackLink />
+        <AppText type="title" style={{ textAlign: "center" }}>
+          Settings
+        </AppText>
+      </AppView>
 
-      <AppText type="title">Settings</AppText>
-
-      <AppText>username</AppText>
       <AppView style={s.inputContainer}>
-        <TextInput style={s.input} onChangeText={setLocalUsername} defaultValue={username} />
-        <AppButton
-          text="submit"
-          textStyle={{ color: "white" }}
-          activeOpacity={0.7}
-          disabled={!localUsername}
-          onPress={() => localUsername && setUsername(localUsername)}
+        <AppText>username</AppText>
+        <TextInput
+          style={s.input}
+          onChangeText={setLocalUsername}
+          defaultValue={username}
+          onSubmitEditing={() => localUsername && setUsername(localUsername)}
         />
       </AppView>
+
+      <AppButton
+        text="reset my data"
+        textStyle={{ color: "white" }}
+        style={{ backgroundColor: "red" }}
+        activeOpacity={0.7}
+        onPress={createTwoButtonAlert}
+      />
     </AppView>
   );
 }
@@ -36,9 +61,14 @@ export default function SettingsScreen() {
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 36,
+    paddingVertical: 64,
+  },
+  top: {
+    width: "100%",
+    // borderWidth: 1,
   },
   inputContainer: {
     width: "100%",

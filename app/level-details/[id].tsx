@@ -1,5 +1,7 @@
+import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
+import { BackLink } from "@/components/atoms/BackLink";
 import { MusicNoteRange } from "@/components/molecules/MusicNoteRange";
 import { getLevel } from "@/constants/helperFns";
 import { SECTIONED_LEVELS } from "@/constants/levels";
@@ -7,6 +9,7 @@ import { Clef } from "@/constants/types";
 import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
 import { RectButton, TouchableOpacity } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LevelDetails() {
   const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
@@ -15,17 +18,21 @@ export default function LevelDetails() {
   if (!level) return null;
 
   return (
-    <AppView style={s.container}>
-      <AppText>Level {level?.id}</AppText>
-      <AppText>Level {level?.id}</AppText>
-      <AppText>Level {level?.id}</AppText>
-      <AppText>Level {level?.id}</AppText>
+    <SafeAreaView style={s.container}>
+      <AppView style={s.top}>
+        <BackLink to="/level-selection" />
+        <AppText type="title" style={s.title}>
+          {level?.id}
+        </AppText>
+      </AppView>
 
-      <AppText type="subtitle" style={s.rangeTitle}>
-        Note Range
-      </AppText>
+      <AppView style={s.rangeContainer}>
+        <AppText type="subtitle" style={s.rangeTitle}>
+          Note Range
+        </AppText>
 
-      <MusicNoteRange clef={clef} keys={level?.range.split(":::")} />
+        <MusicNoteRange clef={clef} keys={level?.range.split(":::")} />
+      </AppView>
 
       <Link
         asChild
@@ -34,21 +41,42 @@ export default function LevelDetails() {
           params: { id: String(id), clef, levelAccident: level?.accident, levelRange: level?.range },
         }}
       >
-        <TouchableOpacity>
+        <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} />
+        {/* <TouchableOpacity>
           <AppText>Start Level</AppText>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Link>
-    </AppView>
+    </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
   container: {
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingTop: 48,
+    paddingBottom: 64,
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  top: {
+    width: "100%",
+  },
+  title: {
+    textAlign: "center",
+  },
+  rangeContainer: {
+    alignItems: "center",
   },
   rangeTitle: {
     marginTop: 52,
     marginBottom: -80,
     zIndex: 1000,
+  },
+  cta: {
+    width: "90%",
+  },
+  ctaText: {
+    color: "white",
   },
 });
