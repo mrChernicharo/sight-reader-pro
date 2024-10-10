@@ -1,4 +1,5 @@
 import { AppView } from "@/components/atoms/AppView";
+import { BackLink } from "@/components/atoms/BackLink";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
 import { MusicNote } from "@/components/molecules/MusicNote";
 import { Piano } from "@/components/molecules/Piano";
@@ -80,6 +81,7 @@ export default function GameLevel() {
 
   return (
     <SafeAreaView style={s.container}>
+      <BackLink to="/level-details" style={s.backLink} />
       <AppView>
         <AppView style={s.countdownContainer}>
           <CountdownTimer seconds={level.durationInSeconds} onCountdownFinish={onCountdownFinish} />
@@ -103,9 +105,13 @@ export default function GameLevel() {
 }
 
 const s = StyleSheet.create({
+  backLink: {
+    transform: [{ translateX: 16 }, { translateY: 16 }],
+  },
   container: {
     flex: 1,
     justifyContent: "space-between",
+    paddingTop: 24,
   },
   countdownContainer: {
     padding: 24,

@@ -4,7 +4,7 @@ import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AppView } from "./AppView";
 
-export function BackLink({ to, style }: { to?: string; style?: StyleProp<ViewStyle> }) {
+export function BackLink({ to, style }: { to?: Href; style?: StyleProp<ViewStyle> }) {
   const href = (to || "/") as Href;
   return (
     <AppView style={{ width: 28 }}>

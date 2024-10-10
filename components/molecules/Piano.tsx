@@ -16,7 +16,12 @@ export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPia
     <AppView style={[s.piano]}>
       <AppView style={s.whiteNotes}>
         {WHITE_NOTES.map((note) => (
-          <TouchableOpacity key={note} onPress={() => onPianoKeyPress(note)}>
+          <TouchableOpacity
+            key={note}
+            onPress={() => {
+              onPianoKeyPress(note);
+            }}
+          >
             <AppView style={[s.whiteNote, { width: (width - keyboardMargin) / 7 }]}>
               <AppText>{note}</AppText>
             </AppView>
@@ -27,7 +32,13 @@ export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPia
       {/* TODO: SPLIT BLACK_NOTES IN 2 CHUNKS */}
       <AppView style={s.blackNotes}>
         {BLACK_NOTES.map((note) => (
-          <TouchableOpacity key={note} activeOpacity={0.7} onPress={() => onPianoKeyPress(note)}>
+          <TouchableOpacity
+            key={note}
+            activeOpacity={0.7}
+            onPress={() => {
+              onPianoKeyPress(note);
+            }}
+          >
             <AppView
               style={[
                 s.blackNote,

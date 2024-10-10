@@ -17,3 +17,12 @@ home
 
 -------------------
 
+play note sound on success
+
+background colors
+
+display previous games
+display statistics previous games
+  - accuracy
+  - notes/minute
+
