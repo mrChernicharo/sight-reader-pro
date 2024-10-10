@@ -1,5 +1,5 @@
 import { AppView } from "@/components/atoms/AppView";
-import { GameState } from "../game-level/[id]";
+import { GameScore, GameState } from "../game-level/[id]";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppText } from "@/components/atoms/AppText";
 import { router, useLocalSearchParams } from "expo-router";
@@ -8,7 +8,8 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Clef } from "@/constants/types";
 import { useAppStore } from "@/hooks/useStore";
 import AppButton from "@/components/atoms/AppButton";
-import { isNoteMatch } from "@/constants/helperFns";
+import { getGameStats, isNoteMatch } from "@/constants/helperFns";
+import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
 
 export default function GameOverScreen() {
   const games = useAppStore((state) => state.games);
@@ -22,10 +23,21 @@ export default function GameOverScreen() {
   const emoji = gameState === "win" ? " 🎉 " : " 😩 ";
 
   const lastGame = games.at(-1);
+
+  if (!lastGame) return null;
+
   const playerMoves = lastGame?.notes.map((gameNote) => ({
     ...gameNote,
     success: isNoteMatch(gameNote.attempt, gameNote.note),
   }));
+
+  const gameScore = playerMoves.reduce(
+    (acc, move) => {
+      move.success ? (acc.successes += 1) : (acc.mistakes += 1);
+      return acc;
+    },
+    { successes: 0, mistakes: 0 }
+  );
 
   console.log({ lastGame }, JSON.stringify({ playerMoves }, null, 2));
 
@@ -33,22 +45,11 @@ export default function GameOverScreen() {
     <SafeAreaView style={s.container}>
       <AppView style={s.messageContainer}>
         <AppText type="title">{message}</AppText>
+
+        <GameStatsDisplay gameScore={gameScore} complete />
+
         <AppView>
-          <AppText
-            type="title"
-            style={{
-              fontSize: 64,
-              // borderWidth: 2,
-              flexDirection: "column",
-              // height: 90,
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-              lineHeight: 90,
-            }}
-          >
-            {emoji}
-          </AppText>
+          <AppText style={s.bigEmoji}>{emoji}</AppText>
         </AppView>
       </AppView>
 
@@ -94,5 +95,13 @@ const s = StyleSheet.create({
   btnsContainer: {
     // flexDirection: "row",
     gap: 12,
+  },
+  bigEmoji: {
+    fontSize: 64,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    lineHeight: 90,
   },
 });

@@ -4,6 +4,7 @@ export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
   {
     title: "Treble Clef",
     data: [
+      { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 250 },
       { name: "basics", clef: "treble", range: "g/4:::d/5", accident: "none", durationInSeconds: 12 },
       { name: "basics", clef: "treble", range: "g/4:::e/5", accident: "none", durationInSeconds: 10 },
       { name: "basics", clef: "treble", range: "e/4:::e/5", accident: "none", durationInSeconds: 10 },
@@ -27,7 +28,10 @@ export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
       { name: "higher range", clef: "treble", range: "g/4:::a/6", accident: "#", durationInSeconds: 10 },
       { name: "higher range", clef: "treble", range: "g/4:::b/6", accident: "b", durationInSeconds: 10 },
       { name: "higher range", clef: "treble", range: "g/4:::c/7", accident: "#", durationInSeconds: 10 },
-    ].map((levelInfo, i) => ({ ...levelInfo, id: `treble-${padZero(i + 1)}` } as LevelConfig)),
+    ].map(
+      (levelInfo, i) =>
+        ({ ...levelInfo, name: `${levelInfo.name} ${padZero(i + 1)}`, id: `treble-${padZero(i + 1)}` } as LevelConfig)
+    ),
   },
   {
     title: "Bass Clef",
@@ -41,7 +45,10 @@ export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
       { name: "basics", clef: "bass", range: "c/1:::e/4", accident: "#", durationInSeconds: 10 },
       { name: "basics", clef: "bass", range: "b/1:::g/4", accident: "#", durationInSeconds: 10 },
       { name: "basics", clef: "bass", range: "a/1:::a/4", accident: "#", durationInSeconds: 10 },
-    ].map((levelInfo, i) => ({ ...levelInfo, id: `bass-${padZero(i + 1)}` } as LevelConfig)),
+    ].map(
+      (levelInfo, i) =>
+        ({ ...levelInfo, name: `${levelInfo.name} ${padZero(i + 1)}`, id: `bass-${padZero(i + 1)}` } as LevelConfig)
+    ),
   },
 ];
 

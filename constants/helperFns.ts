@@ -1,7 +1,12 @@
+import { GameScore } from "@/app/game-level/[id]";
 import { SECTIONED_LEVELS } from "./levels";
-import { Clef, Note } from "./types";
+import { ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
+import { Accident, Clef, Note, NoteRange } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
+
+export const winScore = 5;
 
 export const randomUID = (length = 12) =>
   Array(length)
@@ -54,10 +59,45 @@ export function stemDown(note: Note, clef: Clef) {
     case Clef.Treble:
       return +octave > 4 ? true : false;
     case Clef.Bass:
-      return +octave > 3 || (+octave === 3 && key > "d") ? true : false;
+      return +octave > 2 || (+octave === 2 && key >= "d") ? true : false;
   }
 }
 
 export function getLevel(clef: Clef, id: string) {
   return SECTIONED_LEVELS.find((lvl) => lvl.data[0].clef === clef)?.data.find((lvl) => lvl.id === id)!;
+}
+
+export function getRandomNoteInRange(range: NoteRange, accident: Accident, previousNote: string) {
+  let notesArr = [];
+  switch (accident) {
+    case Accident["#"]:
+      notesArr = ALL_NOTES_SHARP_ALL_OCTAVES;
+      break;
+    case Accident.B:
+      notesArr = ALL_NOTES_SHARP_ALL_OCTAVES;
+      break;
+    case Accident.None:
+    default:
+      notesArr = WHITE_NOTES_ALL_OCTAVES;
+      break;
+  }
+
+  const [lowNote, highNote] = range.split(":::");
+  const [lowIdx, highIdx] = [notesArr.findIndex((n) => n === lowNote), notesArr.findIndex((n) => n === highNote)];
+  const chosenIdx = getRandInRange(lowIdx, highIdx);
+  const chosenNote = notesArr[chosenIdx];
+  // console.log(":::getRandomNoteInRange", { range, lowIdx, highIdx, chosenIdx, chosenNote, previousNote });
+  if (chosenNote === previousNote) {
+    // console.log(":::getRandomNoteInRange ::: shit_same_note!", { chosenNote, previousNote });
+    return getRandomNoteInRange(range, accident, chosenNote);
+  } // recurse if same note as before
+  return chosenNote;
+}
+
+export function getGameStats(gameScore: GameScore) {
+  const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
+  const mean = gameScore.successes / attempts;
+  const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
+  const hasWon = gameScore.successes >= winScore;
+  return { attempts, accuracy, hasWon };
 }

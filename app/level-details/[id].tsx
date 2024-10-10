@@ -5,7 +5,7 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { MusicNoteRange } from "@/components/molecules/MusicNoteRange";
 import { getLevel } from "@/constants/helperFns";
 import { SECTIONED_LEVELS } from "@/constants/levels";
-import { Accident, Clef, Game } from "@/constants/types";
+import { Accident, Clef, Game, Note } from "@/constants/types";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
@@ -13,6 +13,22 @@ import { RectButton, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export function calcGameScore(game: Game) {}
+
+function getRangeTitleOffset(clef: Clef, highNote: Note) {
+  const [note, octave] = highNote.split("/");
+  const defaultOffset = -100;
+  // console.log(highNote, note, octave, clef, defaultOffset);
+  switch (clef) {
+    case Clef.Bass:
+      if (+octave > 3 || (+octave == 3 && note >= "g")) return defaultOffset + 50;
+      return defaultOffset;
+    case Clef.Treble:
+      if (+octave > 6 || (+octave == 6 && note >= "a")) return defaultOffset + 50;
+      return defaultOffset;
+    default:
+      return defaultOffset;
+  }
+}
 
 function getAccidentText(accident: Accident) {
   switch (accident) {
@@ -32,6 +48,8 @@ export default function LevelDetails() {
   if (!level) return null;
 
   const accidentText = getAccidentText(level.accident);
+  const [lowNote, highNote] = level.range.split(":::") as [Note, Note];
+  const rangeTitleOffset = getRangeTitleOffset(clef, highNote);
 
   return (
     <SafeAreaView style={s.container}>
@@ -53,11 +71,11 @@ export default function LevelDetails() {
       </AppView>
 
       <AppView style={s.midContainer}>
-        <AppText type="subtitle" style={s.rangeTitle}>
+        <AppText type="subtitle" style={[s.rangeTitle, { marginBottom: rangeTitleOffset }]}>
           Note Range
         </AppText>
 
-        <MusicNoteRange clef={clef} keys={level.range.split(":::")} />
+        <MusicNoteRange clef={clef} keys={[lowNote, highNote]} />
       </AppView>
 
       <Link
@@ -98,7 +116,6 @@ const s = StyleSheet.create({
   },
   rangeTitle: {
     marginTop: 52,
-    marginBottom: -80,
     zIndex: 1000,
   },
   cta: {

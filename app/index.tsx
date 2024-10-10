@@ -24,9 +24,9 @@ export default function Home() {
           <Link href="/settings">Settings</Link>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Link href="/practice-settings">Practice</Link>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </AppView>
 
       <Link href="/level-selection" asChild>

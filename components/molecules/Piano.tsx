@@ -54,7 +54,7 @@ const s = StyleSheet.create({
     // borderColor: "#bbb",
     position: "relative",
     paddingTop: 10,
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
   whiteNotes: {
     flexDirection: "row",

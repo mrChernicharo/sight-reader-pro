@@ -2,11 +2,19 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { SECTIONED_LEVELS } from "@/constants/levels";
+import { LevelConfig } from "@/constants/types";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link } from "expo-router";
 import { SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+export function getLevelName(item: LevelConfig) {
+  const splitLevelName = item.name.split(" ");
+  const levelIdx = splitLevelName.pop();
+  const levelName = splitLevelName.join(" ");
+  return { levelIdx, levelName };
+}
 
 export default function LevelSelectionScreen() {
   const cols = 3;
@@ -29,6 +37,7 @@ export default function LevelSelectionScreen() {
                 {grid.map((row, rowIdx) => (
                   <AppView key={`row-${rowIdx}`} style={styles.gridRow}>
                     {row.map((item) => {
+                      const { levelName, levelIdx } = getLevelName(item);
                       return (
                         <Link
                           key={`${item.clef} ${item.id}`}
@@ -41,7 +50,8 @@ export default function LevelSelectionScreen() {
                           }}
                         >
                           <AppView style={styles.item}>
-                            <AppText>{item.id}</AppText>
+                            <AppText>{levelName}</AppText>
+                            <AppText>{levelIdx}</AppText>
                           </AppView>
                         </Link>
                       );
@@ -57,6 +67,8 @@ export default function LevelSelectionScreen() {
     </ScrollView>
   );
 }
+
+const pink = "#f9c2ff";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -86,7 +98,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   item: {
-    backgroundColor: "#f9c2ff",
+    backgroundColor: pink,
     width: 100,
     height: 100,
     justifyContent: "center",

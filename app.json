@@ -8,7 +8,7 @@
     "scheme": "sight-reader-pro",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/sight-reader-art.png",
+      "image": "./assets/images/app-splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#000"
     },
