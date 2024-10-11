@@ -6,7 +6,9 @@ import { Piano } from "@/components/molecules/Piano";
 import { CountdownTimer } from "@/components/molecules/Timer";
 import { Colors } from "@/constants/Colors";
 import { getGameStats, getLevel, getRandomNoteInRange, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
-import { Accident, Clef, GameNote, Note, NoteRange } from "@/constants/types";
+import { ALL_NOTES_FLAT_ALL_OCTAVES } from "@/constants/notes";
+import { Accident, Clef, GameNote, GameScore, GameState, Note, NoteRange } from "@/constants/types";
+import { usePianoSound } from "@/hooks/usePianoSound";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Audio } from "expo-av";
@@ -15,23 +17,13 @@ import { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export enum GameState {
-  Idle = "idle",
-  Success = "success",
-  Mistake = "mistake",
-}
-
-export interface GameScore {
-  successes: number;
-  mistakes: number;
-}
-
 const delay = 200;
 
 export default function GameLevel() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
   const { addGame } = useAppStore();
+  const { playSound } = usePianoSound();
 
   const level = getLevel(clef, id);
   const initialNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident, "");
@@ -54,11 +46,9 @@ export default function GameLevel() {
     setGameNotes((prev) => [...prev, { note, attempt }]);
 
     if (success) {
+      playSound(currNote);
       setGameScore((prev) => ({ ...prev, successes: prev.successes + 1 }));
       setGameState(GameState.Success);
-      const filepath = getAudioFilepath(currNote);
-      console.log(filepath);
-      playSound();
     } else {
       setGameScore((prev) => ({ ...prev, mistakes: prev.mistakes + 1 }));
       setGameState(GameState.Mistake);
@@ -69,18 +59,6 @@ export default function GameLevel() {
       setGameState(GameState.Idle);
       setCurrNote(nextNote);
     }, delay);
-  }
-
-  async function playSound() {
-    try {
-      console.log("Loading Sound");
-      const { sound } = await Audio.Sound.createAsync(require("@/assets/sounds/piano-notes/Piano.mf.B5.mp3"));
-
-      console.log("Playing Sound");
-      await sound.playAsync();
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   const onCountdownFinish = useCallback(async () => {
@@ -140,27 +118,6 @@ const s = StyleSheet.create({
     padding: 24,
   },
 });
-
-const sharpToFlatTable = { a: "b", b: "c", c: "d", d: "e", e: "f", f: "g", g: "a" };
-export function flattenEventualSharpNote(noteString: string) {
-  if (noteString.length > 1 && noteString[1] === "#") {
-    noteString = sharpToFlatTable[noteString[0] as keyof typeof sharpToFlatTable] + "b";
-  }
-  return noteString;
-}
-
-export function capitalizeStr(text: string) {
-  const [first, ...rest] = text;
-  return [first.toUpperCase(), ...rest].join("");
-}
-export function getAudioFilepath(note: Note) {
-  const filepathBase = "@/assets/sounds/piano-notes";
-  const [key, octave] = note.split("/");
-  const noSharpNote = flattenEventualSharpNote(key);
-  const filename = `Piano.mf.${capitalizeStr(noSharpNote)}${octave}.mp3`;
-  const filepath = `${filepathBase}/${filename}`;
-  return filepath;
-}
 
 // const test = ["a", "a#", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#"];
 

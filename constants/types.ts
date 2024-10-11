@@ -38,3 +38,14 @@ export type Game = {
   notes: GameNote[];
   durationInSeconds: number;
 };
+
+export enum GameState {
+  Idle = "idle",
+  Success = "success",
+  Mistake = "mistake",
+}
+
+export interface GameScore {
+  successes: number;
+  mistakes: number;
+}

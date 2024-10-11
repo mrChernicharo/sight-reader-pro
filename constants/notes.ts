@@ -36,13 +36,13 @@ while (oct < 9) {
   oct++;
 }
 
-export const ALL_NOTES_BEMOL_ALL_OCTAVES: Note[] = [];
+export const ALL_NOTES_FLAT_ALL_OCTAVES: Note[] = [];
 oct = 1;
 while (oct < 9) {
   ALL_NOTES_BEMOL.forEach((n) => {
-    ALL_NOTES_BEMOL_ALL_OCTAVES.push(`${n}/${oct}`);
+    ALL_NOTES_FLAT_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;
 }
 
-// console.log(ALL_NOTES_BEMOL_ALL_OCTAVES, ALL_NOTES_BEMOL_ALL_OCTAVES.length);
+// console.log(ALL_NOTES_FLAT_ALL_OCTAVES, ALL_NOTES_FLAT_ALL_OCTAVES.length);

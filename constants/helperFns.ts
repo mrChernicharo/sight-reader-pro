@@ -1,7 +1,6 @@
-import { GameScore } from "@/app/game-level/[id]";
 import { SECTIONED_LEVELS } from "./levels";
 import { ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
-import { Accident, Clef, Note, NoteRange } from "./types";
+import { Accident, Clef, GameScore, Note, NoteRange } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
@@ -100,4 +99,25 @@ export function getGameStats(gameScore: GameScore) {
   const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
   const hasWon = gameScore.successes >= winScore;
   return { attempts, accuracy, hasWon };
+}
+
+const sharpToFlatTable = { a: "b", b: "c", c: "d", d: "e", e: "f", f: "g", g: "a" };
+export function flattenEventualSharpNote(noteString: string) {
+  if (noteString.length > 1 && noteString[1] === "#") {
+    noteString = sharpToFlatTable[noteString[0] as keyof typeof sharpToFlatTable] + "b";
+  }
+  return noteString;
+}
+
+export function capitalizeStr(text: string) {
+  const [first, ...rest] = text;
+  return [first.toUpperCase(), ...rest].join("");
+}
+export function getAudioFilepath(note: Note) {
+  const filepathBase = "@/assets/sounds/piano-notes";
+  const [key, octave] = note.split("/");
+  const noSharpNote = flattenEventualSharpNote(key);
+  const filename = `Piano.mf.${capitalizeStr(noSharpNote)}${octave}.mp3`;
+  const filepath = `${filepathBase}/${filename}`;
+  return filepath;
 }
