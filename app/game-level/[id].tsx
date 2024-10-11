@@ -3,21 +3,18 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
 import { MusicNote } from "@/components/molecules/MusicNote";
 import { Piano } from "@/components/molecules/Piano";
-import { CountdownTimer } from "@/components/molecules/Timer";
 import { Colors } from "@/constants/Colors";
 import { getGameStats, getLevel, getRandomNoteInRange, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
-import { ALL_NOTES_FLAT_ALL_OCTAVES } from "@/constants/notes";
-import { Accident, Clef, GameNote, GameScore, GameState, Note, NoteRange } from "@/constants/types";
+import { Accident, Clef, GameNote, GameScore, GameState, NoteRange } from "@/constants/types";
 import { usePianoSound } from "@/hooks/usePianoSound";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Audio } from "expo-av";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const delay = 200;
+const DELAY = 250;
 
 export default function GameLevel() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
@@ -33,7 +30,7 @@ export default function GameLevel() {
   const [currNote, setCurrNote] = useState(initialNote);
   const [gameNotes, setGameNotes] = useState<GameNote[]>([]);
 
-  const { hasWon } = getGameStats(gameScore);
+  const { hasWon } = getGameStats(level, gameScore);
 
   const pianoLocked = gameState !== GameState.Idle;
 
@@ -58,11 +55,11 @@ export default function GameLevel() {
       const nextNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident, currNote);
       setGameState(GameState.Idle);
       setCurrNote(nextNote);
-    }, delay);
+    }, DELAY);
   }
 
   const onCountdownFinish = useCallback(async () => {
-    // console.log("onCountdownFinish:::", { hasWon, gameState, successes: gameScore.successes, winScore });
+    setGameState(GameState.Idle);
     const finalState = hasWon ? "win" : "lose";
 
     await addGame({
@@ -85,9 +82,8 @@ export default function GameLevel() {
 
       <AppView>
         <AppView style={s.countdownContainer}>
-          <CountdownTimer seconds={level.durationInSeconds} onCountdownFinish={onCountdownFinish} />
           {/* {hasWon && <Text>you made it 🎉</Text>} */}
-          <GameStatsDisplay gameScore={gameScore} />
+          <GameStatsDisplay gameScore={gameScore} level={level} onCountdownFinish={onCountdownFinish} showTimer />
         </AppView>
 
         <AppView>

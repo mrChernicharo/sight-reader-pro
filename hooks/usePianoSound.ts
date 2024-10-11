@@ -93,19 +93,15 @@ export function usePianoSound() {
 
   const [sound, setSound] = useState<Audio.Sound | null>(null);
 
-  async function playSound(note: Note) {
-    // const oct = note.split("/")[1];
-    // const n = flattenEventualSharpNote(note);
-    const filePath = getAudioFilepath(note);
-
-    const [k, oct] = note.split("/");
-    const uriNote = `${flattenEventualSharpNote(k)}/${oct}`;
-    const uri = paths[uriNote as keyof typeof paths];
-    console.log("Loading Sound", { filePath, note, uri, uriNote });
+  async function playSound(originalNote: Note) {
+    const [k, oct] = originalNote.split("/");
+    const flatForcedNote = `${flattenEventualSharpNote(k)}/${oct}` as Note;
+    const filePath = getAudioFilepath(flatForcedNote);
+    const uri = paths[flatForcedNote as keyof typeof paths];
+    console.log("Loading Sound", { filePath, note: originalNote, uri, flatForcedNote });
 
     try {
       const { sound } = await Audio.Sound.createAsync(uri, {}, (status) => {});
-      // const { sound } = await Audio.Sound.createAsync(require("@/assets/sounds/piano-notes/Piano.mf.D2.mp3"));
       setSound(sound);
 
       // console.log("Playing Sound");

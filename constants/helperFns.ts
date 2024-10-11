@@ -1,9 +1,9 @@
 import { SECTIONED_LEVELS } from "./levels";
 import { ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
-import { Accident, Clef, GameScore, Note, NoteRange } from "./types";
+import { Accident, Clef, GameScore, LevelConfig, Note, NoteRange } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
-const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
+export const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
 
 export const winScore = 5;
 
@@ -93,11 +93,14 @@ export function getRandomNoteInRange(range: NoteRange, accident: Accident, previ
   return chosenNote;
 }
 
-export function getGameStats(gameScore: GameScore) {
+export function getGameStats(level: LevelConfig, gameScore: GameScore) {
   const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
   const mean = gameScore.successes / attempts;
   const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
   const hasWon = gameScore.successes >= winScore;
+
+  // level.durationInSeconds
+  // const hitsPerSecond = gameScore.successes
   return { attempts, accuracy, hasWon };
 }
 
@@ -116,8 +119,7 @@ export function capitalizeStr(text: string) {
 export function getAudioFilepath(note: Note) {
   const filepathBase = "@/assets/sounds/piano-notes";
   const [key, octave] = note.split("/");
-  const noSharpNote = flattenEventualSharpNote(key);
-  const filename = `Piano.mf.${capitalizeStr(noSharpNote)}${octave}.mp3`;
+  const filename = `Piano.mf.${capitalizeStr(key)}${octave}.mp3`;
   const filepath = `${filepathBase}/${filename}`;
   return filepath;
 }

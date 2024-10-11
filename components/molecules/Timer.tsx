@@ -1,36 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
-import { StyleSheet } from "react-native";
+import { DimensionValue, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 const intl = new Intl.DateTimeFormat("en", { second: "2-digit", minute: "2-digit" });
 
-export function Timer() {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCount((c) => c + 1000);
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  return (
-    <AppView>
-      <AppText>{intl.format(count)}</AppText>
-    </AppView>
-  );
-}
-
-export function CountdownTimer({ seconds, onCountdownFinish }: { seconds: number; onCountdownFinish: () => void }) {
-  const initialTime = seconds * 1000;
-  const [count, setCount] = useState(initialTime);
+export function CountdownTimer({
+  initialTime,
+  count,
+  setCount,
+  onCountdownFinish,
+}: {
+  initialTime: number;
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  onCountdownFinish: () => Promise<void>;
+}) {
   const done = useRef(false);
   const elapsed = 1 - count / initialTime;
+  const barWidth = `${elapsed * 100}%` as DimensionValue;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,9 +44,7 @@ export function CountdownTimer({ seconds, onCountdownFinish }: { seconds: number
       <AppText>{intl.format(count)}</AppText>
 
       <AppView style={s.bar}>
-        <AppView
-          style={[{ backgroundColor: Colors.light.tint, height: 12, width: `${elapsed * 100}%`, borderRadius: 0 }]}
-        />
+        <AppView style={[s.innerBar, { backgroundColor: Colors.light.tint, width: barWidth }]} />
       </AppView>
     </AppView>
   );
@@ -70,5 +57,9 @@ const s = StyleSheet.create({
     height: 12,
     borderRadius: 4,
     overflow: "hidden",
+  },
+  innerBar: {
+    height: 12,
+    borderRadius: 0,
   },
 });
