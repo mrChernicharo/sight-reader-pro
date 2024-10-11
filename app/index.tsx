@@ -23,7 +23,9 @@ export default function Home() {
 
       <AppView>
         <TouchableOpacity>
-          <Link href="/settings">Settings</Link>
+          <Link href="/settings">
+            <AppText>Settings</AppText>
+          </Link>
         </TouchableOpacity>
 
         {/* <TouchableOpacity>

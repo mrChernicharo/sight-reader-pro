@@ -3,6 +3,7 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
 import { MusicNote } from "@/components/molecules/MusicNote";
 import { Piano } from "@/components/molecules/Piano";
+import { CountdownTimer } from "@/components/molecules/Timer";
 import { Colors } from "@/constants/Colors";
 import { getGameStats, getLevel, getRandomNoteInRange, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
 import { Accident, Clef, GameNote, GameScore, GameState, NoteRange } from "@/constants/types";
@@ -18,7 +19,7 @@ const DELAY = 250;
 
 export default function GameLevel() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
-  const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
+  const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef; };
   const { addGame } = useAppStore();
   const { playSound } = usePianoSound();
 
@@ -29,6 +30,7 @@ export default function GameLevel() {
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState(initialNote);
   const [gameNotes, setGameNotes] = useState<GameNote[]>([]);
+  const [elapsed, setElapsed] = useState(0);
 
   const { hasWon } = getGameStats(level, gameScore);
 
@@ -58,6 +60,15 @@ export default function GameLevel() {
     }, DELAY);
   }
 
+  function onTick(secondsRemaining: number) {
+    const percVal = (level.durationInSeconds - secondsRemaining) / level.durationInSeconds;
+    setElapsed(percVal);
+    if (percVal >= 1) {
+      onCountdownFinish();
+    }
+
+  }
+
   const onCountdownFinish = useCallback(async () => {
     setGameState(GameState.Idle);
     const finalState = hasWon ? "win" : "lose";
@@ -82,8 +93,9 @@ export default function GameLevel() {
 
       <AppView>
         <AppView style={s.countdownContainer}>
-          {/* {hasWon && <Text>you made it 🎉</Text>} */}
-          <GameStatsDisplay gameScore={gameScore} level={level} onCountdownFinish={onCountdownFinish} showTimer />
+          <GameStatsDisplay gameScore={gameScore} level={level} elapsed={elapsed} />
+
+          <CountdownTimer initialTime={level.durationInSeconds} onTick={onTick} />
         </AppView>
 
         <AppView>

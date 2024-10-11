@@ -2,13 +2,16 @@ import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
+import { Colors } from "@/constants/Colors";
 import { useAppStore } from "@/hooks/useStore";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link } from "expo-router";
 import { ComponentType, useRef, useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function SettingsScreen() {
+  const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
   const { username, setUsername, _resetStore } = useAppStore();
   const [localUsername, setLocalUsername] = useState(username);
 
@@ -40,7 +43,7 @@ export default function SettingsScreen() {
       <AppView style={s.inputContainer}>
         <AppText>username</AppText>
         <TextInput
-          style={s.input}
+          style={[s.input, { color: textColor }]}
           onChangeText={setLocalUsername}
           defaultValue={username}
           onSubmitEditing={() => localUsername && setUsername(localUsername)}

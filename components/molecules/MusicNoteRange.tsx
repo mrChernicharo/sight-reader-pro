@@ -31,7 +31,7 @@ export function useMusicNoteRange(props: MusicNoteRangeProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
   // console.log(props.keys);
-  const renderResult = runVexFlowRangeCode(context, props.clef, props.keys, props.noteColor);
+  const renderResult = runVexFlowRangeCode(context, props.clef, props.keys, true, props.noteColor);
   return renderResult;
 }
 
@@ -58,10 +58,13 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], noteColor?: string) {
+function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], isDarkMode: boolean, noteColor?: string) {
   const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);
+  const color = isDarkMode ? "#fff" : '#000';
+  context.setFont("Arial", 20, "red").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
+  // context.setFont("Arial", 20, "red").setFillStyle('#f00').setStrokeStyle('#f00').setLineWidth(3);
   // stave.setText("Note range", 3);
   //   stave.setTimeSignature("4/4");
   //   stave.setNoteStartX(80);

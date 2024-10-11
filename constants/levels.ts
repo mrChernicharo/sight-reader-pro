@@ -4,7 +4,7 @@ export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
   {
     title: "Treble Clef",
     data: [
-      { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 30 },
+      { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 5 },
       { name: "basics", clef: "treble", range: "g/4:::d/5", accident: "none", durationInSeconds: 30 },
       { name: "basics", clef: "treble", range: "g/4:::e/5", accident: "none", durationInSeconds: 30 },
       { name: "basics", clef: "treble", range: "e/4:::e/5", accident: "none", durationInSeconds: 30 },

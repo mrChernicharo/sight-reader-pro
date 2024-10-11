@@ -26,7 +26,7 @@ export interface MusicNoteProps {
 export function useMusicNote(props: MusicNoteProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
-  const renderResult = runVexFlowCode(context, props.clef, props.keys, props.noteColor);
+  const renderResult = runVexFlowCode(context, props.clef, props.keys, true, props.noteColor);
   return renderResult;
 }
 
@@ -53,7 +53,10 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowCode(context: any, clef: Clef, keys: string[], noteColor?: string) {
+function runVexFlowCode(context: any, clef: Clef, keys: string[], isDarkMode: boolean, noteColor?: string) {
+  const color = isDarkMode ? "#fff" : '#000';
+  context.setFont("Arial", 20, "red").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
+
   const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);

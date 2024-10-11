@@ -22,10 +22,9 @@ export default function GameOverScreen() {
   };
 
   const level = getLevel(clef, levelId);
-  const message = gameState === "win" ? "Congratulations!" : "You Lose";
-  const emoji = gameState === "win" ? " 🎉 " : " 😩 ";
-
   const lastGame = games.at(-1);
+  const message = gameState === "win" ? "You Win" : "You Lose";
+  const emoji = gameState === "win" ? " 🎉 " : " 😩 ";
 
   if (!lastGame) return null;
 
@@ -53,8 +52,6 @@ export default function GameOverScreen() {
           gameScore={gameScore}
           level={level}
           complete
-          showTimer={false}
-          onCountdownFinish={undefined}
         />
 
         <AppView>

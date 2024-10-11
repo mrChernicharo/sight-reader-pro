@@ -5,13 +5,11 @@ import { Colors } from "@/constants/Colors";
 import { SECTIONED_LEVELS } from "@/constants/levels";
 import { LevelConfig } from "@/constants/types";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Link } from "expo-router";
-import { SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import { Link } from "expo-router";
 import { useEffect } from "react";
+import { StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export function getLevelName(item: LevelConfig) {
   const splitLevelName = item.name.split(" ");
@@ -22,6 +20,7 @@ export function getLevelName(item: LevelConfig) {
 
 export default function LevelSelectionScreen() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
+  const itemBGColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "background");
   const cols = 3;
 
   useEffect(() => {
@@ -72,7 +71,7 @@ export default function LevelSelectionScreen() {
                             },
                           }}
                         >
-                          <AppView style={styles.item}>
+                          <AppView style={[styles.item, { backgroundColor: itemBGColor }]}>
                             <AppText>{levelName}</AppText>
                             <AppText>{levelIdx}</AppText>
                           </AppView>
@@ -91,7 +90,6 @@ export default function LevelSelectionScreen() {
   );
 }
 
-const pink = "#f9c2ff";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -121,7 +119,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   item: {
-    backgroundColor: pink,
     width: 100,
     height: 100,
     justifyContent: "center",
