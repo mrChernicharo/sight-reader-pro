@@ -14,8 +14,9 @@ import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
 import { Clef } from "@/constants/types";
+import { Colors } from "@/constants/Colors";
 
 export interface MusicNoteProps {
   keys: string[];
@@ -25,8 +26,10 @@ export interface MusicNoteProps {
 
 export function useMusicNote(props: MusicNoteProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
+  const theme = useColorScheme() ?? "light";
+  const textColor = Colors[theme].text;
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
-  const renderResult = runVexFlowCode(context, props.clef, props.keys, true, props.noteColor);
+  const renderResult = runVexFlowCode(context, props.clef, props.keys, textColor, props.noteColor);
   return renderResult;
 }
 
@@ -53,8 +56,7 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowCode(context: any, clef: Clef, keys: string[], isDarkMode: boolean, noteColor?: string) {
-  const color = isDarkMode ? "#fff" : '#000';
+function runVexFlowCode(context: any, clef: Clef, keys: string[], color: string, noteColor?: string) {
   context.setFont("Arial", 20, "red").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
 
   const stave = new Stave(20, 80, 200);

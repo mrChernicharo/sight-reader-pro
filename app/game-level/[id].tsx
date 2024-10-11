@@ -12,14 +12,15 @@ import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const DELAY = 250;
 
 export default function GameLevel() {
+  const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
-  const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef; };
+  const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
   const { addGame } = useAppStore();
   const { playSound } = usePianoSound();
 
@@ -66,7 +67,6 @@ export default function GameLevel() {
     if (percVal >= 1) {
       onCountdownFinish();
     }
-
   }
 
   const onCountdownFinish = useCallback(async () => {
@@ -102,9 +102,11 @@ export default function GameLevel() {
           {gameState === GameState.Idle ? <MusicNote keys={[currNote]} clef={clef} /> : null}
 
           {gameState === GameState.Success ? (
-            <MusicNote keys={[currNote]} clef={clef} noteColor={"mediumseagreen"} />
+            <MusicNote keys={[currNote]} clef={clef} noteColor={Colors[theme].green} />
           ) : null}
-          {gameState === GameState.Mistake ? <MusicNote keys={[currNote]} clef={clef} noteColor={"red"} /> : null}
+          {gameState === GameState.Mistake ? (
+            <MusicNote keys={[currNote]} clef={clef} noteColor={Colors[theme].red} />
+          ) : null}
         </AppView>
       </AppView>
 

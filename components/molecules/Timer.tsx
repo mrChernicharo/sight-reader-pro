@@ -11,8 +11,6 @@ export function CountdownTimer({
   onTick,
 }: {
   initialTime: number;
-  // count: number;
-  // setCount: React.Dispatch<React.SetStateAction<number>>;
   onTick: (secondsRemaining: number) => void;
 }) {
   const running = useRef(true);
@@ -42,12 +40,9 @@ export function CountdownTimer({
     }
   }, [count]);
 
-
-
   return (
-    <AppView>
+    <AppView style={s.container}>
       <AppText>{intlMinutes.format(count * 1000)}</AppText>
-
       <AppView style={s.bar}>
         <AppView style={[s.innerBar, { backgroundColor: Colors.light.tint, width: barWidth }]} />
       </AppView>
@@ -56,9 +51,14 @@ export function CountdownTimer({
 }
 
 const s = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
   bar: {
     backgroundColor: "gray",
-    width: "100%",
+    width: "80%",
     height: 12,
     borderRadius: 4,
     overflow: "hidden",

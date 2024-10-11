@@ -1,14 +1,11 @@
+import { Colors } from "@/constants/Colors";
 import { getGameStats, intl } from "@/constants/helperFns";
+import { GameScore, LevelConfig } from "@/constants/types";
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect } from "react";
+import { StyleSheet, useColorScheme } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
-import { GameScore, LevelConfig } from "@/constants/types";
-import { useEffect, useRef, useState } from "react";
-import { CountdownTimer } from "./Timer";
-import { Colors } from "@/constants/Colors";
-import { useTheme } from "@react-navigation/native";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useColorScheme } from "react-native";
 
 type GameStatsDisplay = {
   level: LevelConfig;
@@ -28,27 +25,51 @@ export function GameStatsDisplay({ level, gameScore, complete, elapsed = 1 }: Ga
   }, [attempts, hitsPerMinute, elapsed, theme]);
 
   return (
-    <AppView>
-      <AppView>
+    <AppView style={[s.container, !complete && { width: 140 }]}>
+      {/*  */}
+      <AppView style={[s.row]}>
+        {/*  */}
         <AppText>
-          <Ionicons name="musical-notes-outline" /> {complete && "notes"} {attempts}
+          {complete && "notes"} <Ionicons name="musical-notes-outline" /> {attempts}
         </AppText>
         <AppText>
-          <Ionicons name="checkmark" color={Colors[theme].green} /> {complete && "successes"} {gameScore.successes}
+          {complete && "successes"} <Ionicons name="checkmark" color={Colors[theme].green} /> {gameScore.successes}
         </AppText>
         <AppText>
-          <Ionicons name="close-outline" /> {complete && "mistakes"} {gameScore.mistakes}
+          {complete && "mistakes"} <Ionicons name="close-outline" color={Colors[theme].red} /> {gameScore.mistakes}
         </AppText>
+        {/*  */}
       </AppView>
-      <AppView>
+
+      {complete && <AppView style={s.separator} />}
+
+      <AppView style={[s.row]}>
+        {/*  */}
         <AppText>
-          <Ionicons name="flash-outline" /> {complete && "accuracy"} {accuracy}
+          {complete && "accuracy"} <Ionicons name="flash-outline" /> {accuracy}
         </AppText>
         <AppText>
-          <Ionicons name="time-outline" /> {complete ? "notes per minute" : "NpM"}{" "}
+          {complete ? "notes per minute" : "NpM"} <Ionicons name="time-outline" />{" "}
           {!hitsPerMinute ? "--" : intl.format(hitsPerMinute ?? 0)}
         </AppText>
+        {/*  */}
       </AppView>
+      {/*  */}
     </AppView>
   );
 }
+
+const s = StyleSheet.create({
+  container: {
+    // borderWidth: 1,
+    // borderColor: "#cacacaca",
+  },
+  row: {
+    flexDirection: "row",
+    gap: 12,
+    justifyContent: "space-between",
+  },
+  separator: {
+    height: 12,
+  },
+});

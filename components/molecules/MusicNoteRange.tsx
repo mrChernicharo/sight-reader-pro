@@ -16,22 +16,26 @@ import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
 import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context";
 
-import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { AppRegistry, StyleSheet, Text, View, useColorScheme, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { Clef, Note } from "@/constants/types";
 import { stemDown } from "@/constants/helperFns";
+import { Colors } from "@/constants/Colors";
 
 export interface MusicNoteRangeProps {
   keys: string[];
   clef: Clef;
-  noteColor?: string;
 }
 
 export function useMusicNoteRange(props: MusicNoteRangeProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
+  // const theme = useColorScheme();
+  const theme = useColorScheme() ?? "light";
+  const textColor = Colors[theme].text;
+
   // console.log(props.keys);
-  const renderResult = runVexFlowRangeCode(context, props.clef, props.keys, true, props.noteColor);
+  const renderResult = runVexFlowRangeCode(context, props.clef, props.keys, textColor);
   return renderResult;
 }
 
@@ -58,16 +62,11 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], isDarkMode: boolean, noteColor?: string) {
+function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], color: string) {
   const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);
-  const color = isDarkMode ? "#fff" : '#000';
-  context.setFont("Arial", 20, "red").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
-  // context.setFont("Arial", 20, "red").setFillStyle('#f00').setStrokeStyle('#f00').setLineWidth(3);
-  // stave.setText("Note range", 3);
-  //   stave.setTimeSignature("4/4");
-  //   stave.setNoteStartX(80);
+  context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
   stave.draw();
 
   const notes = [];
