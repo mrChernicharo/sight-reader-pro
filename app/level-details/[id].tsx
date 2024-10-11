@@ -3,9 +3,11 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { MusicNoteRange } from "@/components/molecules/MusicNoteRange";
+import { Colors } from "@/constants/Colors";
 import { getLevel } from "@/constants/helperFns";
 import { SECTIONED_LEVELS } from "@/constants/levels";
 import { Accident, Clef, Game, Note } from "@/constants/types";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
@@ -42,6 +44,7 @@ function getAccidentText(accident: Accident) {
 }
 
 export default function LevelDetails() {
+  const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
   const level = getLevel(clef, id);
 
@@ -52,7 +55,7 @@ export default function LevelDetails() {
   const rangeTitleOffset = getRangeTitleOffset(clef, highNote);
 
   return (
-    <SafeAreaView style={s.container}>
+    <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.top}>
         <BackLink to="/level-selection" />
         <AppText type="title" style={s.title}>

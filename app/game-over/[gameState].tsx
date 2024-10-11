@@ -10,8 +10,11 @@ import { useAppStore } from "@/hooks/useStore";
 import AppButton from "@/components/atoms/AppButton";
 import { getGameStats, isNoteMatch } from "@/constants/helperFns";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { Colors } from "@/constants/Colors";
 
 export default function GameOverScreen() {
+  const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const games = useAppStore((state) => state.games);
   const { gameState, levelId, clef } = useLocalSearchParams() as {
     gameState: "win" | "lose";
@@ -42,7 +45,7 @@ export default function GameOverScreen() {
   console.log({ lastGame }, JSON.stringify({ playerMoves }, null, 2));
 
   return (
-    <SafeAreaView style={s.container}>
+    <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.messageContainer}>
         <AppText type="title">{message}</AppText>
 

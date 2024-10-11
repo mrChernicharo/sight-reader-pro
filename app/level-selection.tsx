@@ -1,8 +1,10 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
+import { Colors } from "@/constants/Colors";
 import { SECTIONED_LEVELS } from "@/constants/levels";
 import { LevelConfig } from "@/constants/types";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link } from "expo-router";
 import { SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -17,9 +19,10 @@ export function getLevelName(item: LevelConfig) {
 }
 
 export default function LevelSelectionScreen() {
+  const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const cols = 3;
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ backgroundColor }}>
       <AppView style={styles.container}>
         <BackLink style={styles.backArrow} />
 

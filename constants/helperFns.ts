@@ -67,8 +67,8 @@ export function getLevel(clef: Clef, id: string) {
   return SECTIONED_LEVELS.find((lvl) => lvl.data[0].clef === clef)?.data.find((lvl) => lvl.id === id)!;
 }
 
-export function getRandomNoteInRange(range: NoteRange, accident: Accident, previousNote: string) {
-  let notesArr = [];
+export function getRandomNoteInRange(range: NoteRange, accident: Accident, previousNote: string): Note {
+  let notesArr: Note[] = [];
   switch (accident) {
     case Accident["#"]:
       notesArr = ALL_NOTES_SHARP_ALL_OCTAVES;

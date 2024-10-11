@@ -9,10 +9,10 @@ export type AppViewProps = ViewProps & {
 };
 
 export function AppView({ style, lightColor, darkColor, ...otherProps }: AppViewProps) {
-  // const backgroundColor = useThemeColor(
-  //   { light: (lightColor = Colors.light.background), dark: (darkColor = Colors.dark.background) },
-  //   "background"
-  // );
+  const backgroundColor = useThemeColor(
+    { light: (lightColor = Colors.light.background), dark: (darkColor = Colors.dark.background) },
+    "background"
+  );
 
-  return <View style={[{ backgroundColor: "transparent" }, style]} {...otherProps} />;
+  return <View style={[{ backgroundColor }, style]} {...otherProps} />;
 }

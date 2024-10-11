@@ -1,4 +1,7 @@
 /* https://www.alt-codes.net/music_note_alt_codes.php */
+
+import { Note } from "./types";
+
 // export const glyphs = ["♯", "♭", "♮", "𝄪", "𝄫", "𝄀", "𝄁", "𝄆", "𝄇", "𝄞", "𝄢", "𝄡", "𝄐"];
 export const glyphs = {
   sharp: "\u{266F}",
@@ -15,7 +18,7 @@ export const ALL_NOTES_BEMOL = ["c", "db", "d", "eb", "e", "f", "gb", "g", "ab",
 // prettier-ignore
 export const ALL_NOTES = ["c", "c#", "db", "d", "d#", "eb", "e", "f", "f#", "gb", "g", "g#", "ab", "a", "a#", "bb", "b"];
 
-export const WHITE_NOTES_ALL_OCTAVES: string[] = [];
+export const WHITE_NOTES_ALL_OCTAVES: Note[] = [];
 let oct = 1;
 while (oct < 9) {
   WHITE_NOTES.forEach((n) => {
@@ -24,7 +27,7 @@ while (oct < 9) {
   oct++;
 }
 
-export const ALL_NOTES_SHARP_ALL_OCTAVES: string[] = [];
+export const ALL_NOTES_SHARP_ALL_OCTAVES: Note[] = [];
 oct = 1;
 while (oct < 9) {
   ALL_NOTES_SHARP.forEach((n) => {
@@ -33,7 +36,7 @@ while (oct < 9) {
   oct++;
 }
 
-export const ALL_NOTES_BEMOL_ALL_OCTAVES: string[] = [];
+export const ALL_NOTES_BEMOL_ALL_OCTAVES: Note[] = [];
 oct = 1;
 while (oct < 9) {
   ALL_NOTES_BEMOL.forEach((n) => {
