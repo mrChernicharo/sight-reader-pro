@@ -10,6 +10,8 @@ import { Link } from "expo-router";
 import { SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import { useEffect } from "react";
 
 export function getLevelName(item: LevelConfig) {
   const splitLevelName = item.name.split(" ");
@@ -21,6 +23,24 @@ export function getLevelName(item: LevelConfig) {
 export default function LevelSelectionScreen() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const cols = 3;
+
+  useEffect(() => {
+    Audio.requestPermissionsAsync().then(({ granted }) => {
+      if (granted) {
+        Audio.setAudioModeAsync({
+          // IOS
+          allowsRecordingIOS: true,
+          interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+          playsInSilentModeIOS: true,
+          // Android
+          shouldDuckAndroid: true,
+          interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+          playThroughEarpieceAndroid: true,
+        });
+      }
+    });
+  }, []);
+
   return (
     <ScrollView contentContainerStyle={{ backgroundColor }}>
       <AppView style={styles.container}>

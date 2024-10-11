@@ -1,7 +1,9 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useStore";
+import { InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
 import { Stack } from "expo-router";
+import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {

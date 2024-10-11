@@ -7,6 +7,8 @@ import { Link, router } from "expo-router";
 import { Image, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Platform } from "react-native";
+import { useEffect } from "react";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();

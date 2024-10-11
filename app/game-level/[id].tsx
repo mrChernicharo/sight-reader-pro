@@ -9,11 +9,11 @@ import { getGameStats, getLevel, getRandomNoteInRange, isNoteMatch, randomUID, w
 import { Accident, Clef, GameNote, Note, NoteRange } from "@/constants/types";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { Audio } from "expo-av";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import { Audio, AVPlaybackSource } from "expo-av";
 
 export enum GameState {
   Idle = "idle",
@@ -72,14 +72,15 @@ export default function GameLevel() {
   }
 
   async function playSound() {
-    // console.log("Loading Sound");
-    // const { sound } = await Audio.Sound.createAsync(require("@/assets/sounds/piano-notes/Piano.mf.B5.mp3"));
-    // const { sound } = await Audio.Sound.createAsync(require("@/assets/sounds/piano-notes/Piano.mf.B5.mp3"));
-    // console.log(Audio);
-    // // setSound(sound);
-    // console.log("Playing Sound");
-    // await sound.playAsync();
-    // console.log("done!");
+    try {
+      console.log("Loading Sound");
+      const { sound } = await Audio.Sound.createAsync(require("@/assets/sounds/piano-notes/Piano.mf.B5.mp3"));
+
+      console.log("Playing Sound");
+      await sound.playAsync();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const onCountdownFinish = useCallback(async () => {
@@ -103,6 +104,7 @@ export default function GameLevel() {
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <BackLink to="/level-details" style={s.backLink} />
+
       <AppView>
         <AppView style={s.countdownContainer}>
           <CountdownTimer seconds={level.durationInSeconds} onCountdownFinish={onCountdownFinish} />
