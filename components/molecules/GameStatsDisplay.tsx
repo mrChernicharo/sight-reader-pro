@@ -18,7 +18,9 @@ export function GameStatsDisplay({ level, gameScore, complete, elapsed = 1 }: Ga
   const theme = useColorScheme() ?? "light";
 
   const { accuracy, attempts } = getGameStats(level, gameScore);
-  const hitsPerMinute = gameScore.successes / elapsed;
+
+  const totalMinutes = level.durationInSeconds / 60;
+  const hitsPerMinute = gameScore.successes / (totalMinutes * elapsed);
 
   // useEffect(() => {
   //   console.log({ attempts, hitsPerMinute, elapsed, theme });

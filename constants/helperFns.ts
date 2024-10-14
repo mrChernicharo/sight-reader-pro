@@ -1,5 +1,5 @@
 import { ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
-import { Accident, Clef, GameScore, LevelConfig, Note, NoteRange } from "./types";
+import { Accident, Clef, Game, GameScore, LevelConfig, Note, NoteRange } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 export const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });

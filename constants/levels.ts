@@ -1,8 +1,8 @@
 import { padZero } from "./helperFns";
-import { SectionedLevelConfig, LevelConfig, Clef } from "./types";
+import { SectionedLevelConfig, LevelConfig, Clef, Game } from "./types";
 
-export const ALL_LEVELS = [
-  { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 5 },
+const TREBLE_LEVELS = [
+  { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 15 },
   { name: "basics", clef: "treble", range: "g/4:::d/5", accident: "none", durationInSeconds: 30 },
   { name: "basics", clef: "treble", range: "g/4:::e/5", accident: "none", durationInSeconds: 30 },
   { name: "basics", clef: "treble", range: "e/4:::e/5", accident: "none", durationInSeconds: 30 },
@@ -26,41 +26,73 @@ export const ALL_LEVELS = [
   { name: "higher range", clef: "treble", range: "g/4:::a/6", accident: "#", durationInSeconds: 30 },
   { name: "higher range", clef: "treble", range: "g/4:::b/6", accident: "b", durationInSeconds: 30 },
   { name: "higher range", clef: "treble", range: "g/4:::c/7", accident: "#", durationInSeconds: 30 },
-]
-  .map(
-    (levelInfo, i) =>
-      ({ ...levelInfo, name: `${levelInfo.name} ${padZero(i + 1)}`, id: `treble-${padZero(i + 1)}` } as LevelConfig)
-  )
-  .concat(
-    [
-      { name: "basics", clef: "bass", range: "g/2:::d/3", accident: "none", durationInSeconds: 30 },
-      { name: "basics", clef: "bass", range: "c/2:::e/3", accident: "none", durationInSeconds: 30 },
-      { name: "basics", clef: "bass", range: "a/1:::g/3", accident: "none", durationInSeconds: 30 },
-      { name: "basics", clef: "bass", range: "g/1:::b/3", accident: "#", durationInSeconds: 30 },
-      { name: "basics", clef: "bass", range: "f/1:::c/4", accident: "b", durationInSeconds: 30 },
-      { name: "basics", clef: "bass", range: "d/1:::d/4", accident: "b", durationInSeconds: 30 },
-      { name: "basics", clef: "bass", range: "c/1:::e/4", accident: "#", durationInSeconds: 30 },
-      { name: "basics", clef: "bass", range: "b/1:::g/4", accident: "#", durationInSeconds: 30 },
-      { name: "basics", clef: "bass", range: "a/1:::a/4", accident: "#", durationInSeconds: 30 },
-    ].map(
-      (levelInfo, i) =>
-        ({ ...levelInfo, name: `${levelInfo.name} ${padZero(i + 1)}`, id: `bass-${padZero(i + 1)}` } as LevelConfig)
-    )
-  );
+].map(
+  (levelInfo, i) =>
+    ({
+      ...levelInfo,
+      name: `${levelInfo.name} ${padZero(i + 1)}`,
+      index: i,
+      id: `treble-${padZero(i + 1)}`,
+    } as LevelConfig)
+);
+const BASS_LEVELS = [
+  { name: "basics", clef: "bass", range: "g/2:::d/3", accident: "none", durationInSeconds: 30 },
+  { name: "basics", clef: "bass", range: "c/2:::e/3", accident: "none", durationInSeconds: 30 },
+  { name: "basics", clef: "bass", range: "a/1:::g/3", accident: "none", durationInSeconds: 30 },
+  { name: "basics", clef: "bass", range: "g/1:::b/3", accident: "#", durationInSeconds: 30 },
+  { name: "basics", clef: "bass", range: "f/1:::c/4", accident: "b", durationInSeconds: 30 },
+  { name: "basics", clef: "bass", range: "d/1:::d/4", accident: "b", durationInSeconds: 30 },
+  { name: "basics", clef: "bass", range: "c/1:::e/4", accident: "#", durationInSeconds: 30 },
+  { name: "basics", clef: "bass", range: "b/1:::g/4", accident: "#", durationInSeconds: 30 },
+  { name: "basics", clef: "bass", range: "a/1:::a/4", accident: "#", durationInSeconds: 30 },
+].map(
+  (levelInfo, i) =>
+    ({
+      ...levelInfo,
+      name: `${levelInfo.name} ${padZero(i + 1)}`,
+      index: i,
+      id: `bass-${padZero(i + 1)}`,
+    } as LevelConfig)
+);
 
+export const ALL_LEVELS = [...TREBLE_LEVELS, ...BASS_LEVELS];
 // console.log(JSON.stringify(ALL_LEVELS, null, 2));
 
 export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
   {
     title: "Treble Clef",
-    data: ALL_LEVELS.filter((level) => level.clef === Clef.Treble),
+    data: TREBLE_LEVELS,
   },
   {
     title: "Bass Clef",
-    data: ALL_LEVELS.filter((level) => level.clef === Clef.Bass),
+    data: BASS_LEVELS,
   },
 ];
 
 export function getLevel(id: string) {
   return ALL_LEVELS.find((lvl) => lvl.id === id)!;
+}
+
+export function getUnlockedLevels(games: Game[]) {
+  let highestTrebleIdx = -1;
+  let highestBassIdx = -1;
+  for (const game of games) {
+    const level = getLevel(game.level_id);
+
+    switch (level.clef) {
+      case Clef.Treble:
+        if (level.index > highestTrebleIdx) {
+          highestTrebleIdx = level.index;
+        }
+        break;
+      case Clef.Bass:
+        if (level.index > highestBassIdx) {
+          highestBassIdx = level.index;
+        }
+        break;
+    }
+  }
+  const response: Record<Clef, number> = { treble: highestTrebleIdx, bass: highestBassIdx };
+  console.log("getUnlockedLevels", response);
+  return response;
 }
