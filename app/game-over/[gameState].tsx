@@ -7,7 +7,8 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Clef } from "@/constants/types";
 import { useAppStore } from "@/hooks/useStore";
 import AppButton from "@/components/atoms/AppButton";
-import { getGameStats, getLevel, isNoteMatch } from "@/constants/helperFns";
+import { getGameStats, isNoteMatch } from "@/constants/helperFns";
+import { getLevel } from "@/constants/levels";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
@@ -21,7 +22,7 @@ export default function GameOverScreen() {
     clef: Clef;
   };
 
-  const level = getLevel(clef, levelId);
+  const level = getLevel(levelId);
   const lastGame = games.at(-1);
   const message = gameState === "win" ? "You Win" : "You Lose";
   const emoji = gameState === "win" ? " 🎉 " : " 😩 ";
@@ -41,18 +42,14 @@ export default function GameOverScreen() {
     { successes: 0, mistakes: 0 }
   );
 
-  console.log({ lastGame }, JSON.stringify({ playerMoves }, null, 2));
+  // console.log({ lastGame }, JSON.stringify({ playerMoves }, null, 2));
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.messageContainer}>
         <AppText type="title">{message}</AppText>
 
-        <GameStatsDisplay
-          gameScore={gameScore}
-          level={level}
-          complete
-        />
+        <GameStatsDisplay gameScore={gameScore} level={level} complete />
 
         <AppView>
           <AppText style={s.bigEmoji}>{emoji}</AppText>

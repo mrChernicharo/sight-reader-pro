@@ -1,41 +1,38 @@
-import { SectionedLevelConfig, LevelConfig } from "./types";
+import { padZero } from "./helperFns";
+import { SectionedLevelConfig, LevelConfig, Clef } from "./types";
 
-export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
-  {
-    title: "Treble Clef",
-    data: [
-      { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 5 },
-      { name: "basics", clef: "treble", range: "g/4:::d/5", accident: "none", durationInSeconds: 30 },
-      { name: "basics", clef: "treble", range: "g/4:::e/5", accident: "none", durationInSeconds: 30 },
-      { name: "basics", clef: "treble", range: "e/4:::e/5", accident: "none", durationInSeconds: 30 },
-      { name: "basics", clef: "treble", range: "d/4:::f#/5", accident: "#", durationInSeconds: 30 },
-      { name: "basics", clef: "treble", range: "c/4:::g/5", accident: "b", durationInSeconds: 30 },
-      { name: "basics", clef: "treble", range: "c/4:::a/5", accident: "b", durationInSeconds: 30 },
-      { name: "basics", clef: "treble", range: "c/4:::a/5", accident: "#", durationInSeconds: 30 },
-      { name: "basics", clef: "treble", range: "b/3:::b/5", accident: "b", durationInSeconds: 30 },
-      { name: "basics", clef: "treble", range: "a/3:::c/6", accident: "#", durationInSeconds: 30 },
+export const ALL_LEVELS = [
+  { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 5 },
+  { name: "basics", clef: "treble", range: "g/4:::d/5", accident: "none", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "g/4:::e/5", accident: "none", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "e/4:::e/5", accident: "none", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "d/4:::f#/5", accident: "#", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "c/4:::g/5", accident: "b", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "c/4:::a/5", accident: "b", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "c/4:::a/5", accident: "#", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "b/3:::b/5", accident: "b", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "a/3:::c/6", accident: "#", durationInSeconds: 30 },
 
-      { name: "lower range", clef: "treble", range: "g/3:::g/4", accident: "none", durationInSeconds: 30 },
-      { name: "lower range", clef: "treble", range: "e/3:::g/4", accident: "none", durationInSeconds: 30 },
-      { name: "lower range", clef: "treble", range: "d/3:::g/4", accident: "#", durationInSeconds: 30 },
-      { name: "lower range", clef: "treble", range: "c/3:::g/4", accident: "#", durationInSeconds: 30 },
-      { name: "lower range", clef: "treble", range: "bb/2:::g/4", accident: "b", durationInSeconds: 30 },
-      { name: "lower range", clef: "treble", range: "ab/2:::g/4", accident: "b", durationInSeconds: 30 },
+  { name: "lower range", clef: "treble", range: "g/3:::g/4", accident: "none", durationInSeconds: 30 },
+  { name: "lower range", clef: "treble", range: "f/3:::g/4", accident: "none", durationInSeconds: 30 },
+  { name: "lower range", clef: "treble", range: "e/3:::g/4", accident: "b", durationInSeconds: 30 },
+  { name: "lower range", clef: "treble", range: "d/3:::g/4", accident: "#", durationInSeconds: 30 },
+  { name: "lower range", clef: "treble", range: "c/3:::g/4", accident: "#", durationInSeconds: 30 },
+  { name: "lower range", clef: "treble", range: "bb/2:::g/4", accident: "b", durationInSeconds: 30 },
 
-      { name: "higher range", clef: "treble", range: "g/4:::d/6", accident: "none", durationInSeconds: 30 },
-      { name: "higher range", clef: "treble", range: "g/4:::f/6", accident: "none", durationInSeconds: 30 },
-      { name: "higher range", clef: "treble", range: "g/4:::g/6", accident: "#", durationInSeconds: 30 },
-      { name: "higher range", clef: "treble", range: "g/4:::a/6", accident: "#", durationInSeconds: 30 },
-      { name: "higher range", clef: "treble", range: "g/4:::b/6", accident: "b", durationInSeconds: 30 },
-      { name: "higher range", clef: "treble", range: "g/4:::c/7", accident: "#", durationInSeconds: 30 },
-    ].map(
-      (levelInfo, i) =>
-        ({ ...levelInfo, name: `${levelInfo.name} ${padZero(i + 1)}`, id: `treble-${padZero(i + 1)}` } as LevelConfig)
-    ),
-  },
-  {
-    title: "Bass Clef",
-    data: [
+  { name: "higher range", clef: "treble", range: "g/4:::d/6", accident: "none", durationInSeconds: 30 },
+  { name: "higher range", clef: "treble", range: "g/4:::f/6", accident: "none", durationInSeconds: 30 },
+  { name: "higher range", clef: "treble", range: "g/4:::g/6", accident: "b", durationInSeconds: 30 },
+  { name: "higher range", clef: "treble", range: "g/4:::a/6", accident: "#", durationInSeconds: 30 },
+  { name: "higher range", clef: "treble", range: "g/4:::b/6", accident: "b", durationInSeconds: 30 },
+  { name: "higher range", clef: "treble", range: "g/4:::c/7", accident: "#", durationInSeconds: 30 },
+]
+  .map(
+    (levelInfo, i) =>
+      ({ ...levelInfo, name: `${levelInfo.name} ${padZero(i + 1)}`, id: `treble-${padZero(i + 1)}` } as LevelConfig)
+  )
+  .concat(
+    [
       { name: "basics", clef: "bass", range: "g/2:::d/3", accident: "none", durationInSeconds: 30 },
       { name: "basics", clef: "bass", range: "c/2:::e/3", accident: "none", durationInSeconds: 30 },
       { name: "basics", clef: "bass", range: "a/1:::g/3", accident: "none", durationInSeconds: 30 },
@@ -48,10 +45,22 @@ export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
     ].map(
       (levelInfo, i) =>
         ({ ...levelInfo, name: `${levelInfo.name} ${padZero(i + 1)}`, id: `bass-${padZero(i + 1)}` } as LevelConfig)
-    ),
+    )
+  );
+
+// console.log(JSON.stringify(ALL_LEVELS, null, 2));
+
+export const SECTIONED_LEVELS: SectionedLevelConfig[] = [
+  {
+    title: "Treble Clef",
+    data: ALL_LEVELS.filter((level) => level.clef === Clef.Treble),
+  },
+  {
+    title: "Bass Clef",
+    data: ALL_LEVELS.filter((level) => level.clef === Clef.Bass),
   },
 ];
 
-function padZero(n: number) {
-  return n > 9 ? String(n) : `0${n}`;
+export function getLevel(id: string) {
+  return ALL_LEVELS.find((lvl) => lvl.id === id)!;
 }

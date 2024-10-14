@@ -40,6 +40,7 @@ export function useMusicNoteRange(props: MusicNoteRangeProps) {
 }
 
 export function MusicNoteRange(props: MusicNoteRangeProps) {
+  // console.log(":::MusicNoteRange", props);
   const svgResult = useMusicNoteRange(props);
 
   return (
@@ -63,6 +64,7 @@ durations:
 // ];
 
 function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], color: string) {
+  // console.log("::", { clef, keys });
   const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);

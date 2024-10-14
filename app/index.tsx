@@ -28,6 +28,12 @@ export default function Home() {
           </Link>
         </TouchableOpacity>
 
+        <TouchableOpacity>
+          <Link href="/profile">
+            <AppText>Profile</AppText>
+          </Link>
+        </TouchableOpacity>
+
         {/* <TouchableOpacity>
           <Link href="/practice-settings">Practice</Link>
         </TouchableOpacity> */}

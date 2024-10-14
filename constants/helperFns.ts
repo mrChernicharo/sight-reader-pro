@@ -1,4 +1,3 @@
-import { SECTIONED_LEVELS } from "./levels";
 import { ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
 import { Accident, Clef, GameScore, LevelConfig, Note, NoteRange } from "./types";
 
@@ -12,6 +11,10 @@ export const randomUID = (length = 12) =>
     .fill(0)
     .map((item) => ID_CHARS.split("")[Math.round(Math.random() * ID_CHARS.length)])
     .join("");
+
+export function padZero(n: number) {
+  return n > 9 ? String(n) : `0${n}`;
+}
 
 export function getRandInRange(min: number, max: number) {
   // min and max included
@@ -60,10 +63,6 @@ export function stemDown(note: Note, clef: Clef) {
     case Clef.Bass:
       return +octave > 2 || (+octave === 2 && key >= "d") ? true : false;
   }
-}
-
-export function getLevel(clef: Clef, id: string) {
-  return SECTIONED_LEVELS.find((lvl) => lvl.data[0].clef === clef)?.data.find((lvl) => lvl.id === id)!;
 }
 
 export function getRandomNoteInRange(range: NoteRange, accident: Accident, previousNote: string): Note {

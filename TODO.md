@@ -19,10 +19,15 @@ home
 
 play note sound on success
 
-background colors
+background colors (dark mode)
 
 display previous games
 display statistics previous games
   - accuracy
   - notes/minute
 
+
+
+----------------------------
+
+preload sounds

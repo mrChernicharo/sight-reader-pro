@@ -5,7 +5,8 @@ import { MusicNote } from "@/components/molecules/MusicNote";
 import { Piano } from "@/components/molecules/Piano";
 import { CountdownTimer } from "@/components/molecules/Timer";
 import { Colors } from "@/constants/Colors";
-import { getGameStats, getLevel, getRandomNoteInRange, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
+import { getGameStats, getRandomNoteInRange, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
+import { getLevel } from "@/constants/levels";
 import { Accident, Clef, GameNote, GameScore, GameState, NoteRange } from "@/constants/types";
 import { usePianoSound } from "@/hooks/usePianoSound";
 import { useAppStore } from "@/hooks/useStore";
@@ -24,7 +25,7 @@ export default function GameLevel() {
   const { addGame } = useAppStore();
   const { playSound } = usePianoSound();
 
-  const level = getLevel(clef, id);
+  const level = getLevel(id);
   const initialNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident, "");
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });

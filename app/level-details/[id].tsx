@@ -4,14 +4,12 @@ import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { MusicNoteRange } from "@/components/molecules/MusicNoteRange";
 import { Colors } from "@/constants/Colors";
-import { getLevel } from "@/constants/helperFns";
-import { SECTIONED_LEVELS } from "@/constants/levels";
+import { getLevel } from "@/constants/levels";
 import { Accident, Clef, Game, Note } from "@/constants/types";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
-import { RectButton, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export function calcGameScore(game: Game) {}
@@ -45,14 +43,16 @@ function getAccidentText(accident: Accident) {
 
 export default function LevelDetails() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
-  const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
-  const level = getLevel(clef, id);
+  const { id } = useLocalSearchParams() as { id: string };
+  const level = getLevel(id);
 
   if (!level) return null;
 
+  console.log(":::LevelDetails", level);
+
   const accidentText = getAccidentText(level.accident);
   const [lowNote, highNote] = level.range.split(":::") as [Note, Note];
-  const rangeTitleOffset = getRangeTitleOffset(clef, highNote);
+  const rangeTitleOffset = getRangeTitleOffset(level.clef, highNote);
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
@@ -78,14 +78,14 @@ export default function LevelDetails() {
           Note Range
         </AppText>
 
-        <MusicNoteRange clef={clef} keys={[lowNote, highNote]} />
+        <MusicNoteRange clef={level.clef} keys={[lowNote, highNote]} />
       </AppView>
 
       <Link
         asChild
         href={{
           pathname: "/game-level/[id]",
-          params: { id: String(id), clef, levelAccident: level?.accident, levelRange: level?.range },
+          params: { id: String(id), clef: level.clef, levelAccident: level?.accident, levelRange: level?.range },
         }}
       >
         <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} />

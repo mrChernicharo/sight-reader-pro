@@ -20,9 +20,9 @@ export function GameStatsDisplay({ level, gameScore, complete, elapsed = 1 }: Ga
   const { accuracy, attempts } = getGameStats(level, gameScore);
   const hitsPerMinute = gameScore.successes / elapsed;
 
-  useEffect(() => {
-    console.log({ attempts, hitsPerMinute, elapsed, theme });
-  }, [attempts, hitsPerMinute, elapsed, theme]);
+  // useEffect(() => {
+  //   console.log({ attempts, hitsPerMinute, elapsed, theme });
+  // }, [attempts, hitsPerMinute, elapsed, theme]);
 
   return (
     <AppView style={[s.container, !complete && { width: 140 }]}>

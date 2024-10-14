@@ -47,7 +47,6 @@ export default function LevelSelectionScreen() {
 
         {SECTIONED_LEVELS.map((clefLevels) => {
           const grid = makeGrid(clefLevels.data, cols);
-          // console.log(grid);
 
           return (
             <AppView key={clefLevels.title}>
@@ -58,17 +57,14 @@ export default function LevelSelectionScreen() {
               <AppView style={styles.gridSection}>
                 {grid.map((row, rowIdx) => (
                   <AppView key={`row-${rowIdx}`} style={styles.gridRow}>
-                    {row.map((item) => {
-                      const { levelName, levelIdx } = getLevelName(item);
+                    {row.map((level) => {
+                      const { levelName, levelIdx } = getLevelName(level);
                       return (
                         <Link
-                          key={`${item.clef} ${item.id}`}
+                          key={level.id}
                           href={{
                             pathname: "/level-details/[id]",
-                            params: {
-                              id: item.id,
-                              clef: item.clef,
-                            },
+                            params: { id: level.id },
                           }}
                         >
                           <AppView style={[styles.item, { backgroundColor: itemBGColor }]}>

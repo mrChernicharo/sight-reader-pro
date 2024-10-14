@@ -3,7 +3,7 @@ import { Note } from "@/constants/types";
 import { Audio } from "expo-av";
 import { useState, useEffect } from "react";
 
-export function usePianoSound() {
+export function useSoundPaths() {
   const paths = {
     "a/1": require("@/assets/sounds/piano-notes/Piano.mf.A1.mp3"),
     "a/2": require("@/assets/sounds/piano-notes/Piano.mf.A2.mp3"),
@@ -91,20 +91,21 @@ export function usePianoSound() {
     "gb/7": require("@/assets/sounds/piano-notes/Piano.mf.Gb7.mp3"),
   };
 
+  return paths;
+}
+
+export function usePianoSound() {
+  const paths = useSoundPaths();
   const [sound, setSound] = useState<Audio.Sound | null>(null);
 
   async function playSound(originalNote: Note) {
-    const [k, oct] = originalNote.split("/");
-    const flatForcedNote = `${flattenEventualSharpNote(k)}/${oct}` as Note;
-    const filePath = getAudioFilepath(flatForcedNote);
-    const uri = paths[flatForcedNote as keyof typeof paths];
-    console.log("Loading Sound", { filePath, note: originalNote, uri, flatForcedNote });
+    const uri = getSoundUri(paths, originalNote);
 
     try {
       const { sound } = await Audio.Sound.createAsync(uri, {}, (status) => {});
       setSound(sound);
 
-      // console.log("Playing Sound");
+      console.log("Playing Sound");
       await sound.playAsync();
     } catch (err) {
       console.log(err);
@@ -123,4 +124,13 @@ export function usePianoSound() {
   return {
     playSound,
   };
+}
+
+function getSoundUri(paths: any, note: Note) {
+  const [k, oct] = note.split("/");
+  const flatForcedNote = `${flattenEventualSharpNote(k)}/${oct}` as Note;
+  const filePath = getAudioFilepath(flatForcedNote);
+  const uri = paths[flatForcedNote as keyof typeof paths];
+  console.log("getSoundUri", { filePath, note, uri, flatForcedNote });
+  return uri;
 }
