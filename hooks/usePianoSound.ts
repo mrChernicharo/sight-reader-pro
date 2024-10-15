@@ -91,30 +91,48 @@ const paths = {
 };
 
 export function usePianoSound() {
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [sounds, setSounds] = useState<Map<Note, Audio.Sound>>(new Map());
 
   async function playSound(originalNote: Note) {
-    const uri = getSoundUri(paths, originalNote);
-
+    const parsedNote = parseSharpsIntoFlats(originalNote);
+    // console.log(">>>>", { originalNote, parsedNote });
     try {
-      const { sound } = await Audio.Sound.createAsync(uri, {}, (status) => {});
-      setSound(sound);
-
-      console.log("Playing Sound");
-      await sound.playAsync();
+      let currSound: Audio.Sound;
+      if (sounds.get(parsedNote)) {
+        currSound = sounds.get(parsedNote)!;
+        const soundStatus = await currSound?.getStatusAsync();
+        // @ts-ignore
+        if (soundStatus && soundStatus["isPlaying"]) {
+          currSound.stopAsync();
+        }
+      } else {
+        const uri = getSoundUri(paths, parsedNote);
+        const { sound } = await Audio.Sound.createAsync(uri, { shouldPlay: false }, (status) => {});
+        currSound = sound;
+        setSounds((prev) => {
+          const tempMap = new Map(prev);
+          tempMap.set(parsedNote, currSound);
+          return tempMap;
+        });
+      }
+      currSound.playFromPositionAsync(0);
     } catch (err) {
       console.log(err);
     }
   }
 
   useEffect(() => {
-    return sound
-      ? () => {
-          console.log("Unloading Sound");
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+    return () => {
+      console.log("unload notes");
+      for (const s of sounds.values()) {
+        s.unloadAsync();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(sounds);
+  }, [sounds]);
 
   return {
     playSound,
@@ -122,10 +140,14 @@ export function usePianoSound() {
 }
 
 function getSoundUri(paths: any, note: Note) {
-  const [k, oct] = note.split("/");
-  const flatForcedNote = `${flattenEventualSharpNote(k)}/${oct}` as Note;
-  const filePath = getAudioFilepath(flatForcedNote);
-  const uri = paths[flatForcedNote as keyof typeof paths];
-  console.log("getSoundUri", { filePath, note, uri, flatForcedNote });
+  const filePath = getAudioFilepath(note);
+  const uri = paths[note as keyof typeof paths];
+  console.log("getSoundUri", { filePath, note, uri });
   return uri;
+}
+
+function parseSharpsIntoFlats(originalNote: Note) {
+  const [k, oct] = originalNote.split("/");
+  const flatForcedNote = `${flattenEventualSharpNote(k)}/${oct}` as Note;
+  return flatForcedNote;
 }
