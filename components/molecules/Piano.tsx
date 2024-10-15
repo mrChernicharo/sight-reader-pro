@@ -1,58 +1,67 @@
 import { WHITE_NOTES } from "@/constants/notes";
-import { StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
 import { Accident } from "@/constants/types";
-const BEMOL_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
+const FLAT_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
 const SHARP_NOTES = ["c#", "d#", "", "f#", "g#", "a#"];
 
 export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPianoKeyPress: (note: string) => void }) {
   const { width } = useWindowDimensions();
 
-  const BLACK_NOTES = accident === Accident.B ? BEMOL_NOTES : SHARP_NOTES;
+  const BLACK_NOTES = accident === Accident.B ? FLAT_NOTES : SHARP_NOTES;
 
-  const keyboardMargin = width * 0.2;
+  const keyboardMargin = width * 0.06;
+  const keyWidth = (width - keyboardMargin * 2) / 7;
   return (
     <AppView style={[s.piano]}>
-      <AppView style={s.whiteNotes}>
-        {WHITE_NOTES.map((note) => (
-          <TouchableOpacity
+      {/* TODO: SPLIT BLACK_NOTES IN 2 CHUNKS */}
+      <AppView
+        style={[
+          s.blackNotes,
+          {
+            width: keyboardMargin * 1.73 + keyWidth * 5,
+            left: keyboardMargin + keyWidth / 1.65,
+          },
+        ]}
+      >
+        {BLACK_NOTES.map((note) => (
+          <AppView
             key={note}
-            onPress={() => {
-              onPianoKeyPress(note);
-            }}
+            style={[
+              s.blackNote,
+              {
+                width: keyWidth,
+                ...(!note && { height: 0 }),
+              },
+            ]}
           >
-            <AppView style={[s.whiteNote, { width: (width - keyboardMargin) / 7 }]}>
-              <AppText>{note}</AppText>
-            </AppView>
-          </TouchableOpacity>
+            <Pressable
+              style={[s.blackNoteInner]}
+              onPress={() => {
+                if (!note) return;
+                console.log(note, BLACK_NOTES);
+                onPianoKeyPress(note);
+              }}
+            >
+              <AppText style={{ color: "white" }}>{note}</AppText>
+            </Pressable>
+          </AppView>
         ))}
       </AppView>
 
-      {/* TODO: SPLIT BLACK_NOTES IN 2 CHUNKS */}
-      <AppView style={s.blackNotes}>
-        {BLACK_NOTES.map((note) => (
-          <TouchableOpacity
+      <AppView style={s.whiteNotes}>
+        {WHITE_NOTES.map((note) => (
+          <Pressable
             key={note}
-            activeOpacity={0.7}
             onPress={() => {
               onPianoKeyPress(note);
             }}
           >
-            <AppView
-              style={[
-                s.blackNote,
-                {
-                  width: (width - keyboardMargin) / 7,
-                  ...(!note && { height: 0 }),
-                },
-              ]}
-            >
-              <AppView style={[s.blackNoteInner]}>
-                <AppText style={{ color: "white" }}>{note}</AppText>
-              </AppView>
+            <AppView style={[s.whiteNote, { width: keyWidth }]}>
+              <AppText>{note}</AppText>
             </AppView>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </AppView>
     </AppView>
@@ -64,15 +73,14 @@ const s = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: "#bbb",
     position: "relative",
-    paddingTop: 10,
     paddingBottom: 80,
   },
   whiteNotes: {
     flexDirection: "row",
+    justifyContent: "center",
     // borderWidth: 1,
     // borderColor: "#bbb",
     // borderStyle: "dashed",
-    justifyContent: "center",
   },
   whiteNote: {
     borderWidth: 1,
@@ -84,9 +92,12 @@ const s = StyleSheet.create({
   blackNotes: {
     flexDirection: "row",
     position: "absolute",
-    left: 69,
-    top: 0,
+    top: -10,
     backgroundColor: "transparent",
+    zIndex: 10000,
+    // borderWidth: 1,
+    // borderColor: "#bbb",
+    // borderStyle: "dashed",
   },
   blackNote: {
     height: 110,
@@ -99,5 +110,6 @@ const s = StyleSheet.create({
     height: "100%",
     width: "80%",
     borderRadius: 6,
+    zIndex: 10000,
   },
 });

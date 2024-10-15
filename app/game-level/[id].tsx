@@ -53,7 +53,7 @@ export default function GameLevel() {
       setGameScore((prev) => ({ ...prev, successes: prev.successes + 1 }));
       setGameState(GameState.Success);
     } else {
-      playSound(currNote);
+      // playSound(currNote);
       setGameScore((prev) => ({ ...prev, mistakes: prev.mistakes + 1 }));
       setGameState(GameState.Mistake);
     }

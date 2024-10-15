@@ -118,6 +118,7 @@ export function capitalizeStr(text: string) {
 export function getAudioFilepath(note: Note) {
   const filepathBase = "@/assets/sounds/piano-notes";
   const [key, octave] = note.split("/");
+  console.log({ key, octave, note });
   const filename = `Piano.mf.${capitalizeStr(key)}${octave}.mp3`;
   const filepath = `${filepathBase}/${filename}`;
   return filepath;
