@@ -97,25 +97,24 @@ export function usePianoSound() {
     const parsedNote = parseSharpsIntoFlats(originalNote);
     // console.log(">>>>", { originalNote, parsedNote });
     try {
-      let currSound: Audio.Sound;
-      if (sounds.get(parsedNote)) {
-        currSound = sounds.get(parsedNote)!;
-        const soundStatus = await currSound?.getStatusAsync();
-        // @ts-ignore
-        if (soundStatus && soundStatus["isPlaying"]) {
-          currSound.stopAsync();
+      if (sounds.has(parsedNote)) {
+        const sound = sounds.get(parsedNote)!;
+
+        const soundStatus = await sound?.getStatusAsync();
+        if (soundStatus && (soundStatus as any)["isPlaying"]) {
+          await sound.stopAsync();
         }
+        sound.playFromPositionAsync(0);
       } else {
         const uri = getSoundUri(paths, parsedNote);
-        const { sound } = await Audio.Sound.createAsync(uri, { shouldPlay: false }, (status) => {});
-        currSound = sound;
-        setSounds((prev) => {
-          const tempMap = new Map(prev);
-          tempMap.set(parsedNote, currSound);
-          return tempMap;
+        const { sound } = await Audio.Sound.createAsync(uri);
+        setSounds((prevMap) => {
+          const nextMap = new Map(prevMap);
+          nextMap.set(parsedNote, sound);
+          return nextMap;
         });
+        sound.playFromPositionAsync(0);
       }
-      currSound.playFromPositionAsync(0);
     } catch (err) {
       console.log(err);
     }

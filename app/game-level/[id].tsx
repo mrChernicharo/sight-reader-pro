@@ -13,7 +13,7 @@ import { usePianoSound } from "@/hooks/usePianoSound";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -35,7 +35,6 @@ export default function GameLevel() {
   const [gameNotes, setGameNotes] = useState<GameNote[]>([]);
 
   const { hasWon } = getGameStats(level, gameScore);
-
   const pianoLocked = gameState !== GameState.Idle;
 
   function onPianoKeyPress(attempt: string) {
@@ -53,7 +52,7 @@ export default function GameLevel() {
       setGameScore((prev) => ({ ...prev, successes: prev.successes + 1 }));
       setGameState(GameState.Success);
     } else {
-      // playSound(currNote);
+      playSound(currNote);
       setGameScore((prev) => ({ ...prev, mistakes: prev.mistakes + 1 }));
       setGameState(GameState.Mistake);
     }
@@ -82,6 +81,10 @@ export default function GameLevel() {
       params: { gameState: finalState, levelId: id, clef },
     });
   }, [hasWon, gameState, gameScore.successes, winScore]);
+
+  useEffect(() => {
+    console.log({ currNote });
+  }, [currNote]);
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>

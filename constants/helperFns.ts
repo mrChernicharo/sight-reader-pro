@@ -1,4 +1,4 @@
-import { ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
+import { ALL_NOTES_FLAT_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
 import { Accident, Clef, Game, GameScore, LevelConfig, Note, NoteRange } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
@@ -72,7 +72,7 @@ export function getRandomNoteInRange(range: NoteRange, accident: Accident, previ
       notesArr = ALL_NOTES_SHARP_ALL_OCTAVES;
       break;
     case Accident.B:
-      notesArr = ALL_NOTES_SHARP_ALL_OCTAVES;
+      notesArr = ALL_NOTES_FLAT_ALL_OCTAVES;
       break;
     case Accident.None:
     default:

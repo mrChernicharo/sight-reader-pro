@@ -38,6 +38,10 @@ export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPia
           >
             <Pressable
               style={[s.blackNoteInner]}
+              android_ripple={{
+                radius: 20,
+              }}
+              cancelable
               onPress={() => {
                 if (!note) return;
                 console.log(note, BLACK_NOTES);
@@ -54,6 +58,10 @@ export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPia
         {WHITE_NOTES.map((note) => (
           <Pressable
             key={note}
+            android_ripple={{
+              radius: 20,
+            }}
+            cancelable
             onPress={() => {
               onPianoKeyPress(note);
             }}
