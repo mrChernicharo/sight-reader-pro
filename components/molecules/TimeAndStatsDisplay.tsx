@@ -33,6 +33,8 @@ export function TimerAndStatsDisplay({
 }
 const s = StyleSheet.create({
   container: {
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    // borderWidth: 1,
   },
 });

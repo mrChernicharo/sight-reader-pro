@@ -12,6 +12,10 @@ export enum Clef {
   Bass = "bass",
 }
 
+export enum SoundEffect {
+  WrongAnswer = "wrong-answer",
+}
+
 export type LevelConfig = {
   id: `${Clef}-${number}`;
   index: number;

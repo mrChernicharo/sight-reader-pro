@@ -14,7 +14,7 @@ export const glyphs = {
 
 export const WHITE_NOTES = ["c", "d", "e", "f", "g", "a", "b"];
 export const ALL_NOTES_SHARP = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"];
-export const ALL_NOTES_BEMOL = ["c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b"];
+export const ALL_NOTES_FLAT = ["c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b"];
 // prettier-ignore
 export const ALL_NOTES = ["c", "c#", "db", "d", "d#", "eb", "e", "f", "f#", "gb", "g", "g#", "ab", "a", "a#", "bb", "b"];
 
@@ -39,7 +39,7 @@ while (oct < 9) {
 export const ALL_NOTES_FLAT_ALL_OCTAVES: Note[] = [];
 oct = 1;
 while (oct < 9) {
-  ALL_NOTES_BEMOL.forEach((n) => {
+  ALL_NOTES_FLAT.forEach((n) => {
     ALL_NOTES_FLAT_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;

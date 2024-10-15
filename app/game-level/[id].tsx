@@ -8,8 +8,8 @@ import { CountdownTimer } from "@/components/molecules/Timer";
 import { Colors } from "@/constants/Colors";
 import { getGameStats, getRandomNoteInRange, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
-import { Accident, Clef, GameNote, GameScore, GameState, Note, NoteRange } from "@/constants/types";
-import { usePianoSound } from "@/hooks/usePianoSound";
+import { Accident, Clef, GameNote, GameScore, GameState, Note, NoteRange, SoundEffect } from "@/constants/types";
+import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router, useLocalSearchParams } from "expo-router";
@@ -17,14 +17,15 @@ import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const DELAY = 250;
+const DELAY = 40;
 
 export default function GameLevel() {
   const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const { id, clef } = useLocalSearchParams() as { id: string; clef: Clef };
   const { addGame } = useAppStore();
-  const { playSound } = usePianoSound();
+  const { playPianoNote } = usePianoSound();
+  const { playSoundEfx } = useSoundEfx();
 
   const level = getLevel(id);
   const initialNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident, "");
@@ -35,27 +36,28 @@ export default function GameLevel() {
   const [gameNotes, setGameNotes] = useState<GameNote[]>([]);
 
   const { hasWon } = getGameStats(level, gameScore);
-  const pianoLocked = gameState !== GameState.Idle;
 
   function onPianoKeyPress(attempt: string) {
-    if (pianoLocked) return;
+    if (gameState !== GameState.Idle) return;
+
     const [note, octave] = currNote.split("/");
     const attemptedNote: Note = `${attempt}/${+octave}`;
-    console.log({ currNote, attempt, attemptedNote });
-    playSound(attemptedNote);
-
     const success = isNoteMatch(attempt, note);
-
-    setGameNotes((prev) => [...prev, { note, attempt }]);
+    // console.log({ currNote, attempt, attemptedNote });
 
     if (success) {
+      playPianoNote(attemptedNote);
       setGameScore((prev) => ({ ...prev, successes: prev.successes + 1 }));
       setGameState(GameState.Success);
     } else {
-      playSound(currNote);
+      playSoundEfx(SoundEffect.WrongAnswer);
+      // playPianoNote(attemptedNote);
+      // playPianoNote(currNote);
       setGameScore((prev) => ({ ...prev, mistakes: prev.mistakes + 1 }));
       setGameState(GameState.Mistake);
     }
+
+    setGameNotes((prev) => [...prev, { note, attempt }]);
 
     setTimeout(() => {
       const nextNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident, currNote);
@@ -82,27 +84,21 @@ export default function GameLevel() {
     });
   }, [hasWon, gameState, gameScore.successes, winScore]);
 
-  useEffect(() => {
-    console.log({ currNote });
-  }, [currNote]);
-
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <BackLink to="/level-details" style={s.backLink} />
 
+      <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} gameScore={gameScore} levelId={id} />
+
       <AppView>
-        <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} gameScore={gameScore} levelId={id} />
+        {gameState === GameState.Idle ? <MusicNote keys={[currNote]} clef={clef} /> : null}
 
-        <AppView>
-          {gameState === GameState.Idle ? <MusicNote keys={[currNote]} clef={clef} /> : null}
-
-          {gameState === GameState.Success ? (
-            <MusicNote keys={[currNote]} clef={clef} noteColor={Colors[theme].green} />
-          ) : null}
-          {gameState === GameState.Mistake ? (
-            <MusicNote keys={[currNote]} clef={clef} noteColor={Colors[theme].red} />
-          ) : null}
-        </AppView>
+        {gameState === GameState.Success ? (
+          <MusicNote keys={[currNote]} clef={clef} noteColor={Colors[theme].green} />
+        ) : null}
+        {gameState === GameState.Mistake ? (
+          <MusicNote keys={[currNote]} clef={clef} noteColor={Colors[theme].red} />
+        ) : null}
       </AppView>
 
       <Piano accident={level.accident} onPianoKeyPress={onPianoKeyPress} />
@@ -111,37 +107,14 @@ export default function GameLevel() {
 }
 
 const s = StyleSheet.create({
-  backLink: {
-    transform: [{ translateX: 16 }, { translateY: 16 }],
-  },
   container: {
     flex: 1,
     justifyContent: "space-between",
-    paddingTop: 24,
+    paddingTop: 16,
+  },
+  backLink: {
+    left: 16,
+    // borderWidth: 1,
+    // transform: [{ translateX: 16 }, { translateY: 16 }],
   },
 });
-
-// const test = ["a", "a#", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#"];
-
-// test.forEach((noteStr) => {
-//   console.log(":::", { flattened: flattenEventualSharpNote(noteStr), noteStr });
-// });
-
-// console.log(":::playNote", note, filepath);
-
-// const source: AVPlaybackSource = {
-//   uri: filepath,
-// };
-// // const { sound, status } = await Audio.Sound.createAsync(source);
-// const { sound } = await Audio.Sound.createAsync(require(filepath));
-// await sound.playAsync();
-
-// setTimeout(async () => {
-//   await sound.stopAsync();
-//   await sound.unloadAsync();
-// }, 1000);
-
-/* <ReactNativeVexFlow /> */
-/* <MusicNote keys={["f#/4", "a/4", "eb/5"]} clef="treble" /> */
-/* <MusicNote keys={["c/5"]} clef="treble" /> */
-/* <MusicNote keys={["e/2"]} clef="bass" /> */
