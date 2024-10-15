@@ -3,11 +3,12 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
 import { MusicNote } from "@/components/molecules/MusicNote";
 import { Piano } from "@/components/molecules/Piano";
+import { TimerAndStatsDisplay } from "@/components/molecules/TimeAndStatsDisplay";
 import { CountdownTimer } from "@/components/molecules/Timer";
 import { Colors } from "@/constants/Colors";
 import { getGameStats, getRandomNoteInRange, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
-import { Accident, Clef, GameNote, GameScore, GameState, NoteRange } from "@/constants/types";
+import { Accident, Clef, GameNote, GameScore, GameState, Note, NoteRange } from "@/constants/types";
 import { usePianoSound } from "@/hooks/usePianoSound";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -32,7 +33,6 @@ export default function GameLevel() {
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState(initialNote);
   const [gameNotes, setGameNotes] = useState<GameNote[]>([]);
-  const [elapsed, setElapsed] = useState(0);
 
   const { hasWon } = getGameStats(level, gameScore);
 
@@ -40,17 +40,20 @@ export default function GameLevel() {
 
   function onPianoKeyPress(attempt: string) {
     if (pianoLocked) return;
+    const [note, octave] = currNote.split("/");
+    const attemptedNote: Note = `${attempt}/${+octave}`;
+    console.log({ currNote, attempt, attemptedNote });
+    playSound(attemptedNote);
 
-    const note = currNote.split("/")[0];
     const success = isNoteMatch(attempt, note);
 
     setGameNotes((prev) => [...prev, { note, attempt }]);
 
     if (success) {
-      playSound(currNote);
       setGameScore((prev) => ({ ...prev, successes: prev.successes + 1 }));
       setGameState(GameState.Success);
     } else {
+      playSound(currNote);
       setGameScore((prev) => ({ ...prev, mistakes: prev.mistakes + 1 }));
       setGameState(GameState.Mistake);
     }
@@ -60,14 +63,6 @@ export default function GameLevel() {
       setGameState(GameState.Idle);
       setCurrNote(nextNote);
     }, DELAY);
-  }
-
-  function onTick(secondsRemaining: number) {
-    const percVal = (level.durationInSeconds - secondsRemaining) / level.durationInSeconds;
-    setElapsed(percVal);
-    if (percVal >= 1) {
-      onCountdownFinish();
-    }
   }
 
   const onCountdownFinish = useCallback(async () => {
@@ -93,11 +88,7 @@ export default function GameLevel() {
       <BackLink to="/level-details" style={s.backLink} />
 
       <AppView>
-        <AppView style={s.countdownContainer}>
-          <GameStatsDisplay gameScore={gameScore} level={level} elapsed={elapsed} />
-
-          <CountdownTimer initialTime={level.durationInSeconds} onTick={onTick} />
-        </AppView>
+        <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} gameScore={gameScore} levelId={id} />
 
         <AppView>
           {gameState === GameState.Idle ? <MusicNote keys={[currNote]} clef={clef} /> : null}
@@ -124,9 +115,6 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     paddingTop: 24,
-  },
-  countdownContainer: {
-    padding: 24,
   },
 });
 

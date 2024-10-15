@@ -1,9 +1,6 @@
-import { flattenEventualSharpNote, getAudioFilepath } from "@/constants/helperFns";
-import { Note } from "@/constants/types";
-import { Audio } from "expo-av";
-import { useState, useEffect } from "react";
+import { Note } from "./types";
 
-const paths = {
+export const PIANO_SOUND_ASSETS: Record<Note, NodeRequire> = {
   "a/1": require("@/assets/sounds/piano-notes/Piano.mf.A1.mp3"),
   "a/2": require("@/assets/sounds/piano-notes/Piano.mf.A2.mp3"),
   "a/3": require("@/assets/sounds/piano-notes/Piano.mf.A3.mp3"),
@@ -89,43 +86,3 @@ const paths = {
   "gb/6": require("@/assets/sounds/piano-notes/Piano.mf.Gb6.mp3"),
   "gb/7": require("@/assets/sounds/piano-notes/Piano.mf.Gb7.mp3"),
 };
-
-export function usePianoSound() {
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
-
-  async function playSound(originalNote: Note) {
-    const uri = getSoundUri(paths, originalNote);
-
-    try {
-      const { sound } = await Audio.Sound.createAsync(uri, {}, (status) => {});
-      setSound(sound);
-
-      console.log("Playing Sound");
-      await sound.playAsync();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  useEffect(() => {
-    return sound
-      ? () => {
-          console.log("Unloading Sound");
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
-
-  return {
-    playSound,
-  };
-}
-
-function getSoundUri(paths: any, note: Note) {
-  const [k, oct] = note.split("/");
-  const flatForcedNote = `${flattenEventualSharpNote(k)}/${oct}` as Note;
-  const filePath = getAudioFilepath(flatForcedNote);
-  const uri = paths[flatForcedNote as keyof typeof paths];
-  console.log("getSoundUri", { filePath, note, uri, flatForcedNote });
-  return uri;
-}

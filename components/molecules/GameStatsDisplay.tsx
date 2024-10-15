@@ -17,6 +17,8 @@ type GameStatsDisplay = {
 export function GameStatsDisplay({ level, gameScore, complete, elapsed = 1 }: GameStatsDisplay) {
   const theme = useColorScheme() ?? "light";
 
+  // const [elapsed, setElapsed] = useState(elapsed);
+
   const { accuracy, attempts } = getGameStats(level, gameScore);
 
   const totalMinutes = level.durationInSeconds / 60;
