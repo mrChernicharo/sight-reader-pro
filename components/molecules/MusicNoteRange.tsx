@@ -30,7 +30,6 @@ export interface MusicNoteRangeProps {
 export function useMusicNoteRange(props: MusicNoteRangeProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
-  // const theme = useColorScheme();
   const theme = useColorScheme() ?? "light";
   const textColor = Colors[theme].text;
 
@@ -68,7 +67,12 @@ function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], color: st
   const stave = new Stave(20, 80, 200);
   stave.setContext(context);
   stave.setClef(clef);
-  context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
+  context
+    .setFont("Arial", 20, "")
+    .setBackgroundFillStyle("transparent")
+    .setFillStyle(color)
+    .setStrokeStyle(color)
+    .setLineWidth(3);
   stave.draw();
 
   const notes = [];

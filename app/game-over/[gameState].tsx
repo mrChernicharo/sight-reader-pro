@@ -3,17 +3,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AppText } from "@/components/atoms/AppText";
 import { router, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
 import { Clef } from "@/constants/types";
 import { useAppStore } from "@/hooks/useStore";
 import AppButton from "@/components/atoms/AppButton";
 import { getGameStats, isNoteMatch } from "@/constants/helperFns";
-import { getLevel } from "@/constants/levels";
+import { ALL_LEVELS, SECTIONED_LEVELS, getLevel } from "@/constants/levels";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
 
 export default function GameOverScreen() {
+  const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const games = useAppStore((state) => state.games);
   const { gameState, levelId, clef } = useLocalSearchParams() as {
@@ -61,8 +62,27 @@ export default function GameOverScreen() {
       </AppView>
 
       <AppView style={s.btnsContainer}>
+        {gameState === "win" ? (
+          <AppButton
+            text="Next Level"
+            onPress={() => {
+              const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
+              if (nextLevel) {
+                router.push({
+                  pathname: "/level-details/[id]",
+                  params: { id: nextLevel.id, clef },
+                });
+              } else {
+                console.log("NO MORE LEVELS. ZEROU O GAME!");
+              }
+            }}
+          />
+        ) : null}
+
         <AppButton
           text="Play again"
+          style={{ ...(gameState === "win" && { backgroundColor: "transparent" }) }}
+          textStyle={{ ...(gameState === "win" && { color: Colors[theme].text }) }}
           onPress={() => {
             router.push({
               pathname: "/game-level/[id]",
@@ -70,6 +90,7 @@ export default function GameOverScreen() {
             });
           }}
         />
+
         <AppButton
           text="Level selection"
           style={{ backgroundColor: "transparent" }}

@@ -96,10 +96,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // paddingTop: StatusBar.currentHeight,
-    paddingHorizontal: 32,
+    paddingHorizontal: 16,
     paddingVertical: 48,
   },
   backArrow: {
+    // borderWidth: 1,
+    transform: [{ translateX: -6 }],
     // position: "absolute",
     // top: 10,
     // left: 16,

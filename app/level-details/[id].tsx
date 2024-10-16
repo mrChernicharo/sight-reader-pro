@@ -56,24 +56,26 @@ export default function LevelDetails() {
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
-      <AppView style={s.top}>
-        <BackLink to="/level-selection" />
-        <AppText type="title" style={s.title}>
-          {level.name}
-        </AppText>
-        <AppText type="subtitle" style={s.subtitle}>
-          {level.id}
-        </AppText>
-      </AppView>
+      <AppView style={{ width: "100%" }}>
+        <AppView style={s.top}>
+          <BackLink to="/level-selection" />
+          <AppText type="title" style={s.title}>
+            {level.name}
+          </AppText>
+          <AppText type="subtitle" style={s.subtitle}>
+            {level.id}
+          </AppText>
+        </AppView>
 
-      <AppView style={s.midContainer}>
-        <AppText>{accidentText}</AppText>
-        <AppText>
-          <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
-        </AppText>
-        <AppText>
-          <Ionicons name="flag-outline" /> {level.winNotesPerMinute}/min
-        </AppText>
+        <AppView style={s.midContainer}>
+          <AppText>{accidentText}</AppText>
+          <AppText>
+            <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
+          </AppText>
+          <AppText>
+            <Ionicons name="flag-outline" /> {level.winNotesPerMinute}/min
+          </AppText>
+        </AppView>
       </AppView>
 
       <AppView style={s.midContainer}>
@@ -100,14 +102,15 @@ export default function LevelDetails() {
 const s = StyleSheet.create({
   container: {
     paddingHorizontal: 24,
-    paddingTop: 48,
+    paddingTop: 16,
     paddingBottom: 64,
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
   },
   top: {
-    width: "100%",
+    paddingBottom: 8,
+    // borderWidth: 1,
   },
   title: {
     textAlign: "center",
@@ -119,10 +122,12 @@ const s = StyleSheet.create({
   },
   midContainer: {
     alignItems: "center",
+    // borderWidth: 1,
   },
   rangeTitle: {
     marginTop: 52,
     zIndex: 1000,
+    // borderWidth: 1,
   },
   cta: {
     width: "90%",
