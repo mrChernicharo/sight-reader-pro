@@ -51,8 +51,8 @@ export default function GameLevel() {
       setGameState(GameState.Success);
     } else {
       playSoundEfx(SoundEffect.WrongAnswer);
-      // playPianoNote(attemptedNote);
-      // playPianoNote(currNote);
+      playPianoNote(attemptedNote);
+      playPianoNote(currNote);
       setGameScore((prev) => ({ ...prev, mistakes: prev.mistakes + 1 }));
       setGameState(GameState.Mistake);
     }
