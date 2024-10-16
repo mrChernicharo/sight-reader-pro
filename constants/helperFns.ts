@@ -96,7 +96,7 @@ export function getGameStats(level: LevelConfig, gameScore: GameScore) {
   const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
   const mean = gameScore.successes / attempts;
   const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
-  const hasWon = gameScore.successes >= winScore;
+  const hasWon = gameScore.successes >= level.winNotesPerMinute;
 
   // level.durationInSeconds
   // const hitsPerSecond = gameScore.successes

@@ -1,6 +1,8 @@
 import { padZero } from "./helperFns";
 import { SectionedLevelConfig, LevelConfig, Clef, Game } from "./types";
 
+const MIN_NOTES_PER_MINUTE = 10;
+
 const TREBLE_LEVELS = [
   { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 15 },
   { name: "basics", clef: "treble", range: "g/4:::d/5", accident: "none", durationInSeconds: 30 },
@@ -33,6 +35,7 @@ const TREBLE_LEVELS = [
       name: `${levelInfo.name} ${padZero(i + 1)}`,
       index: i,
       id: `treble-${padZero(i + 1)}`,
+      winNotesPerMinute: Math.floor(MIN_NOTES_PER_MINUTE + i),
     } as LevelConfig)
 );
 const BASS_LEVELS = [
@@ -52,6 +55,7 @@ const BASS_LEVELS = [
       name: `${levelInfo.name} ${padZero(i + 1)}`,
       index: i,
       id: `bass-${padZero(i + 1)}`,
+      winNotesPerMinute: Math.floor(MIN_NOTES_PER_MINUTE + i),
     } as LevelConfig)
 );
 

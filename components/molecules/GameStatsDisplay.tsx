@@ -47,7 +47,8 @@ export function GameStatsDisplay({ level, gameScore, complete, hitsPerMinute }: 
       <AppView style={[s.row]}>
         {/*  */}
         <AppText>
-          {complete && "accuracy"} <Ionicons name="flash-outline" /> {accuracy}
+          {complete && "accuracy"} <Ionicons name="eye-outline" /> {accuracy}
+          {/* {complete && "accuracy"} <Ionicons name="flash-outline" /> {accuracy} */}
         </AppText>
         <AppText>
           {complete ? "notes per minute" : "NpM"} <Ionicons name="time-outline" />{" "}

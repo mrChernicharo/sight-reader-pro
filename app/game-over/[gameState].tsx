@@ -44,6 +44,7 @@ export default function GameOverScreen() {
 
   const minuteFraction = 60 / level.durationInSeconds;
   const hitsPerMinute = gameScore.successes * minuteFraction;
+  if (!level) return null;
 
   // console.log({ lastGame }, JSON.stringify({ playerMoves }, null, 2));
 

@@ -68,7 +68,6 @@ export default function GameLevel() {
 
   const onCountdownFinish = useCallback(async () => {
     setGameState(GameState.Idle);
-    const finalState = hasWon ? "win" : "lose";
 
     await addGame({
       level_id: id,
@@ -80,7 +79,7 @@ export default function GameLevel() {
 
     router.navigate({
       pathname: "/game-over/[gameState]",
-      params: { gameState: finalState, levelId: id, clef },
+      params: { gameState: hasWon ? "win" : "lose", levelId: id, clef },
     });
   }, [hasWon, gameState, gameScore.successes, winScore]);
 

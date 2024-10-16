@@ -71,6 +71,9 @@ export default function LevelDetails() {
         <AppText>
           <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
         </AppText>
+        <AppText>
+          <Ionicons name="flag-outline" /> {level.winNotesPerMinute}/min
+        </AppText>
       </AppView>
 
       <AppView style={s.midContainer}>

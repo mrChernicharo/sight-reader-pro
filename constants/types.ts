@@ -24,6 +24,7 @@ export type LevelConfig = {
   range: NoteRange;
   accident: Accident;
   durationInSeconds: number;
+  winNotesPerMinute: number;
 };
 
 export type SectionedLevelConfig = {

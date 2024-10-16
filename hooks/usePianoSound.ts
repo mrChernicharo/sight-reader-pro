@@ -101,23 +101,25 @@ export function usePianoSound() {
     const parsedNote = parseSharpsIntoFlats(originalNote);
     // console.log(">>>>", { originalNote, parsedNote });
     try {
+      let _sound: Audio.Sound;
       if (sounds.has(parsedNote)) {
-        const sound = sounds.get(parsedNote)!;
+        _sound = sounds.get(parsedNote)!;
 
-        const soundStatus = await sound?.getStatusAsync();
+        const soundStatus = await _sound?.getStatusAsync();
         if (soundStatus && (soundStatus as any)["isPlaying"]) {
-          await sound.stopAsync();
+          // await sound.stopAsync();
+          await _sound.setPositionAsync(0);
         }
-        sound.playFromPositionAsync(0);
+        _sound.playFromPositionAsync(0);
       } else {
         const uri = getSoundUri(pianoAssets, parsedNote);
-        const { sound } = await Audio.Sound.createAsync(uri, { volume: 1 });
+        _sound = (await Audio.Sound.createAsync(uri, { volume: 1 })).sound;
         setSounds((prevMap) => {
           const nextMap = new Map(prevMap);
-          nextMap.set(parsedNote, sound);
+          nextMap.set(parsedNote, _sound);
           return nextMap;
         });
-        sound.playFromPositionAsync(0);
+        _sound.playFromPositionAsync(0);
       }
     } catch (err) {
       console.log(err);
@@ -158,7 +160,7 @@ export function useSoundEfx() {
       } else {
         // const uri = getSoundUri(pianoAssets, effect);
         const uri = efxAssets[effect];
-        const { sound } = await Audio.Sound.createAsync(uri, { volume: 0.2 });
+        const { sound } = await Audio.Sound.createAsync(uri, { volume: 0.1 });
         setSounds((prevMap) => {
           const nextMap = new Map(prevMap);
           nextMap.set(effect, sound);
