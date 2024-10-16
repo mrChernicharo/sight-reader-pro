@@ -4,6 +4,7 @@ import { AppView } from "../atoms/AppView";
 import { GameStatsDisplay } from "./GameStatsDisplay";
 import { CountdownTimer } from "./Timer";
 import { StyleSheet } from "react-native";
+import { useState } from "react";
 
 export function TimerAndStatsDisplay({
   levelId,
@@ -15,17 +16,22 @@ export function TimerAndStatsDisplay({
   onCountdownFinish: () => void;
 }) {
   const level = getLevel(levelId);
+  const [hitsPerMinute, setHitsPerMinute] = useState(0);
 
   function onTick(secondsRemaining: number) {
-    const percVal = (level.durationInSeconds - secondsRemaining) / level.durationInSeconds;
-    if (percVal >= 1) {
+    const elapsedPercent = (level.durationInSeconds - secondsRemaining) / level.durationInSeconds;
+    const minuteFraction = 60 / level.durationInSeconds;
+    const _hitsPerMinute = (gameScore.successes * minuteFraction) / elapsedPercent;
+    setHitsPerMinute(_hitsPerMinute);
+
+    if (elapsedPercent >= 1) {
       onCountdownFinish();
     }
   }
 
   return (
     <AppView style={s.container}>
-      <GameStatsDisplay gameScore={gameScore} level={level} />
+      <GameStatsDisplay gameScore={gameScore} level={level} hitsPerMinute={hitsPerMinute} />
 
       <CountdownTimer initialTime={level.durationInSeconds} onTick={onTick} />
     </AppView>

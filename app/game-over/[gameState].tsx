@@ -42,6 +42,9 @@ export default function GameOverScreen() {
     { successes: 0, mistakes: 0 }
   );
 
+  const minuteFraction = 60 / level.durationInSeconds;
+  const hitsPerMinute = gameScore.successes * minuteFraction;
+
   // console.log({ lastGame }, JSON.stringify({ playerMoves }, null, 2));
 
   return (
@@ -49,7 +52,7 @@ export default function GameOverScreen() {
       <AppView style={s.messageContainer}>
         <AppText type="title">{message}</AppText>
 
-        <GameStatsDisplay gameScore={gameScore} level={level} complete />
+        <GameStatsDisplay gameScore={gameScore} level={level} complete hitsPerMinute={hitsPerMinute} />
 
         <AppView>
           <AppText style={s.bigEmoji}>{emoji}</AppText>

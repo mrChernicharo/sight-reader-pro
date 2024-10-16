@@ -10,19 +10,16 @@ import { AppView } from "../atoms/AppView";
 type GameStatsDisplay = {
   level: LevelConfig;
   gameScore: GameScore;
+  hitsPerMinute: number;
   complete?: boolean;
-  elapsed?: number;
 };
 
-export function GameStatsDisplay({ level, gameScore, complete, elapsed = 1 }: GameStatsDisplay) {
+export function GameStatsDisplay({ level, gameScore, complete, hitsPerMinute }: GameStatsDisplay) {
   const theme = useColorScheme() ?? "light";
 
   // const [elapsed, setElapsed] = useState(elapsed);
 
   const { accuracy, attempts } = getGameStats(level, gameScore);
-
-  const totalMinutes = level.durationInSeconds / 60;
-  const hitsPerMinute = gameScore.successes / (totalMinutes * elapsed);
 
   // useEffect(() => {
   //   console.log({ attempts, hitsPerMinute, elapsed, theme });
