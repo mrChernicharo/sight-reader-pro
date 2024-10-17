@@ -90,7 +90,7 @@ export default function LevelDetails() {
         asChild
         href={{
           pathname: "/game-level/[id]",
-          params: { id: String(id), clef: level.clef, levelAccident: level?.accident, levelRange: level?.range },
+          params: { id: String(id), clef: level.clef },
         }}
       >
         <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} />

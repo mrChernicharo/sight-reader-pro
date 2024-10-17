@@ -4,8 +4,8 @@ import { SectionedLevelConfig, LevelConfig, Clef, Game } from "./types";
 const MIN_NOTES_PER_MINUTE = 10;
 
 const TREBLE_LEVELS = [
-  { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 15 },
-  { name: "basics", clef: "treble", range: "g/4:::d/5", accident: "none", durationInSeconds: 30 },
+  { name: "basics", clef: "treble", range: "g/4:::b/4", accident: "none", durationInSeconds: 5 },
+  { name: "basics", clef: "treble", range: "g/4:::d/5", accident: "none", durationInSeconds: 5 },
   { name: "basics", clef: "treble", range: "g/4:::e/5", accident: "none", durationInSeconds: 30 },
   { name: "basics", clef: "treble", range: "e/4:::e/5", accident: "none", durationInSeconds: 30 },
   { name: "basics", clef: "treble", range: "d/4:::f#/5", accident: "#", durationInSeconds: 30 },

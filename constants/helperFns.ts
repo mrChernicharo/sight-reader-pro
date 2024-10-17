@@ -1,4 +1,4 @@
-import { ALL_NOTES_FLAT_ALL_OCTAVES, ALL_NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
+import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
 import { Accident, Clef, Game, GameScore, LevelConfig, Note, NoteRange } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
@@ -69,10 +69,10 @@ export function getRandomNoteInRange(range: NoteRange, accident: Accident, previ
   let notesArr: Note[] = [];
   switch (accident) {
     case Accident["#"]:
-      notesArr = ALL_NOTES_SHARP_ALL_OCTAVES;
+      notesArr = NOTES_SHARP_ALL_OCTAVES;
       break;
     case Accident.B:
-      notesArr = ALL_NOTES_FLAT_ALL_OCTAVES;
+      notesArr = NOTES_FLAT_ALL_OCTAVES;
       break;
     case Accident.None:
     default:
@@ -94,13 +94,16 @@ export function getRandomNoteInRange(range: NoteRange, accident: Accident, previ
 
 export function getGameStats(level: LevelConfig, gameScore: GameScore) {
   const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
-  const mean = gameScore.successes / attempts;
-  const accuracy = isNaN(mean) ? "--" : intl.format(mean * 100) + "%";
-  const hasWon = gameScore.successes >= level.winNotesPerMinute;
+  const accuracy = gameScore.successes / attempts;
+  const accuracyStr = isNaN(accuracy) ? "--" : intl.format(accuracy * 100) + "%";
+  const hitsPerMinute = gameScore.successes * (60 / level.durationInSeconds);
+  const hasWon = hitsPerMinute >= level.winNotesPerMinute;
+
+  // console.log("getGameStats", { hitsPerMinute, level, hasWon });
 
   // level.durationInSeconds
   // const hitsPerSecond = gameScore.successes
-  return { attempts, accuracy, hasWon };
+  return { attempts, accuracy: accuracyStr, hasWon };
 }
 
 const sharpToFlatTable = { a: "b", b: "c", c: "d", d: "e", e: "f", f: "g", g: "a" };

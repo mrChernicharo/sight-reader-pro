@@ -13,13 +13,15 @@ export function CountdownTimer({
   initialTime: number;
   onTick: (secondsRemaining: number) => void;
 }) {
-  const running = useRef(true);
+  // const running = useRef(true);
   const [count, setCount] = useState(initialTime);
 
   const elapsed = 1 - count / initialTime;
   const barWidth = `${elapsed * 100}%` as DimensionValue;
 
   useEffect(() => {
+    console.log(":::initialize timer");
+
     const interval = setInterval(() => {
       setCount((curr) => {
         return curr <= 0 ? 0 : curr - 1;
@@ -32,13 +34,25 @@ export function CountdownTimer({
   }, []);
 
   useEffect(() => {
-    if (running.current) {
-      if (count <= 0) {
-        running.current = false;
-      }
-      onTick(count);
-    }
+    onTick(count);
   }, [count]);
+
+  // useEffect(() => {
+  //   console.log(":::Timer", count);
+  //   if (count <= 0) {
+  //     running.current = false;
+  //   }
+  // }, [count]);
+
+  // useEffect(() => {
+  //   console.log(":::initialize timer", count);
+
+  //   return () => {
+  //     console.log(":::destroy timer", count);
+
+  //     setCount(0);
+  //   };
+  // }, []);
 
   return (
     <AppView style={s.container}>

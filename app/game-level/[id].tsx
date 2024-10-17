@@ -77,11 +77,15 @@ export default function GameLevel() {
       durationInSeconds: level.durationInSeconds,
     });
 
-    router.navigate({
+    router.replace({
       pathname: "/game-over/[gameState]",
       params: { gameState: hasWon ? "win" : "lose", levelId: id, clef },
     });
   }, [hasWon, gameState, gameScore.successes, winScore]);
+
+  useEffect(() => {
+    console.log("::: game start", level, gameScore, gameState);
+  }, []);
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
