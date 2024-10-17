@@ -15,7 +15,7 @@ import { Formatter } from "vexflow/src/formatter";
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
 import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
-import { Clef } from "@/constants/types";
+import { Clef, GameScore, GameState, LevelConfig } from "@/constants/types";
 import { Colors } from "@/constants/Colors";
 
 export interface MusicNoteProps {
@@ -28,7 +28,7 @@ export function useMusicNote(props: MusicNoteProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
   const theme = useColorScheme() ?? "light";
   const textColor = Colors[theme].text;
-  const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
+  const context = new ReactNativeSVGContext(NotoFontPack, { width: 260, height: 280 });
   const renderResult = runVexFlowCode(context, props.clef, props.keys, textColor, props.noteColor);
   return renderResult;
 }
@@ -149,6 +149,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   innerView: {
-    transform: "translateX(80px)",
+    transform: [{ translateX: 8 }],
   },
 });
+
+// class GameClass {
+//   state: GameState;
+//   score: GameScore;
+//   constructor(public level: LevelConfig) {
+//     this.state = GameState.Idle;
+//     this.score = new GameScore()
+//   }
+
+//   public start() {
+
+//   }
+// }
+
+// export function GameTest(game: GameClass) {
+
+// }

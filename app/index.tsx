@@ -9,9 +9,45 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Platform } from "react-native";
 import { useEffect } from "react";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import { ScaleType, getGamePitchesInAllOctaves, keySignature } from "@/constants/brain-storming";
+import { Accident } from "@/constants/types";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();
+
+  const DChromaticNotes = getGamePitchesInAllOctaves({
+    keySignature: keySignature.D,
+    scaleType: ScaleType.Chromatic,
+  });
+  const DMajorNotes = getGamePitchesInAllOctaves({
+    keySignature: keySignature.D,
+    scaleType: ScaleType.Diatonic,
+  });
+  const DMinorNotes = getGamePitchesInAllOctaves({
+    keySignature: keySignature.Dm,
+    scaleType: ScaleType.Diatonic,
+  });
+
+  const NotesNone = getGamePitchesInAllOctaves({ accident: Accident.None });
+  const NotesSharp = getGamePitchesInAllOctaves({ accident: Accident["#"] });
+  const NotesFlat = getGamePitchesInAllOctaves({ accident: Accident.b });
+  const NotesFlatSharp = getGamePitchesInAllOctaves({ accident: Accident["#b"] });
+  const NotesDoubleFlat = getGamePitchesInAllOctaves({ accident: Accident.bb });
+  const NotesDoubleSharp = getGamePitchesInAllOctaves({ accident: Accident.x });
+  const NotesAll = getGamePitchesInAllOctaves({ accident: Accident.All });
+
+  console.table({
+    NotesNone,
+    NotesSharp,
+    NotesFlat,
+    NotesFlatSharp,
+    NotesDoubleFlat,
+    NotesDoubleSharp,
+    NotesAll,
+    DChromaticNotes,
+    DMajorNotes,
+    DMinorNotes,
+  });
 
   return (
     <AppView style={s.container}>

@@ -80,7 +80,7 @@ export const DOUBLE_FLAT_NOTES_ALL_OCTAVES: Note[] = [];
 oct = 1;
 while (oct < 9) {
   ALL_NOTES_FLAT_DOUBLE_FLAT.forEach((n) => {
-    DOUBLE_FLAT_NOTES_ALL_OCTAVES;
+    DOUBLE_FLAT_NOTES_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;
 }

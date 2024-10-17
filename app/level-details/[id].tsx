@@ -36,7 +36,7 @@ function getAccidentText(accident: Accident) {
       return "no accidents";
     case Accident["#"]:
       return "♯ sharp accidents";
-    case Accident.B:
+    case Accident.b:
       return "♭ flat accidents";
   }
 }

@@ -1,3 +1,4 @@
+import { getRandInRange } from "./helperFns";
 import {
   DOUBLE_FLAT_NOTES_ALL_OCTAVES,
   DOUBLE_SHARP_NOTES_ALL_OCTAVES,
@@ -9,9 +10,9 @@ import {
   POSSIBLE_NOTES_ALL_OCTAVES,
   WHITE_NOTES_ALL_OCTAVES,
 } from "./notes";
-import { GameScore, GameState, Note, NoteRange } from "./types";
+import { Accident, GameScore, GameState, Note, NoteRange } from "./types";
 
-enum keySignature {
+export enum keySignature {
   C = "C",
   G = "G",
   D = "D",
@@ -44,20 +45,76 @@ enum keySignature {
   Abm = "Abm",
 }
 
+const diatonicKeyNotes: Record<keySignature, string[]> = {
+  [keySignature.C]: ["c", "d", "e", "f", "g", "a", "b"],
+  [keySignature.G]: ["g", "a", "b", "c", "d", "e", "f#"],
+  [keySignature.D]: ["d", "e", "f#", "g", "a", "b", "c#"],
+  [keySignature.A]: ["a", "b", "c#", "d", "e", "f#", "g#"],
+  [keySignature.E]: ["e", "f#", "g#", "a", "b", "c#", "d#"],
+  [keySignature.B]: ["b", "c#", "d#", "e", "f#", "g#", "a#"],
+  [keySignature["F#"]]: ["f#", "g#", "a#", "b", "c#", "d#", "e#"],
+  [keySignature["C#"]]: ["c#", "d#", "e#", "f#", "g#", "a#", "b#"],
+  [keySignature.Am]: ["a", "b", "c", "d", "e", "f", "g"],
+  [keySignature.Em]: ["e", "f#", "g", "a", "b", "c", "d"],
+  [keySignature.Bm]: ["b", "c#", "d", "e", "f#", "g", "a"],
+  [keySignature["F#m"]]: ["f#", "g#", "a", "b", "c#", "d", "e"],
+  [keySignature["C#m"]]: ["c#", "d#", "e", "f#", "g#", "a", "b"],
+  [keySignature["G#m"]]: ["g#", "a#", "b", "c#", "d#", "e", "f#"],
+  [keySignature["D#m"]]: ["d#", "e#", "f#", "g#", "a#", "b", "c#"],
+  [keySignature["A#m"]]: ["a#", "b#", "c#", "d#", "e#", "f#", "g#"],
+  [keySignature.F]: ["f", "g", "a", "bb", "c", "d", "e"],
+  [keySignature.Bb]: ["bb", "c", "d", "eb", "f", "g", "a"],
+  [keySignature.Eb]: ["eb", "f", "g", "ab", "bb", "c", "d"],
+  [keySignature.Ab]: ["ab", "bb", "c", "db", "eb", "f", "g"],
+  [keySignature.Db]: ["db", "eb", "f", "gb", "ab", "bb", "c"],
+  [keySignature.Gb]: ["gb", "ab", "bb", "cb", "db", "eb", "f"],
+  [keySignature.Cb]: ["cb", "db", "eb", "fb", "gb", "ab", "bb"],
+  [keySignature.Dm]: ["d", "e", "f", "g", "a", "bb", "c"],
+  [keySignature.Gm]: ["g", "a", "bb", "c", "d", "eb", "f"],
+  [keySignature.Cm]: ["c", "d", "eb", "f", "g", "ab", "bb"],
+  [keySignature.Fm]: ["f", "g", "ab", "bb", "c", "db", "eb"],
+  [keySignature.Bbm]: ["bb", "c", "db", "eb", "f", "gb", "ab"],
+  [keySignature.Ebm]: ["eb", "f", "gb", "ab", "bb", "cb", "db"],
+  [keySignature.Abm]: ["ab", "bb", "cb", "db", "eb", "fb", "gb"],
+};
+
+const chromaticNotes: Record<keySignature, string[]> = {
+  [keySignature.C]: ["c", "db", "d", "d#", "e", "f", "f#", "g", "ab", "a", "bb", "b"],
+  [keySignature.G]: ["g", "ab", "a", "bb", "b", "c", "c#", "d", "eb", "e", "f", "f#"],
+  [keySignature.D]: ["d", "eb", "e", "f", "f#", "g", "g#", "a", "bb", "b", "c", "c#"],
+  [keySignature.A]: ["a", "bb", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#"],
+  [keySignature.E]: ["e", "f", "f#", "g", "g#", "a", "a#", "b", "c", "c#", "d", "d#"],
+  [keySignature.B]: ["b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#"],
+  [keySignature["F#"]]: ["f#", "g", "g#", "a", "a#", "b", "c", "c#", "d", "d#", "e", "f"],
+  [keySignature["C#"]]: ["c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b", "c"],
+  [keySignature.Am]: ["a", "bb", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#"],
+  [keySignature.Em]: ["e", "f", "f#", "g", "g#", "a", "a#", "b", "c", "c#", "d", "d#"],
+  [keySignature.Bm]: ["b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#"],
+  [keySignature["F#m"]]: ["f#", "g", "g#", "a", "a#", "b", "c", "c#", "d", "d#", "e", "f"],
+  [keySignature["C#m"]]: ["c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b", "c"],
+  [keySignature["G#m"]]: ["g#", "a", "a#", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g"],
+  [keySignature["D#m"]]: ["d#", "e", "f", "f#", "g", "g#", "a", "a#", "b", "c", "c#", "d"],
+  [keySignature["A#m"]]: ["a#", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a"],
+  [keySignature.F]: ["f", "gb", "g", "g#", "a", "bb", "b", "c", "db", "d", "eb", "e"],
+  [keySignature.Bb]: ["bb", "b", "c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a"],
+  [keySignature.Eb]: ["eb", "e", "f", "gb", "g", "ab", "a", "bb", "cb", "c", "db", "d"],
+  [keySignature.Ab]: ["ab", "a", "bb", "b", "c", "db", "d", "eb", "e", "f", "gb", "g"],
+  [keySignature.Db]: ["db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b", "c"],
+  [keySignature.Gb]: ["gb", "g", "ab", "a", "bb", "cb", "c", "db", "d", "eb", "e", "f"],
+  [keySignature.Cb]: ["cb", "c", "db", "d", "eb", "fb", "f", "gb", "g", "ab", "a", "bb"],
+  [keySignature.Dm]: ["d", "eb", "e", "f", "f#", "g", "g#", "a", "bb", "b", "c", "c#"],
+  [keySignature.Gm]: ["g", "ab", "a", "bb", "b", "c", "c#", "d", "eb", "e", "f", "f#"],
+  [keySignature.Cm]: ["c", "db", "d", "d#", "e", "f", "f#", "g", "ab", "a", "bb", "b"],
+  [keySignature.Fm]: ["f", "gb", "g", "g#", "a", "bb", "b", "c", "db", "d", "eb", "e"],
+  [keySignature.Bbm]: ["bb", "b", "c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a"],
+  [keySignature.Ebm]: ["eb", "e", "f", "gb", "g", "ab", "a", "bb", "cb", "c", "db", "d"],
+  [keySignature.Abm]: ["ab", "a", "bb", "b", "c", "db", "d", "eb", "e", "f", "gb", "g"],
+};
+
 enum Clef {
   treble,
   bass,
   // both, // treble + bass
-}
-
-enum Accident {
-  "None" = "none",
-  "#" = "#",
-  "b" = "b",
-  "#b" = "#b",
-  "x" = "x",
-  "bb" = "bb",
-  "All" = "all",
 }
 
 enum GameType {
@@ -84,7 +141,14 @@ type WinConditions = {
   [WinRank.Bronze]: number;
 };
 
-type GameKeySettings = { hasKey: true; keySignatures: Array<keySignature> } | { hasKey: false; accident: Accident };
+export enum ScaleType {
+  Diatonic = "diatonic",
+  Chromatic = "chromatic",
+}
+
+type GameKeySettings =
+  | { hasKey: true; keySignatures: Array<keySignature>; scaleType: ScaleType }
+  | { hasKey: false; accident: Accident };
 
 type GameSettings =
   | ({
@@ -113,101 +177,110 @@ type Level = GameSettings & {
 };
 
 type SingleRound = {
-  attempt: Note;
-  answer: Note;
+  attempt: Note | null;
+  value: Note;
 };
 
 type ChordRound = {
   attempt: Note[];
-  answer: Note[];
+  value: Note[];
 };
 
 type MelodyRound = Array<{
   attempt: Note[];
-  answer: Note[];
+  value: Note[];
 }>;
 
 type RhythmRound = Array<{
-  attempt: number;
-  answer: number;
+  attempt: number | null;
+  value: number;
 }>;
 
 type Round = SingleRound | ChordRound | MelodyRound | RhythmRound;
 
-// type Game =
-//   | {
-//       type: GameType.Single;
-//       rounds: { attempt: Note | null; answer: Note }[];
-//     }
-//   | {
-//       type: GameType.Chord;
-//       rounds: { attempt: Note[] | null; answer: Note[] }[];
-//     }
-//   | {
-//       type: GameType.Melody;
-//       rounds: { attempt: Note | null; answer: Note }[][];
-//     }
-//   | {
-//       type: GameType.Rhythm;
-//       rounds: { attempt: number | null; answer: number }[][];
-//     };
+type Game = {
+  id: string;
+  level_id: string;
+  timestamp: number;
+  durationInSeconds: number;
+} & (
+  | {
+      type: GameType.Single;
+      rounds: SingleRound[];
+    }
+  | {
+      type: GameType.Chord;
+      rounds: ChordRound[];
+    }
+  | {
+      type: GameType.Melody;
+      rounds: MelodyRound[];
+    }
+  | {
+      type: GameType.Rhythm;
+      rounds: RhythmRound[];
+    }
+);
 
-function decideNextRound(level: Level, previousRound?: Round) {
+export function decideNextRound(level: Level, previousRound?: Round) {
   switch (level.gameType) {
     case GameType.Single: {
       return {
-        answer: generateRandomNote(level, previousRound as SingleRound),
+        value: generateRandomNote(level, previousRound as SingleRound),
         attempt: null,
       };
     }
-    case GameType.Chord: {
-      return {
-        answer: generateRandomChord(level, previousRound as ChordRound),
-        attempt: null,
-      };
-    }
-    case GameType.Melody: {
-      return {
-        answer: generateRandomMelody(level, previousRound as MelodyRound),
-        attempt: null,
-      };
-    }
-    case GameType.Rhythm: {
-      return {
-        answer: generateRandomRhythm(level, previousRound as RhythmRound),
-        attempt: null,
-      };
-    }
+    // TODO
+    // case GameType.Chord: {
+    //   return {
+    //     value: generateRandomChord(level, previousRound as ChordRound),
+    //     attempt: null,
+    //   };
+    // }
+    // case GameType.Melody: {
+    //   return {
+    //     value: generateRandomMelody(level, previousRound as MelodyRound),
+    //     attempt: null,
+    //   };
+    // }
+    // case GameType.Rhythm: {
+    //   return {
+    //     value: generateRandomRhythm(level, previousRound as RhythmRound),
+    //     attempt: null,
+    //   };
+    // }
   }
 }
 
-function generateRandomNote(level: Level, previousRound?: SingleRound) /* : Note */ {
+export function generateRandomNote(level: Level, previousRound?: SingleRound): Note {
   if (level.gameType !== GameType.Single) throw Error("gameType incompatible");
-  let possibleNotes: Note[] = [];
 
+  let possibleNotes: Note[];
   if (level.hasKey) {
     const keySignature = pickKeySignature(level.keySignatures);
-    possibleNotes = getAllNotesInRange(level.noteRanges, { keySignature });
+    possibleNotes = getGamePitchesInAllOctaves({ keySignature, scaleType: level.scaleType });
   } else {
-    possibleNotes = getAllNotesInRange(level.noteRanges, { accident: level.accident });
+    possibleNotes = getGamePitchesInAllOctaves({ accident: level.accident });
   }
 
+  let rangeNotes = getNotesInRange(level.noteRanges, possibleNotes);
   if (previousRound) {
-    // possibleNotes = possibleNotes.filter(note => note === previousRound.answer)
+    rangeNotes = rangeNotes.filter((note) => note === previousRound.value);
   }
-  // return pickRandom(possibleNotes);
+  const nextNote = pickNextRoundNote(rangeNotes);
+  return nextNote;
 }
-function generateRandomChord(level: Level, previousRound: ChordRound) {
+export function generateRandomChord(level: Level, previousRound: ChordRound) {
   if (level.gameType !== GameType.Chord) throw Error("gameType incompatible");
 }
-function generateRandomMelody(level: Level, previousRound: MelodyRound) {
+export function generateRandomMelody(level: Level, previousRound: MelodyRound) {
   if (level.gameType !== GameType.Melody) throw Error("gameType incompatible");
 }
-function generateRandomRhythm(level: Level, previousRound: RhythmRound) {
+export function generateRandomRhythm(level: Level, previousRound: RhythmRound) {
   if (level.gameType !== GameType.Rhythm) throw Error("gameType incompatible");
 }
 
-function pickKeySignature(keySignatures: keySignature[]) {
+export function pickKeySignature(keySignatures: keySignature[]) {
   if (keySignatures.length === 0) {
     return keySignature.C;
   }
@@ -215,92 +288,185 @@ function pickKeySignature(keySignatures: keySignature[]) {
   return keySignatures[randomIndex];
 }
 
-function getAllNotesInRange(ranges: NoteRange[], options: { keySignature?: keySignature; accident?: Accident }) {
-  let availableNotes;
-
-  if (options.accident) {
-    switch (options.accident) {
-      case Accident.None:
-        availableNotes = WHITE_NOTES_ALL_OCTAVES;
-        break;
-      case Accident["#"]:
-        availableNotes = NOTES_SHARP_ALL_OCTAVES;
-        break;
-      case Accident.b:
-        availableNotes = NOTES_FLAT_ALL_OCTAVES;
-        break;
-      case Accident["#b"]:
-        availableNotes = NOTES_SHARP_FLAT_ALL_OCTAVES;
-        break;
-      case Accident.x:
-        availableNotes = DOUBLE_SHARP_NOTES_ALL_OCTAVES;
-        break;
-      case Accident.bb:
-        availableNotes = DOUBLE_FLAT_NOTES_ALL_OCTAVES;
-        break;
-      case Accident.All:
-        availableNotes = POSSIBLE_NOTES_ALL_OCTAVES;
-        break;
+type GetGamePitchSpec =
+  | {
+      keySignature: keySignature;
+      scaleType: ScaleType;
     }
-  } else if (options.keySignature) {
-  }
+  | {
+      accident: Accident;
+    };
 
+export function getNotesInRange(ranges: NoteRange[], possibleNotes: Note[]) {
+  const noteSet = new Set<Note>();
   for (const range of ranges) {
+    const [lowNote, highNote] = range.split(":::");
+    let [lowIdx, highIdx] = [
+      possibleNotes.findIndex((n) => n === lowNote),
+      possibleNotes.findIndex((n) => n === highNote),
+    ];
+
+    for (let idx = lowIdx; idx <= highIdx; highIdx++) {
+      noteSet.add(possibleNotes[idx]);
+    }
+  }
+  return Array.from(noteSet);
+}
+
+export function pickNextRoundNote(rangeNotes: Note[]): Note {
+  const chosenIdx = getRandInRange(0, rangeNotes.length - 1);
+  const chosenNote = rangeNotes[chosenIdx];
+  return chosenNote;
+}
+
+const accidentNoteSequences = {
+  [Accident.None]: WHITE_NOTES_ALL_OCTAVES,
+  [Accident["#"]]: NOTES_SHARP_ALL_OCTAVES,
+  [Accident.b]: NOTES_FLAT_ALL_OCTAVES,
+  [Accident["#b"]]: NOTES_SHARP_FLAT_ALL_OCTAVES,
+  [Accident.x]: DOUBLE_SHARP_NOTES_ALL_OCTAVES,
+  [Accident.bb]: DOUBLE_FLAT_NOTES_ALL_OCTAVES,
+  [Accident.All]: POSSIBLE_NOTES_ALL_OCTAVES,
+};
+const scaleTypeNoteSequences = {
+  [ScaleType.Chromatic]: chromaticNotes,
+  [ScaleType.Diatonic]: diatonicKeyNotes,
+};
+
+export function getGamePitchesInAllOctaves(options: GetGamePitchSpec) {
+  if ((options as any)?.accident) {
+    const safeOpts = options as { accident: Accident };
+    return accidentNoteSequences[safeOpts.accident];
+  }
+  //
+  else if ((options as any)?.keySignature) {
+    const safeOpts = options as { keySignature: keySignature; scaleType: ScaleType };
+    const noteMap = scaleTypeNoteSequences[safeOpts.scaleType];
+    const scaleNotes = noteMap[safeOpts.keySignature];
+    const availableNotes: Note[] = [];
+    for (let oct = 1; oct < 9; oct++) {
+      scaleNotes.forEach((n) => {
+        availableNotes.push(`${n}/${oct}`);
+      });
+    }
+    return availableNotes;
+  } else {
+    return [];
   }
 }
 
-// interface Round {
-//   attempt: any; // Placeholder for attempt type based on game type
-//   answer: any; // Placeholder for answer type based on game type
-// }
+const levels: Level[] = [
+  {
+    id: "01",
+    index: 0,
+    name: "basics 01",
+    description: "",
+    clef: Clef.treble,
+    gameType: GameType.Single,
+    noteRanges: ["g/4:::c/5"],
+    durationInSeconds: 20,
+    winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
+    hasKey: false,
+    accident: Accident.None,
+  },
+  {
+    id: "02",
+    index: 0,
+    name: "basics 02",
+    description: "",
+    clef: Clef.treble,
+    gameType: GameType.Single,
+    noteRanges: ["f/4:::d/5"],
+    durationInSeconds: 20,
+    winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
+    hasKey: true,
+    keySignatures: [keySignature.C],
+    scaleType: ScaleType.Diatonic,
+  },
+  {
+    id: "03",
+    index: 0,
+    name: "basics 03",
+    description: "",
+    clef: Clef.treble,
+    gameType: GameType.Single,
+    noteRanges: ["e/4:::e/5"],
+    durationInSeconds: 20,
+    winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
+    hasKey: true,
+    keySignatures: [keySignature.G, keySignature.F, keySignature.D],
+    scaleType: ScaleType.Diatonic,
+  },
+  {
+    id: "04",
+    index: 0,
+    name: "basics 04",
+    description: "",
+    clef: Clef.treble,
+    gameType: GameType.Single,
+    noteRanges: ["d/4:::f#/5"],
+    durationInSeconds: 20,
+    winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
+    hasKey: false,
+    accident: Accident["#"],
+  },
+  {
+    id: "05",
+    index: 0,
+    name: "basics 05",
+    description: "",
+    clef: Clef.treble,
+    gameType: GameType.Single,
+    noteRanges: ["db/4:::ab/5"],
+    durationInSeconds: 20,
+    winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
+    hasKey: false,
+    accident: Accident["b"],
+  },
+];
 
-// // Implement specific round types with conditional types
+// const game1: Game = {
+//   id: "",
+//   level_id: "",
+//   durationInSeconds: 30,
+//   timestamp: 1029839080982,
+//   type: GameType.Single,
+//   rounds: [
+//     { value: "c/5", attempt: null },
+//     { value: "eb/5", attempt: null },
+//   ],
+// };
 
-// // Function to get specific round type based on GameType
-// type GetRoundType<T extends GameType> = T extends GameType.Single
-//   ? SingleRound
-//   : T extends GameType.Chord
-//   ? ChordRound
-//   : T extends GameType.Melody
-//   ? MelodyRound
-//   : T extends GameType.Rhythm
-//   ? RhythmRound
-//   : never;
+// const game2: Game = {
+//   id: "",
+//   level_id: "",
+//   durationInSeconds: 30,
+//   timestamp: 1029839080982,
+//   type: GameType.Rhythm,
+//   rounds: [
+//     [
+//       { value: 10, attempt: null },
+//       { value: 2, attempt: null },
+//     ],
+//     [
+//       { value: 4, attempt: null },
+//       { value: 2, attempt: null },
+//       { value: 2, attempt: null },
+//     ],
+//   ],
+// };
 
-// // Usage example
-// function playRound<T extends GameType>(gameType: T, level: Level): GetRoundType<T> {
-//   const roundData = computeRoundData(gameType, level); // Replace with your logic to compute round data
-//   return {
-//     attempt: roundData.attempt,
-//     answer: roundData.answer,
-//   };
-// }
-
-// function computeRoundData<T extends GameType>(gameType: T, level: Level): GetRoundType<T> {
-//   switch (gameType) {
-//     case GameType.Single:
-//       return {
-//         attempt: generateRandomNote(level.noteRanges, level.keySignature),
-//         answer: generateRandomNote(level.noteRanges, level.keySignature),
-//       };
-//     case GameType.Chord:
-//       return {
-//         attempt: generateRandomChord(level.noteRanges, level.keySignature),
-//         answer: generateRandomChord(level.noteRanges, level.keySignature),
-//       };
-//     case GameType.Melody:
-//       return {
-//         attempt: generateRandomMelody(level.noteRanges, level.timeSignature, level.keySignature),
-//         answer: generateRandomMelody(level.noteRanges, level.timeSignature, level.keySignature),
-//       };
-//     case GameType.Rhythm:
-//       return {
-//         attempt: generateRandomRhythm(level.timeSignature),
-//         answer: generateRandomRhythm(level.timeSignature),
-//       };
-//     default:
-//       throw new Error(`Unsupported GameType: ${gameType}`);
+// const games: Game[] = [game1, game2];
+// games.forEach((g) => {
+//   if (g.type === GameType.Single) {
+//     g.rounds[0].value;
 //   }
-// }
 
-// function generateRandomRhythm(noteRanges: NoteRange[], keySignature: string) {}
+//   if (g.type === GameType.Melody) {
+//     g.rounds[0][0].value;
+//   }
+
+//   if (g.type === GameType.Chord) {
+//     g.rounds[0].value[0];
+//   }
+// });

@@ -9,7 +9,7 @@ const SHARP_NOTES = ["c#", "d#", "", "f#", "g#", "a#"];
 export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPianoKeyPress: (note: string) => void }) {
   const { width } = useWindowDimensions();
 
-  const BLACK_NOTES = accident === Accident.B ? FLAT_NOTES : SHARP_NOTES;
+  const BLACK_NOTES = accident === Accident.b ? FLAT_NOTES : SHARP_NOTES;
 
   const keyboardMargin = width * 0.06;
   const keyWidth = (width - keyboardMargin * 2) / 7;

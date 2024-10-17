@@ -71,7 +71,7 @@ export function getRandomNoteInRange(range: NoteRange, accident: Accident, previ
     case Accident["#"]:
       notesArr = NOTES_SHARP_ALL_OCTAVES;
       break;
-    case Accident.B:
+    case Accident.b:
       notesArr = NOTES_FLAT_ALL_OCTAVES;
       break;
     case Accident.None:

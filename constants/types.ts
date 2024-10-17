@@ -4,7 +4,11 @@ export type NoteRange = `${Note}:::${Note}`;
 export enum Accident {
   "None" = "none",
   "#" = "#",
-  "B" = "b",
+  "b" = "b",
+  "#b" = "#b",
+  "x" = "x",
+  "bb" = "bb",
+  "All" = "all",
 }
 
 export enum Clef {
