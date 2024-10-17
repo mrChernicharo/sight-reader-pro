@@ -6,9 +6,10 @@ import { Piano } from "@/components/molecules/Piano";
 import { TimerAndStatsDisplay } from "@/components/molecules/TimeAndStatsDisplay";
 import { CountdownTimer } from "@/components/molecules/Timer";
 import { Colors } from "@/constants/Colors";
+import { Clef, GameState, SoundEffect, GameType } from "@/constants/enums";
 import { getGameStats, getRandomNoteInRange, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
-import { Accident, Clef, GameNote, GameScore, GameState, Note, NoteRange, SoundEffect } from "@/constants/types";
+import { GameScore, Note, NoteRange, SingleNoteRound } from "@/constants/types";
 import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -28,12 +29,14 @@ export default function GameLevel() {
   const { playSoundEfx } = useSoundEfx();
 
   const level = getLevel(id);
-  const initialNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident, "");
+
+  // @ts-ignore
+  const initialNote = getRandomNoteInRange(level.noteRanges[0] as NoteRange, level.accident as Accident, "");
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState(initialNote);
-  const [gameNotes, setGameNotes] = useState<GameNote[]>([]);
+  const [rounds, setRounds] = useState<SingleNoteRound[]>([]);
 
   const { hasWon } = getGameStats(level, gameScore);
 
@@ -57,10 +60,12 @@ export default function GameLevel() {
       setGameState(GameState.Mistake);
     }
 
-    setGameNotes((prev) => [...prev, { note, attempt }]);
+    setRounds((prev) => [...prev, { value: currNote, attempt: attemptedNote }]);
 
     setTimeout(() => {
-      const nextNote = getRandomNoteInRange(level.range as NoteRange, level.accident as Accident, currNote);
+      if (level.gameType !== GameType.Single) return;
+      if (level.hasKey) return;
+      const nextNote = getRandomNoteInRange(level.noteRanges[0], level.accident, currNote);
       setGameState(GameState.Idle);
       setCurrNote(nextNote);
     }, DELAY);
@@ -70,10 +75,11 @@ export default function GameLevel() {
     setGameState(GameState.Idle);
 
     await addGame({
-      level_id: id,
-      notes: gameNotes,
-      timestamp: Date.now(),
       id: randomUID(),
+      level_id: id,
+      rounds,
+      timestamp: Date.now(),
+      type: GameType.Single,
       durationInSeconds: level.durationInSeconds,
     });
 
@@ -104,7 +110,9 @@ export default function GameLevel() {
         ) : null}
       </AppView>
 
-      <Piano accident={level.accident} onPianoKeyPress={onPianoKeyPress} />
+      {level.gameType === GameType.Single && !level.hasKey && (
+        <Piano accident={level.accident} onPianoKeyPress={onPianoKeyPress} />
+      )}
     </SafeAreaView>
   );
 }

@@ -1,61 +1,108 @@
+import { WinRank, keySignature, ScaleType, Accident, GameType, Clef } from "./enums";
+
 export type Note = `${string}/${number}`;
 export type NoteRange = `${Note}:::${Note}`;
 
-export enum Accident {
-  "None" = "none",
-  "#" = "#",
-  "b" = "b",
-  "#b" = "#b",
-  "x" = "x",
-  "bb" = "bb",
-  "All" = "all",
-}
-
-export enum Clef {
-  Treble = "treble",
-  Bass = "bass",
-}
-
-export enum SoundEffect {
-  WrongAnswer = "wrong-answer",
-}
-
-export type LevelConfig = {
-  id: `${Clef}-${number}`;
-  index: number;
-  name: string;
-  clef: Clef;
-  range: NoteRange;
-  accident: Accident;
-  durationInSeconds: number;
-  winNotesPerMinute: number;
+/**
+ * hits per minute
+ *
+ * ```// example: { gold: 40, silver: 37, bronze: 32 }```
+ */
+export type WinConditions = {
+  [WinRank.Gold]: number;
+  [WinRank.Silver]: number;
+  [WinRank.Bronze]: number;
 };
 
-export type SectionedLevelConfig = {
-  title: string;
-  data: LevelConfig[];
+export type GameKeySettings =
+  | { hasKey: true; keySignatures: Array<keySignature>; scaleType: ScaleType }
+  | { hasKey: false; accident: Accident };
+
+export type GameSettings =
+  | ({
+      gameType: GameType.Single | GameType.Chord;
+      noteRanges: Array<NoteRange>;
+    } & GameKeySettings)
+  | ({
+      gameType: GameType.Melody;
+      noteRanges: Array<NoteRange>;
+      timeSignature: string;
+    } & GameKeySettings)
+  | {
+      gameType: GameType.Rhythm;
+      timeSignature: string;
+    };
+
+export type SingleNoteRound = {
+  attempt: Note | null;
+  value: Note;
 };
 
-export type GameNote = {
-  attempt: string;
-  note: string;
+export type ChordRound = {
+  attempt: Note[];
+  value: Note[];
 };
+
+export type MelodyRound = Array<{
+  attempt: Note[];
+  value: Note[];
+}>;
+
+export type RhythmRound = Array<{
+  attempt: number | null;
+  value: number;
+}>;
+
+export type Round = SingleNoteRound | ChordRound | MelodyRound | RhythmRound;
 
 export type Game = {
   id: string;
   level_id: string;
   timestamp: number;
-  notes: GameNote[];
   durationInSeconds: number;
-};
-
-export enum GameState {
-  Idle = "idle",
-  Success = "success",
-  Mistake = "mistake",
-}
+} & (
+  | {
+      type: GameType.Single;
+      rounds: SingleNoteRound[];
+    }
+  | {
+      type: GameType.Chord;
+      rounds: ChordRound[];
+    }
+  | {
+      type: GameType.Melody;
+      rounds: MelodyRound[];
+    }
+  | {
+      type: GameType.Rhythm;
+      rounds: RhythmRound[];
+    }
+);
 
 export interface GameScore {
   successes: number;
   mistakes: number;
 }
+
+export type Level = GameSettings & {
+  id: `${Clef}-${number}`;
+  clef: Clef;
+  index: number;
+  name: string;
+  description: string;
+  durationInSeconds: number;
+  winConditions: WinConditions;
+};
+
+export type SectionedLevel = {
+  title: string;
+  data: Level[];
+};
+
+// export type Game = {
+//   id: string;
+//   level_id: string;
+//   timestamp: number;
+//   notes: GameNote[];
+//   durationInSeconds: number;
+// };

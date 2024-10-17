@@ -18,7 +18,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/sight-reader-art.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "##808080"
       },
       "package": "com.anonymous.sightreaderpro"
     },

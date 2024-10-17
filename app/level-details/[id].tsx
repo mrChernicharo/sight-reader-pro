@@ -5,12 +5,13 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { MusicNoteRange } from "@/components/molecules/MusicNoteRange";
 import { Colors } from "@/constants/Colors";
 import { getLevel } from "@/constants/levels";
-import { Accident, Clef, Game, Note } from "@/constants/types";
+import { Accident, Clef, GameType, WinRank } from "@/constants/enums";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Game, Note } from "@/constants/types";
 
 export function calcGameScore(game: Game) {}
 
@@ -50,8 +51,10 @@ export default function LevelDetails() {
 
   console.log(":::LevelDetails", level);
 
-  const accidentText = getAccidentText(level.accident);
-  const [lowNote, highNote] = level.range.split(":::") as [Note, Note];
+  if (level.gameType !== GameType.Single) return;
+
+  const accidentText = level.hasKey ? level.keySignatures.join("") : getAccidentText(level.accident);
+  const [lowNote, highNote] = level.noteRanges[0].split(":::") as [Note, Note];
   const rangeTitleOffset = getRangeTitleOffset(level.clef, highNote);
 
   return (
@@ -73,7 +76,7 @@ export default function LevelDetails() {
             <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
           </AppText>
           <AppText>
-            <Ionicons name="flag-outline" /> {level.winNotesPerMinute}/min
+            <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
           </AppText>
         </AppView>
       </AppView>

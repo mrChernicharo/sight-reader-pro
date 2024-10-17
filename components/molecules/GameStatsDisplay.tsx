@@ -1,6 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { getGameStats, intl } from "@/constants/helperFns";
-import { GameScore, LevelConfig } from "@/constants/types";
+import { GameScore, Level } from "@/constants/types";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
@@ -8,7 +8,7 @@ import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
 
 type GameStatsDisplay = {
-  level: LevelConfig;
+  level: Level;
   gameScore: GameScore;
   hitsPerMinute: number;
   complete?: boolean;

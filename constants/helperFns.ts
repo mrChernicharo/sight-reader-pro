@@ -1,5 +1,6 @@
+import { Clef, Accident, WinRank } from "./enums";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
-import { Accident, Clef, Game, GameScore, LevelConfig, Note, NoteRange } from "./types";
+import { Game, GameScore, Level, Note, NoteRange } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 export const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
@@ -92,12 +93,12 @@ export function getRandomNoteInRange(range: NoteRange, accident: Accident, previ
   return chosenNote;
 }
 
-export function getGameStats(level: LevelConfig, gameScore: GameScore) {
+export function getGameStats(level: Level, gameScore: GameScore) {
   const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
   const accuracy = gameScore.successes / attempts;
   const accuracyStr = isNaN(accuracy) ? "--" : intl.format(accuracy * 100) + "%";
   const hitsPerMinute = gameScore.successes * (60 / level.durationInSeconds);
-  const hasWon = hitsPerMinute >= level.winNotesPerMinute;
+  const hasWon = hitsPerMinute >= level.winConditions[WinRank.Bronze];
 
   // console.log("getGameStats", { hitsPerMinute, level, hasWon });
 

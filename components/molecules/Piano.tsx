@@ -2,7 +2,7 @@ import { WHITE_NOTES } from "@/constants/notes";
 import { Pressable, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
-import { Accident } from "@/constants/types";
+import { Accident } from "@/constants/enums";
 const FLAT_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
 const SHARP_NOTES = ["c#", "d#", "", "f#", "g#", "a#"];
 

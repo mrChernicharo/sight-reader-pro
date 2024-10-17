@@ -9,8 +9,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Platform } from "react-native";
 import { useEffect } from "react";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
-import { ScaleType, getGamePitchesInAllOctaves, keySignature } from "@/constants/brain-storming";
-import { Accident } from "@/constants/types";
+import { getGamePitchesInAllOctaves } from "@/constants/brain-storming";
+import { Accident, ScaleType, keySignature } from "@/constants/enums";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();

@@ -4,7 +4,7 @@ import { AppText } from "@/components/atoms/AppText";
 import { router, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
-import { Clef } from "@/constants/types";
+import { Clef, GameType } from "@/constants/enums";
 import { useAppStore } from "@/hooks/useStore";
 import AppButton from "@/components/atoms/AppButton";
 import { getGameStats, isNoteMatch } from "@/constants/helperFns";
@@ -30,9 +30,11 @@ export default function GameOverScreen() {
 
   if (!lastGame) return null;
 
-  const playerMoves = lastGame?.notes.map((gameNote) => ({
-    ...gameNote,
-    success: isNoteMatch(gameNote.attempt, gameNote.note),
+  if (lastGame.type !== GameType.Single) return;
+
+  const playerMoves = lastGame?.rounds.map((round) => ({
+    ...round,
+    success: isNoteMatch(round.attempt!, round.value),
   }));
 
   const gameScore = playerMoves.reduce(

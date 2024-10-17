@@ -15,7 +15,8 @@ import { Formatter } from "vexflow/src/formatter";
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
 import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
-import { Clef, GameScore, GameState, LevelConfig } from "@/constants/types";
+import { GameScore, Level } from "@/constants/types";
+import { Clef, GameState } from "@/constants/enums";
 import { Colors } from "@/constants/Colors";
 
 export interface MusicNoteProps {
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
 // class GameClass {
 //   state: GameState;
 //   score: GameScore;
-//   constructor(public level: LevelConfig) {
+//   constructor(public level: Level) {
 //     this.state = GameState.Idle;
 //     this.score = new GameScore()
 //   }

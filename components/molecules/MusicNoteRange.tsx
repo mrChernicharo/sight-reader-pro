@@ -18,7 +18,8 @@ import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context"
 
 import { AppRegistry, StyleSheet, Text, View, useColorScheme, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
-import { Clef, Note } from "@/constants/types";
+import { Note } from "@/constants/types";
+import { Clef, GameState } from "@/constants/enums";
 import { stemDown } from "@/constants/helperFns";
 import { Colors } from "@/constants/Colors";
 

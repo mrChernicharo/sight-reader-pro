@@ -4,7 +4,7 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/constants/Colors";
 import { getUnlockedLevels } from "@/constants/levels";
 import { SECTIONED_LEVELS } from "@/constants/levels";
-import { LevelConfig } from "@/constants/types";
+import { Level } from "@/constants/types";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-export function getLevelName(item: LevelConfig) {
+export function getLevelName(item: Level) {
   const splitLevelName = item.name.split(" ");
   const levelIdx = splitLevelName.pop();
   const levelName = splitLevelName.join(" ");
