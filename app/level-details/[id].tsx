@@ -3,17 +3,17 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 
+import { SheetMusic } from "@/components/molecules/SheetMusic";
 import { Colors } from "@/constants/Colors";
+import { Accident, Clef, GameType, WinRank } from "@/constants/enums";
+import { isNoteHigher, pickKeySignature } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
-import { Accident, Clef, GameType, KeySignature, WinRank } from "@/constants/enums";
+import { Level, Note } from "@/constants/types";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
-import { Link, router, useLocalSearchParams } from "expo-router";
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Game, Level, Note } from "@/constants/types";
-import { isNoteHigher, pickKeySignature } from "@/constants/helperFns";
-import { SheetMusic } from "@/components/molecules/SheetMusic";
 
 export default function LevelDetails() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
@@ -28,14 +28,14 @@ export default function LevelDetails() {
 
   const displayInfo = {
     rangeTitleOffset: getRangeTitleOffset(level),
-    accidentText: level.hasKey ? level.keySignatures.join("") : getAccidentText(level.accident),
+    accidentText: level.hasKey ? level.keySignatures.join(" | ") : getAccidentText(level.accident),
     rangeKeys: level.noteRanges.map((range) => range.split(":::") as [Note, Note]),
   };
 
   function handleNewGame() {
     switch (level.gameType) {
       case GameType.Single: {
-        const chosenKeySignature = pickKeySignature(level.hasKey ? level.keySignatures : [KeySignature.C]);
+        const chosenKeySignature = pickKeySignature(level);
         console.log({ level, displayInfo, chosenKeySignature });
         router.push({
           pathname: "/game-level/[id]",
@@ -159,5 +159,7 @@ function getAccidentText(accident: Accident) {
       return "♯ sharp accidents";
     case Accident.b:
       return "♭ flat accidents";
+    default:
+      return "@TODO";
   }
 }

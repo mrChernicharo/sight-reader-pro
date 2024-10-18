@@ -6,7 +6,7 @@ import { Colors } from "@/constants/Colors";
 import { Clef, GameType, KeySignature } from "@/constants/enums";
 import { isNoteMatch, pickKeySignature } from "@/constants/helperFns";
 import { ALL_LEVELS, getLevel } from "@/constants/levels";
-import { useAppStore } from "@/hooks/useStore";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router, useLocalSearchParams } from "expo-router";
 import { StyleSheet, useColorScheme } from "react-native";
@@ -92,9 +92,7 @@ export default function GameOverScreen() {
               params: {
                 id: levelId,
                 clef,
-                ...(level.gameType !== GameType.Rhythm && {
-                  keySignature: level.hasKey ? pickKeySignature(level.keySignatures) : KeySignature.C,
-                }),
+                keySignature: pickKeySignature(level),
               },
             });
           }}

@@ -1,24 +1,19 @@
 import { Colors } from "@/constants/Colors";
 import { isNoteMatch } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
-import { Game } from "@/constants/types";
+import { Game, Note } from "@/constants/types";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, useColorScheme } from "react-native";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
+import { GameType } from "@/constants/enums";
 
 const intlDate = new Intl.DateTimeFormat("en-us", { dateStyle: "medium", timeStyle: "medium" });
 
 export function GameRecord({ game }: { game: Game }) {
   const theme = useColorScheme() ?? "light";
   const level = getLevel(game.level_id);
-  const aftermath = game.notes.reduce(
-    (acc, { note, attempt }) => {
-      isNoteMatch(note, attempt) ? acc.successes++ : acc.mistakes++;
-      return acc;
-    },
-    { successes: 0, mistakes: 0 }
-  );
+  const aftermath = getAfterMath(game);
 
   return (
     <AppView style={s.container}>
@@ -56,3 +51,19 @@ const s = StyleSheet.create({
     margin: 6,
   },
 });
+
+function getAfterMath(game: Game) {
+  switch (game.type) {
+    case GameType.Single:
+      return game.rounds.reduce(
+        (acc, { value, attempt }) => {
+          isNoteMatch(value, attempt as Note) ? acc.successes++ : acc.mistakes++;
+          return acc;
+        },
+        { successes: 0, mistakes: 0 }
+      );
+
+    default:
+      return { successes: 0, mistakes: 0 };
+  }
+}

@@ -1,6 +1,6 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { useAppStore } from "@/hooks/useStore";
+import { useAppStore } from "@/hooks/useAppStore";
 import { InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
 import { Stack } from "expo-router";
 import { useEffect } from "react";

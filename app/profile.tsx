@@ -6,7 +6,7 @@ import { GameRecord } from "@/components/atoms/GameRecord";
 import { Colors } from "@/constants/Colors";
 import { isNoteMatch } from "@/constants/helperFns";
 import { Game } from "@/constants/types";
-import { useAppStore } from "@/hooks/useStore";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link } from "expo-router";

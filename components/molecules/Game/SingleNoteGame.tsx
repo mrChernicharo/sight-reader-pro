@@ -6,7 +6,7 @@ import { getGameStats, isNoteMatch, pickKeySignature, randomUID, winScore } from
 import { getLevel } from "@/constants/levels";
 import { GameScore, SingleNoteRound, Note, Level, PianoKeySpec } from "@/constants/types";
 import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
-import { useAppStore } from "@/hooks/useStore";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useLocalSearchParams, router } from "expo-router";
 import { useState, useCallback, useEffect } from "react";

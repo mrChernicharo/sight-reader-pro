@@ -3,7 +3,7 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/constants/Colors";
-import { useAppStore } from "@/hooks/useStore";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useEffect, useState } from "react";
 import { Alert, Platform, StyleSheet, TextInput } from "react-native";

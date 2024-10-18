@@ -5,7 +5,7 @@ import { Colors } from "@/constants/Colors";
 import { getUnlockedLevels } from "@/constants/levels";
 import { SECTIONED_LEVELS } from "@/constants/levels";
 import { Level } from "@/constants/types";
-import { useAppStore } from "@/hooks/useStore";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { Link } from "expo-router";
