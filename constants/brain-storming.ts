@@ -1,11 +1,9 @@
 import { Accident, GameType, ScaleType, keySignature } from "./enums";
-import { getRandInRange } from "./helperFns";
+import { getRandInRange, pickKeySignature } from "./helperFns";
 import {
   DOUBLE_FLAT_NOTES_ALL_OCTAVES,
   DOUBLE_SHARP_NOTES_ALL_OCTAVES,
-  ALL_NOTES_FLAT,
   NOTES_FLAT_ALL_OCTAVES,
-  ALL_NOTES_SHARP,
   NOTES_SHARP_ALL_OCTAVES,
   NOTES_SHARP_FLAT_ALL_OCTAVES,
   POSSIBLE_NOTES_ALL_OCTAVES,
@@ -13,84 +11,20 @@ import {
   chromaticNotes,
   diatonicKeyNotes,
 } from "./notes";
-import { Level, Round, SingleNoteRound, Note, ChordRound, MelodyRound, RhythmRound, NoteRange } from "./types";
+import { ChordRound, Level, MelodyRound, Note, NoteRange, RhythmRound, SingleNoteRound } from "./types";
 
-export function decideNextRound(level: Level, previousRound?: Round) {
-  switch (level.gameType) {
-    case GameType.Single: {
-      return {
-        value: generateRandomNote(level, previousRound as SingleNoteRound),
-        attempt: null,
-      };
-    }
-    // TODO
-    // case GameType.Chord: {
-    //   return {
-    //     value: generateRandomChord(level, previousRound as ChordRound),
-    //     attempt: null,
-    //   };
-    // }
-    // case GameType.Melody: {
-    //   return {
-    //     value: generateRandomMelody(level, previousRound as MelodyRound),
-    //     attempt: null,
-    //   };
-    // }
-    // case GameType.Rhythm: {
-    //   return {
-    //     value: generateRandomRhythm(level, previousRound as RhythmRound),
-    //     attempt: null,
-    //   };
-    // }
-  }
-}
-
-export function generateRandomNote(level: Level, previousRound?: SingleNoteRound): Note {
-  if (level.gameType !== GameType.Single) throw Error("gameType incompatible");
-
-  let possibleNotes: Note[];
-  if (level.hasKey) {
-    const keySignature = pickKeySignature(level.keySignatures);
-    possibleNotes = getGamePitchesInAllOctaves({ keySignature, scaleType: level.scaleType });
-  } else {
-    possibleNotes = getGamePitchesInAllOctaves({ accident: level.accident });
-  }
-
-  let rangeNotes = getNotesInRange(level.noteRanges, possibleNotes);
-  if (previousRound) {
-    rangeNotes = rangeNotes.filter((note) => note === previousRound.value);
-  }
-  const nextNote = pickNextRoundNote(rangeNotes);
-  return nextNote;
-}
-export function generateRandomChord(level: Level, previousRound: ChordRound) {
+function generateRandomChord(level: Level, previousRound: ChordRound) {
   if (level.gameType !== GameType.Chord) throw Error("gameType incompatible");
 }
-export function generateRandomMelody(level: Level, previousRound: MelodyRound) {
+function generateRandomMelody(level: Level, previousRound: MelodyRound) {
   if (level.gameType !== GameType.Melody) throw Error("gameType incompatible");
 }
-export function generateRandomRhythm(level: Level, previousRound: RhythmRound) {
+function generateRandomRhythm(level: Level, previousRound: RhythmRound) {
   if (level.gameType !== GameType.Rhythm) throw Error("gameType incompatible");
 }
 
-export function pickKeySignature(keySignatures: keySignature[]) {
-  if (keySignatures.length === 0) {
-    return keySignature.C;
-  }
-  const randomIndex = Math.floor(Math.random() * keySignatures.length);
-  return keySignatures[randomIndex];
-}
-
-type GetGamePitchSpec =
-  | {
-      keySignature: keySignature;
-      scaleType: ScaleType;
-    }
-  | {
-      accident: Accident;
-    };
-
-export function getNotesInRange(ranges: NoteRange[], possibleNotes: Note[]) {
+type GetGamePitchSpec = { keySignature: keySignature; scaleType: ScaleType } | { accident: Accident };
+function getNotesInRange(ranges: NoteRange[], possibleNotes: Note[]) {
   const noteSet = new Set<Note>();
   for (const range of ranges) {
     const [lowNote, highNote] = range.split(":::");
@@ -98,15 +32,15 @@ export function getNotesInRange(ranges: NoteRange[], possibleNotes: Note[]) {
       possibleNotes.findIndex((n) => n === lowNote),
       possibleNotes.findIndex((n) => n === highNote),
     ];
-
-    for (let idx = lowIdx; idx <= highIdx; highIdx++) {
+    // console.log({ lowIdx, highIdx });
+    for (let idx = lowIdx; idx < highIdx; idx++) {
       noteSet.add(possibleNotes[idx]);
     }
   }
   return Array.from(noteSet);
 }
 
-export function pickNextRoundNote(rangeNotes: Note[]): Note {
+function pickNextRoundNote(rangeNotes: Note[]): Note {
   const chosenIdx = getRandInRange(0, rangeNotes.length - 1);
   const chosenNote = rangeNotes[chosenIdx];
   return chosenNote;
@@ -145,6 +79,58 @@ export function getGamePitchesInAllOctaves(options: GetGamePitchSpec) {
     return availableNotes;
   } else {
     return [];
+  }
+}
+
+function generateRandomNote(level: Level, previousRound?: SingleNoteRound): Note {
+  if (level.gameType !== GameType.Single) throw Error("gameType incompatible");
+
+  let options: GetGamePitchSpec;
+  if (level.hasKey) {
+    const keySignature = pickKeySignature(level.keySignatures);
+    options = { keySignature, scaleType: level.scaleType };
+  } else {
+    options = { accident: level.accident };
+  }
+
+  const possibleNotes = getGamePitchesInAllOctaves(options);
+
+  let rangeNotes = getNotesInRange(level.noteRanges, possibleNotes);
+  if (previousRound) {
+    rangeNotes = rangeNotes.filter((note) => note !== previousRound.value);
+  }
+  const nextNote = pickNextRoundNote(rangeNotes);
+  // console.log("::: generateRandomNote :::", { possibleNotes, rangeNotes, nextNote });
+  return nextNote;
+}
+
+export function decideNextRound<Round>(level: Level, previousRound?: Round) {
+  switch (level.gameType) {
+    case GameType.Single: {
+      return {
+        value: generateRandomNote(level, previousRound as SingleNoteRound),
+        attempt: null,
+      } as SingleNoteRound;
+    }
+    // TODO
+    // case GameType.Chord: {
+    //   return {
+    //     value: generateRandomChord(level, previousRound as ChordRound),
+    //     attempt: null,
+    //   };
+    // }
+    // case GameType.Melody: {
+    //   return {
+    //     value: generateRandomMelody(level, previousRound as MelodyRound),
+    //     attempt: null,
+    //   };
+    // }
+    // case GameType.Rhythm: {
+    //   return {
+    //     value: generateRandomRhythm(level, previousRound as RhythmRound),
+    //     attempt: null,
+    //   };
+    // }
   }
 }
 

@@ -1,4 +1,4 @@
-import { AppView } from "../atoms/AppView";
+import { AppView } from "../../atoms/AppView";
 
 import React, { ReactNode } from "react";
 // @ts-ignore
@@ -25,17 +25,12 @@ export interface MusicNoteProps {
   noteColor?: string;
 }
 
-export function useMusicNote(props: MusicNoteProps) {
-  const { height, width, scale, fontScale } = useWindowDimensions();
+export function SingleNoteComponent(props: MusicNoteProps) {
+  // const { height, width, scale, fontScale } = useWindowDimensions();
   const theme = useColorScheme() ?? "light";
   const textColor = Colors[theme].text;
   const context = new ReactNativeSVGContext(NotoFontPack, { width: 260, height: 280 });
-  const renderResult = runVexFlowCode(context, props.clef, props.keys, textColor, props.noteColor);
-  return renderResult;
-}
-
-export function MusicNote(props: MusicNoteProps) {
-  const svgResult = useMusicNote(props);
+  const svgResult = runVexFlowCode(context, props.clef, props.keys, textColor, props.noteColor);
 
   return (
     <AppView style={styles.container}>

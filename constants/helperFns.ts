@@ -1,4 +1,4 @@
-import { Clef, Accident, WinRank } from "./enums";
+import { Clef, Accident, WinRank, keySignature } from "./enums";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
 import { Game, GameScore, Level, Note, NoteRange } from "./types";
 
@@ -74,32 +74,32 @@ export function stemDown(note: Note, clef: Clef) {
   }
 }
 
-export function getRandomNoteInRange(range: NoteRange, accident: Accident, previousNote: string): Note {
-  let notesArr: Note[] = [];
-  switch (accident) {
-    case Accident["#"]:
-      notesArr = NOTES_SHARP_ALL_OCTAVES;
-      break;
-    case Accident.b:
-      notesArr = NOTES_FLAT_ALL_OCTAVES;
-      break;
-    case Accident.None:
-    default:
-      notesArr = WHITE_NOTES_ALL_OCTAVES;
-      break;
-  }
+// export function getRandomNoteInRange(range: NoteRange, accident: Accident, previousNote: string): Note {
+//   let notesArr: Note[] = [];
+//   switch (accident) {
+//     case Accident["#"]:
+//       notesArr = NOTES_SHARP_ALL_OCTAVES;
+//       break;
+//     case Accident.b:
+//       notesArr = NOTES_FLAT_ALL_OCTAVES;
+//       break;
+//     case Accident.None:
+//     default:
+//       notesArr = WHITE_NOTES_ALL_OCTAVES;
+//       break;
+//   }
 
-  const [lowNote, highNote] = range.split(":::");
-  const [lowIdx, highIdx] = [notesArr.findIndex((n) => n === lowNote), notesArr.findIndex((n) => n === highNote)];
-  const chosenIdx = getRandInRange(lowIdx, highIdx);
-  const chosenNote = notesArr[chosenIdx];
-  // console.log(":::getRandomNoteInRange", { range, lowIdx, highIdx, chosenIdx, chosenNote, previousNote });
-  if (chosenNote === previousNote) {
-    // console.log(":::getRandomNoteInRange ::: shit_same_note!", { chosenNote, previousNote });
-    return getRandomNoteInRange(range, accident, chosenNote);
-  } // recurse if same note as before
-  return chosenNote;
-}
+//   const [lowNote, highNote] = range.split(":::");
+//   const [lowIdx, highIdx] = [notesArr.findIndex((n) => n === lowNote), notesArr.findIndex((n) => n === highNote)];
+//   const chosenIdx = getRandInRange(lowIdx, highIdx);
+//   const chosenNote = notesArr[chosenIdx];
+//   // console.log(":::getRandomNoteInRange", { range, lowIdx, highIdx, chosenIdx, chosenNote, previousNote });
+//   if (chosenNote === previousNote) {
+//     // console.log(":::getRandomNoteInRange ::: shit_same_note!", { chosenNote, previousNote });
+//     return getRandomNoteInRange(range, accident, chosenNote);
+//   } // recurse if same note as before
+//   return chosenNote;
+// }
 
 export function getGameStats(level: Level, gameScore: GameScore) {
   const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);
@@ -134,4 +134,12 @@ export function getAudioFilepath(note: Note) {
   const filename = `Piano.mf.${capitalizeStr(key)}${octave}_cut.mp3`;
   const filepath = `${filepathBase}/${filename}`;
   return filepath;
+}
+
+export function pickKeySignature(keySignatures: keySignature[]) {
+  if (keySignatures.length === 0) {
+    return keySignature.C;
+  }
+  const randomIndex = Math.floor(Math.random() * keySignatures.length);
+  return keySignatures[randomIndex];
 }

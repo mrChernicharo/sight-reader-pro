@@ -2,7 +2,7 @@ import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
-import { MusicNoteRange } from "@/components/molecules/MusicNoteRange";
+
 import { Colors } from "@/constants/Colors";
 import { getLevel } from "@/constants/levels";
 import { Accident, Clef, GameType, WinRank } from "@/constants/enums";
@@ -13,6 +13,7 @@ import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Game, Level, Note } from "@/constants/types";
 import { isNoteHigher } from "@/constants/helperFns";
+import { SheetMusic } from "@/components/molecules/SheetMusic";
 
 export function calcGameScore(game: Game) {}
 
@@ -62,14 +63,14 @@ export default function LevelDetails() {
           Note Range
         </AppText>
 
-        <MusicNoteRange clef={level.clef} keys={rangeKeys} />
+        <SheetMusic.Range clef={level.clef} keys={rangeKeys} />
       </AppView>
 
       <Link
         asChild
         href={{
           pathname: "/game-level/[id]",
-          params: { id: String(id), clef: level.clef },
+          params: { id: String(id) },
         }}
       >
         <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} />

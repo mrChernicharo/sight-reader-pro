@@ -1,4 +1,4 @@
-import { AppView } from "../atoms/AppView";
+import { AppView } from "../../atoms/AppView";
 
 import React, { Component, ReactNode } from "react";
 // @ts-ignore
@@ -25,7 +25,7 @@ import { Beam } from "vexflow/src/beam";
 import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context";
 
 import { AppRegistry, StyleSheet, Text, View, useColorScheme, useWindowDimensions } from "react-native";
-import { AppText } from "../atoms/AppText";
+import { AppText } from "../../atoms/AppText";
 import { Note } from "@/constants/types";
 import { Clef, GameState } from "@/constants/enums";
 import { stemDown } from "@/constants/helperFns";
@@ -36,19 +36,12 @@ export interface MusicNoteRangeProps {
   clef: Clef;
 }
 
-export function useMusicNoteRange(props: MusicNoteRangeProps) {
-  const { height, width, scale, fontScale } = useWindowDimensions();
+export function RangeComponent(props: MusicNoteRangeProps) {
+  // const { height, width, scale, fontScale } = useWindowDimensions();
   const theme = useColorScheme() ?? "light";
   const textColor = Colors[theme].text;
 
-  // console.log(props.keys);
-  const renderResult = runVexFlowRangeCode(props.clef, props.keys, textColor);
-  return renderResult;
-}
-
-export function MusicNoteRange(props: MusicNoteRangeProps) {
-  // console.log(":::MusicNoteRange", props);
-  const svgResult = useMusicNoteRange(props);
+  const svgResult = runVexFlowRangeCode(props.clef, props.keys, textColor);
 
   return (
     <AppView style={styles.container}>
