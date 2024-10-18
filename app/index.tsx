@@ -15,39 +15,39 @@ import { Accident, ScaleType, KeySignature } from "@/constants/enums";
 export default function Home() {
   const { width, height } = useWindowDimensions();
 
-  const DChromaticNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature.D,
-    scaleType: ScaleType.Chromatic,
-  });
-  const DMajorNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature.D,
-    scaleType: ScaleType.Diatonic,
-  });
-  const DMinorNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature.Dm,
-    scaleType: ScaleType.Diatonic,
-  });
+  // const DChromaticNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature.D,
+  //   scaleType: ScaleType.Chromatic,
+  // });
+  // const DMajorNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature.D,
+  //   scaleType: ScaleType.Diatonic,
+  // });
+  // const DMinorNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature.Dm,
+  //   scaleType: ScaleType.Diatonic,
+  // });
 
-  const NotesNone = getGamePitchesInAllOctaves({ accident: Accident.None });
-  const NotesSharp = getGamePitchesInAllOctaves({ accident: Accident["#"] });
-  const NotesFlat = getGamePitchesInAllOctaves({ accident: Accident.b });
-  const NotesFlatSharp = getGamePitchesInAllOctaves({ accident: Accident["#b"] });
-  const NotesDoubleFlat = getGamePitchesInAllOctaves({ accident: Accident.bb });
-  const NotesDoubleSharp = getGamePitchesInAllOctaves({ accident: Accident.x });
-  const NotesAll = getGamePitchesInAllOctaves({ accident: Accident.All });
+  // const NotesNone = getGamePitchesInAllOctaves({ accident: Accident.None });
+  // const NotesSharp = getGamePitchesInAllOctaves({ accident: Accident["#"] });
+  // const NotesFlat = getGamePitchesInAllOctaves({ accident: Accident.b });
+  // const NotesFlatSharp = getGamePitchesInAllOctaves({ accident: Accident["#b"] });
+  // const NotesDoubleFlat = getGamePitchesInAllOctaves({ accident: Accident.bb });
+  // const NotesDoubleSharp = getGamePitchesInAllOctaves({ accident: Accident.x });
+  // const NotesAll = getGamePitchesInAllOctaves({ accident: Accident.All });
 
-  console.table({
-    NotesNone,
-    NotesSharp,
-    NotesFlat,
-    NotesFlatSharp,
-    NotesDoubleFlat,
-    NotesDoubleSharp,
-    NotesAll,
-    DChromaticNotes,
-    DMajorNotes,
-    DMinorNotes,
-  });
+  // console.table({
+  //   NotesNone,
+  //   NotesSharp,
+  //   NotesFlat,
+  //   NotesFlatSharp,
+  //   NotesDoubleFlat,
+  //   NotesDoubleSharp,
+  //   NotesAll,
+  //   DChromaticNotes,
+  //   DMajorNotes,
+  //   DMinorNotes,
+  // });
 
   return (
     <AppView style={s.container}>
@@ -65,7 +65,7 @@ export default function Home() {
         </TouchableOpacity>
 
         <TouchableOpacity>
-          <Link href="/profile">
+          <Link push href="/profile">
             <AppText>Profile</AppText>
           </Link>
         </TouchableOpacity>

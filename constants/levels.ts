@@ -76,7 +76,7 @@ const TREBLE_LEVELS: Level[] = [
   },
   {
     id: "treble-02",
-    index: 0,
+    index: 1,
     name: "basics 02",
     description: "",
     clef: Clef.Treble,
@@ -90,7 +90,7 @@ const TREBLE_LEVELS: Level[] = [
   },
   {
     id: "treble-03",
-    index: 0,
+    index: 2,
     name: "basics 03",
     description: "",
     clef: Clef.Treble,
@@ -104,7 +104,7 @@ const TREBLE_LEVELS: Level[] = [
   },
   {
     id: "treble-04",
-    index: 0,
+    index: 3,
     name: "basics 04",
     description: "",
     clef: Clef.Treble,
@@ -117,7 +117,7 @@ const TREBLE_LEVELS: Level[] = [
   },
   {
     id: "treble-05",
-    index: 0,
+    index: 4,
     name: "basics 05",
     description: "",
     clef: Clef.Treble,
@@ -146,7 +146,7 @@ const BASS_LEVELS: Level[] = [
   },
   {
     id: "bass-02",
-    index: 0,
+    index: 1,
     name: "2 ranges",
     description: "",
     clef: Clef.Bass,
@@ -159,7 +159,7 @@ const BASS_LEVELS: Level[] = [
   },
   {
     id: "bass-03",
-    index: 0,
+    index: 2,
     name: "3 ranges!",
     description: "",
     clef: Clef.Bass,

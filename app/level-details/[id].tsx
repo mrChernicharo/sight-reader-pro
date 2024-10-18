@@ -8,7 +8,7 @@ import { getLevel } from "@/constants/levels";
 import { Accident, Clef, GameType, KeySignature, WinRank } from "@/constants/enums";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
-import { Link, useLocalSearchParams } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { StyleSheet, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Game, Level, Note } from "@/constants/types";
@@ -26,13 +26,24 @@ export default function LevelDetails() {
 
   if (level.gameType !== GameType.Single) return;
 
-  const accidentText = level.hasKey ? level.keySignatures.join("") : getAccidentText(level.accident);
+  const displayInfo = {
+    rangeTitleOffset: getRangeTitleOffset(level),
+    accidentText: level.hasKey ? level.keySignatures.join("") : getAccidentText(level.accident),
+    rangeKeys: level.noteRanges.map((range) => range.split(":::") as [Note, Note]),
+  };
 
-  const rangeKeys: [Note, Note][] = level.noteRanges.map((range) => range.split(":::") as [Note, Note]);
-
-  const gameKeySignature = pickKeySignature(level.hasKey ? level.keySignatures : [KeySignature.C]);
-
-  const rangeTitleOffset = getRangeTitleOffset(level);
+  function handleNewGame() {
+    switch (level.gameType) {
+      case GameType.Single: {
+        const chosenKeySignature = pickKeySignature(level.hasKey ? level.keySignatures : [KeySignature.C]);
+        console.log({ level, displayInfo, chosenKeySignature });
+        router.push({
+          pathname: "/game-level/[id]",
+          params: { id: String(id), keySignature: chosenKeySignature },
+        });
+      }
+    }
+  }
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
@@ -49,7 +60,7 @@ export default function LevelDetails() {
         </AppView>
 
         <AppView style={s.midContainer}>
-          <AppText>{accidentText}</AppText>
+          <AppText>{displayInfo.accidentText}</AppText>
           <AppText>
             <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
           </AppText>
@@ -60,22 +71,14 @@ export default function LevelDetails() {
       </AppView>
 
       <AppView style={s.midContainer}>
-        <AppText type="subtitle" style={[s.rangeTitle, { marginBottom: rangeTitleOffset }]}>
+        <AppText type="subtitle" style={[s.rangeTitle, { marginBottom: displayInfo.rangeTitleOffset }]}>
           Note Range
         </AppText>
 
-        <SheetMusic.Range clef={level.clef} keys={rangeKeys} />
+        <SheetMusic.Range clef={level.clef} keys={displayInfo.rangeKeys} />
       </AppView>
 
-      <Link
-        asChild
-        href={{
-          pathname: "/game-level/[id]",
-          params: { id: String(id), keySignature: gameKeySignature },
-        }}
-      >
-        <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} />
-      </Link>
+      <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} onPress={handleNewGame} />
     </SafeAreaView>
   );
 }

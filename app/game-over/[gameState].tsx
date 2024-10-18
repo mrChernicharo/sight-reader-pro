@@ -25,8 +25,9 @@ export default function GameOverScreen() {
 
   const level = getLevel(levelId);
   const lastGame = games.at(-1);
-  const message = gameState === "win" ? "You Win" : "You Lose";
-  const emoji = gameState === "win" ? " 🎉 " : " 😩 ";
+  const isWin = gameState === "win";
+  const message = isWin ? "You Win" : "You Lose";
+  const emoji = isWin ? " 🎉 " : " 😩 ";
 
   if (!lastGame) return null;
 
@@ -64,7 +65,7 @@ export default function GameOverScreen() {
       </AppView>
 
       <AppView style={s.btnsContainer}>
-        {gameState === "win" ? (
+        {isWin ? (
           <AppButton
             text="Next Level"
             onPress={() => {
@@ -83,8 +84,8 @@ export default function GameOverScreen() {
 
         <AppButton
           text="Play again"
-          style={{ ...(gameState === "win" && { backgroundColor: "transparent" }) }}
-          textStyle={{ ...(gameState === "win" && { color: Colors[theme].text }) }}
+          style={{ ...(isWin && { backgroundColor: "transparent" }) }}
+          textStyle={{ ...(isWin && { color: Colors[theme].text }) }}
           onPress={() => {
             router.push({
               pathname: "/game-level/[id]",

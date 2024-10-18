@@ -5,36 +5,66 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/constants/Colors";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Link } from "expo-router";
-import { ComponentType, useRef, useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, Platform, StyleSheet, TextInput } from "react-native";
 
 export default function SettingsScreen() {
   const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
   const { username, setUsername, _resetStore } = useAppStore();
-  const [localUsername, setLocalUsername] = useState(username);
+  const [localUsername, setLocalUsername] = useState<string | undefined>(undefined);
 
-  const createTwoButtonAlert = () =>
-    Alert.alert("Are you sure?", "All your data will be erased. This action cannot be reverted", [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      {
-        text: "OK",
-        onPress: () => {
-          console.log("OK Pressed");
-          _resetStore();
+  const title = "Are you sure?";
+  const description = "All your data will be erased. This action cannot be reverted";
+
+  const createTwoButtonAlert = (title: string, description: string) => {
+    const onConfirm = () => {
+      console.log("OK Pressed");
+      setLocalUsername("");
+      _resetStore();
+    };
+    const onCancel = () => {
+      console.log("Cancel Pressed");
+    };
+
+    if (Platform.OS === "web") {
+      if (confirm(`${title} \n${description}`)) {
+        onConfirm();
+      } else {
+        onCancel();
+      }
+    } else {
+      Alert.alert(title, description, [
+        {
+          text: "Cancel",
+          onPress: onCancel,
+          style: "cancel",
         },
-      },
-    ]);
+        {
+          text: "OK",
+          onPress: onConfirm,
+        },
+      ]);
+    }
+  };
+
+  useEffect(() => {
+    // console.log({ username, localUsername });
+    if (username && localUsername === undefined) {
+      setLocalUsername(username);
+    }
+  }, [username, localUsername]);
 
   return (
     <AppView style={s.container}>
       <AppView style={s.top}>
-        <BackLink />
+        <AppView
+          onPointerDown={() => {
+            console.log("cleanup");
+            setLocalUsername(undefined);
+          }}
+        >
+          <BackLink />
+        </AppView>
         <AppText type="title" style={{ textAlign: "center" }}>
           Settings
         </AppText>
@@ -45,7 +75,7 @@ export default function SettingsScreen() {
         <TextInput
           style={[s.input, { color: textColor }]}
           onChangeText={setLocalUsername}
-          defaultValue={username}
+          value={localUsername}
           onSubmitEditing={() => localUsername && setUsername(localUsername)}
         />
       </AppView>
@@ -55,7 +85,7 @@ export default function SettingsScreen() {
         textStyle={{ color: "white" }}
         style={{ backgroundColor: "red" }}
         activeOpacity={0.7}
-        onPress={createTwoButtonAlert}
+        onPress={() => createTwoButtonAlert(title, description)}
       />
     </AppView>
   );

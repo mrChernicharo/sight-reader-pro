@@ -95,21 +95,14 @@ export default function LevelSelectionScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingTop: StatusBar.currentHeight,
     paddingHorizontal: 16,
-    // paddingTop: StatusBar.currentHeight,
     paddingVertical: 24,
+    // paddingTop: StatusBar.currentHeight,
     minHeight: Dimensions.get("window").height,
   },
   backArrow: {
     // borderWidth: 1,
     transform: [{ translateX: 0 }, { translateY: -8 }],
-    // position: "absolute",
-    // top: 10,
-    // left: 16,
-    // zIndex: 100,
-    // height: 24,
-    // width: 100,
   },
   sectionTitle: {
     paddingVertical: 16,
@@ -129,8 +122,6 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: "center",
     alignItems: "center",
-    // paddingHorizontal: 36,
-    // paddingVertical: 24,
   },
 
   footerFiller: {
