@@ -92,8 +92,9 @@ export default function GameOverScreen() {
               params: {
                 id: levelId,
                 clef,
-                ...(level.gameType !== GameType.Rhythm &&
-                  level.hasKey && { keySignature: pickKeySignature(level.keySignatures) }),
+                ...(level.gameType !== GameType.Rhythm && {
+                  keySignature: level.hasKey ? pickKeySignature(level.keySignatures) : KeySignature.C,
+                }),
               },
             });
           }}
