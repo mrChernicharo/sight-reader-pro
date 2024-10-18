@@ -1,34 +1,23 @@
+import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/constants/Colors";
-import { Clef, GameState, SoundEffect, GameType, Accident, KeySignature } from "@/constants/enums";
-import { getGameStats, isNoteMatch, pickKeySignature, randomUID, winScore } from "@/constants/helperFns";
+import { decideNextRound } from "@/constants/brain-storming";
+import { Accident, GameState, GameType, KeySignature, SoundEffect } from "@/constants/enums";
+import { getGameStats, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
-import { GameScore, SingleNoteRound, Note, Level, PianoKeySpec } from "@/constants/types";
-import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
+import { FLAT_KEY_SIGNATURES } from "@/constants/notes";
+import { GameScore, Level, Note, PianoKeySpec, SingleNoteRound } from "@/constants/types";
 import { useAppStore } from "@/hooks/useAppStore";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useLocalSearchParams, router } from "expo-router";
-import { useState, useCallback, useEffect } from "react";
-import { useColorScheme, SafeAreaView, StyleSheet } from "react-native";
+import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
+import { router, useLocalSearchParams } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Piano } from "../Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { decideNextRound } from "@/constants/brain-storming";
-import { AppText } from "@/components/atoms/AppText";
-import { FLAT_KEY_SIGNATURES } from "@/constants/notes";
 
 const DELAY = 60;
-
-function getPianoKeySpec(level: Level): PianoKeySpec {
-  if (level.gameType !== GameType.Single) return "Sharp";
-
-  if (level.hasKey) {
-    return level.keySignatures.some((key) => FLAT_KEY_SIGNATURES.includes(key)) ? "Flat" : "Sharp";
-  } else {
-    return [Accident.b, Accident.bb, Accident.All].includes(level.accident) ? "Flat" : "Sharp";
-  }
-}
 
 export function SingleNoteGameComponent() {
   const theme = useColorScheme() ?? "light";
@@ -46,6 +35,7 @@ export function SingleNoteGameComponent() {
   const [rounds, setRounds] = useState<SingleNoteRound[]>([]);
 
   const { hasWon } = getGameStats(level, gameScore);
+  const pianoBlackKeySpec = FLAT_KEY_SIGNATURES.includes(keySignature) ? "Flat" : "Sharp";
 
   function onPianoKeyPress(attempt: string) {
     if (gameState !== GameState.Idle) return;
@@ -99,12 +89,17 @@ export function SingleNoteGameComponent() {
   }, [hasWon, gameState, gameScore.successes, winScore]);
 
   useEffect(() => {
-    console.log("::: useEffect", { level, gameScore, gameState, currNote, keySignature });
-  }, [level, gameScore, gameState, currNote, keySignature]);
+    console.log(":::SingleNoteGameComponent -> useEffect", {
+      level,
+      gameScore,
+      gameState,
+      currNote,
+      keySignature,
+      pianoBlackKeySpec,
+    });
+  }, [level, gameScore, gameState, currNote, keySignature, pianoBlackKeySpec]);
 
   if (level.gameType !== GameType.Single) return <AppText>[ERROR]: Wrong GameType</AppText>;
-
-  const keySpec = getPianoKeySpec(level);
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
@@ -125,7 +120,7 @@ export function SingleNoteGameComponent() {
         </AppView>
       )}
 
-      <Piano keySpec={keySpec} onPianoKeyPress={onPianoKeyPress} />
+      <Piano keySpec={pianoBlackKeySpec} onPianoKeyPress={onPianoKeyPress} />
     </SafeAreaView>
   );
 }

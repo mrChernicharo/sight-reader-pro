@@ -4,8 +4,11 @@ import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
 import { Accident } from "@/constants/enums";
 import { PianoKeySpec } from "@/constants/types";
-const FLAT_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
-const SHARP_NOTES = ["c#", "d#", "", "f#", "g#", "a#"];
+
+const blackNoteNames = {
+  Flat: ["db", "eb", "", "gb", "ab", "bb"],
+  Sharp: ["c#", "d#", "", "f#", "g#", "a#"],
+};
 
 export function Piano({
   keySpec,
@@ -16,7 +19,7 @@ export function Piano({
 }) {
   const { width } = useWindowDimensions();
 
-  const BLACK_NOTES = keySpec === "Flat" ? FLAT_NOTES : SHARP_NOTES;
+  const BLACK_NOTES = blackNoteNames[keySpec];
 
   const keyboardMargin = width * 0.06;
   const keyWidth = (width - keyboardMargin * 2) / 7;
