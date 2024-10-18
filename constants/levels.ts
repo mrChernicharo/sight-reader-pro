@@ -144,6 +144,32 @@ const BASS_LEVELS: Level[] = [
     hasKey: false,
     accident: Accident.None,
   },
+  {
+    id: "bass-02",
+    index: 0,
+    name: "2 ranges",
+    description: "",
+    clef: Clef.Bass,
+    gameType: GameType.Single,
+    noteRanges: ["c/2:::g/2", "c/3:::g/3"],
+    durationInSeconds: 20,
+    winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
+    hasKey: false,
+    accident: Accident.None,
+  },
+  {
+    id: "bass-03",
+    index: 0,
+    name: "3 ranges!",
+    description: "",
+    clef: Clef.Bass,
+    gameType: GameType.Single,
+    noteRanges: ["c/2:::g/2", "c/3:::g/3", "c/4:::g/4"],
+    durationInSeconds: 20,
+    winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
+    hasKey: false,
+    accident: Accident.None,
+  },
 ];
 
 export const ALL_LEVELS = [...TREBLE_LEVELS, ...BASS_LEVELS];

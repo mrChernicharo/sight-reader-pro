@@ -28,14 +28,14 @@ export default function LevelDetails() {
   if (level.gameType !== GameType.Single) return;
 
   const accidentText = level.hasKey ? level.keySignatures.join("") : getAccidentText(level.accident);
-  // const [lowNote, highNote] = level.noteRanges[0].split(":::") as [Note, Note];
+
   const rangeKeys: [Note, Note][] = level.noteRanges.map((range) => range.split(":::") as [Note, Note]);
 
   const rangeTitleOffset = getRangeTitleOffset(level);
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
-      <AppView style={{ width: "100%" }}>
+      <AppView style={s.infoContainer}>
         <AppView style={s.top}>
           <BackLink to="/level-selection" />
           <AppText type="title" style={s.title}>
@@ -87,6 +87,7 @@ const s = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  infoContainer: { width: "100%" },
   top: {
     paddingBottom: 8,
     // borderWidth: 1,
