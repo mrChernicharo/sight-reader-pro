@@ -55,6 +55,14 @@ export function isNoteMatch(noteA: string, noteB: string) {
   return false;
 }
 
+/** is noteA higher than noteB ? */
+export function isNoteHigher(noteA: Note, noteB: Note) {
+  const [a, octA] = noteA.split("/");
+  const [b, octB] = noteB.split("/");
+  if (octA === octB) return a > b;
+  else return octA > octB;
+}
+
 export function stemDown(note: Note, clef: Clef) {
   const [key, octave] = note.split("/");
   // console.log({ note, key, octave, clef });

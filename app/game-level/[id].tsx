@@ -18,7 +18,7 @@ import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const DELAY = 40;
+const DELAY = 60;
 
 export default function GameLevel() {
   const theme = useColorScheme() ?? "light";

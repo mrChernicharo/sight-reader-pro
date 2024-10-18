@@ -24,18 +24,17 @@ import { stemDown } from "@/constants/helperFns";
 import { Colors } from "@/constants/Colors";
 
 export interface MusicNoteRangeProps {
-  keys: string[];
+  keys: [Note, Note][];
   clef: Clef;
 }
 
 export function useMusicNoteRange(props: MusicNoteRangeProps) {
   const { height, width, scale, fontScale } = useWindowDimensions();
-  const context = new ReactNativeSVGContext(NotoFontPack, { width: 250, height: 280 });
   const theme = useColorScheme() ?? "light";
   const textColor = Colors[theme].text;
 
   // console.log(props.keys);
-  const renderResult = runVexFlowRangeCode(context, props.clef, props.keys, textColor);
+  const renderResult = runVexFlowRangeCode(props.clef, props.keys, textColor);
   return renderResult;
 }
 
@@ -63,7 +62,9 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], color: string) {
+function runVexFlowRangeCode(clef: Clef, keys: [Note, Note][], color: string) {
+  const context = new ReactNativeSVGContext(NotoFontPack, { width: 250, height: 280 });
+
   // console.log("::", { clef, keys });
   const stave = new Stave(0, 80, 200);
   stave.setContext(context);
@@ -78,31 +79,33 @@ function runVexFlowRangeCode(context: any, clef: Clef, keys: string[], color: st
   stave.draw();
 
   const notes = [];
-  const [low, high] = [keys[0], keys[1]];
-  const staveNoteLow = new StaveNote({
-    clef,
-    keys: [low],
-    duration: "h",
-    stem_direction: stemDown(low as Note, clef) ? -1 : 1,
-  });
-  const staveNoteHigh = new StaveNote({
-    clef,
-    keys: [high],
-    duration: "h",
-    stem_direction: stemDown(high as Note, clef) ? -1 : 1,
-  });
-  const lowNote = low.split("/")[0];
-  if (lowNote.length > 1) {
-    const accident = lowNote[1];
-    staveNoteLow.addAccidental(0, new Accidental(accident));
-  }
-  const highNote = high.split("/")[0];
-  if (highNote.length > 1) {
-    const accident = highNote[1];
-    staveNoteHigh.addAccidental(0, new Accidental(accident));
-  }
 
-  notes.push(staveNoteLow, staveNoteHigh);
+  for (const [low, high] of keys) {
+    const staveNoteLow = new StaveNote({
+      clef,
+      keys: [low],
+      duration: "h",
+      stem_direction: stemDown(low as Note, clef) ? -1 : 1,
+    });
+    const staveNoteHigh = new StaveNote({
+      clef,
+      keys: [high],
+      duration: "h",
+      stem_direction: stemDown(high as Note, clef) ? -1 : 1,
+    });
+    const lowNote = low.split("/")[0];
+    if (lowNote.length > 1) {
+      const accident = lowNote[1];
+      staveNoteLow.addAccidental(0, new Accidental(accident));
+    }
+    const highNote = high.split("/")[0];
+    if (highNote.length > 1) {
+      const accident = highNote[1];
+      staveNoteHigh.addAccidental(0, new Accidental(accident));
+    }
+
+    notes.push(staveNoteLow, staveNoteHigh);
+  }
 
   const voice = new Voice({ num_beats: 4, beat_value: 4 });
   voice.addTickables(notes);

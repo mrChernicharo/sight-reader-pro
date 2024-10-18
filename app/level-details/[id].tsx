@@ -11,36 +11,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Game, Note } from "@/constants/types";
+import { Game, Level, Note } from "@/constants/types";
+import { isNoteHigher } from "@/constants/helperFns";
 
 export function calcGameScore(game: Game) {}
-
-function getRangeTitleOffset(clef: Clef, highNote: Note) {
-  const [note, octave] = highNote.split("/");
-  const defaultOffset = -100;
-  // console.log(highNote, note, octave, clef, defaultOffset);
-  switch (clef) {
-    case Clef.Bass:
-      if (+octave > 3 || (+octave == 3 && note >= "g")) return defaultOffset + 50;
-      return defaultOffset;
-    case Clef.Treble:
-      if (+octave > 6 || (+octave == 6 && note >= "a")) return defaultOffset + 50;
-      return defaultOffset;
-    default:
-      return defaultOffset;
-  }
-}
-
-function getAccidentText(accident: Accident) {
-  switch (accident) {
-    case Accident.None:
-      return "no accidents";
-    case Accident["#"]:
-      return "♯ sharp accidents";
-    case Accident.b:
-      return "♭ flat accidents";
-  }
-}
 
 export default function LevelDetails() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
@@ -54,8 +28,10 @@ export default function LevelDetails() {
   if (level.gameType !== GameType.Single) return;
 
   const accidentText = level.hasKey ? level.keySignatures.join("") : getAccidentText(level.accident);
-  const [lowNote, highNote] = level.noteRanges[0].split(":::") as [Note, Note];
-  const rangeTitleOffset = getRangeTitleOffset(level.clef, highNote);
+  // const [lowNote, highNote] = level.noteRanges[0].split(":::") as [Note, Note];
+  const rangeKeys: [Note, Note][] = level.noteRanges.map((range) => range.split(":::") as [Note, Note]);
+
+  const rangeTitleOffset = getRangeTitleOffset(level);
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
@@ -86,7 +62,7 @@ export default function LevelDetails() {
           Note Range
         </AppText>
 
-        <MusicNoteRange clef={level.clef} keys={[lowNote, highNote]} />
+        <MusicNoteRange clef={level.clef} keys={rangeKeys} />
       </AppView>
 
       <Link
@@ -139,3 +115,40 @@ const s = StyleSheet.create({
     color: "white",
   },
 });
+
+function getRangeTitleOffset(level: Level) {
+  const defaultOffset = -100;
+  if (level.gameType === GameType.Rhythm) return defaultOffset;
+
+  let highNote: Note = "a/1";
+  level.noteRanges.forEach((range) => {
+    const [, high] = range.split(":::") as [Note, Note];
+    if (isNoteHigher(high, highNote)) {
+      highNote = high;
+    }
+  });
+
+  const [note, octave] = highNote.split("/");
+  // console.log(highNote, note, octave, clef, defaultOffset);
+  switch (level.clef) {
+    case Clef.Bass:
+      if (+octave > 3 || (+octave == 3 && note >= "g")) return defaultOffset + 50;
+      return defaultOffset;
+    case Clef.Treble:
+      if (+octave > 6 || (+octave == 6 && note >= "a")) return defaultOffset + 50;
+      return defaultOffset;
+    default:
+      return defaultOffset;
+  }
+}
+
+function getAccidentText(accident: Accident) {
+  switch (accident) {
+    case Accident.None:
+      return "no accidents";
+    case Accident["#"]:
+      return "♯ sharp accidents";
+    case Accident.b:
+      return "♭ flat accidents";
+  }
+}
