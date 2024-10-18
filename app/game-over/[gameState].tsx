@@ -1,26 +1,26 @@
-import { AppView } from "@/components/atoms/AppView";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { AppText } from "@/components/atoms/AppText";
-import { router, useLocalSearchParams } from "expo-router";
-import { ScrollView } from "react-native-gesture-handler";
-import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
-import { Clef, GameType } from "@/constants/enums";
-import { useAppStore } from "@/hooks/useStore";
 import AppButton from "@/components/atoms/AppButton";
-import { getGameStats, isNoteMatch } from "@/constants/helperFns";
-import { ALL_LEVELS, SECTIONED_LEVELS, getLevel } from "@/constants/levels";
+import { AppText } from "@/components/atoms/AppText";
+import { AppView } from "@/components/atoms/AppView";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
+import { Clef, GameType, KeySignature } from "@/constants/enums";
+import { isNoteMatch, pickKeySignature } from "@/constants/helperFns";
+import { ALL_LEVELS, getLevel } from "@/constants/levels";
+import { useAppStore } from "@/hooks/useStore";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { router, useLocalSearchParams } from "expo-router";
+import { StyleSheet, useColorScheme } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function GameOverScreen() {
   const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const games = useAppStore((state) => state.games);
-  const { gameState, levelId, clef } = useLocalSearchParams() as {
+  const { gameState, levelId, clef, keySignature } = useLocalSearchParams() as {
     gameState: "win" | "lose";
     levelId: string;
     clef: Clef;
+    keySignature: KeySignature;
   };
 
   const level = getLevel(levelId);
@@ -88,7 +88,12 @@ export default function GameOverScreen() {
           onPress={() => {
             router.push({
               pathname: "/game-level/[id]",
-              params: { id: levelId, clef },
+              params: {
+                id: levelId,
+                clef,
+                ...(level.gameType !== GameType.Rhythm &&
+                  level.hasKey && { keySignature: pickKeySignature(level.keySignatures) }),
+              },
             });
           }}
         />

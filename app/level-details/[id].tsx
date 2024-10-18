@@ -9,13 +9,11 @@ import { Accident, Clef, GameType, KeySignature, WinRank } from "@/constants/enu
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
-import { StyleSheet } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Game, Level, Note } from "@/constants/types";
 import { isNoteHigher, pickKeySignature } from "@/constants/helperFns";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
-
-export function calcGameScore(game: Game) {}
 
 export default function LevelDetails() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
@@ -39,8 +37,9 @@ export default function LevelDetails() {
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.infoContainer}>
+        <BackLink to="/level-selection" style={s.backlink} />
+
         <AppView style={s.top}>
-          <BackLink to="/level-selection" />
           <AppText type="title" style={s.title}>
             {level.name}
           </AppText>
@@ -72,7 +71,7 @@ export default function LevelDetails() {
         asChild
         href={{
           pathname: "/game-level/[id]",
-          params: { id: String(id), KeySignature: gameKeySignature },
+          params: { id: String(id), keySignature: gameKeySignature },
         }}
       >
         <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} />
@@ -89,6 +88,9 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  backlink: {
+    transform: [{ translateX: -8 }, { translateY: 0 }],
   },
   infoContainer: { width: "100%" },
   top: {

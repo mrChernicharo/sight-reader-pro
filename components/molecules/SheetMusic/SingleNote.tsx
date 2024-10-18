@@ -53,7 +53,8 @@ durations:
 // ];
 
 function runVexFlowCode(context: any, clef: Clef, keys: string[], color: string, noteColor?: string) {
-  console.log("runVexFlowCode::::", keys);
+  console.log("runVexFlowCode::::", { keys });
+  if (!keys) return;
 
   context.setFont("Arial", 20, "red").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
 

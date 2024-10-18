@@ -39,10 +39,6 @@ export function SingleNoteGameComponent() {
   const { playSoundEfx } = useSoundEfx();
 
   const level = getLevel(id);
-  // const
-  if (!keySignature && level.gameType === GameType.Single) {
-    keySignature = pickKeySignature(level.hasKey ? level.keySignatures : [KeySignature.C]);
-  }
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
@@ -75,13 +71,12 @@ export function SingleNoteGameComponent() {
 
     setTimeout(() => {
       if (level.gameType !== GameType.Single) return;
-      if (level.hasKey) return;
       const { value: nextNote } = decideNextRound<SingleNoteRound>(level, keySignature, {
         value: currNote,
         attempt: attemptedNote,
       })!;
-      setGameState(GameState.Idle);
       if (nextNote) setCurrNote(nextNote);
+      setGameState(GameState.Idle);
     }, DELAY);
   }
 
@@ -104,8 +99,8 @@ export function SingleNoteGameComponent() {
   }, [hasWon, gameState, gameScore.successes, winScore]);
 
   useEffect(() => {
-    console.log("::: useEffect", level, gameScore, gameState, currNote);
-  }, [level, gameScore, gameState, currNote]);
+    console.log("::: useEffect", { level, gameScore, gameState, currNote, keySignature });
+  }, [level, gameScore, gameState, currNote, keySignature]);
 
   if (level.gameType !== GameType.Single) return <AppText>[ERROR]: Wrong GameType</AppText>;
 
@@ -118,16 +113,18 @@ export function SingleNoteGameComponent() {
 
       <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} gameScore={gameScore} levelId={id} />
 
-      <AppView>
-        {gameState === GameState.Idle ? <SheetMusic.SingleNote keys={[currNote]} clef={level.clef} /> : null}
+      {currNote && (
+        <AppView>
+          {gameState === GameState.Idle ? <SheetMusic.SingleNote keys={[currNote]} clef={level.clef} /> : null}
 
-        {gameState === GameState.Success ? (
-          <SheetMusic.SingleNote keys={[currNote]} clef={level.clef} noteColor={Colors[theme].green} />
-        ) : null}
-        {gameState === GameState.Mistake ? (
-          <SheetMusic.SingleNote keys={[currNote]} clef={level.clef} noteColor={Colors[theme].red} />
-        ) : null}
-      </AppView>
+          {gameState === GameState.Success ? (
+            <SheetMusic.SingleNote keys={[currNote]} clef={level.clef} noteColor={Colors[theme].green} />
+          ) : null}
+          {gameState === GameState.Mistake ? (
+            <SheetMusic.SingleNote keys={[currNote]} clef={level.clef} noteColor={Colors[theme].red} />
+          ) : null}
+        </AppView>
+      )}
 
       <Piano keySpec={keySpec} onPianoKeyPress={onPianoKeyPress} />
     </SafeAreaView>

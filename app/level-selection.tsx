@@ -10,7 +10,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { Link } from "expo-router";
 import { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, StatusBar, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 export function getLevelName(item: Level) {
@@ -97,11 +97,13 @@ const styles = StyleSheet.create({
     flex: 1,
     // paddingTop: StatusBar.currentHeight,
     paddingHorizontal: 16,
-    paddingVertical: 48,
+    // paddingTop: StatusBar.currentHeight,
+    paddingVertical: 24,
+    minHeight: Dimensions.get("window").height,
   },
   backArrow: {
     // borderWidth: 1,
-    transform: [{ translateX: -6 }],
+    transform: [{ translateX: 0 }, { translateY: -8 }],
     // position: "absolute",
     // top: 10,
     // left: 16,
