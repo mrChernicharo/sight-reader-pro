@@ -32,17 +32,17 @@ function getPianoKeySpec(level: Level): PianoKeySpec {
 
 export function SingleNoteGameComponent() {
   const theme = useColorScheme() ?? "light";
-  const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
-  let { id, keySignature } = useLocalSearchParams() as { id: string; keySignature: KeySignature };
+
   const { addGame } = useAppStore();
   const { playPianoNote } = usePianoSound();
   const { playSoundEfx } = useSoundEfx();
 
+  let { id, keySignature } = useLocalSearchParams() as { id: string; keySignature: KeySignature };
   const level = getLevel(id);
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
-  const [currNote, setCurrNote] = useState<Note>(decideNextRound<SingleNoteRound>(level, keySignature)!.value);
+  const [currNote, setCurrNote] = useState<Note>(decideNextRound<SingleNoteRound>(level, keySignature).value);
   const [rounds, setRounds] = useState<SingleNoteRound[]>([]);
 
   const { hasWon } = getGameStats(level, gameScore);
@@ -105,10 +105,9 @@ export function SingleNoteGameComponent() {
   if (level.gameType !== GameType.Single) return <AppText>[ERROR]: Wrong GameType</AppText>;
 
   const keySpec = getPianoKeySpec(level);
-  // const keySpec = "Flat";
 
   return (
-    <SafeAreaView style={[s.container, { backgroundColor }]}>
+    <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
       <BackLink to="/level-details" style={s.backLink} />
 
       <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} gameScore={gameScore} levelId={id} />
