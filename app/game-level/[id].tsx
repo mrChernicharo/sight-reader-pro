@@ -1,12 +1,13 @@
 import { AppText } from "@/components/atoms/AppText";
 import { Game } from "@/components/molecules/Game";
-import { Clef, GameType } from "@/constants/enums";
+import { Clef, GameType, KeySignature } from "@/constants/enums";
+import { pickKeySignature } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
 
 export default function GameLevel() {
-  const { id } = useLocalSearchParams() as { id: string; clef: Clef };
+  const { id } = useLocalSearchParams() as { id: string };
 
   const level = getLevel(id);
 

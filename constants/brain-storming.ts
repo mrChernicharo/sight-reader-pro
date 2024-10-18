@@ -82,12 +82,11 @@ export function getGamePitchesInAllOctaves(options: GetGamePitchSpec) {
   }
 }
 
-function generateRandomNote(level: Level, previousRound?: SingleNoteRound): Note {
+function generateRandomNote(level: Level, keySignature: KeySignature, previousRound?: SingleNoteRound): Note {
   if (level.gameType !== GameType.Single) throw Error("gameType incompatible");
 
   let possibleNotes: Note[];
   if (level.hasKey) {
-    const keySignature = pickKeySignature(level.keySignatures);
     possibleNotes = getGamePitchesInAllOctaves({ keySignature, scaleType: level.scaleType });
   } else {
     possibleNotes = getGamePitchesInAllOctaves({ accident: level.accident });
@@ -102,11 +101,11 @@ function generateRandomNote(level: Level, previousRound?: SingleNoteRound): Note
   return nextNote;
 }
 
-export function decideNextRound<Round>(level: Level, previousRound?: Round) {
+export function decideNextRound<Round>(level: Level, keySignature: KeySignature, previousRound?: Round) {
   switch (level.gameType) {
     case GameType.Single: {
       return {
-        value: generateRandomNote(level, previousRound as SingleNoteRound),
+        value: generateRandomNote(level, keySignature, previousRound as SingleNoteRound),
         attempt: null,
       } as SingleNoteRound;
     }

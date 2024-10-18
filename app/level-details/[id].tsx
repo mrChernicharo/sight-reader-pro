@@ -5,14 +5,14 @@ import { BackLink } from "@/components/atoms/BackLink";
 
 import { Colors } from "@/constants/Colors";
 import { getLevel } from "@/constants/levels";
-import { Accident, Clef, GameType, WinRank } from "@/constants/enums";
+import { Accident, Clef, GameType, KeySignature, WinRank } from "@/constants/enums";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Game, Level, Note } from "@/constants/types";
-import { isNoteHigher } from "@/constants/helperFns";
+import { isNoteHigher, pickKeySignature } from "@/constants/helperFns";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
 
 export function calcGameScore(game: Game) {}
@@ -31,6 +31,8 @@ export default function LevelDetails() {
   const accidentText = level.hasKey ? level.keySignatures.join("") : getAccidentText(level.accident);
 
   const rangeKeys: [Note, Note][] = level.noteRanges.map((range) => range.split(":::") as [Note, Note]);
+
+  const gameKeySignature = pickKeySignature(level.hasKey ? level.keySignatures : [KeySignature.C]);
 
   const rangeTitleOffset = getRangeTitleOffset(level);
 
@@ -70,7 +72,7 @@ export default function LevelDetails() {
         asChild
         href={{
           pathname: "/game-level/[id]",
-          params: { id: String(id) },
+          params: { id: String(id), KeySignature: gameKeySignature },
         }}
       >
         <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} />

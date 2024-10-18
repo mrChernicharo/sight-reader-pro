@@ -33,19 +33,20 @@ function getPianoKeySpec(level: Level): PianoKeySpec {
 export function SingleNoteGameComponent() {
   const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
-  const { id } = useLocalSearchParams() as { id: string };
+  let { id, keySignature } = useLocalSearchParams() as { id: string; keySignature: KeySignature };
   const { addGame } = useAppStore();
   const { playPianoNote } = usePianoSound();
   const { playSoundEfx } = useSoundEfx();
 
   const level = getLevel(id);
-
-  const initialRound = decideNextRound<SingleNoteRound>(level)!;
-  const { value: initialNote } = initialRound;
+  // const
+  if (!keySignature && level.gameType === GameType.Single) {
+    keySignature = pickKeySignature(level.hasKey ? level.keySignatures : [KeySignature.C]);
+  }
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
-  const [currNote, setCurrNote] = useState<Note>(initialNote);
+  const [currNote, setCurrNote] = useState<Note>(decideNextRound<SingleNoteRound>(level, keySignature)!.value);
   const [rounds, setRounds] = useState<SingleNoteRound[]>([]);
 
   const { hasWon } = getGameStats(level, gameScore);
@@ -75,12 +76,12 @@ export function SingleNoteGameComponent() {
     setTimeout(() => {
       if (level.gameType !== GameType.Single) return;
       if (level.hasKey) return;
-      const { value: nextNote } = decideNextRound<SingleNoteRound>(level, {
+      const { value: nextNote } = decideNextRound<SingleNoteRound>(level, keySignature, {
         value: currNote,
         attempt: attemptedNote,
       })!;
       setGameState(GameState.Idle);
-      setCurrNote(nextNote);
+      if (nextNote) setCurrNote(nextNote);
     }, DELAY);
   }
 
@@ -98,7 +99,7 @@ export function SingleNoteGameComponent() {
 
     router.replace({
       pathname: "/game-over/[gameState]",
-      params: { gameState: hasWon ? "win" : "lose", levelId: id, clef: level.clef },
+      params: { gameState: hasWon ? "win" : "lose", levelId: id, clef: level.clef, keySignature },
     });
   }, [hasWon, gameState, gameScore.successes, winScore]);
 
