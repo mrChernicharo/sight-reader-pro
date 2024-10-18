@@ -42,7 +42,7 @@ export enum GameState {
   Mistake = "mistake",
 }
 
-export enum keySignature {
+export enum KeySignature {
   C = "C",
   G = "G",
   D = "D",

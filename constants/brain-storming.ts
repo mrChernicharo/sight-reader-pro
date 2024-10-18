@@ -1,4 +1,4 @@
-import { Accident, GameType, ScaleType, keySignature } from "./enums";
+import { Accident, GameType, ScaleType, KeySignature } from "./enums";
 import { getRandInRange, pickKeySignature } from "./helperFns";
 import {
   DOUBLE_FLAT_NOTES_ALL_OCTAVES,
@@ -23,7 +23,7 @@ function generateRandomRhythm(level: Level, previousRound: RhythmRound) {
   if (level.gameType !== GameType.Rhythm) throw Error("gameType incompatible");
 }
 
-type GetGamePitchSpec = { keySignature: keySignature; scaleType: ScaleType } | { accident: Accident };
+type GetGamePitchSpec = { keySignature: KeySignature; scaleType: ScaleType } | { accident: Accident };
 function getNotesInRange(ranges: NoteRange[], possibleNotes: Note[]) {
   const noteSet = new Set<Note>();
   for (const range of ranges) {
@@ -67,7 +67,7 @@ export function getGamePitchesInAllOctaves(options: GetGamePitchSpec) {
   }
   //
   else if ((options as any)?.keySignature) {
-    const safeOpts = options as { keySignature: keySignature; scaleType: ScaleType };
+    const safeOpts = options as { keySignature: KeySignature; scaleType: ScaleType };
     const noteMap = scaleTypeNoteSequences[safeOpts.scaleType];
     const scaleNotes = noteMap[safeOpts.keySignature];
     const availableNotes: Note[] = [];
@@ -85,15 +85,13 @@ export function getGamePitchesInAllOctaves(options: GetGamePitchSpec) {
 function generateRandomNote(level: Level, previousRound?: SingleNoteRound): Note {
   if (level.gameType !== GameType.Single) throw Error("gameType incompatible");
 
-  let options: GetGamePitchSpec;
+  let possibleNotes: Note[];
   if (level.hasKey) {
     const keySignature = pickKeySignature(level.keySignatures);
-    options = { keySignature, scaleType: level.scaleType };
+    possibleNotes = getGamePitchesInAllOctaves({ keySignature, scaleType: level.scaleType });
   } else {
-    options = { accident: level.accident };
+    possibleNotes = getGamePitchesInAllOctaves({ accident: level.accident });
   }
-
-  const possibleNotes = getGamePitchesInAllOctaves(options);
 
   let rangeNotes = getNotesInRange(level.noteRanges, possibleNotes);
   if (previousRound) {

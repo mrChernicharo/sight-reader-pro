@@ -1,10 +1,10 @@
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/constants/Colors";
-import { Clef, GameState, SoundEffect, GameType } from "@/constants/enums";
-import { getGameStats, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
+import { Clef, GameState, SoundEffect, GameType, Accident, KeySignature } from "@/constants/enums";
+import { getGameStats, isNoteMatch, pickKeySignature, randomUID, winScore } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
-import { GameScore, SingleNoteRound, Note } from "@/constants/types";
+import { GameScore, SingleNoteRound, Note, Level, PianoKeySpec } from "@/constants/types";
 import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
 import { useAppStore } from "@/hooks/useStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -15,8 +15,20 @@ import { Piano } from "../Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { decideNextRound } from "@/constants/brain-storming";
+import { AppText } from "@/components/atoms/AppText";
+import { FLAT_KEY_SIGNATURES } from "@/constants/notes";
 
 const DELAY = 60;
+
+function getPianoKeySpec(level: Level): PianoKeySpec {
+  if (level.gameType !== GameType.Single) return "Sharp";
+
+  if (level.hasKey) {
+    return level.keySignatures.some((key) => FLAT_KEY_SIGNATURES.includes(key)) ? "Flat" : "Sharp";
+  } else {
+    return [Accident.b, Accident.bb, Accident.All].includes(level.accident) ? "Flat" : "Sharp";
+  }
+}
 
 export function SingleNoteGameComponent() {
   const theme = useColorScheme() ?? "light";
@@ -63,7 +75,10 @@ export function SingleNoteGameComponent() {
     setTimeout(() => {
       if (level.gameType !== GameType.Single) return;
       if (level.hasKey) return;
-      const { value: nextNote } = decideNextRound<SingleNoteRound>(level, { value: currNote, attempt: attemptedNote })!;
+      const { value: nextNote } = decideNextRound<SingleNoteRound>(level, {
+        value: currNote,
+        attempt: attemptedNote,
+      })!;
       setGameState(GameState.Idle);
       setCurrNote(nextNote);
     }, DELAY);
@@ -91,6 +106,11 @@ export function SingleNoteGameComponent() {
     console.log("::: useEffect", level, gameScore, gameState, currNote);
   }, [level, gameScore, gameState, currNote]);
 
+  if (level.gameType !== GameType.Single) return <AppText>[ERROR]: Wrong GameType</AppText>;
+
+  const keySpec = getPianoKeySpec(level);
+  // const keySpec = "Flat";
+
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <BackLink to="/level-details" style={s.backLink} />
@@ -108,9 +128,7 @@ export function SingleNoteGameComponent() {
         ) : null}
       </AppView>
 
-      {level.gameType === GameType.Single && !level.hasKey && (
-        <Piano accident={level.accident} onPianoKeyPress={onPianoKeyPress} />
-      )}
+      <Piano keySpec={keySpec} onPianoKeyPress={onPianoKeyPress} />
     </SafeAreaView>
   );
 }

@@ -1,4 +1,4 @@
-import { WinRank, keySignature, ScaleType, Accident, GameType, Clef } from "./enums";
+import { WinRank, KeySignature, ScaleType, Accident, GameType, Clef } from "./enums";
 
 export type Note = `${string}/${number}`;
 export type NoteRange = `${Note}:::${Note}`;
@@ -15,7 +15,7 @@ export type WinConditions = {
 };
 
 export type GameKeySettings =
-  | { hasKey: true; keySignatures: Array<keySignature>; scaleType: ScaleType }
+  | { hasKey: true; keySignatures: Array<KeySignature>; scaleType: ScaleType }
   | { hasKey: false; accident: Accident };
 
 export type GameSettings =
@@ -106,3 +106,5 @@ export type SectionedLevel = {
 //   notes: GameNote[];
 //   durationInSeconds: number;
 // };
+
+export type PianoKeySpec = "Flat" | "Sharp"; /* | 'Both' */

@@ -10,21 +10,21 @@ import { Platform } from "react-native";
 import { useEffect } from "react";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { getGamePitchesInAllOctaves } from "@/constants/brain-storming";
-import { Accident, ScaleType, keySignature } from "@/constants/enums";
+import { Accident, ScaleType, KeySignature } from "@/constants/enums";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();
 
   const DChromaticNotes = getGamePitchesInAllOctaves({
-    keySignature: keySignature.D,
+    keySignature: KeySignature.D,
     scaleType: ScaleType.Chromatic,
   });
   const DMajorNotes = getGamePitchesInAllOctaves({
-    keySignature: keySignature.D,
+    keySignature: KeySignature.D,
     scaleType: ScaleType.Diatonic,
   });
   const DMinorNotes = getGamePitchesInAllOctaves({
-    keySignature: keySignature.Dm,
+    keySignature: KeySignature.Dm,
     scaleType: ScaleType.Diatonic,
   });
 

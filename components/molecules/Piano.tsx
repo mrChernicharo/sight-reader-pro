@@ -3,13 +3,20 @@ import { Pressable, StyleSheet, TouchableOpacity, useWindowDimensions } from "re
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
 import { Accident } from "@/constants/enums";
+import { PianoKeySpec } from "@/constants/types";
 const FLAT_NOTES = ["db", "eb", "", "gb", "ab", "bb"];
 const SHARP_NOTES = ["c#", "d#", "", "f#", "g#", "a#"];
 
-export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPianoKeyPress: (note: string) => void }) {
+export function Piano({
+  keySpec,
+  onPianoKeyPress,
+}: {
+  keySpec: PianoKeySpec;
+  onPianoKeyPress: (note: string) => void;
+}) {
   const { width } = useWindowDimensions();
 
-  const BLACK_NOTES = accident === Accident.b ? FLAT_NOTES : SHARP_NOTES;
+  const BLACK_NOTES = keySpec === "Flat" ? FLAT_NOTES : SHARP_NOTES;
 
   const keyboardMargin = width * 0.06;
   const keyWidth = (width - keyboardMargin * 2) / 7;
@@ -44,7 +51,7 @@ export function Piano({ accident, onPianoKeyPress }: { accident: Accident; onPia
               cancelable
               onPress={() => {
                 if (!note) return;
-                console.log(note, BLACK_NOTES);
+                // console.log(note, BLACK_NOTES);
                 onPianoKeyPress(note);
               }}
             >

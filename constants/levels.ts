@@ -1,4 +1,4 @@
-import { Clef, GameType, WinRank, Accident, keySignature, ScaleType } from "./enums";
+import { Clef, GameType, WinRank, Accident, KeySignature, ScaleType } from "./enums";
 import { padZero } from "./helperFns";
 import { SectionedLevel, Level, Game } from "./types";
 
@@ -85,7 +85,7 @@ const TREBLE_LEVELS: Level[] = [
     durationInSeconds: 20,
     winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
     hasKey: true,
-    keySignatures: [keySignature.C],
+    keySignatures: [KeySignature.C],
     scaleType: ScaleType.Diatonic,
   },
   {
@@ -99,7 +99,7 @@ const TREBLE_LEVELS: Level[] = [
     durationInSeconds: 20,
     winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
     hasKey: true,
-    keySignatures: [keySignature.G, keySignature.F, keySignature.D],
+    keySignatures: [KeySignature.G, KeySignature.F, KeySignature.D],
     scaleType: ScaleType.Diatonic,
   },
   {

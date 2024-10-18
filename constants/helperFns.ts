@@ -1,4 +1,4 @@
-import { Clef, Accident, WinRank, keySignature } from "./enums";
+import { Clef, Accident, WinRank, KeySignature } from "./enums";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
 import { Game, GameScore, Level, Note, NoteRange } from "./types";
 
@@ -136,9 +136,9 @@ export function getAudioFilepath(note: Note) {
   return filepath;
 }
 
-export function pickKeySignature(keySignatures: keySignature[]) {
+export function pickKeySignature(keySignatures: KeySignature[]) {
   if (keySignatures.length === 0) {
-    return keySignature.C;
+    return KeySignature.C;
   }
   const randomIndex = Math.floor(Math.random() * keySignatures.length);
   return keySignatures[randomIndex];
