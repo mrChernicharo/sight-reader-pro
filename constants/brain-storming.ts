@@ -133,12 +133,6 @@ function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: AppNote[], k
     //   noteSet,
     // });
 
-    // is note in keyNotes ?
-    //
-
-    // let [rangeNoteLowA, rangeNoteHighA] = pitchA.split("/");
-    // if (rangeNoteLow)
-
     // pitchA -> a/4
     // possibleNotes [g/4, ab/4, bb/4]
     // if possibleNotes.includes(pitchA) return possibleNotes.findIndex
@@ -147,67 +141,9 @@ function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: AppNote[], k
     // const [pitchA, pitchB] = range.split(":::").sort() as [Note, Note];
 
     /************************************************************/
-
-    // const [pitchA, pitchB] = range.split(":::").sort() as [AppNote, AppNote];
-    // console.log("::: [pitchA, pitchB]", [pitchA, pitchB]);
-
-    // const [noteA, octA] = pitchA.split("/");
-    // let lowIdx = -1;
-    // if (keyNotesInAllOctaves.includes(pitchA)) {
-    //   lowIdx = keyNotesInAllOctaves.findIndex((n) => {
-    //     const [nn, nOct] = n.split("/");
-    //     return octA == nOct && isNoteMatch(nn, noteA);
-    //   });
-    // } else {
-    //   const nextPitch = incrementNote(pitchA, keySignature);
-    //   const [newNoteA, newOctA] = nextPitch.split("/");
-    //   console.log("::: incrementNote -> [newNoteA, newOctA]", [newNoteA, newOctA]);
-
-    //   lowIdx = keyNotesInAllOctaves.findIndex((n) => {
-    //     const [nn, nOct] = n.split("/");
-    //     return newOctA == nOct && isNoteMatch(nn, newNoteA);
-    //   });
-    // }
-
-    // const [noteB, octB] = pitchB.split("/");
-    // let highIdx = -1;
-    // if (keyNotesInAllOctaves.includes(pitchB)) {
-    //   highIdx = keyNotesInAllOctaves.findIndex((n) => {
-    //     const [nn, nOct] = n.split("/");
-    //     return octB == nOct && isNoteMatch(nn, noteB);
-    //   });
-    // } else {
-    //   const nextPitch = decrementNote(pitchB, keySignature);
-    //   const [newNoteB, newOctB] = nextPitch.split("/");
-    //   console.log("::: decrementNote -> [newNoteB, newOctB]", [newNoteB, newOctB]);
-
-    //   highIdx = keyNotesInAllOctaves.findIndex((n) => {
-    //     const [nn, nOct] = n.split("/");
-    //     return newOctB == nOct && isNoteMatch(nn, newNoteB);
-    //   });
-    // }
-
-    // // TODO: this isn't working with busy keySignatures
-    // // const noteIndices = [
-    // //   possibleNotes.findIndex((n) => {
-    // //     console.log(":::", { n, octA, noteA });
-    // //     return octA == n.split("/")[1] && isNoteMatch(n.split("/")[0], noteA);
-    // //   }),
-    // //   possibleNotes.findIndex((n) => octB == n.split("/")[1] && isNoteMatch(n.split("/")[0], noteB)),
-    // // ];
-    // const sortedNoteIndices = [lowIdx, highIdx].sort();
-    // let [low, high] = sortedNoteIndices;
-    // // console.log(":::getNotesInRange", { range, possibleNotes: keyNotesInAllOctaves, noteA, octA, noteB, octB });
-    // // console.log(":::getNotesInRange", { lowIdx, highIdx, low, high });
-    // for (let idx = low; idx <= high; idx++) {
-    //   const possibleNote = keyNotesInAllOctaves[idx];
-    //   // console.log(":::getNotesInRange", { possibleNote });
-    //   noteSet.add(possibleNote);
-    // }
   }
 
   const result = Array.from(noteSet);
-  // console.log(":::getNotesInRange", { result, noteSet });
 
   return result;
 }
@@ -275,7 +211,7 @@ export function getGamePitchesInAllOctaves(options: GetGamePitchSpec): AppNote[]
   } else {
     result = [];
   }
-  console.log("getGamePitchesInAllOctaves:::", { result });
+  // console.log("getGamePitchesInAllOctaves:::", { result });
   return result as AppNote[];
 }
 
@@ -294,7 +230,7 @@ function generateRandomNote(level: Level, keySignature: KeySignature, previousRo
     rangeNotes = rangeNotes.filter((note) => note !== previousRound.value);
   }
   const nextNote = pickNextRoundNote(rangeNotes);
-  // console.log("::: generateRandomNote :::", { possibleNotes, rangeNotes, nextNote });
+  console.log("::: generateRandomNote :::", { possibleNotes, rangeNotes, nextNote });
   return nextNote;
 }
 

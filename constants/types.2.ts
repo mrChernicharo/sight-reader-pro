@@ -115,7 +115,13 @@ export function buildPitchIndexDicts() {
   while (oct < 8) {
     noteMathTable.forEach((noteNames) => {
       noteNames.forEach((noteName) => {
-        PITCH_INDICES.set(`${noteName}/${oct}` as AppNote, idx);
+        if (noteName === NoteName["b#"]) {
+          PITCH_INDICES.set(`${noteName}/${oct - 1}` as AppNote, idx);
+        } else if (noteName === NoteName["cb"]) {
+          PITCH_INDICES.set(`${noteName}/${oct + 1}` as AppNote, idx);
+        } else {
+          PITCH_INDICES.set(`${noteName}/${oct}` as AppNote, idx);
+        }
       });
       idx++;
     });

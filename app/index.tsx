@@ -18,39 +18,39 @@ export default function Home() {
 
   // const noteIdx = getNoteIdx("ab/4" as AppNote);
   // console.log("ab/4", noteIdx);
-  const DChromaticNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature["F#m"],
-    scaleType: ScaleType.Chromatic,
-  });
-  const DMajorNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature.Db,
-    scaleType: ScaleType.Diatonic,
-  });
-  const DMinorNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature.Ab,
-    scaleType: ScaleType.Diatonic,
-  });
-  const FSharpMinorNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature["F#m"],
-    scaleType: ScaleType.Chromatic,
-  });
-  const DbMajorNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature.Db,
-    scaleType: ScaleType.Diatonic,
-  });
-  const AbMajorNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature.Ab,
-    scaleType: ScaleType.Diatonic,
-  });
+  // const DChromaticNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature["F#m"],
+  //   scaleType: ScaleType.Chromatic,
+  // });
+  // const DMajorNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature.Db,
+  //   scaleType: ScaleType.Diatonic,
+  // });
+  // const DMinorNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature.Ab,
+  //   scaleType: ScaleType.Diatonic,
+  // });
+  // const FSharpMinorNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature["F#m"],
+  //   scaleType: ScaleType.Chromatic,
+  // });
+  // const DbMajorNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature.Db,
+  //   scaleType: ScaleType.Diatonic,
+  // });
+  // const AbMajorNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature.Ab,
+  //   scaleType: ScaleType.Diatonic,
+  // });
 
-  const CbMajorNotes = getGamePitchesInAllOctaves({
-    keySignature: KeySignature.Cb,
-    scaleType: ScaleType.Diatonic,
-  });
+  // const CbMajorNotes = getGamePitchesInAllOctaves({
+  //   keySignature: KeySignature.Cb,
+  //   scaleType: ScaleType.Diatonic,
+  // });
 
-  const NotesNone = getGamePitchesInAllOctaves({ accident: Accident.None });
-  const NotesSharp = getGamePitchesInAllOctaves({ accident: Accident["#"] });
-  const NotesFlat = getGamePitchesInAllOctaves({ accident: Accident.b });
+  // const NotesNone = getGamePitchesInAllOctaves({ accident: Accident.None });
+  // const NotesSharp = getGamePitchesInAllOctaves({ accident: Accident["#"] });
+  // const NotesFlat = getGamePitchesInAllOctaves({ accident: Accident.b });
 
   // console.dir({
   //   NotesNone,

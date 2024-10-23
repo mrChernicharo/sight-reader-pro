@@ -153,7 +153,7 @@ export function pickKeySignature(level: Level) {
         const randomIndex = Math.floor(Math.random() * level.keySignatures.length);
         return level.keySignatures[randomIndex];
       } else {
-        return [Accident.b, Accident.bb, Accident.All].includes(level.accident) ? KeySignature.F : KeySignature.C;
+        return [Accident.b].includes(level.accident) ? KeySignature.F : KeySignature.C;
       }
     }
 
