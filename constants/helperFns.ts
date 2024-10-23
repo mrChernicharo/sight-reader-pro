@@ -64,7 +64,7 @@ export function isNoteMatch(noteA: string, noteB: string) {
     case "e":
     case "fb":
     case "dx":
-      return ["e", "dx", "dx"].includes(noteB);
+      return ["e", "fb", "dx"].includes(noteB);
 
     case "f":
     case "gbb":

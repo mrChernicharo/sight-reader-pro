@@ -45,7 +45,7 @@ export function SingleNoteGameComponent() {
     const [note, octave] = currNote.split("/");
     const attemptedNote: Note = `${attempt}/${+octave}`;
     const success = isNoteMatch(attempt, note);
-    // console.log({ currNote, attempt, attemptedNote });
+    console.log({ currNote, attempt, attemptedNote });
 
     if (success) {
       playPianoNote(attemptedNote);
