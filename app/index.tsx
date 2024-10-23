@@ -11,39 +11,59 @@ import { useEffect } from "react";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { getGamePitchesInAllOctaves } from "@/constants/brain-storming";
 import { Accident, ScaleType, KeySignature } from "@/constants/enums";
+import { AppNote, buildPitchIndexDicts, getNoteIdx } from "@/constants/types.2";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();
 
-  // const DChromaticNotes = getGamePitchesInAllOctaves({
-  //   keySignature: KeySignature.D,
-  //   scaleType: ScaleType.Chromatic,
-  // });
-  // const DMajorNotes = getGamePitchesInAllOctaves({
-  //   keySignature: KeySignature.D,
-  //   scaleType: ScaleType.Diatonic,
-  // });
-  // const DMinorNotes = getGamePitchesInAllOctaves({
-  //   keySignature: KeySignature.Dm,
-  //   scaleType: ScaleType.Diatonic,
-  // });
+  // const noteIdx = getNoteIdx("ab/4" as AppNote);
+  // console.log("ab/4", noteIdx);
+  const DChromaticNotes = getGamePitchesInAllOctaves({
+    keySignature: KeySignature["F#m"],
+    scaleType: ScaleType.Chromatic,
+  });
+  const DMajorNotes = getGamePitchesInAllOctaves({
+    keySignature: KeySignature.Db,
+    scaleType: ScaleType.Diatonic,
+  });
+  const DMinorNotes = getGamePitchesInAllOctaves({
+    keySignature: KeySignature.Ab,
+    scaleType: ScaleType.Diatonic,
+  });
+  const FSharpMinorNotes = getGamePitchesInAllOctaves({
+    keySignature: KeySignature["F#m"],
+    scaleType: ScaleType.Chromatic,
+  });
+  const DbMajorNotes = getGamePitchesInAllOctaves({
+    keySignature: KeySignature.Db,
+    scaleType: ScaleType.Diatonic,
+  });
+  const AbMajorNotes = getGamePitchesInAllOctaves({
+    keySignature: KeySignature.Ab,
+    scaleType: ScaleType.Diatonic,
+  });
 
-  // const NotesNone = getGamePitchesInAllOctaves({ accident: Accident.None });
-  // const NotesSharp = getGamePitchesInAllOctaves({ accident: Accident["#"] });
-  // const NotesFlat = getGamePitchesInAllOctaves({ accident: Accident.b });
-  // const NotesFlatSharp = getGamePitchesInAllOctaves({ accident: Accident["#b"] });
-  // const NotesDoubleFlat = getGamePitchesInAllOctaves({ accident: Accident.bb });
-  // const NotesDoubleSharp = getGamePitchesInAllOctaves({ accident: Accident.x });
-  // const NotesAll = getGamePitchesInAllOctaves({ accident: Accident.All });
+  const CbMajorNotes = getGamePitchesInAllOctaves({
+    keySignature: KeySignature.Cb,
+    scaleType: ScaleType.Diatonic,
+  });
 
-  // console.table({
+  const NotesNone = getGamePitchesInAllOctaves({ accident: Accident.None });
+  const NotesSharp = getGamePitchesInAllOctaves({ accident: Accident["#"] });
+  const NotesFlat = getGamePitchesInAllOctaves({ accident: Accident.b });
+
+  // console.dir({
   //   NotesNone,
   //   NotesSharp,
   //   NotesFlat,
-  //   NotesFlatSharp,
-  //   NotesDoubleFlat,
-  //   NotesDoubleSharp,
-  //   NotesAll,
+  //   FSharpMinorNotes,
+  //   AbMajorNotes,
+  //   DbMajorNotes,
+  //   CbMajorNotes,
+  //   // NotesFlatSharp,
+  //   // NotesDoubleFlat,
+  //   // NotesDoubleSharp,
+  //   // NotesAll,
   //   DChromaticNotes,
   //   DMajorNotes,
   //   DMinorNotes,

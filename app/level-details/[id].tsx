@@ -36,7 +36,7 @@ export default function LevelDetails() {
     switch (level.gameType) {
       case GameType.Single: {
         const chosenKeySignature = pickKeySignature(level);
-        console.log({ level, displayInfo, chosenKeySignature });
+        // console.log({ level, displayInfo, chosenKeySignature });
         router.push({
           pathname: "/game-level/[id]",
           params: { id: String(id), keySignature: chosenKeySignature },

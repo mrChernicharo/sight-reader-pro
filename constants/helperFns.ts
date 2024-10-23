@@ -50,6 +50,41 @@ export function isNoteMatch(noteA: string, noteB: string) {
       return noteB === "bb";
     case "bb":
       return noteB === "a#";
+
+    case "c":
+    case "dbb":
+    case "b#":
+      return ["c", "dbb", "b#"].includes(noteB);
+
+    case "d":
+    case "ebb":
+    case "cx":
+      return ["d", "ebb", "cx"].includes(noteB);
+
+    case "e":
+    case "fb":
+    case "dx":
+      return ["e", "dx", "dx"].includes(noteB);
+
+    case "f":
+    case "gbb":
+    case "e#":
+      return ["f", "gbb", "e#"].includes(noteB);
+
+    case "g":
+    case "abb":
+    case "fx":
+      return ["g", "abb", "fx"].includes(noteB);
+
+    case "a":
+    case "bbb":
+    case "gx":
+      return ["a", "bbb", "gx"].includes(noteB);
+
+    case "b":
+    case "cb":
+    case "ax":
+      return ["b", "cb", "ax"].includes(noteB);
   }
 
   return false;
@@ -73,33 +108,6 @@ export function stemDown(note: Note, clef: Clef) {
       return +octave > 2 || (+octave === 2 && key >= "d") ? true : false;
   }
 }
-
-// export function getRandomNoteInRange(range: NoteRange, accident: Accident, previousNote: string): Note {
-//   let notesArr: Note[] = [];
-//   switch (accident) {
-//     case Accident["#"]:
-//       notesArr = NOTES_SHARP_ALL_OCTAVES;
-//       break;
-//     case Accident.b:
-//       notesArr = NOTES_FLAT_ALL_OCTAVES;
-//       break;
-//     case Accident.None:
-//     default:
-//       notesArr = WHITE_NOTES_ALL_OCTAVES;
-//       break;
-//   }
-
-//   const [lowNote, highNote] = range.split(":::");
-//   const [lowIdx, highIdx] = [notesArr.findIndex((n) => n === lowNote), notesArr.findIndex((n) => n === highNote)];
-//   const chosenIdx = getRandInRange(lowIdx, highIdx);
-//   const chosenNote = notesArr[chosenIdx];
-//   // console.log(":::getRandomNoteInRange", { range, lowIdx, highIdx, chosenIdx, chosenNote, previousNote });
-//   if (chosenNote === previousNote) {
-//     // console.log(":::getRandomNoteInRange ::: shit_same_note!", { chosenNote, previousNote });
-//     return getRandomNoteInRange(range, accident, chosenNote);
-//   } // recurse if same note as before
-//   return chosenNote;
-// }
 
 export function getGameStats(level: Level, gameScore: GameScore) {
   const attempts = Object.values(gameScore).reduce((acc, nxt) => acc + nxt);

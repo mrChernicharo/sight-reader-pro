@@ -13,78 +13,89 @@ export const glyphs = {
   two16Notes: "\u{266C}",
 };
 
-// prettier-ignore
-export const ALL_NOTES = ["c", "c#", "db", "d", "d#", "eb", "e", "f", "f#", "gb", "g", "g#", "ab", "a", "a#", "bb", "b"];
-
 export const WHITE_NOTES = ["c", "d", "e", "f", "g", "a", "b"];
 export const ALL_NOTES_SHARP = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"];
 export const ALL_NOTES_FLAT = ["c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b"];
 
 // prettier-ignore
-export const ALL_NOTES_SHARP_DOUBLE_SHARP = ["c", "c#","cx","d", "d#", "dx", "e", "e#", "f", "f#", "fx", "g", "g#", "gx", "a", "a#", "b", "b#"]
-// ["cx", "dx", "e#", "fx", "gx", "ax", "b#"];
+export const ALL_NOTES = ["c", "c#", "db", "d", "d#", "eb", "e", "f", "f#", "gb", "g", "g#", "ab", "a", "a#", "bb", "b"];
+// prettier-ignore
+export const ALL_NOTES_SHARP_DOUBLE_SHARP = ["c", "c#", "cx", "d", "d#", "dx", "e", "e#", "f", "f#", "fx", "g", "g#", "gx", "a", "a#", "b", "b#"]
 // prettier-ignore
 export const ALL_NOTES_FLAT_DOUBLE_FLAT = ["cb", "c", "dbb", "db", "d",  "ebb", "eb", "e", "fb", "f", "gbb", "gb", "g", "abb", "ab", "a", "bbb", "bb", "b"];
+// ["cx", "dx", "e#", "fx", "gx", "ax", "b#"];
 // ["cb", "dbb", "ebb", "fb", "gbb", "abb", "bbb"];
 
 export const WHITE_NOTES_ALL_OCTAVES: Note[] = [];
+WHITE_NOTES_ALL_OCTAVES.push("b/0");
 let oct = 1;
-while (oct < 9) {
+while (oct < 8) {
   WHITE_NOTES.forEach((n) => {
     WHITE_NOTES_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;
 }
+WHITE_NOTES_ALL_OCTAVES.push("c/8");
 
 // #
 export const NOTES_SHARP_ALL_OCTAVES: Note[] = [];
+NOTES_SHARP_ALL_OCTAVES.push("b/0");
 oct = 1;
-while (oct < 9) {
+while (oct < 8) {
   ALL_NOTES_SHARP.forEach((n) => {
     NOTES_SHARP_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;
 }
+NOTES_SHARP_ALL_OCTAVES.push("c/8");
 
 // b
 export const NOTES_FLAT_ALL_OCTAVES: Note[] = [];
+NOTES_FLAT_ALL_OCTAVES.push("b/0");
 oct = 1;
-while (oct < 9) {
+while (oct < 8) {
   ALL_NOTES_FLAT.forEach((n) => {
     NOTES_FLAT_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;
 }
+NOTES_FLAT_ALL_OCTAVES.push("c/8");
 
 // #b
 export const NOTES_SHARP_FLAT_ALL_OCTAVES: Note[] = [];
 oct = 1;
-while (oct < 9) {
+NOTES_SHARP_FLAT_ALL_OCTAVES.push("b/0");
+while (oct < 8) {
   ALL_NOTES.forEach((n) => {
     NOTES_SHARP_FLAT_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;
 }
+NOTES_SHARP_FLAT_ALL_OCTAVES.push("c/8");
 
 // x
 export const DOUBLE_SHARP_NOTES_ALL_OCTAVES: Note[] = [];
 oct = 1;
-while (oct < 9) {
+DOUBLE_SHARP_NOTES_ALL_OCTAVES.push("b/0");
+while (oct < 8) {
   ALL_NOTES_SHARP_DOUBLE_SHARP.forEach((n) => {
     DOUBLE_SHARP_NOTES_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;
 }
+DOUBLE_SHARP_NOTES_ALL_OCTAVES.push("c/8");
 
 // bb
 export const DOUBLE_FLAT_NOTES_ALL_OCTAVES: Note[] = [];
 oct = 1;
-while (oct < 9) {
+DOUBLE_FLAT_NOTES_ALL_OCTAVES.push("b/0");
+while (oct < 8) {
   ALL_NOTES_FLAT_DOUBLE_FLAT.forEach((n) => {
     DOUBLE_FLAT_NOTES_ALL_OCTAVES.push(`${n}/${oct}`);
   });
   oct++;
 }
+DOUBLE_FLAT_NOTES_ALL_OCTAVES.push("c/8");
 
 // all
 export const POSSIBLE_NOTES_ALL_OCTAVES = Array.from(
@@ -174,4 +185,113 @@ export const FLAT_KEY_SIGNATURES = [
   KeySignature.Bbm,
   KeySignature.Ebm,
   KeySignature.Abm,
+];
+
+export const SHARP_KEY_SIGNATURES = [
+  KeySignature.C,
+  KeySignature.G,
+  KeySignature.D,
+  KeySignature.A,
+  KeySignature.E,
+  KeySignature.B,
+  KeySignature["F#"],
+  KeySignature["C#"],
+  KeySignature.Am,
+  KeySignature.Em,
+  KeySignature.Bm,
+  KeySignature["F#m"],
+  KeySignature["C#m"],
+  KeySignature["G#m"],
+  KeySignature["D#m"],
+  KeySignature["A#m"],
+];
+
+export const MAJOR_KEY_SIGNATURES = [
+  KeySignature.C,
+  KeySignature.G,
+  KeySignature.D,
+  KeySignature.A,
+  KeySignature.E,
+  KeySignature.B,
+  KeySignature["F#"],
+  KeySignature["C#"],
+  KeySignature.F,
+  KeySignature.Bb,
+  KeySignature.Eb,
+  KeySignature.Ab,
+  KeySignature.Db,
+  KeySignature.Gb,
+  KeySignature.Cb,
+];
+export const MINOR_KEY_SIGNATURES = [
+  KeySignature.Am,
+  KeySignature.Em,
+  KeySignature.Bm,
+  KeySignature["F#m"],
+  KeySignature["C#m"],
+  KeySignature["G#m"],
+  KeySignature["D#m"],
+  KeySignature["A#m"],
+  KeySignature.Dm,
+  KeySignature.Gm,
+  KeySignature.Cm,
+  KeySignature.Fm,
+  KeySignature.Bbm,
+  KeySignature.Ebm,
+  KeySignature.Abm,
+];
+
+export const MAJOR_KEY_SIGNATURES_SHARP = [
+  KeySignature.C,
+  KeySignature.G,
+  KeySignature.D,
+  KeySignature.A,
+  KeySignature.E,
+  KeySignature.B,
+  KeySignature["F#"],
+  KeySignature["C#"],
+];
+export const MAJOR_KEY_SIGNATURES_FLAT = [
+  KeySignature.F,
+  KeySignature.Bb,
+  KeySignature.Eb,
+  KeySignature.Ab,
+  KeySignature.Db,
+  KeySignature.Gb,
+  KeySignature.Cb,
+];
+
+export const MINOR_KEY_SIGNATURES_SHARP = [
+  KeySignature.Am,
+  KeySignature.Em,
+  KeySignature.Bm,
+  KeySignature["F#m"],
+  KeySignature["C#m"],
+  KeySignature["G#m"],
+  KeySignature["D#m"],
+  KeySignature["A#m"],
+];
+export const MINOR_KEY_SIGNATURES_FLAT = [
+  KeySignature.Dm,
+  KeySignature.Gm,
+  KeySignature.Cm,
+  KeySignature.Fm,
+  KeySignature.Bbm,
+  KeySignature.Ebm,
+  KeySignature.Abm,
+];
+
+export const noteMathTable = [
+  ["c", "b#", "dbb"],
+  ["c#", "db"],
+  ["d", "cx", "ebb"],
+  ["d#", "eb"],
+  ["e", "dx", "fb"],
+  ["f", "e#", "gbb"],
+  ["f#", "gb"],
+  ["g", "fx", "abb"],
+  ["g#", "ab"],
+  ["a", "gx", "bbb"],
+  ["a#", "bb"],
+  ["b", "ax", "cb"],
 ];

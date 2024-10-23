@@ -2,10 +2,10 @@ export enum Accident {
   "None" = "none",
   "#" = "#",
   "b" = "b",
-  "#b" = "#b",
-  "x" = "x",
-  "bb" = "bb",
-  "All" = "all",
+  // "#b" = "#b",
+  // "x" = "x",
+  // "bb" = "bb",
+  // "All" = "all",
 }
 
 export enum Clef {

@@ -8,9 +8,9 @@ import { Level } from "@/constants/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useEffect } from "react";
-import { Dimensions, StatusBar, StyleSheet } from "react-native";
+import { Dimensions, Pressable, StatusBar, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 export function getLevelName(item: Level) {
@@ -65,19 +65,21 @@ export default function LevelSelectionScreen() {
                       const { levelName, levelIdx } = getLevelName(level);
                       const disabled = level.index > unlockedLevels[level.clef] + 1;
                       return (
-                        <Link
+                        <Pressable
                           key={level.id}
                           disabled={disabled}
-                          href={{
-                            pathname: "/level-details/[id]",
-                            params: { id: level.id },
+                          onPress={() => {
+                            router.push({
+                              pathname: "/level-details/[id]",
+                              params: { id: level.id },
+                            });
                           }}
                         >
                           <AppView style={[styles.item, { backgroundColor: disabled ? "gray" : itemBGColor }]}>
                             <AppText>{levelName}</AppText>
                             <AppText>{levelIdx}</AppText>
                           </AppView>
-                        </Link>
+                        </Pressable>
                       );
                     })}
                   </AppView>

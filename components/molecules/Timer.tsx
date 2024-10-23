@@ -20,7 +20,7 @@ export function CountdownTimer({
   const barWidth = `${elapsed * 100}%` as DimensionValue;
 
   useEffect(() => {
-    console.log(":::initialize timer");
+    // console.log(":::initialize timer");
 
     const interval = setInterval(() => {
       setCount((curr) => {

@@ -27,6 +27,8 @@ export function SingleNoteGameComponent() {
   const { playSoundEfx } = useSoundEfx();
 
   let { id, keySignature } = useLocalSearchParams() as { id: string; keySignature: KeySignature };
+  keySignature = decodeURIComponent(keySignature) as KeySignature;
+  // console.log("<<<< keySignature >>>>", keySignature);
   const level = getLevel(id);
 
   const [gameScore, setGameScore] = useState<GameScore>({ successes: 0, mistakes: 0 });
@@ -88,16 +90,16 @@ export function SingleNoteGameComponent() {
     });
   }, [hasWon, gameState, gameScore.successes, winScore]);
 
-  useEffect(() => {
-    console.log(":::SingleNoteGameComponent -> useEffect", {
-      level,
-      gameScore,
-      gameState,
-      currNote,
-      keySignature,
-      pianoBlackKeySpec,
-    });
-  }, [level, gameScore, gameState, currNote, keySignature, pianoBlackKeySpec]);
+  // useEffect(() => {
+  //   console.log(":::SingleNoteGameComponent -> useEffect", {
+  //     level,
+  //     gameScore,
+  //     gameState,
+  //     currNote,
+  //     keySignature,
+  //     pianoBlackKeySpec,
+  //   });
+  // }, [level, gameScore, gameState, currNote, keySignature, pianoBlackKeySpec]);
 
   if (level.gameType !== GameType.Single) return <AppText>[ERROR]: Wrong GameType</AppText>;
 
