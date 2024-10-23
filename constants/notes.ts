@@ -1,6 +1,6 @@
 /* https://www.alt-codes.net/music_note_alt_codes.php */
 
-import { KeySignature } from "./enums";
+import { Accident, KeySignature, ScaleType } from "./enums";
 import { Note } from "./types";
 
 // export const glyphs = ["♯", "♭", "♮", "𝄪", "𝄫", "𝄀", "𝄁", "𝄆", "𝄇", "𝄞", "𝄢", "𝄡", "𝄐"];
@@ -295,3 +295,17 @@ export const noteMathTable = [
   ["a#", "bb"],
   ["b", "ax", "cb"],
 ];
+
+export const accidentNoteSequences = {
+  [Accident.None]: WHITE_NOTES_ALL_OCTAVES,
+  [Accident["#"]]: NOTES_SHARP_ALL_OCTAVES,
+  [Accident.b]: NOTES_FLAT_ALL_OCTAVES,
+  // [Accident["#b"]]: NOTES_SHARP_FLAT_ALL_OCTAVES,
+  // [Accident.x]: DOUBLE_SHARP_NOTES_ALL_OCTAVES,
+  // [Accident.bb]: DOUBLE_FLAT_NOTES_ALL_OCTAVES,
+  // [Accident.All]: POSSIBLE_NOTES_ALL_OCTAVES,
+};
+export const scaleTypeNoteSequences = {
+  [ScaleType.Chromatic]: chromaticNotes,
+  [ScaleType.Diatonic]: diatonicKeyNotes,
+};

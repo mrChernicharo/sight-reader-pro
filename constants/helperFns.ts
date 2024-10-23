@@ -1,11 +1,130 @@
-import { Clef, Accident, WinRank, KeySignature, GameType } from "./enums";
-import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES, WHITE_NOTES_ALL_OCTAVES } from "./notes";
-import { Game, GameScore, Level, Note, NoteRange } from "./types";
+import { Accident, Clef, GameType, KeySignature, NoteName, WinRank } from "./enums";
+import { GameScore, Level, Note } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 export const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
 
 export const winScore = 5;
+
+import { FLAT_KEY_SIGNATURES, noteMathTable } from "./notes";
+import { AppNote } from "./types";
+
+function isNatural(note: AppNote): boolean {
+  const noteName = note.split("/")[0] as NoteName;
+  return noteName.length === 1;
+}
+function isSharp(note: AppNote): boolean {
+  const noteName = note.split("/")[0] as NoteName;
+  return noteName.length === 2 && noteName[1] === "#";
+}
+function isSimpleSharp(note: AppNote): boolean {
+  const noteName = note.split("/")[0] as NoteName;
+  return isSharp(note) && !["b#", "e#"].includes(noteName);
+}
+function isDoubleSharp(note: AppNote) {
+  const noteName = note.split("/")[0] as NoteName;
+  return noteName.length === 2 && noteName[1] === "x";
+}
+function isFlat(note: AppNote): boolean {
+  const noteName = note.split("/")[0] as NoteName;
+  return noteName.length === 2 && noteName[1] === "b";
+}
+function isSimpleFlat(note: AppNote): boolean {
+  const noteName = note.split("/")[0] as NoteName;
+  return isFlat(note) && !["cb", "fb"].includes(noteName);
+}
+function isDoubleFlat(note: AppNote) {
+  const noteName = note.split("/")[0] as NoteName;
+  return noteName.length === 3 && noteName[2] === "b";
+}
+
+export function getNoteIdx(note: AppNote) {
+  const idx = PITCH_INDICES.get(note) ?? -1;
+  if (idx < 0) {
+    console.error("<<< getNoteIdx [ERROR]", { note, idx, PITCH_INDICES });
+  }
+  return idx;
+}
+
+export function isFlatKeySignature(keySignature: KeySignature) {
+  return FLAT_KEY_SIGNATURES.includes(keySignature);
+}
+
+// @TODO: update getNoteFromIdx -> getNoteFromIdx(noteIdx, keySignature, scaleType)
+export function getNoteFromIdx(noteIdx: number, keySignature: KeySignature, forceAltered = false) {
+  const isFlatKeySig = isFlatKeySignature(keySignature);
+
+  const allOpts = NOTE_INDICES.get(noteIdx)!;
+
+  const filteredOpts = allOpts.filter((n) => {
+    if (isFlatKeySig) {
+      return isNatural(n) || isFlat(n) || isDoubleFlat(n);
+    } else {
+      return isNatural(n) || isSharp(n) || isDoubleSharp(n);
+    }
+  });
+
+  const resultNote = filteredOpts[0];
+  // console.log("getNoteFromIdx 2:::", { allOpts, filteredOpts, resultNote });
+  if (!resultNote) {
+    console.error(`getNoteFromIdx [ERROR]:: Could not find note for index ${noteIdx}`);
+  }
+  return resultNote;
+}
+
+export function addHalfSteps(note: AppNote, incr: number, keySignature: KeySignature) {
+  let noteIdx = getNoteIdx(note);
+
+  let steps = Math.abs(incr);
+  while (steps > 0) {
+    noteIdx += incr;
+    steps--;
+  }
+
+  const resultNote = getNoteFromIdx(noteIdx, keySignature);
+  return resultNote ?? note;
+}
+
+export function buildPitchIndexDicts() {
+  const PITCH_INDICES = new Map<AppNote, number>();
+  let oct = 1;
+  let idx = 1;
+
+  // set "b/0", "ax/0", "cb/1"
+  noteMathTable[11].forEach((noteName) => {
+    let oct = noteName === NoteName.cb ? 1 : 0;
+    PITCH_INDICES.set(`${noteName}/${oct}` as AppNote, 0);
+  });
+
+  while (oct < 8) {
+    noteMathTable.forEach((noteNames) => {
+      noteNames.forEach((noteName) => {
+        let octave = oct;
+        if (noteName === NoteName["b#"]) octave--;
+        else if (noteName === NoteName["cb"]) octave++;
+        PITCH_INDICES.set(`${noteName}/${octave}` as AppNote, idx);
+      });
+      idx++;
+    });
+    oct++;
+  }
+
+  // set "c/8", "b#/7", "dbb/8",
+  noteMathTable[0].forEach((noteName) => {
+    let oct = noteName === NoteName["b#"] ? 7 : 8;
+    PITCH_INDICES.set(`${noteName}/${oct}` as AppNote, PITCH_INDICES.size);
+  });
+
+  const NOTE_INDICES = new Map<number, AppNote[]>();
+
+  Array.from(PITCH_INDICES.entries()).forEach(([note, idx]) => {
+    NOTE_INDICES.has(idx) ? NOTE_INDICES.get(idx)?.push(note) : NOTE_INDICES.set(idx, [note]);
+  });
+  console.log("buildPitchIndicesDict:::", { PITCH_INDICES, NOTE_INDICES });
+  return { PITCH_INDICES, NOTE_INDICES };
+}
+
+export const { PITCH_INDICES, NOTE_INDICES } = buildPitchIndexDicts();
 
 export const randomUID = (length = 12) =>
   Array(length)

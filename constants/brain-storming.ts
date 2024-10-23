@@ -1,28 +1,15 @@
 import { Accident, GameType, KeySignature, ScaleType } from "./enums";
-import { getRandInRange, isNoteMatch } from "./helperFns";
+import { NOTE_INDICES, addHalfSteps, getNoteIdx, getRandInRange } from "./helperFns";
 import {
-  DOUBLE_FLAT_NOTES_ALL_OCTAVES,
-  DOUBLE_SHARP_NOTES_ALL_OCTAVES,
   NOTES_FLAT_ALL_OCTAVES,
   NOTES_SHARP_ALL_OCTAVES,
-  NOTES_SHARP_FLAT_ALL_OCTAVES,
-  POSSIBLE_NOTES_ALL_OCTAVES,
   WHITE_NOTES_ALL_OCTAVES,
+  accidentNoteSequences,
   chromaticNotes,
   diatonicKeyNotes,
-  noteMathTable,
+  scaleTypeNoteSequences,
 } from "./notes";
-import { ChordRound, Level, MelodyRound, Note, NoteRange, RhythmRound, SingleNoteRound } from "./types";
-import {
-  AppNote,
-  NOTE_INDICES_FLAT,
-  NOTE_INDICES_SHARP,
-  NOTE_INDICES,
-  addHalfSteps,
-  getNoteFromIdx,
-  getNoteIdx,
-  isFlatKeySignature as isKeySignatureFlat,
-} from "./types.2";
+import { AppNote, ChordRound, Level, MelodyRound, Note, NoteRange, RhythmRound, SingleNoteRound } from "./types";
 
 function generateRandomChord(level: Level, previousRound: ChordRound) {
   if (level.gameType !== GameType.Chord) throw Error("gameType incompatible");
@@ -34,62 +21,11 @@ function generateRandomRhythm(level: Level, previousRound: RhythmRound) {
   if (level.gameType !== GameType.Rhythm) throw Error("gameType incompatible");
 }
 
-// function incrementNote(note: Note, keySignature: KeySignature): Note {
-//   // const isFlat = FLAT_KEY_SIGNATURES.includes(keySignature);
-
-//   let [n, oct] = note.split("/");
-
-//   const mathIdx = noteMathTable.findIndex((noteNames) => noteNames.includes(n));
-//   let nextIdx = -1;
-//   if (mathIdx === noteMathTable.length - 1) {
-//     oct = String(+oct + 1);
-//     nextIdx = 0;
-//   } else {
-//     nextIdx = mathIdx + 1;
-//   }
-//   // const nextIdx = mathIdx === noteMathTable.length - 1 ? 0 : mathIdx + 1
-//   const nextNoteOpts = noteMathTable[nextIdx];
-//   const nextNote = nextNoteOpts.find((noteOpt) => chromaticNotes[keySignature].includes(noteOpt));
-
-//   if (!nextNote) {
-//     console.error("oooohhh shit...");
-//   }
-
-//   const finalNote = `${nextNote}/${oct}` as Note;
-//   // console.log("incrementNote :::", { nextNoteOpts, nextNote, note, keySignature, finalNote });
-//   return finalNote;
-// }
-
-// function decrementNote(note: Note, keySignature: KeySignature): Note {
-//   // const isFlat = FLAT_KEY_SIGNATURES.includes(keySignature);
-//   let [n, oct] = note.split("/");
-
-//   const mathIdx = noteMathTable.findIndex((noteNames) => noteNames.includes(n));
-//   let nextIdx = -1;
-//   if (mathIdx === 0) {
-//     oct = String(+oct - 1);
-//     nextIdx = noteMathTable.length - 1;
-//   } else {
-//     nextIdx = mathIdx - 1;
-//   }
-//   // const nextIdx = mathIdx === noteMathTable.length - 1 ? 0 : mathIdx + 1
-//   const nextNoteOpts = noteMathTable[nextIdx];
-//   const nextNote = nextNoteOpts.find((noteOpt) => chromaticNotes[keySignature].includes(noteOpt));
-
-//   if (!nextNote) {
-//     console.error("oooohhh shit...");
-//   }
-
-//   const finalNote = `${nextNote}/${oct}` as Note;
-//   console.log("decrementNote :::", { nextNoteOpts, nextNote, note, keySignature, finalNote });
-//   return finalNote;
-// }
-
 function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: AppNote[], keySignature: KeySignature) {
   // console.log(":::getNotesInRange", { keyNotesInAllOctaves, ranges });
-  const isFlatKSig = isKeySignatureFlat(keySignature);
-
+  // const isFlatKSig = isFlatKeySignature(keySignature);
   const noteSet = new Set<Note>();
+
   for (const range of ranges) {
     let [rangeNoteLow, rangeNoteHigh] = range.split(":::") as [AppNote, AppNote];
     let [rangeNoteIdxLow, rangeNoteIdxHigh] = [rangeNoteLow, rangeNoteHigh].map(getNoteIdx);
@@ -101,13 +37,13 @@ function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: AppNote[], k
 
     let loKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteLow);
     while (loKeyIdx < 0) {
-      rangeNoteLow = addHalfSteps(rangeNoteLow, 1, isFlatKSig);
+      rangeNoteLow = addHalfSteps(rangeNoteLow, 1, keySignature);
       loKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteLow);
     }
 
     let hiKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteHigh);
     while (hiKeyIdx < 0) {
-      rangeNoteHigh = addHalfSteps(rangeNoteHigh, -1, isFlatKSig);
+      rangeNoteHigh = addHalfSteps(rangeNoteHigh, -1, keySignature);
       hiKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteHigh);
     }
 
@@ -116,7 +52,6 @@ function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: AppNote[], k
 
     keyNotesInAllOctaves.forEach((note) => {
       if (getNoteIdx(note) >= rangeNoteIdxLow && getNoteIdx(note) <= rangeNoteIdxHigh) {
-        // rangeNotes.push(note);
         noteSet.add(note);
       }
     });
@@ -130,21 +65,11 @@ function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: AppNote[], k
     //   rangeNoteIdxLow,
     //   keySignature,
     //   isFlatKSig,
-    //   noteSet,
     // });
-
-    // pitchA -> a/4
-    // possibleNotes [g/4, ab/4, bb/4]
-    // if possibleNotes.includes(pitchA) return possibleNotes.findIndex
-    // else if (lowNote) increment noteA
-    // else if (hiNote) decrement noteA
-    // const [pitchA, pitchB] = range.split(":::").sort() as [Note, Note];
-
-    /************************************************************/
   }
 
   const result = Array.from(noteSet);
-
+  // console.log(":::getNotesInRange", { result, noteSet });
   return result;
 }
 
@@ -154,20 +79,6 @@ function pickNextRoundNote(rangeNotes: Note[]): Note {
   // console.log(":::pickNextRoundNote", { rangeNotes, chosenIdx, chosenNote });
   return chosenNote;
 }
-
-const accidentNoteSequences = {
-  [Accident.None]: WHITE_NOTES_ALL_OCTAVES,
-  [Accident["#"]]: NOTES_SHARP_ALL_OCTAVES,
-  [Accident.b]: NOTES_FLAT_ALL_OCTAVES,
-  // [Accident["#b"]]: NOTES_SHARP_FLAT_ALL_OCTAVES,
-  // [Accident.x]: DOUBLE_SHARP_NOTES_ALL_OCTAVES,
-  // [Accident.bb]: DOUBLE_FLAT_NOTES_ALL_OCTAVES,
-  // [Accident.All]: POSSIBLE_NOTES_ALL_OCTAVES,
-};
-const scaleTypeNoteSequences = {
-  [ScaleType.Chromatic]: chromaticNotes,
-  [ScaleType.Diatonic]: diatonicKeyNotes,
-};
 
 type GetGamePitchSpec = { keySignature: KeySignature; scaleType: ScaleType } | { accident: Accident };
 export function getGamePitchesInAllOctaves(options: GetGamePitchSpec): AppNote[] {
@@ -184,16 +95,6 @@ export function getGamePitchesInAllOctaves(options: GetGamePitchSpec): AppNote[]
     const scaleNoteNames = noteMap[safeOpts.keySignature];
 
     const availableNotes: Note[] = [];
-    // const isFlat = isKeySignatureFlat(safeOpts.keySignature);
-    // const allNotes = isFlat ? NOTE_INDICES_FLAT : NOTE_INDICES_SHARP;
-    // //
-    // allNotes.forEach((note) => {
-    //   const noteMatchesScale = scaleNotes.includes(note.split("/")[0]);
-    //   console.log({ note, scaleNotes, safeOpts, NOTE_INDICES, noteMatchesScale });
-    //   if (noteMatchesScale) {
-    //     availableNotes.push(note);
-    //   }
-    // });
 
     const allNotes = Array.from(NOTE_INDICES);
     allNotes.forEach(([idx, notes]) => {
@@ -202,8 +103,6 @@ export function getGamePitchesInAllOctaves(options: GetGamePitchSpec): AppNote[]
         if (scaleNoteNames.includes(nn)) {
           availableNotes.push(note);
         }
-
-        // if (scaleNotes.some(scaleNoteName =>))
       });
     });
 
@@ -241,7 +140,6 @@ export function decideNextRound<Round>(level: Level, keySignature: KeySignature,
         value: generateRandomNote(level, keySignature, previousRound as SingleNoteRound),
         attempt: null,
       } as SingleNoteRound;
-
       // console.log(">>>>decideNextRound", { level, keySignature, previousRound, round });
 
       return round as Round;

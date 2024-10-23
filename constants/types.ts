@@ -1,4 +1,24 @@
-import { WinRank, KeySignature, ScaleType, Accident, GameType, Clef } from "./enums";
+import { WinRank, KeySignature, ScaleType, Accident, GameType, Clef, NoteName } from "./enums";
+
+// exceptions b0, c8
+type NoteOctave = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
+export type AppNote = "b/0" | "ax/0" | "cb/0" | `${NoteName}/${NoteOctave}` | "c/8" | "b#/8" | "dbb/8";
+
+const noteMathTable: NoteName[][] = [
+  [NoteName["c"], NoteName["b#"], NoteName["dbb"]],
+  [NoteName["c#"], NoteName["db"]],
+  [NoteName["d"], NoteName["cx"], NoteName["ebb"]],
+  [NoteName["d#"], NoteName["eb"]],
+  [NoteName["e"], NoteName["dx"], NoteName["fb"]],
+  [NoteName["f"], NoteName["e#"], NoteName["gbb"]],
+  [NoteName["f#"], NoteName["gb"]],
+  [NoteName["g"], NoteName["fx"], NoteName["abb"]],
+  [NoteName["g#"], NoteName["ab"]],
+  [NoteName["a"], NoteName["gx"], NoteName["bbb"]],
+  [NoteName["a#"], NoteName["bb"]],
+  [NoteName["b"], NoteName["ax"], NoteName["cb"]],
+];
 
 export type Note = `${string}/${number}`;
 export type NoteRange = `${Note}:::${Note}`;

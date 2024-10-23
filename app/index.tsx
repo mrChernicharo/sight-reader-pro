@@ -11,7 +11,6 @@ import { useEffect } from "react";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { getGamePitchesInAllOctaves } from "@/constants/brain-storming";
 import { Accident, ScaleType, KeySignature } from "@/constants/enums";
-import { AppNote, buildPitchIndexDicts, getNoteIdx } from "@/constants/types.2";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();
