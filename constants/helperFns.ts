@@ -1,4 +1,4 @@
-import { Accident, Clef, GameType, KeySignature, NoteName, WinRank } from "./enums";
+import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank } from "./enums";
 import { GameScore, Level, Note } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
@@ -272,7 +272,7 @@ export function pickKeySignature(level: Level) {
         const randomIndex = Math.floor(Math.random() * level.keySignatures.length);
         return level.keySignatures[randomIndex];
       } else {
-        return [Accident.b].includes(level.accident) ? KeySignature.F : KeySignature.C;
+        return [LevelAccidentType.b].includes(level.accident) ? KeySignature.F : KeySignature.C;
       }
     }
 

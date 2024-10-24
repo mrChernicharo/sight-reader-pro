@@ -1,16 +1,10 @@
 import AppButton from "@/components/atoms/AppButton";
-import { AppLogo } from "@/components/atoms/AppLogo";
 import { AppText } from "@/components/atoms/AppText";
 import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
-import { Link, router } from "expo-router";
-import { Image, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { Link } from "expo-router";
+import { StyleSheet, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Platform } from "react-native";
-import { useEffect } from "react";
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
-import { getGamePitchesInAllOctaves } from "@/constants/brain-storming";
-import { Accident, ScaleType, KeySignature } from "@/constants/enums";
 
 export default function Home() {
   const { width, height } = useWindowDimensions();

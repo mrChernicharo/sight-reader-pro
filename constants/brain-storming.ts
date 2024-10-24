@@ -1,15 +1,7 @@
-import { Accident, GameType, KeySignature, ScaleType } from "./enums";
+import { LevelAccidentType, GameType, KeySignature, ScaleType } from "./enums";
 import { NOTE_INDICES, addHalfSteps, getNoteIdx, getRandInRange } from "./helperFns";
-import {
-  NOTES_FLAT_ALL_OCTAVES,
-  NOTES_SHARP_ALL_OCTAVES,
-  WHITE_NOTES_ALL_OCTAVES,
-  accidentNoteSequences,
-  chromaticNotes,
-  diatonicKeyNotes,
-  scaleTypeNoteSequences,
-} from "./notes";
-import { AppNote, ChordRound, Level, MelodyRound, Note, NoteRange, RhythmRound, SingleNoteRound } from "./types";
+import { accidentNoteSequences, scaleTypeNoteSequences } from "./notes";
+import { Note, ChordRound, Level, MelodyRound, NoteRange, RhythmRound, SingleNoteRound } from "./types";
 
 function generateRandomChord(level: Level, previousRound: ChordRound) {
   if (level.gameType !== GameType.Chord) throw Error("gameType incompatible");
@@ -21,13 +13,13 @@ function generateRandomRhythm(level: Level, previousRound: RhythmRound) {
   if (level.gameType !== GameType.Rhythm) throw Error("gameType incompatible");
 }
 
-function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: AppNote[], keySignature: KeySignature) {
+function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: Note[], keySignature: KeySignature) {
   // console.log(":::getNotesInRange", { keyNotesInAllOctaves, ranges });
   // const isFlatKSig = isFlatKeySignature(keySignature);
   const noteSet = new Set<Note>();
 
   for (const range of ranges) {
-    let [rangeNoteLow, rangeNoteHigh] = range.split(":::") as [AppNote, AppNote];
+    let [rangeNoteLow, rangeNoteHigh] = range.split(":::") as [Note, Note];
     let [rangeNoteIdxLow, rangeNoteIdxHigh] = [rangeNoteLow, rangeNoteHigh].map(getNoteIdx);
 
     if (rangeNoteIdxLow > rangeNoteIdxHigh) {
@@ -80,12 +72,12 @@ function pickNextRoundNote(rangeNotes: Note[]): Note {
   return chosenNote;
 }
 
-type GetGamePitchSpec = { keySignature: KeySignature; scaleType: ScaleType } | { accident: Accident };
-export function getGamePitchesInAllOctaves(options: GetGamePitchSpec): AppNote[] {
+type GetGamePitchSpec = { keySignature: KeySignature; scaleType: ScaleType } | { accident: LevelAccidentType };
+export function getGamePitchesInAllOctaves(options: GetGamePitchSpec): Note[] {
   // console.log("::: getGamePitchesInAllOctaves :::", { options, accidentNoteSequences });
   let result: Note[];
   if ((options as any)?.accident) {
-    const safeOpts = options as { accident: Accident };
+    const safeOpts = options as { accident: LevelAccidentType };
     result = accidentNoteSequences[safeOpts.accident];
   }
   //
@@ -111,7 +103,7 @@ export function getGamePitchesInAllOctaves(options: GetGamePitchSpec): AppNote[]
     result = [];
   }
   // console.log("getGamePitchesInAllOctaves:::", { result });
-  return result as AppNote[];
+  return result as Note[];
 }
 
 function generateRandomNote(level: Level, keySignature: KeySignature, previousRound?: SingleNoteRound): Note {
@@ -124,7 +116,7 @@ function generateRandomNote(level: Level, keySignature: KeySignature, previousRo
     possibleNotes = getGamePitchesInAllOctaves({ accident: level.accident });
   }
 
-  let rangeNotes = getNotesInRange(level.noteRanges, possibleNotes as AppNote[], keySignature);
+  let rangeNotes = getNotesInRange(level.noteRanges, possibleNotes as Note[], keySignature);
   if (previousRound) {
     rangeNotes = rangeNotes.filter((note) => note !== previousRound.value);
   }

@@ -1,6 +1,16 @@
 import { Note } from "./types";
 
-export const PIANO_SOUND_ASSETS: Record<Note, NodeRequire> = {
+// export const glyphs = ["♯", "♭", "♮", "𝄪", "𝄫", "𝄀", "𝄁", "𝄆", "𝄇", "𝄞", "𝄢", "𝄡", "𝄐"];
+export const glyphs = {
+  sharp: "\u{266F}",
+  flat: "\u{266D}",
+  natural: "\u{266E}",
+  quarter: "\u{2663}",
+  two8Notes: "\u{266B}",
+  two16Notes: "\u{266C}",
+};
+
+export const PIANO_SOUND_ASSETS: Partial<Record<Note, NodeRequire>> = {
   "a/1": require("@/assets/sounds/piano-notes/Piano.mf.A1.mp3"),
   "a/2": require("@/assets/sounds/piano-notes/Piano.mf.A2.mp3"),
   "a/3": require("@/assets/sounds/piano-notes/Piano.mf.A3.mp3"),

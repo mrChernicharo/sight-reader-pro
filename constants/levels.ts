@@ -1,4 +1,4 @@
-import { Clef, GameType, WinRank, Accident, KeySignature, ScaleType } from "./enums";
+import { Clef, GameType, WinRank, LevelAccidentType, KeySignature, ScaleType } from "./enums";
 import { padZero } from "./helperFns";
 import {
   FLAT_KEY_SIGNATURES,
@@ -212,7 +212,7 @@ const BASS_LEVELS: Level[] = assembleLevelInfo(Clef.Bass, [
     noteRanges: ["g/2:::c/3"],
     durationInSeconds: 20,
     winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
-    accident: Accident.None,
+    accident: LevelAccidentType.None,
   },
   // {
   //   name: "chromatic keys",

@@ -2,7 +2,7 @@ import { WHITE_NOTES } from "@/constants/notes";
 import { Pressable, StyleSheet, TouchableOpacity, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
-import { Accident } from "@/constants/enums";
+import { LevelAccidentType } from "@/constants/enums";
 import { PianoKeySpec } from "@/constants/types";
 
 const blackNoteNames = {

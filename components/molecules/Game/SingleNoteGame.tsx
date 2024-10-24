@@ -3,7 +3,7 @@ import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/constants/Colors";
 import { decideNextRound } from "@/constants/brain-storming";
-import { Accident, GameState, GameType, KeySignature, SoundEffect } from "@/constants/enums";
+import { GameState, GameType, KeySignature, SoundEffect } from "@/constants/enums";
 import { getGameStats, isNoteMatch, randomUID, winScore } from "@/constants/helperFns";
 import { getLevel } from "@/constants/levels";
 import { FLAT_KEY_SIGNATURES } from "@/constants/notes";
@@ -43,7 +43,7 @@ export function SingleNoteGameComponent() {
     if (gameState !== GameState.Idle) return;
 
     const [note, octave] = currNote.split("/");
-    const attemptedNote: Note = `${attempt}/${+octave}`;
+    const attemptedNote = `${attempt}/${+octave}` as Note;
     const success = isNoteMatch(attempt, note);
     console.log({ currNote, attempt, attemptedNote });
 

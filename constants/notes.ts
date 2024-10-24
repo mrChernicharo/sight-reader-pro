@@ -1,17 +1,7 @@
 /* https://www.alt-codes.net/music_note_alt_codes.php */
 
-import { Accident, KeySignature, ScaleType } from "./enums";
+import { LevelAccidentType, KeySignature, NoteName, ScaleType } from "./enums";
 import { Note } from "./types";
-
-// export const glyphs = ["♯", "♭", "♮", "𝄪", "𝄫", "𝄀", "𝄁", "𝄆", "𝄇", "𝄞", "𝄢", "𝄡", "𝄐"];
-export const glyphs = {
-  sharp: "\u{266F}",
-  flat: "\u{266D}",
-  natural: "\u{266E}",
-  quarter: "\u{2663}",
-  two8Notes: "\u{266B}",
-  two16Notes: "\u{266C}",
-};
 
 export const WHITE_NOTES = ["c", "d", "e", "f", "g", "a", "b"];
 export const ALL_NOTES_SHARP = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"];
@@ -31,7 +21,8 @@ WHITE_NOTES_ALL_OCTAVES.push("b/0");
 let oct = 1;
 while (oct < 8) {
   WHITE_NOTES.forEach((n) => {
-    WHITE_NOTES_ALL_OCTAVES.push(`${n}/${oct}`);
+    const note = `${n}/${oct}` as Note;
+    WHITE_NOTES_ALL_OCTAVES.push(note);
   });
   oct++;
 }
@@ -43,7 +34,8 @@ NOTES_SHARP_ALL_OCTAVES.push("b/0");
 oct = 1;
 while (oct < 8) {
   ALL_NOTES_SHARP.forEach((n) => {
-    NOTES_SHARP_ALL_OCTAVES.push(`${n}/${oct}`);
+    const note = `${n}/${oct}` as Note;
+    NOTES_SHARP_ALL_OCTAVES.push(note);
   });
   oct++;
 }
@@ -55,7 +47,8 @@ NOTES_FLAT_ALL_OCTAVES.push("b/0");
 oct = 1;
 while (oct < 8) {
   ALL_NOTES_FLAT.forEach((n) => {
-    NOTES_FLAT_ALL_OCTAVES.push(`${n}/${oct}`);
+    const note = `${n}/${oct}` as Note;
+    NOTES_FLAT_ALL_OCTAVES.push(note);
   });
   oct++;
 }
@@ -67,7 +60,8 @@ oct = 1;
 NOTES_SHARP_FLAT_ALL_OCTAVES.push("b/0");
 while (oct < 8) {
   ALL_NOTES.forEach((n) => {
-    NOTES_SHARP_FLAT_ALL_OCTAVES.push(`${n}/${oct}`);
+    const note = `${n}/${oct}` as Note;
+    NOTES_SHARP_FLAT_ALL_OCTAVES.push(note);
   });
   oct++;
 }
@@ -79,7 +73,8 @@ oct = 1;
 DOUBLE_SHARP_NOTES_ALL_OCTAVES.push("b/0");
 while (oct < 8) {
   ALL_NOTES_SHARP_DOUBLE_SHARP.forEach((n) => {
-    DOUBLE_SHARP_NOTES_ALL_OCTAVES.push(`${n}/${oct}`);
+    const note = `${n}/${oct}` as Note;
+    DOUBLE_SHARP_NOTES_ALL_OCTAVES.push(note);
   });
   oct++;
 }
@@ -91,7 +86,8 @@ oct = 1;
 DOUBLE_FLAT_NOTES_ALL_OCTAVES.push("b/0");
 while (oct < 8) {
   ALL_NOTES_FLAT_DOUBLE_FLAT.forEach((n) => {
-    DOUBLE_FLAT_NOTES_ALL_OCTAVES.push(`${n}/${oct}`);
+    const note = `${n}/${oct}` as Note;
+    DOUBLE_FLAT_NOTES_ALL_OCTAVES.push(note);
   });
   oct++;
 }
@@ -186,7 +182,6 @@ export const FLAT_KEY_SIGNATURES = [
   KeySignature.Ebm,
   KeySignature.Abm,
 ];
-
 export const SHARP_KEY_SIGNATURES = [
   KeySignature.C,
   KeySignature.G,
@@ -260,7 +255,6 @@ export const MAJOR_KEY_SIGNATURES_FLAT = [
   KeySignature.Gb,
   KeySignature.Cb,
 ];
-
 export const MINOR_KEY_SIGNATURES_SHARP = [
   KeySignature.Am,
   KeySignature.Em,
@@ -281,25 +275,40 @@ export const MINOR_KEY_SIGNATURES_FLAT = [
   KeySignature.Abm,
 ];
 
-export const noteMathTable = [
-  ["c", "b#", "dbb"],
-  ["c#", "db"],
-  ["d", "cx", "ebb"],
-  ["d#", "eb"],
-  ["e", "dx", "fb"],
-  ["f", "e#", "gbb"],
-  ["f#", "gb"],
-  ["g", "fx", "abb"],
-  ["g#", "ab"],
-  ["a", "gx", "bbb"],
-  ["a#", "bb"],
-  ["b", "ax", "cb"],
+export const noteMathTable: NoteName[][] = [
+  [NoteName["c"], NoteName["b#"], NoteName["dbb"]],
+  [NoteName["c#"], NoteName["db"]],
+  [NoteName["d"], NoteName["cx"], NoteName["ebb"]],
+  [NoteName["d#"], NoteName["eb"]],
+  [NoteName["e"], NoteName["dx"], NoteName["fb"]],
+  [NoteName["f"], NoteName["e#"], NoteName["gbb"]],
+  [NoteName["f#"], NoteName["gb"]],
+  [NoteName["g"], NoteName["fx"], NoteName["abb"]],
+  [NoteName["g#"], NoteName["ab"]],
+  [NoteName["a"], NoteName["gx"], NoteName["bbb"]],
+  [NoteName["a#"], NoteName["bb"]],
+  [NoteName["b"], NoteName["ax"], NoteName["cb"]],
 ];
 
+// export const noteMathTable = [
+//   ["c", "b#", "dbb"],
+//   ["c#", "db"],
+//   ["d", "cx", "ebb"],
+//   ["d#", "eb"],
+//   ["e", "dx", "fb"],
+//   ["f", "e#", "gbb"],
+//   ["f#", "gb"],
+//   ["g", "fx", "abb"],
+//   ["g#", "ab"],
+//   ["a", "gx", "bbb"],
+//   ["a#", "bb"],
+//   ["b", "ax", "cb"],
+// ];
+
 export const accidentNoteSequences = {
-  [Accident.None]: WHITE_NOTES_ALL_OCTAVES,
-  [Accident["#"]]: NOTES_SHARP_ALL_OCTAVES,
-  [Accident.b]: NOTES_FLAT_ALL_OCTAVES,
+  [LevelAccidentType.None]: WHITE_NOTES_ALL_OCTAVES,
+  [LevelAccidentType["#"]]: NOTES_SHARP_ALL_OCTAVES,
+  [LevelAccidentType.b]: NOTES_FLAT_ALL_OCTAVES,
   // [Accident["#b"]]: NOTES_SHARP_FLAT_ALL_OCTAVES,
   // [Accident.x]: DOUBLE_SHARP_NOTES_ALL_OCTAVES,
   // [Accident.bb]: DOUBLE_FLAT_NOTES_ALL_OCTAVES,

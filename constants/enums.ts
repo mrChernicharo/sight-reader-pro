@@ -1,3 +1,15 @@
+import { glyphs } from "./constants";
+
+export enum NoteNameBase {
+  "c" = "c",
+  "d" = "d",
+  "e" = "e",
+  "f" = "f",
+  "g" = "g",
+  "a" = "a",
+  "b" = "b",
+}
+
 export enum NoteName {
   "c" = "c",
   "b#" = "b#",
@@ -33,6 +45,14 @@ export enum NoteName {
 }
 
 export enum Accident {
+  "#" = "#",
+  "b" = "b",
+  "x" = "x",
+  "bb" = "bb",
+  // e o Bequadro ?
+}
+
+export enum LevelAccidentType {
   "None" = "none",
   "#" = "#",
   "b" = "b",
