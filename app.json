@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "sight-reader-pro",
+    "slug": "sight-reader-pro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/sight-reader-art.png",
+    "scheme": "sight-reader-pro",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/app-splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#000000"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/sight-reader-art.png",
+        "backgroundColor": "#808080"
+      },
+      "package": "com.chernicharo.sightreaderpro"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-dev-launcher",
+        {
+          "launchMode": "most-recent"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2f9fca84-3023-4178-b59c-f9c2818a7c3b"
+      }
+    }
+  }
+}
