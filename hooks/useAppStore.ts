@@ -1,5 +1,5 @@
-import { GameState, GameType, Difficulty } from "@/constants/enums";
-import { Game, GameScore, CurrentGame, Round } from "@/constants/types";
+import { GameState, GameType, Difficulty } from "@/utils/enums";
+import { Game, GameScore, CurrentGame, Round } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 import { create } from "zustand";

@@ -1,8 +1,8 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { Colors } from "@/constants/Colors";
-import { getGameStats, intl } from "@/constants/helperFns";
-import { GameStatsDisplayProps, LevelScore } from "@/constants/types";
+import { Colors } from "@/utils/Colors";
+import { getGameStats, intl } from "@/utils/helperFns";
+import { GameStatsDisplayProps, LevelScore } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, useColorScheme } from "react-native";

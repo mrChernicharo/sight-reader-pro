@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { StyleSheet, View } from "react-native";
 import { AppView } from "../AppView";
-import { Colors } from "@/constants/Colors";
+import { Colors } from "@/utils/Colors";
 
 const RailSelected = () => <AppView style={[styles.root, { backgroundColor: Colors.light.primary }]} />;
 

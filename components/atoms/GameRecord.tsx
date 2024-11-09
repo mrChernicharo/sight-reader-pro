@@ -1,12 +1,12 @@
-import { Colors } from "@/constants/Colors";
-import { getGameStats, isNoteMatch } from "@/constants/helperFns";
-import { getLevel } from "@/constants/levels";
-import { Game, Note } from "@/constants/types";
+import { Colors } from "@/utils/Colors";
+import { getGameStats, isNoteMatch } from "@/utils/helperFns";
+import { getLevel } from "@/utils/levels";
+import { Game, Note } from "@/utils/types";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, useColorScheme } from "react-native";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
-import { GameType } from "@/constants/enums";
+import { GameType } from "@/utils/enums";
 
 const intlDate = new Intl.DateTimeFormat("en-us", { dateStyle: "medium", timeStyle: "medium" });
 

@@ -1,11 +1,11 @@
-import { getLevel } from "@/constants/levels";
-import { GameScore } from "@/constants/types";
+import { getLevel } from "@/utils/levels";
+import { GameScore } from "@/utils/types";
 import { AppView } from "../atoms/AppView";
 import { CountdownTimer } from "./Timer";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 import { useAppStore } from "@/hooks/useAppStore";
-import { getGameStats } from "@/constants/helperFns";
+import { getGameStats } from "@/utils/helperFns";
 import { GameStatsDisplaySimple } from "./GameStatsDisplay/GameStatsDisplaySimple";
 
 export function TimerAndStatsDisplay({

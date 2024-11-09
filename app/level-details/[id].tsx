@@ -4,11 +4,11 @@ import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 
 import { SheetMusic } from "@/components/molecules/SheetMusic";
-import { Colors } from "@/constants/Colors";
-import { LevelAccidentType, Clef, GameType, WinRank, KeySignature } from "@/constants/enums";
-import { isNoteHigher, pickKeySignature } from "@/constants/helperFns";
-import { getLevel } from "@/constants/levels";
-import { Level, Note } from "@/constants/types";
+import { Colors } from "@/utils/Colors";
+import { LevelAccidentType, Clef, GameType, WinRank, KeySignature } from "@/utils/enums";
+import { isNoteHigher, pickKeySignature } from "@/utils/helperFns";
+import { getLevel } from "@/utils/levels";
+import { Level, Note } from "@/utils/types";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";

@@ -1,5 +1,5 @@
-import { PIANO_SOUND_ASSETS } from "@/constants/constants";
-import { Note } from "@/constants/types";
+import { PIANO_SOUND_ASSETS } from "@/utils/constants";
+import { Note } from "@/utils/types";
 import { AVPlaybackSource, Audio } from "expo-av";
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 

@@ -1,11 +1,11 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
-import { Colors } from "@/constants/Colors";
-import { KeySignature, GameState, GameType, NoteName, SoundEffect } from "@/constants/enums";
-import { isNoteMatch, randomUID } from "@/constants/helperFns";
-import { ALL_LEVELS, getLevel } from "@/constants/levels";
-import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/constants/types";
+import { Colors } from "@/utils/Colors";
+import { KeySignature, GameState, GameType, NoteName, SoundEffect } from "@/utils/enums";
+import { isNoteMatch, randomUID } from "@/utils/helperFns";
+import { ALL_LEVELS, getLevel } from "@/utils/levels";
+import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
 import { router, useLocalSearchParams } from "expo-router";
@@ -13,7 +13,7 @@ import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { Piano } from "../Piano";
-import { explodeNote, decideNextRound, getPossibleNotesInLevel } from "@/constants/noteFns";
+import { explodeNote, decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { SheetMusic } from "../SheetMusic";
 
 export function MelodyGameComponent() {
@@ -93,7 +93,7 @@ export function MelodyGameComponent() {
 
   const onBackLinkClick = () => {
     // console.log(">>> onBackLinkClick");
-    if (previousPage === "/practice-settings") {
+    if (previousPage === "/practice") {
       ALL_LEVELS.pop();
     }
     endGame();

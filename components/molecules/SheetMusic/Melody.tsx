@@ -28,11 +28,11 @@ import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context"
 
 import { AppRegistry, StyleSheet, Text, View, useColorScheme, useWindowDimensions } from "react-native";
 import { AppText } from "../../atoms/AppText";
-import { Note } from "@/constants/types";
-import { Clef, GameState, KeySignature, NoteDuration, TimeSignature } from "@/constants/enums";
-import { stemDown } from "@/constants/helperFns";
-import { Colors } from "@/constants/Colors";
-import { explodeNote, getDrawNote, noteDurationDict } from "@/constants/noteFns";
+import { Note } from "@/utils/types";
+import { Clef, GameState, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
+import { stemDown } from "@/utils/helperFns";
+import { Colors } from "@/utils/Colors";
+import { explodeNote, getDrawNote, noteDurationDict } from "@/utils/noteFns";
 
 export interface MusicNoteRangeProps {
   keys: Note[];

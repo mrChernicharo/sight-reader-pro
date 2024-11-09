@@ -1,6 +1,6 @@
-import { SoundEffect } from "@/constants/enums";
-import { flattenEventualSharpNote, getAudioFilepath } from "@/constants/helperFns";
-import { Note } from "@/constants/types";
+import { SoundEffect } from "@/utils/enums";
+import { flattenEventualSharpNote, getAudioFilepath } from "@/utils/helperFns";
+import { Note } from "@/utils/types";
 import { Audio } from "expo-av";
 import { useState, useEffect, useRef } from "react";
 

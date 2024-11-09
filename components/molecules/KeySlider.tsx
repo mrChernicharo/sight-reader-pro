@@ -1,5 +1,5 @@
-import { glyphs } from "@/constants/constants";
-import { KeySignature } from "@/constants/enums";
+import { glyphs } from "@/utils/constants";
+import { KeySignature } from "@/utils/enums";
 import Slider from "@react-native-community/slider";
 import { StyleSheet } from "react-native";
 import { AppText } from "../atoms/AppText";

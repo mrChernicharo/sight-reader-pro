@@ -1,10 +1,3 @@
-const drawAccidents: Record<Accident, string> = {
-  [Accident["#"]]: "#",
-  [Accident["b"]]: "b",
-  [Accident["[]"]]: "n",
-  [Accident["x"]]: "##",
-  [Accident["bb"]]: "bb",
-};
 import { Clef, GameType, WinRank, LevelAccidentType, KeySignature, ScaleType, Accident, TimeSignature } from "./enums";
 import { getGameStats, padZero } from "./helperFns";
 import {
@@ -505,7 +498,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
 ]);
 
 export let ALL_LEVELS = [...TREBLE_LEVELS, ...BASS_LEVELS];
-// console.log(JSON.stringify(ALL_LEVELS, null, 2));
+
 export const SECTIONED_LEVELS: SectionedLevel[] = [
   {
     title: "Treble Clef",

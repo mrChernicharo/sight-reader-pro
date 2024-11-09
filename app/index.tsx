@@ -2,9 +2,9 @@ import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
-import { KeySignature } from "@/constants/enums";
-import { explodeNote, getDrawNote } from "@/constants/noteFns";
-import { Note } from "@/constants/types";
+import { KeySignature } from "@/utils/enums";
+import { explodeNote, getDrawNote } from "@/utils/noteFns";
+import { Note } from "@/utils/types";
 import { InterruptionModeIOS, InterruptionModeAndroid, Audio } from "expo-av";
 import { Link, router } from "expo-router";
 import { useEffect } from "react";
@@ -53,7 +53,7 @@ export default function Home() {
         </TouchableOpacity>
 
         <TouchableOpacity>
-          <Link href="/practice-settings">
+          <Link href="/practice">
             <AppText>Practice</AppText>
           </Link>
         </TouchableOpacity>

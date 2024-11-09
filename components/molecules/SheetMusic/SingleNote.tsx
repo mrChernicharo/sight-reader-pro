@@ -15,10 +15,10 @@ import { Formatter } from "vexflow/src/formatter";
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
 import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
-import { GameScore, Level, Note } from "@/constants/types";
-import { Clef, GameState, KeySignature } from "@/constants/enums";
-import { Colors } from "@/constants/Colors";
-import { getDrawNote } from "@/constants/noteFns";
+import { GameScore, Level, Note } from "@/utils/types";
+import { Clef, GameState, KeySignature } from "@/utils/enums";
+import { Colors } from "@/utils/Colors";
+import { getDrawNote } from "@/utils/noteFns";
 
 export interface MusicNoteProps {
   keys: Note[];

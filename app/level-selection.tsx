@@ -1,11 +1,11 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
-import { Colors } from "@/constants/Colors";
-import { GameType } from "@/constants/enums";
-import { getUnlockedLevels } from "@/constants/levels";
-import { SECTIONED_LEVELS } from "@/constants/levels";
-import { Level } from "@/constants/types";
+import { Colors } from "@/utils/Colors";
+import { GameType } from "@/utils/enums";
+import { getUnlockedLevels } from "@/utils/levels";
+import { SECTIONED_LEVELS } from "@/utils/levels";
+import { Level } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";

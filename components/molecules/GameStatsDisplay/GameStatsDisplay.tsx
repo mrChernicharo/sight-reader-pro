@@ -1,12 +1,12 @@
-import { Colors } from "@/constants/Colors";
-import { getGameStats, intl } from "@/constants/helperFns";
-import { GameScore, GameStatsDisplayProps, Level, LevelScore } from "@/constants/types";
+import { Colors } from "@/utils/Colors";
+import { getGameStats, intl } from "@/utils/helperFns";
+import { GameScore, GameStatsDisplayProps, Level, LevelScore } from "@/utils/types";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import { AppText } from "../../atoms/AppText";
 import { AppView } from "../../atoms/AppView";
-import { GameType } from "@/constants/enums";
+import { GameType } from "@/utils/enums";
 import { useAppStore } from "@/hooks/useAppStore";
 
 export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps) {

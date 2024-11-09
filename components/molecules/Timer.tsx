@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
 import { DimensionValue, StyleSheet } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { Colors } from "@/utils/Colors";
 
 const intlMinutes = new Intl.DateTimeFormat("en", { second: "2-digit", minute: "2-digit" });
 

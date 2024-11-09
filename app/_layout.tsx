@@ -30,7 +30,7 @@ export default function RootLayout() {
         <Stack.Screen name="game-level" options={{ headerShown: false }} />
         <Stack.Screen name="game-over" options={{ headerShown: false }} />
 
-        <Stack.Screen name="practice-settings" options={{ headerShown: false }} />
+        <Stack.Screen name="practice" options={{ headerShown: false }} />
 
         <Stack.Screen name="profile" options={{ headerShown: false }} />
 

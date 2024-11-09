@@ -1,7 +1,7 @@
 import { Text, type TextProps, StyleSheet } from "react-native";
 
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Colors } from "@/constants/Colors";
+import { Colors } from "@/utils/Colors";
 
 export type AppTextProps = TextProps & {
   lightColor?: string;
@@ -15,7 +15,6 @@ export function AppText({ style, lightColor, darkColor, type = "default", ...res
     { light: (lightColor = Colors.light.text), dark: (darkColor = Colors.dark.text) },
     "text"
   );
-
 
   return (
     <Text

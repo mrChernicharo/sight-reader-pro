@@ -1,12 +1,12 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
-import { Colors } from "@/constants/Colors";
-import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/constants/enums";
-import { getGameStats, isNoteMatch, randomUID } from "@/constants/helperFns";
-import { ALL_LEVELS, getLevel } from "@/constants/levels";
-import { decideNextRound, explodeNote, getPossibleNotesInLevel } from "@/constants/noteFns";
-import { CurrentGame, GameScreenParams, Note, Round } from "@/constants/types";
+import { Colors } from "@/utils/Colors";
+import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
+import { getGameStats, isNoteMatch, randomUID } from "@/utils/helperFns";
+import { ALL_LEVELS, getLevel } from "@/utils/levels";
+import { decideNextRound, explodeNote, getPossibleNotesInLevel } from "@/utils/noteFns";
+import { CurrentGame, GameScreenParams, Note, Round } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
 import { router, useLocalSearchParams } from "expo-router";
@@ -90,7 +90,7 @@ export function SingleNoteGameComponent() {
 
   const onBackLinkClick = () => {
     // console.log(">>> onBackLinkClick");
-    if (previousPage === "/practice-settings") {
+    if (previousPage === "/practice") {
       ALL_LEVELS.pop();
     }
     endGame();

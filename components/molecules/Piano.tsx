@@ -1,6 +1,6 @@
-import { KeySignature, NoteName } from "@/constants/enums";
-import { FLAT_KEY_SIGNATURES } from "@/constants/keySignature";
-import { WHITE_NOTES } from "@/constants/notes";
+import { KeySignature, NoteName } from "@/utils/enums";
+import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
+import { WHITE_NOTES } from "@/utils/notes";
 import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";

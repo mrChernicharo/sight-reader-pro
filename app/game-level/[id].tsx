@@ -1,7 +1,7 @@
 import { AppText } from "@/components/atoms/AppText";
 import { GameComponent } from "@/components/molecules/Game";
-import { GameType } from "@/constants/enums";
-import { getLevel } from "@/constants/levels";
+import { GameType } from "@/utils/enums";
+import { getLevel } from "@/utils/levels";
 import { useLocalSearchParams } from "expo-router";
 
 export default function GameLevel() {
