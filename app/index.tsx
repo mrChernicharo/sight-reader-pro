@@ -4,7 +4,7 @@ import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
 import { Colors } from "@/utils/Colors";
 import { KeySignature } from "@/utils/enums";
-import { explodeNote, getDrawNote } from "@/utils/noteFns";
+import { getDrawNote } from "@/utils/noteFns";
 import { Note } from "@/utils/types";
 import { InterruptionModeIOS, InterruptionModeAndroid, Audio } from "expo-av";
 import { Link, router } from "expo-router";

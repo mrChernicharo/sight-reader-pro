@@ -6,7 +6,7 @@ import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES, chromatickeySignatureNotes 
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import Slider from "@react-native-community/slider";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { SafeAreaView, StyleSheet, Switch, useColorScheme, useWindowDimensions } from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet, Switch, useColorScheme, useWindowDimensions } from "react-native";
 import RangeSlider from "../components/atoms/RangeSlider";
 import { ScrollView } from "react-native-gesture-handler";
 import { glyphs } from "@/utils/constants";
@@ -133,7 +133,7 @@ export default function PracticeScreen() {
   // }, [clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes]);
 
   return (
-    <SafeAreaView style={{ minHeight: "100%" }}>
+    <SafeAreaView style={[{ height: "100%" }]}>
       <ScrollView contentContainerStyle={[s.container, { backgroundColor: Colors[theme].background }]}>
         <AppView style={s.top}>
           <AppView style={{ position: "absolute", left: 0, top: 4 }}>
@@ -169,30 +169,59 @@ export default function PracticeScreen() {
             </AppView>
           </AppView>
 
-          {hasKey ? (
-            <AppView>
-              <AppView style={s.box}>
-                <AppText>Major</AppText>
-                <AppSwitch value={isMinorKey} setValue={setIsMinorKey} />
-                <AppText>Minor</AppText>
-              </AppView>
-
-              <AppView style={s.box}>
-                <KeySignatureSlider
-                  keySignatures={keySignatures.map((item) => item.label)}
-                  keySigIndex={keySigIndex}
-                  setKeySigIndex={setKeySigIndex}
-                />
-              </AppView>
-
+          <AppView>
+            {hasKey ? (
               <AppView>
-                <AppText>Scale</AppText>
+                <AppView style={s.box}>
+                  <AppText>Major</AppText>
+                  <AppSwitch value={isMinorKey} setValue={setIsMinorKey} />
+                  <AppText>Minor</AppText>
+                </AppView>
+
+                <AppView style={s.box}>
+                  <KeySignatureSlider
+                    keySignatures={keySignatures.map((item) => item.label)}
+                    keySigIndex={keySigIndex}
+                    setKeySigIndex={setKeySigIndex}
+                  />
+                </AppView>
+
+                <AppView>
+                  <AppText>Scale</AppText>
+                  <SelectList
+                    data={SCALES}
+                    save="value"
+                    setSelected={setAccident}
+                    search={false}
+                    defaultOption={SCALES[0]}
+                    inputStyles={{
+                      color: Colors[theme].text,
+                      backgroundColor: Colors[theme].background,
+                    }}
+                    dropdownTextStyles={{
+                      color: Colors[theme].text,
+                    }}
+                    disabledTextStyles={{
+                      color: Colors[theme].textMute,
+                    }}
+                    boxStyles={{
+                      marginBottom: 24,
+                    }}
+                    dropdownStyles={{}}
+                    disabledItemStyles={{}}
+                    dropdownItemStyles={{}}
+                  />
+                </AppView>
+              </AppView>
+            ) : (
+              <AppView>
+                <AppText>Accients</AppText>
                 <SelectList
-                  data={SCALES}
+                  data={ACCIDENTS}
                   save="value"
                   setSelected={setAccident}
                   search={false}
-                  defaultOption={SCALES[0]}
+                  defaultOption={ACCIDENTS[0]}
                   inputStyles={{
                     color: Colors[theme].text,
                     backgroundColor: Colors[theme].background,
@@ -206,37 +235,10 @@ export default function PracticeScreen() {
                   boxStyles={{
                     marginBottom: 24,
                   }}
-                  dropdownStyles={{}}
-                  disabledItemStyles={{}}
-                  dropdownItemStyles={{}}
                 />
               </AppView>
-            </AppView>
-          ) : (
-            <AppView>
-              <AppText>Accients</AppText>
-              <SelectList
-                data={ACCIDENTS}
-                save="value"
-                setSelected={setAccident}
-                search={false}
-                defaultOption={ACCIDENTS[0]}
-                inputStyles={{
-                  color: Colors[theme].text,
-                  backgroundColor: Colors[theme].background,
-                }}
-                dropdownTextStyles={{
-                  color: Colors[theme].text,
-                }}
-                disabledTextStyles={{
-                  color: Colors[theme].textMute,
-                }}
-                boxStyles={{
-                  marginBottom: 24,
-                }}
-              />
-            </AppView>
-          )}
+            )}
+          </AppView>
 
           <AppView style={s.rangeSliderContainer}>
             <AppText>Note Range</AppText>
@@ -280,6 +282,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 36,
     paddingVertical: 64,
+    minHeight: Dimensions.get("window").height + 64 * 2,
   },
   top: {
     width: "100%",

@@ -13,39 +13,36 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={{ minHeight: "100%" }}>
-      <ScrollView contentContainerStyle={[s.scrollView, { backgroundColor: Colors[theme].background }]}>
-        <AppView style={s.container}>
-          {/* <AppView style={s.top}>
+      <AppView style={s.container}>
+        {/* <AppView style={s.top}>
           <BackLink style={s.backLink} />
           <AppText type="title" style={{ textAlign: "center", width: "100%" }}>
             Profile
           </AppText>
         </AppView> */}
 
-          <AppView style={s.top}>
-            <AppView style={{ position: "absolute", left: 0, top: 4 }}>
-              <BackLink />
-            </AppView>
-            <AppText type="title">Profile</AppText>
+        <AppView style={s.top}>
+          <AppView style={{ position: "absolute", left: 0, top: 4 }}>
+            <BackLink />
           </AppView>
-
-          <AppView>
-            <AppText>{username}</AppText>
-          </AppView>
-
-          <FlatList data={games} renderItem={({ item: game }) => <GameRecord game={game} />} />
+          <AppText type="title">Profile</AppText>
         </AppView>
-      </ScrollView>
+
+        <AppView>
+          <AppText>{username}</AppText>
+        </AppView>
+
+        <FlatList
+          data={games}
+          keyExtractor={(game) => game.id}
+          renderItem={({ item: game }) => <GameRecord game={game} />}
+        />
+      </AppView>
     </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   container: {
     paddingHorizontal: 36,
     paddingVertical: 64,

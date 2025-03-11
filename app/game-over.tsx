@@ -6,7 +6,6 @@ import { Colors } from "@/utils/Colors";
 import { Clef, GameType, KeySignature } from "@/utils/enums";
 import { getGameStats, isNoteMatch, pickKeySignature } from "@/utils/helperFns";
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
-import { explodeNote } from "@/utils/noteFns";
 import { SingleNoteRound } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
