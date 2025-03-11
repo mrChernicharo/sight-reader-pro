@@ -12,6 +12,7 @@ import {
 import {
   NOTE_INDICES,
   addHalfSteps,
+  explodeNote,
   getNoteIdx,
   getRandInRange,
   groupArrayElements,
@@ -305,34 +306,6 @@ export function getDrawNote(
 
   // console.log("getDrawNote:::", { note, result });
   return result;
-}
-
-export function explodeNote(note: Note) {
-  let baseName = "";
-  let accident = "";
-  const [noteName, octave] = note.split("/");
-
-  switch (noteName.length) {
-    case 0:
-    default:
-      throw Error(`[explodeNote::ERROR] invalid note "${note}"`);
-    case 1:
-      baseName = noteName;
-    case 2:
-    case 3: {
-      const noteChars = noteName.split("");
-      baseName = noteChars.shift()!;
-      accident = noteChars.join("") as Accident;
-    }
-  }
-
-  return {
-    baseName,
-    accident,
-    octave,
-    noteName: `${baseName}${accident}` as NoteName,
-    fullName: `${baseName}${accident}/${octave}`,
-  };
 }
 
 export function decideNextRound<Round>(

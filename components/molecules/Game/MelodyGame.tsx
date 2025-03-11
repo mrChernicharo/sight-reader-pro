@@ -3,7 +3,7 @@ import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/utils/Colors";
 import { KeySignature, GameState, GameType, NoteName, SoundEffect } from "@/utils/enums";
-import { isNoteMatch, randomUID } from "@/utils/helperFns";
+import { explodeNote, isNoteMatch, randomUID } from "@/utils/helperFns";
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
@@ -13,7 +13,7 @@ import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { Piano } from "../Piano";
-import { explodeNote, decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
+import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { SheetMusic } from "../SheetMusic";
 
 export function MelodyGameComponent() {

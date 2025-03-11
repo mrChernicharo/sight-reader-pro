@@ -2,16 +2,18 @@ import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
+import { Colors } from "@/utils/Colors";
 import { KeySignature } from "@/utils/enums";
 import { explodeNote, getDrawNote } from "@/utils/noteFns";
 import { Note } from "@/utils/types";
 import { InterruptionModeIOS, InterruptionModeAndroid, Audio } from "expo-av";
 import { Link, router } from "expo-router";
 import { useEffect } from "react";
-import { Button, StyleSheet, useWindowDimensions } from "react-native";
+import { Button, StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Home() {
+  const theme = useColorScheme() ?? "light";
   // const { width, height } = useWindowDimensions();
 
   useEffect(() => {
@@ -39,24 +41,42 @@ export default function Home() {
 
       <AppTextLogo subtitles="Level up your music reading!" />
 
-      <AppView>
-        <TouchableOpacity>
+      <AppView style={{ alignItems: "center", rowGap: 12, width: 200 }}>
+        {/* <TouchableOpacity>
           <Link href="/settings">
             <AppText>Settings</AppText>
           </Link>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Link push href="/profile">
             <AppText>Profile</AppText>
           </Link>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity>
-          <Link href="/practice">
-            <AppText>Practice</AppText>
-          </Link>
-        </TouchableOpacity>
+        <Link href="/practice">
+          <AppButton
+            text=" Practice "
+            style={[s.btn, { borderColor: Colors[theme].text }]}
+            textStyle={{ color: Colors[theme].text }}
+          />
+        </Link>
+
+        <Link href="/profile">
+          <AppButton
+            text="  Profile  "
+            style={[s.btn, { borderColor: Colors[theme].text }]}
+            textStyle={{ color: Colors[theme].text }}
+          />
+        </Link>
+
+        <Link href="/settings">
+          <AppButton
+            text=" Settings "
+            style={[s.btn, { borderColor: Colors[theme].text }]}
+            textStyle={{ color: Colors[theme].text }}
+          />
+        </Link>
       </AppView>
 
       <Link href="/level-selection" asChild>
@@ -85,4 +105,5 @@ const s = StyleSheet.create({
     // width: "100%",
     // height: "100%",
   },
+  btn: { backgroundColor: "rgba(0, 0, 0, 0)", borderWidth: 1 },
 });

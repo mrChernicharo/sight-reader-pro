@@ -1,4 +1,4 @@
-import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank } from "./enums";
+import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident } from "./enums";
 import { GameScore, Level, LevelScore, MelodyRound, Note, Round, SingleNoteRound, WinConditions } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
@@ -6,7 +6,6 @@ export const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
 
 import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES } from "./keySignature";
-import { explodeNote } from "./noteFns";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
 
 function isNatural(note: Note): boolean {
@@ -40,10 +39,39 @@ function isDoubleFlat(note: Note) {
 
 export function getNoteIdx(note: Note) {
   const idx = PITCH_INDICES.get(note) ?? -1;
-  if (idx < 0) {
-    console.error("<<< getNoteIdx [ERROR]", { note, idx, PITCH_INDICES });
-  }
+  // if (idx < 0) {
+  //   console.error("<<< getNoteIdx [ERROR]", { note, idx, PITCH_INDICES });
+  // }
   return idx;
+}
+
+export function explodeNote(note: Note = "b/0") {
+  let baseName = "";
+  let accident = "";
+  const [noteName, octave] = note?.split("/");
+
+  switch (noteName.length) {
+    case 0:
+    default:
+      throw Error(`[explodeNote::ERROR] invalid note "${note}"`);
+    case 1:
+      baseName = noteName;
+    case 2:
+    case 3: {
+      const noteChars = noteName.split("");
+      baseName = noteChars.shift()!;
+      accident = noteChars.join("") as Accident;
+    }
+  }
+
+  return {
+    index: getNoteIdx(note),
+    baseName,
+    accident,
+    octave,
+    noteName: `${baseName}${accident}` as NoteName,
+    fullName: `${baseName}${accident}/${octave}`,
+  };
 }
 
 export function isFlatKeySignature(keySignature: KeySignature) {
@@ -112,7 +140,7 @@ export function buildPitchIndexDicts() {
   // set "c/8", "b#/7", "dbb/8",
   noteMathTable[0].forEach((noteName) => {
     let oct = noteName === NoteName["b#"] ? 7 : 8;
-    PITCH_INDICES.set(`${noteName}/${oct}` as Note, PITCH_INDICES.size);
+    PITCH_INDICES.set(`${noteName}/${oct}` as Note, idx);
   });
 
   const NOTE_INDICES = new Map<number, Note[]>();
@@ -120,6 +148,11 @@ export function buildPitchIndexDicts() {
   Array.from(PITCH_INDICES.entries()).forEach(([note, idx]) => {
     NOTE_INDICES.has(idx) ? NOTE_INDICES.get(idx)?.push(note) : NOTE_INDICES.set(idx, [note]);
   });
+
+  console.log({ oct, idx });
+  // console.log({ noteMathTable });
+  // console.log({ NOTE_INDICES });
+  // console.log({ NOTE_INDICES });
   // console.log("buildPitchIndicesDict:::", { PITCH_INDICES, NOTE_INDICES });
   return { PITCH_INDICES, NOTE_INDICES };
 }

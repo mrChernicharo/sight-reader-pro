@@ -26,3 +26,4 @@ ios/
 .env
 
 *.apk
+*.aab

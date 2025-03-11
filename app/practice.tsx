@@ -12,12 +12,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import { glyphs } from "@/utils/constants";
 import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/utils/Colors";
-import { isFlatKeySignature } from "@/utils/helperFns";
+import { explodeNote, isFlatKeySignature } from "@/utils/helperFns";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { useAppStore } from "@/hooks/useAppStore";
 import { router } from "expo-router";
-import { CurrentGame, Level, LevelId } from "@/utils/types";
-import { explodeNote } from "@/utils/noteFns";
+import { CurrentGame, Level, LevelId, Note } from "@/utils/types";
 import { AppSwitch } from "@/components/atoms/AppSwitch";
 import { KeySignatureSlider } from "@/components/molecules/KeySlider";
 import { Ionicons } from "@expo/vector-icons";
@@ -66,12 +65,15 @@ export default function PracticeScreen() {
       : NOTES_SHARP_ALL_OCTAVES;
 
     return notes.filter((note) => {
-      const { octave } = explodeNote(note);
+      const { index } = explodeNote(note);
+
+      console.log({ note, index });
+
       switch (clef) {
         case Clef.Bass:
-          return 5 > +octave;
+          return index < 50;
         case Clef.Treble:
-          return 2 < +octave;
+          return index >= 24 && index < 78;
       }
     });
   }, [clef, hasKey, keySignature, accident]);
