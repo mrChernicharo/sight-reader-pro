@@ -1,35 +1,29 @@
+import { Ionicons } from "@expo/vector-icons";
 import { glyphs } from "@/utils/constants";
 import { KeySignature } from "@/utils/enums";
 import Slider from "@react-native-community/slider";
 import { StyleSheet, useColorScheme } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
+import { Colors } from "@/utils/Colors";
 
-export function KeySignatureSlider({
-  keySignatures,
-  keySigIndex,
-  setKeySigIndex,
-}: {
-  keySignatures: KeySignature[];
-  keySigIndex: number;
-  setKeySigIndex: React.Dispatch<React.SetStateAction<number>>;
-}) {
+export function VolumeSlider() {
   const theme = useColorScheme() ?? "light";
 
   return (
     <AppView style={s.keySlider}>
-      <AppText style={{ fontSize: 32 }}> {glyphs.flat}</AppText>
+      <Ionicons name="volume-high" size={24} color={Colors[theme].text} />
+      {/* <AppText style={{ fontSize: 32 }}> {glyphs.flat}</AppText> */}
       <Slider
         style={{ width: 200, height: 40 }}
-        step={1}
+        step={0.01}
         minimumValue={0}
-        maximumValue={keySignatures.length - 1}
-        value={keySigIndex}
-        onValueChange={setKeySigIndex}
-        // minimumTrackTintColor="white"
+        maximumValue={1}
+        // value={keySigIndex}
+        // onValueChange={setKeySigIndex}
+        // minimumTrackTintColor={theme === "light" ? "black" : "white"}
         maximumTrackTintColor={theme === "light" ? "black" : "white"}
       />
-      <AppText style={{ fontSize: 32 }}> {glyphs.sharp}</AppText>
     </AppView>
   );
 }

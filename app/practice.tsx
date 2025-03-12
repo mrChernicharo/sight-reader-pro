@@ -19,7 +19,6 @@ import { router } from "expo-router";
 import { CurrentGame, Level, LevelId, Note } from "@/utils/types";
 import { AppSwitch } from "@/components/atoms/AppSwitch";
 import { KeySignatureSlider } from "@/components/molecules/KeySlider";
-import { Ionicons } from "@expo/vector-icons";
 import { SelectList } from "react-native-dropdown-select-list";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
 

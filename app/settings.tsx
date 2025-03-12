@@ -7,6 +7,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useEffect, useState } from "react";
 import { Alert, Platform, SafeAreaView, StyleSheet, TextInput } from "react-native";
+import { VolumeSlider } from "@/components/molecules/VolumeSlider";
 
 export default function SettingsScreen() {
   const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
@@ -73,6 +74,8 @@ export default function SettingsScreen() {
             }}
           />
         </AppView>
+
+        <VolumeSlider />
 
         <AppButton
           text="reset my data"
