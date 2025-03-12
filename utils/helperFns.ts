@@ -149,7 +149,7 @@ export function buildPitchIndexDicts() {
     NOTE_INDICES.has(idx) ? NOTE_INDICES.get(idx)?.push(note) : NOTE_INDICES.set(idx, [note]);
   });
 
-  console.log({ oct, idx });
+  // console.log({ oct, idx });
   // console.log({ noteMathTable });
   // console.log({ NOTE_INDICES });
   // console.log({ NOTE_INDICES });
@@ -394,7 +394,7 @@ export function capitalizeStr(text: string) {
 export function getAudioFilepath(note: Note) {
   const filepathBase = "@/assets/sounds/piano-notes";
   const [key, octave] = note.split("/");
-  console.log({ key, octave, note });
+  // console.log({ key, octave, note });
   const filename = `Piano.mf.${capitalizeStr(key)}${octave}_cut.mp3`;
   const filepath = `${filepathBase}/${filename}`;
   return filepath;

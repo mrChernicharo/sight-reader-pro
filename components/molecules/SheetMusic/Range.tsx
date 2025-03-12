@@ -30,7 +30,7 @@ import { Note } from "@/utils/types";
 import { Clef, GameState, KeySignature } from "@/utils/enums";
 import { stemDown } from "@/utils/helperFns";
 import { Colors } from "@/utils/Colors";
-import { explodeNote, getDrawNote } from "@/utils/noteFns";
+import { getDrawNote } from "@/utils/noteFns";
 
 export interface MusicNoteRangeProps {
   keys: [Note, Note][];

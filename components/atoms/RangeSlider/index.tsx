@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import RangeSliderRN from "rn-range-slider";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -11,6 +11,8 @@ import { AppView } from "../AppView";
 import { AppText } from "../AppText";
 
 const RangeSlider = ({
+  low,
+  high,
   min,
   max,
   step,
@@ -18,6 +20,8 @@ const RangeSlider = ({
 }: {
   min: number;
   max: number;
+  low: number;
+  high: number;
   step: number;
   handleValueChange: (newLow: number, newHigh: number) => void;
 }) => {
@@ -42,6 +46,12 @@ const RangeSlider = ({
       </AppView> */}
 
       <RangeSliderRN
+        high={high}
+        low={low}
+        minRange={4}
+        // onLayout={(ev) => {
+        //   console.log("layout :::", ev.nativeEvent.layout);
+        // }}
         style={{ width: "100%" }}
         min={min}
         max={max}

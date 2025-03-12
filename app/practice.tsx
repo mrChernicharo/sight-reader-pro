@@ -45,7 +45,7 @@ export default function PracticeScreen() {
   const [keySigIndex, setKeySigIndex] = useState(7);
   const [accident, setAccident] = useState(LevelAccidentType.None);
   const [scale, setScale] = useState(ScaleType.Chromatic);
-  const [rangeIdx, setRangeIdx] = useState({ low: 0, high: 0 });
+  const [rangeIdx, setRangeIdx] = useState({ low: 13, high: 34 });
 
   const clef = isBassClef ? Clef.Bass : Clef.Treble;
   const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;
@@ -66,8 +66,7 @@ export default function PracticeScreen() {
 
     return notes.filter((note) => {
       const { index } = explodeNote(note);
-
-      console.log({ note, index });
+      // console.log({ note, index });
 
       switch (clef) {
         case Clef.Bass:
@@ -124,9 +123,9 @@ export default function PracticeScreen() {
     });
   }, [clef, hasKey, accident, rangeIdx, keySignatures, keySignature, allNotes, ALL_LEVELS]);
 
-  // useEffect(() => {
-  //   console.log({ rangeNotes });
-  // }, [rangeNotes]);
+  useEffect(() => {
+    console.log({ rangeIdx });
+  }, [rangeIdx]);
 
   // useEffect(() => {
   //   console.log("---", { clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes });
@@ -251,7 +250,14 @@ export default function PracticeScreen() {
               </AppView>
             </AppView>
 
-            <RangeSlider min={0} max={allNotes.length - 1} step={1} handleValueChange={handleValueChange} />
+            <RangeSlider
+              min={0}
+              max={allNotes.length - 1}
+              step={1}
+              handleValueChange={handleValueChange}
+              high={rangeIdx.high}
+              low={rangeIdx.low}
+            />
 
             <SheetMusic.Range
               clef={clef}
