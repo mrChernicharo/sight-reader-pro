@@ -64,7 +64,7 @@ export default function SettingsScreen() {
         </AppView>
 
         <AppView style={s.inputContainer}>
-          <AppText>username</AppText>
+          <AppText>Username</AppText>
           <TextInput
             style={[s.input, { color: textColor }]}
             // onChangeText={setLocalUsername}
@@ -75,7 +75,10 @@ export default function SettingsScreen() {
           />
         </AppView>
 
-        <VolumeSlider />
+        <AppView style={{ display: "flex", alignItems: "center" }}>
+          <AppText>Volume</AppText>
+          <VolumeSlider />
+        </AppView>
 
         <AppButton
           text="reset my data"
@@ -105,10 +108,14 @@ const s = StyleSheet.create({
   },
   inputContainer: {
     width: "100%",
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
   },
   input: {
     borderWidth: 1,
     borderColor: "#999",
+    width: "80%",
     borderRadius: 4,
     paddingVertical: 4,
     paddingHorizontal: 8,

@@ -9,12 +9,14 @@ export interface AppState {
   _hydrated: boolean;
   username: string;
   difficulty: Difficulty;
+  globalVolume: number;
   games: Game<GameType>[];
   currentGame: CurrentGame<GameType> | null;
 }
 
 export interface AppActions {
   setUsername: (name: string) => Promise<void>;
+  setGlobalVolume: (volume: number) => Promise<void>;
   saveGameRecord: (game: Game<GameType>) => Promise<void>;
   setHydrated: (hydrated: boolean) => Promise<void>;
   _resetStore: () => Promise<void>;
@@ -46,10 +48,12 @@ export const useAppStore = create<AppState & AppActions>()(
         games: [],
         currentGame: null,
         difficulty: Difficulty.Normal,
+        globalVolume: 1,
         setHydrated: async (hydrated: boolean) => set({ _hydrated: hydrated }),
         _resetStore: async () => set({ games: [], username: "" }),
         setUsername: async (name: string) => set(() => ({ username: name })),
         setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
+        setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
         saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),
 
         startNewGame: async (newGame: CurrentGame<GameType>) => set({ currentGame: newGame }),
