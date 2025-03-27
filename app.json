@@ -2,7 +2,7 @@
   "expo": {
     "name": "sight-reader-pro",
     "slug": "sight-reader-pro",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/sight-reader-art.png",
     "scheme": "sight-reader-pro",
@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/images/sight-reader-art.png",
         "backgroundColor": "#808080"
       },
-      "package": "com.chernicharo.sightreaderpro"
+      "package": "com.chernicharo.sightreaderpro",
+      "versionCode": 2
     },
     "web": {
       "bundler": "metro",
