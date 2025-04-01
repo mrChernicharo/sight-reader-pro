@@ -9,8 +9,9 @@ import { getDrawNote } from "@/utils/noteFns";
 import { Note } from "@/utils/types";
 import { InterruptionModeIOS, InterruptionModeAndroid, Audio } from "expo-av";
 import { Link, router } from "expo-router";
+import LottieView from "lottie-react-native";
 import { useEffect } from "react";
-import { Button, StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
+import { Button, Dimensions, StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -41,6 +42,14 @@ export default function Home() {
       {/* <Image src="assets/images/logo.svg" style={{ width, height: height / 4 }} /> */}
 
       {/* <Image source={require("@/assets/images/adaptive-icon.png")} style={s.titleImage} /> */}
+
+      {/* <LottieView
+        style={{ borderWidth: 3, borderColor: "red", width:200, height: 200 }}
+        source={require("@/assets/lottie/confettie-explosion-animation.lottie.json")}
+        autoPlay
+        loop
+        // ref={confettiRef}
+      /> */}
 
       <AppTextLogo subtitles={t("app.slogan")} />
 

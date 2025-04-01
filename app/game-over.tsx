@@ -10,14 +10,15 @@ import { SingleNoteRound } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router, useLocalSearchParams } from "expo-router";
-import { Dimensions, StyleSheet, useColorScheme } from "react-native";
+import { Animated, Dimensions, Easing, StyleSheet, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
 import { useEffect, useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import { Confetti } from "@/components/molecules/Game/Confetti";
 
 export default function GameOverScreen() {
-  const confettiRef = useRef<LottieView>(null);
+  // const confettiRef = useRef<LottieView>(null);
   const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const { games, currentGame, endGame } = useAppStore();
@@ -34,23 +35,24 @@ export default function GameOverScreen() {
 
   useEffect(() => {
     // console.log("::: game-over", { level, hasWon });
-    const confetti = confettiRef.current;
-
-    if (hasWon && confetti) {
-      setTimeout(() => {
-        confetti.play();
-      }, 200);
-    }
+    // const confetti = confettiRef.current;
+    // if (confetti) {
+    //   // if (hasWon && confetti) {
+    //   setTimeout(() => {
+    //     console.log("::: confetti", confetti);
+    //     confetti.play();
+    //   }, 200);
+    // }
 
     return () => {
       console.log("::: game-over UNMOUNT");
       endGame();
     };
-  }, [hasWon, confettiRef]);
+  }, [hasWon]);
 
-  useEffect(() => {
-    console.log("<<< Game Over >>>", { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute });
-  }, [attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute]);
+  // useEffect(() => {
+  //   console.log("<<< Game Over >>>", { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute });
+  // }, [attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute]);
 
   if (!currentGame || !currentGame?.rounds?.length) return null;
   if (!level || !lastGame) return null;
@@ -59,21 +61,14 @@ export default function GameOverScreen() {
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <ScrollView style={{ width: "100%" }}>
         <AppView style={{ minHeight: Dimensions.get("screen").height }}>
-          <AppView style={s.lottieConfetti}>
-            <LottieView
-              source={require("@/assets/lottie/confettie-explosion-animation.lottie.json")}
-              ref={confettiRef}
-            />
-          </AppView>
+          <Confetti x={-120} duration={2000} />
+          <Confetti x={0} y={-50} duration={2000} delay={500} />
+          <Confetti x={120} duration={2000} delay={1000} />
 
           <AppView style={[s.messageContainer, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
             <AppText type="title">{message}</AppText>
 
             <GameStatsDisplay level={level} hitsPerMinute={hitsPerMinute} />
-
-            {/* <AppView style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}>
-            <AppText style={[s.bigEmoji]}>{emoji}</AppText>
-          </AppView> */}
           </AppView>
 
           <AppView style={s.btnsContainer}>
@@ -133,7 +128,6 @@ const s = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 32,
     // paddingBottom: 64,
     // paddingTop: 12,
     // minHeight: Dimensions.get("screen").height,
@@ -141,9 +135,9 @@ const s = StyleSheet.create({
   messageContainer: {
     paddingVertical: 64,
     gap: 16,
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0)",
+    borderWidth: 1,
   },
   btnsContainer: {
     // flexDirection: "row",
@@ -156,15 +150,5 @@ const s = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
     lineHeight: 90,
-  },
-  lottieConfetti: {
-    // borderColor: "#fff",
-    // borderWidth: 1,
-    position: "absolute",
-    pointerEvents: "none",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
   },
 });

@@ -24,11 +24,11 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
   // }, [attempts, hitsPerMinute, elapsed, theme]);
 
   return (
-    <AppView style={[s.container, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-      <AppView style={[s.separator, { backgroundColor: "rgba(0, 0, 0, 0)" }]} />
+    <AppView transparentBG style={[s.container]}>
+      <AppView transparentBG style={[s.separator]} />
 
-      <AppView style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-        <AppView style={s.rowItem}>
+      <AppView transparentBG style={[s.row]}>
+        <AppView transparentBG style={s.rowItem}>
           <AppText>
             <Ionicons name="time-outline" />
             &nbsp;Notes per minute
@@ -38,7 +38,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
           </AppView>
         </AppView>
 
-        <AppView style={s.rowItem}>
+        <AppView transparentBG style={s.rowItem}>
           <AppText>
             <Ionicons name="eye-outline" />
             &nbsp;Accuracy
@@ -49,8 +49,8 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
         </AppView>
       </AppView>
 
-      <AppView style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-        <AppView style={[s.rowItem]}>
+      <AppView transparentBG style={[s.row]}>
+        <AppView transparentBG style={[s.rowItem]}>
           <AppText>
             <Ionicons name="musical-notes-outline" />
             &nbsp;Attempts
@@ -60,7 +60,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
           </AppView>
         </AppView>
 
-        <AppView style={s.rowItem}>
+        <AppView transparentBG style={s.rowItem}>
           <AppText>
             <Ionicons name="checkmark" color={Colors[theme].green} />
             &nbsp;Successes
@@ -70,7 +70,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
           </AppView>
         </AppView>
 
-        <AppView style={s.rowItem}>
+        <AppView transparentBG style={s.rowItem}>
           <AppText>
             <Ionicons name="close-outline" color={Colors[theme].red} />
             &nbsp;Mistakes
@@ -81,17 +81,20 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
         </AppView>
       </AppView>
 
-      <AppView style={[s.score, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-        <AppView style={{ alignItems: "flex-end", width: 120 }}>
+      <AppView transparentBG style={[s.score]}>
+        <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
           <AppText style={{ color: Colors[theme].textMute }}>{score.hits} hits</AppText>
           <AppText style={{ color: Colors[theme].textMute }}>{score.hitScore} pts</AppText>
           <AppText style={{ color: Colors[theme].textMute }}>{score.multiplier} mult</AppText>
           <AppText style={{ position: "absolute", left: 20, top: 36, color: Colors[theme].textMute }}>X</AppText>
         </AppView>
 
-        <AppView style={[{ height: 1, backgroundColor: Colors[theme].text, width: 160, marginVertical: 12 }]} />
+        <AppView
+          transparentBG
+          style={[{ height: 1, backgroundColor: Colors[theme].text, width: 160, marginVertical: 12 }]}
+        />
 
-        <AppView style={{ alignItems: "center" }}>
+        <AppView transparentBG style={{ alignItems: "center" }}>
           <AppText type="subtitle">TOTAL SCORE</AppText>
           <AppText type="title">{score.valueStr}</AppText>
         </AppView>
@@ -115,8 +118,8 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 //   // }, [attempts, hitsPerMinute, elapsed, theme]);
 
 //   return (
-//     <AppView style={[s.container, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-//       <AppView style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+//     <AppView transparentBG style={[s.container, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+//       <AppView transparentBG style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
 //         <AppText>
 //           <Ionicons name="musical-notes-outline" /> {attempts}
 //         </AppText>
@@ -128,7 +131,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 //         </AppText>
 //       </AppView>
 
-//       <AppView style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+//       <AppView transparentBG style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
 //         <AppText>
 //           <Ionicons name="eye-outline" /> {accuracy}
 //         </AppText>
@@ -137,7 +140,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 //         </AppText>
 //       </AppView>
 
-//       <AppView style={[s.row, s.score, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+//       <AppView transparentBG style={[s.row, s.score, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
 //         <AppText type="subtitle">score {score.valueStr}</AppText>
 //       </AppView>
 //     </AppView>

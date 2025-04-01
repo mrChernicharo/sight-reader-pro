@@ -3,7 +3,7 @@ import { AppView } from "./AppView";
 
 export function AppLogo() {
   return (
-    <AppView>
+    <AppView transparentBG>
       {/* <AppView style={{ borderWidth: 1 }}> */}
       <Svg width="40" height="40" viewBox="0 0 47.7027027027027 47.2972972972973">
         <G

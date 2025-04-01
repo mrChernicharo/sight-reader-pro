@@ -117,7 +117,8 @@ export function SingleNoteGameComponent() {
   //   // console.log("currentGame:::", currentGame);
   // }, [currentGame]);
 
-  if (currentGame?.type !== GameType.Single) return <AppText>[ERROR]: Wrong GameType</AppText>;
+  if (currentGame?.type !== GameType.Single) return null;
+  // if (currentGame?.type !== GameType.Single) return <AppText>[ERROR]: Wrong GameType</AppText>;
 
   const noteProps = { keys: [currNote], clef: level.clef, keySignature };
 
