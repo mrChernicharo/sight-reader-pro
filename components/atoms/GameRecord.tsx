@@ -7,14 +7,15 @@ import { StyleSheet, useColorScheme } from "react-native";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
 import { GameType } from "@/utils/enums";
+import { useIntl } from "@/hooks/useIntl";
 
 const intlDate = new Intl.DateTimeFormat("en-us", { dateStyle: "medium", timeStyle: "medium" });
 
 export function GameRecord({ game }: { game: Game<GameType> }) {
   const theme = useColorScheme() ?? "light";
   const level = getLevel(game.levelId);
-
-  const { successes, mistakes, accuracy } = getGameStats(level, game.rounds);
+  const { intl } = useIntl();
+  const { successes, mistakes, accuracy } = getGameStats(level, game.rounds, intl);
 
   return (
     <AppView style={s.container}>

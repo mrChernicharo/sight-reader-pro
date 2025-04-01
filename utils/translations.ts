@@ -134,5 +134,5 @@ const ptBR = {
 
 export const TRANSLATIONS = {
   en,
-  ptBR,
+  "pt-BR": ptBR,
 };

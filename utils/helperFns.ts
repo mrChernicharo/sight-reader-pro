@@ -2,7 +2,6 @@ import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Acc
 import { GameScore, Level, LevelScore, MelodyRound, Note, Round, SingleNoteRound, WinConditions } from "./types";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
-export const intl = new Intl.NumberFormat("en", { maximumFractionDigits: 2 });
 
 import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES } from "./keySignature";
@@ -261,7 +260,7 @@ export function stemDown(note: Note, clef: Clef) {
   }
 }
 
-export function getGameStats<T>(level: Level<T>, rounds: Round<T>[]) {
+export function getGameStats<T>(level: Level<T>, rounds: Round<T>[], intl: Intl.NumberFormat) {
   const DEFAULT_STATS = {
     attempts: 0,
     successes: 0,
@@ -359,7 +358,7 @@ function calcLevelScore(
 
   const score = {
     value: hits * hitScore * multiplier,
-    valueStr: intl.format(hits * hitScore * multiplier),
+    // valueStr: intl.format(hits * hitScore * multiplier),
     multiplier,
     hits,
     hitScore,

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useAppStore } from "@/hooks/useAppStore";
 import { getGameStats } from "@/utils/helperFns";
 import { GameStatsDisplaySimple } from "./GameStatsDisplay/GameStatsDisplaySimple";
+import { useIntl } from "@/hooks/useIntl";
 
 export function TimerAndStatsDisplay({
   levelId,
@@ -15,10 +16,12 @@ export function TimerAndStatsDisplay({
   levelId: string;
   onCountdownFinish: () => void;
 }) {
+  const { intl } = useIntl();
+
   const level = getLevel(levelId);
   const [hitsPerMinute, setHitsPerMinute] = useState(0);
   const { currentGame } = useAppStore();
-  const { successes } = getGameStats(level, currentGame?.rounds ?? []);
+  const { successes } = getGameStats(level, currentGame?.rounds ?? [], intl);
 
   function onTick(secondsRemaining: number) {
     const elapsedPercent = (level.durationInSeconds - secondsRemaining) / level.durationInSeconds;

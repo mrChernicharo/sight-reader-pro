@@ -120,7 +120,6 @@ export type SectionedLevel = {
 
 export interface LevelScore {
   value: number;
-  valueStr: string;
   multiplier: number;
   hits: number;
   hitScore: number;

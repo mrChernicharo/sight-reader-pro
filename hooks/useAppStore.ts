@@ -8,7 +8,7 @@ import { persist, createJSONStorage, devtools } from "zustand/middleware";
 export interface AppState {
   _hydrated: boolean;
   username: string;
-  language: "en" | "ptBR";
+  language: "en" | "pt-BR";
   difficulty: Difficulty;
   globalVolume: number;
   games: Game<GameType>[];
@@ -18,7 +18,7 @@ export interface AppState {
 export interface AppActions {
   setUsername: (name: string) => Promise<void>;
   setGlobalVolume: (volume: number) => Promise<void>;
-  setLanguage: (lang: "en" | "ptBR") => Promise<void>;
+  setLanguage: (lang: "en" | "pt-BR") => Promise<void>;
   saveGameRecord: (game: Game<GameType>) => Promise<void>;
 
   startNewGame: (newGame: CurrentGame<GameType>) => Promise<void>;
@@ -48,15 +48,15 @@ export const useAppStore = create<AppState & AppActions>()(
       (set) => ({
         _hydrated: false,
         username: "user",
-        language: "ptBR",
+        language: "en",
         games: [],
         currentGame: null,
         difficulty: Difficulty.Normal,
         globalVolume: 1,
         setHydrated: async (hydrated: boolean) => set({ _hydrated: hydrated }),
-        _resetStore: async () => set({ games: [], username: "" }),
+        _resetStore: async () => set({ games: [], username: "", globalVolume: 1 }),
         setUsername: async (name: string) => set(() => ({ username: name })),
-        setLanguage: async (lang: "en" | "ptBR") => set({ language: lang }),
+        setLanguage: async (lang: "en" | "pt-BR") => set({ language: lang }),
         setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
         setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
         saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),

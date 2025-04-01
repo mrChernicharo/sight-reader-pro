@@ -16,9 +16,11 @@ import LottieView from "lottie-react-native";
 import { useEffect, useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { Confetti } from "@/components/molecules/Game/Confetti";
+import { useIntl } from "@/hooks/useIntl";
 
 export default function GameOverScreen() {
   // const confettiRef = useRef<LottieView>(null);
+  const { intl } = useIntl();
   const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const { games, currentGame, endGame } = useAppStore();
@@ -28,7 +30,8 @@ export default function GameOverScreen() {
 
   const { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute } = getGameStats(
     level,
-    currentGame!.rounds
+    currentGame!.rounds,
+    intl
   );
   const emoji = hasWon ? " 🎉 " : " 😩 ";
   const message = (hasWon ? "You Win" : "You Lose") + emoji;
@@ -141,6 +144,7 @@ const s = StyleSheet.create({
   },
   btnsContainer: {
     // flexDirection: "row",
+    paddingHorizontal: 36,
     gap: 12,
   },
   bigEmoji: {

@@ -1,5 +1,5 @@
 import { Colors } from "@/utils/Colors";
-import { getGameStats, intl } from "@/utils/helperFns";
+import { getGameStats } from "@/utils/helperFns";
 import { GameScore, GameStatsDisplayProps, Level, LevelScore } from "@/utils/types";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
@@ -8,15 +8,17 @@ import { AppText } from "../../atoms/AppText";
 import { AppView } from "../../atoms/AppView";
 import { GameType } from "@/utils/enums";
 import { useAppStore } from "@/hooks/useAppStore";
+import { useIntl } from "@/hooks/useIntl";
 
 export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps) {
   const theme = useColorScheme() ?? "light";
+  const { intl } = useIntl();
 
   const { currentGame } = useAppStore();
 
   if (!currentGame?.rounds || currentGame.rounds.length === 0) return <></>;
 
-  const { accuracy, attempts, successes, mistakes, score: gs } = getGameStats(level, currentGame?.rounds);
+  const { accuracy, attempts, successes, mistakes, score: gs } = getGameStats(level, currentGame?.rounds, intl);
   const score = gs as LevelScore;
   const notesPerMinute = !hitsPerMinute ? "--" : intl.format(hitsPerMinute ?? 0);
   // useEffect(() => {
@@ -96,56 +98,12 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
         <AppView transparentBG style={{ alignItems: "center" }}>
           <AppText type="subtitle">TOTAL SCORE</AppText>
-          <AppText type="title">{score.valueStr}</AppText>
+          <AppText type="title">{score.value}</AppText>
         </AppView>
       </AppView>
     </AppView>
   );
 }
-
-// export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDisplay) {
-//   const theme = useColorScheme() ?? "light";
-
-//   const { currentGame } = useAppStore();
-
-//   if (!currentGame?.rounds || currentGame.rounds.length === 0) return <></>;
-
-//   const { accuracy, attempts, successes, mistakes, score: gs } = getGameStats(level, currentGame?.rounds);
-//   const score = gs as LevelScore;
-
-//   // useEffect(() => {
-//   //   console.log({ attempts, hitsPerMinute, elapsed, theme });
-//   // }, [attempts, hitsPerMinute, elapsed, theme]);
-
-//   return (
-//     <AppView transparentBG style={[s.container, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-//       <AppView transparentBG style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-//         <AppText>
-//           <Ionicons name="musical-notes-outline" /> {attempts}
-//         </AppText>
-//         <AppText>
-//           <Ionicons name="checkmark" color={Colors[theme].green} /> {successes}
-//         </AppText>
-//         <AppText>
-//           <Ionicons name="close-outline" color={Colors[theme].red} /> {mistakes}
-//         </AppText>
-//       </AppView>
-
-//       <AppView transparentBG style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-//         <AppText>
-//           <Ionicons name="eye-outline" /> {accuracy}
-//         </AppText>
-//         <AppText>
-//           <Ionicons name="time-outline" /> NpM {!hitsPerMinute ? "--" : intl.format(hitsPerMinute ?? 0)}
-//         </AppText>
-//       </AppView>
-
-//       <AppView transparentBG style={[s.row, s.score, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-//         <AppText type="subtitle">score {score.valueStr}</AppText>
-//       </AppView>
-//     </AppView>
-//   );
-// }
 
 const s = StyleSheet.create({
   container: {

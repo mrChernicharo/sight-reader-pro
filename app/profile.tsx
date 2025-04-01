@@ -15,16 +15,12 @@ export default function SettingsScreen() {
   const { username, games } = useAppStore();
   const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
+
+  console.log("games ::: ", games);
+  if (!games) return null;
+
   return (
     <SafeAreaView style={{ minHeight: "100%", backgroundColor }}>
-      {/* <ScrollView style={s.container}> */}
-      {/* <AppView style={s.top}>
-          <BackLink style={s.backLink} />
-          <AppText type="title" style={{ textAlign: "center", width: "100%" }}>
-            Profile
-          </AppText>
-        </AppView> */}
-
       <AppView style={s.top}>
         <AppView style={{ position: "absolute", left: 0, top: 4 }}>
           <BackLink />
@@ -41,7 +37,6 @@ export default function SettingsScreen() {
         keyExtractor={(game) => game.id}
         renderItem={({ item: game }) => <GameRecord game={game} />}
       />
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }

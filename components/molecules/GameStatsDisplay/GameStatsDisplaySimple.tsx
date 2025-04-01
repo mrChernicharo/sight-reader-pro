@@ -1,23 +1,25 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { Colors } from "@/utils/Colors";
-import { getGameStats, intl } from "@/utils/helperFns";
+import { getGameStats } from "@/utils/helperFns";
 import { GameStatsDisplayProps, LevelScore } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, useColorScheme } from "react-native";
 import { useTransition } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useIntl } from "@/hooks/useIntl";
 
 export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDisplayProps) {
   const theme = useColorScheme() ?? "light";
   const { t } = useTranslation();
+  const { intl } = useIntl();
 
   const { currentGame } = useAppStore();
 
   if (!currentGame?.rounds || currentGame.rounds.length === 0) return <></>;
 
-  const { accuracy, attempts, successes, mistakes, score: gs } = getGameStats(level, currentGame?.rounds);
+  const { accuracy, attempts, successes, mistakes, score: gs } = getGameStats(level, currentGame?.rounds, intl);
   const score = gs as LevelScore;
 
   // useEffect(() => {
@@ -28,7 +30,7 @@ export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDispla
     <AppView style={[s.container, { backgroundColor: "rgba(0, 0, 0, 0)", width: 220, marginHorizontal: "auto" }]}>
       <AppView style={[s.row, s.score, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
         <AppText type="subtitle">
-          {t("game.score")} {score.valueStr}
+          {t("game.score")} {intl.format(score.value)}
         </AppText>
       </AppView>
 
@@ -68,8 +70,8 @@ export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDispla
             <Ionicons name="time-outline" />
           </AppText>
           <AppText> {t("game.NpM")} </AppText>
-          <AppText style={{ width: 40, textAlign: "right" }}>
-            {!hitsPerMinute ? "--" : intl.format(hitsPerMinute ?? 0)}
+          <AppText numberOfLines={1} style={{ textAlign: "right" }}>
+            {!hitsPerMinute ? "--" : hitsPerMinute.toFixed(2)}
           </AppText>
         </AppView>
       </AppView>

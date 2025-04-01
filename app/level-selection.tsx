@@ -11,6 +11,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
 import { Dimensions, Pressable, SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useIntl } from "@/hooks/useIntl";
 
 export function getLevelName(item: Level<GameType>) {
   const splitLevelName = item.name.split(" ");
@@ -23,7 +24,9 @@ export default function LevelSelectionScreen() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const itemBGColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "background");
   const { games } = useAppStore();
-  const unlockedLevels = getUnlockedLevels(games);
+  const { intl } = useIntl();
+
+  const unlockedLevels = getUnlockedLevels(games, intl);
   const cols = 3;
   // console.log("LevelSelectionScreen :::: games", JSON.stringify(games, null, 2));
   // console.log("LevelSelectionScreen :::: unlockedLevels", JSON.stringify(unlockedLevels, null, 2));
