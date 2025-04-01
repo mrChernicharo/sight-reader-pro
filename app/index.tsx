@@ -87,7 +87,8 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 100,
+    paddingTop: 104,
+    paddingBottom: 52,
   },
   titleImage: {
     borderColor: "red",

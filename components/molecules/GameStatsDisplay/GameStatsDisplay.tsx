@@ -165,7 +165,7 @@ const s = StyleSheet.create({
     height: 12,
   },
   score: {
-    paddingVertical: 24,
+    paddingTop: 24,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -15,7 +15,8 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     description: "",
     gameType: GameType.Single,
     noteRanges: ["g/4:::c/5"],
-    durationInSeconds: 30,
+    durationInSeconds: 5,
+    // durationInSeconds: 30,
     winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
     hasKey: false,
     accident: LevelAccidentType.None,
@@ -510,10 +511,10 @@ export const SECTIONED_LEVELS: SectionedLevel[] = [
   },
 ];
 
-export function getLevel(id: string) {
+export function getLevel(levelId: string) {
   // if (!id) return
   // if (id.endsWith('practice')) return
-  return ALL_LEVELS.find((lvl) => lvl.id === id)!;
+  return ALL_LEVELS.find((lvl) => lvl.id === levelId)!;
 }
 
 export function assembleLevelInfo(clef: Clef, levelInfo: Partial<Level<GameType>>[]): Level<GameType>[] {
@@ -532,8 +533,12 @@ export function assembleLevelInfo(clef: Clef, levelInfo: Partial<Level<GameType>
 export function getUnlockedLevels(games: Game<GameType>[]) {
   let highestTrebleIdx = -1;
   let highestBassIdx = -1;
+  // console.log("getUnlockedLevels:::", JSON.stringify(games, null, 2), "game count:::", games.length);
   for (const game of games) {
     const level = getLevel(game.levelId);
+    // console.log("level:::", JSON.stringify(level, null, 2));
+    if (!game || !level) continue;
+
     const { hasWon } = getGameStats(level, game.rounds);
 
     // console.log("getUnlockedLevels", { level, game, hasWon });
@@ -564,6 +569,5 @@ export function getUnlockedLevels(games: Game<GameType>[]) {
     bass: highestBassIdx,
   };
   return response;
-
   // return { treble: 100, bass: 10 };
 }

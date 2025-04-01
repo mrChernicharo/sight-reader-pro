@@ -272,6 +272,7 @@ export function getGameStats<T>(level: Level<T>, rounds: Round<T>[]) {
     score: { value: 0 },
   };
 
+  // if (true) return DEFAULT_STATS;
   if (!level || !rounds) return DEFAULT_STATS;
   // console.log("getGameStats:::", { level, rounds, gameType: level.gameType });
 

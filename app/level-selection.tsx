@@ -8,9 +8,7 @@ import { SECTIONED_LEVELS } from "@/utils/levels";
 import { Level } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
-import { Link, router } from "expo-router";
-import { useEffect } from "react";
+import { router } from "expo-router";
 import { Dimensions, Pressable, SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -27,6 +25,8 @@ export default function LevelSelectionScreen() {
   const { games } = useAppStore();
   const unlockedLevels = getUnlockedLevels(games);
   const cols = 3;
+  // console.log("LevelSelectionScreen :::: games", JSON.stringify(games, null, 2));
+  // console.log("LevelSelectionScreen :::: unlockedLevels", JSON.stringify(unlockedLevels, null, 2));
 
   return (
     <SafeAreaView style={{ minHeight: "100%" }}>

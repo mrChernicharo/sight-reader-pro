@@ -10,10 +10,11 @@ import { SingleNoteRound } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { router, useLocalSearchParams } from "expo-router";
-import { StyleSheet, useColorScheme } from "react-native";
+import { Dimensions, StyleSheet, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
 import { useEffect, useRef } from "react";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function GameOverScreen() {
   const confettiRef = useRef<LottieView>(null);
@@ -21,20 +22,24 @@ export default function GameOverScreen() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const { games, currentGame, endGame } = useAppStore();
 
-  const level = getLevel(currentGame!.levelId);
+  const level = getLevel(currentGame?.levelId ?? "basics 01");
   const lastGame = games.at(-1);
 
   const { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute } = getGameStats(
     level,
     currentGame!.rounds
   );
-  const message = hasWon ? "You Win" : "You Lose";
   const emoji = hasWon ? " 🎉 " : " 😩 ";
+  const message = (hasWon ? "You Win" : "You Lose") + emoji;
 
   useEffect(() => {
     // console.log("::: game-over", { level, hasWon });
-    if (hasWon && confettiRef.current) {
-      setTimeout(confettiRef.current.play, 200);
+    const confetti = confettiRef.current;
+
+    if (hasWon && confetti) {
+      setTimeout(() => {
+        confetti.play();
+      }, 200);
     }
 
     return () => {
@@ -52,78 +57,86 @@ export default function GameOverScreen() {
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
-      <AppView style={s.lottieConfetti}>
-        <LottieView source={require("@/assets/lottie/confettie-explosion-animation.lottie.json")} ref={confettiRef} />
-      </AppView>
+      <ScrollView style={{ width: "100%" }}>
+        <AppView style={{ minHeight: Dimensions.get("screen").height }}>
+          <AppView style={s.lottieConfetti}>
+            <LottieView
+              source={require("@/assets/lottie/confettie-explosion-animation.lottie.json")}
+              ref={confettiRef}
+            />
+          </AppView>
 
-      <AppView style={[s.messageContainer, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-        <AppText type="title">{message}</AppText>
+          <AppView style={[s.messageContainer, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+            <AppText type="title">{message}</AppText>
 
-        <GameStatsDisplay level={level} hitsPerMinute={hitsPerMinute} />
+            <GameStatsDisplay level={level} hitsPerMinute={hitsPerMinute} />
 
-        <AppView style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}>
-          <AppText style={[s.bigEmoji]}>{emoji}</AppText>
-        </AppView>
-      </AppView>
+            {/* <AppView style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}>
+            <AppText style={[s.bigEmoji]}>{emoji}</AppText>
+          </AppView> */}
+          </AppView>
 
-      <AppView style={s.btnsContainer}>
-        {hasWon ? (
-          <AppButton
-            text="Next Level"
-            onPress={() => {
-              const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
-              if (nextLevel) {
-                router.navigate({
-                  pathname: "/level-details/[id]",
-                  params: { id: nextLevel.id, clef: nextLevel.clef },
+          <AppView style={s.btnsContainer}>
+            {hasWon ? (
+              <AppButton
+                text="Next Level"
+                onPress={() => {
+                  const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
+                  if (nextLevel) {
+                    router.navigate({
+                      pathname: "/level-details/[id]",
+                      params: { id: nextLevel.id, clef: nextLevel.clef },
+                    });
+                  } else {
+                    console.log("NO MORE LEVELS. ZEROU O GAME!");
+                  }
+                }}
+              />
+            ) : null}
+
+            <AppButton
+              text="Play again"
+              style={{
+                ...(hasWon && { backgroundColor: "rgba(0, 0, 0, 0)" }),
+              }}
+              textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
+              onPress={() => {
+                router.replace({
+                  pathname: "/game-level/[id]",
+                  params: {
+                    id: level.id,
+                    keySignature: pickKeySignature(level),
+                    previousPage: "/level-details",
+                  },
                 });
-              } else {
-                console.log("NO MORE LEVELS. ZEROU O GAME!");
-              }
-            }}
-          />
-        ) : null}
+              }}
+            />
 
-        <AppButton
-          text="Play again"
-          style={{
-            ...(hasWon && { backgroundColor: "rgba(0, 0, 0, 0)" }),
-          }}
-          textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
-          onPress={() => {
-            router.replace({
-              pathname: "/game-level/[id]",
-              params: {
-                id: level.id,
-                keySignature: pickKeySignature(level),
-                previousPage: "/level-details",
-              },
-            });
-          }}
-        />
-
-        <AppButton
-          text="Level selection"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
-          textStyle={{ color: "gray" }}
-          onPress={() => {
-            router.navigate({
-              pathname: "/level-selection",
-            });
-          }}
-        />
-      </AppView>
+            <AppButton
+              text="Level selection"
+              style={{ backgroundColor: "rgba(0, 0, 0, 0)", marginBottom: 36 }}
+              textStyle={{ color: "gray" }}
+              onPress={() => {
+                router.navigate({
+                  pathname: "/level-selection",
+                });
+              }}
+            />
+          </AppView>
+        </AppView>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 64,
     paddingHorizontal: 32,
+    // paddingBottom: 64,
+    // paddingTop: 12,
+    // minHeight: Dimensions.get("screen").height,
   },
   messageContainer: {
     paddingVertical: 64,
