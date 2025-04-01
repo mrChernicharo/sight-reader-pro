@@ -133,9 +133,11 @@ export default function PracticeScreen() {
   //   console.log("---", { clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes });
   // }, [clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes]);
 
+  // <SafeAreaView >
+  //   <ScrollView contentContainerStyle={[s.container, { backgroundColor: Colors[theme].background }]}>
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={[s.container, { backgroundColor: Colors[theme].background }]}>
+    <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].background }}>
+      <ScrollView contentContainerStyle={s.container}>
         <AppView style={s.top}>
           <AppView style={{ position: "absolute", left: 0, top: 4 }}>
             <BackLink />
@@ -281,7 +283,6 @@ export default function PracticeScreen() {
 
 const s = StyleSheet.create({
   container: {
-    // flex: 1,
     alignItems: "center",
     paddingHorizontal: 36,
     paddingVertical: 24,
@@ -290,34 +291,24 @@ const s = StyleSheet.create({
     width: "100%",
     position: "relative",
     alignItems: "center",
-    // borderWidth: 1,
-    // borderColor: '#999',
   },
   controlsContainer: {
     width: "100%",
     paddingHorizontal: 16,
     gap: 16,
   },
-  clefSwitchContainer: {
-    // borderWidth: 1,
-    // borderColor: '#999',
-  },
+  clefSwitchContainer: {},
   clefSwitch: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 16,
-    // borderWidth: 1,
-    // borderColor: '#999',
   },
   box: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 16,
-    height: 42,
-    // borderWidth: 1,
-    // borderColor: '#999',
   },
   keyContainer: {},
   inputContainer: {
@@ -326,13 +317,11 @@ const s = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    // borderColor: "#999",
     borderRadius: 4,
     paddingVertical: 4,
     paddingHorizontal: 8,
   },
   rangeSliderContainer: {
-    // borderWidth: 1,
     borderColor: "#fff",
     width: "100%",
     alignItems: "center",
@@ -340,6 +329,6 @@ const s = StyleSheet.create({
   rangeDisplay: {
     flexDirection: "row",
     gap: 12,
-    marginBottom: 16,
+    marginBottom: 8,
   },
 });

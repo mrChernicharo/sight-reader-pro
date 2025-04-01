@@ -18,8 +18,8 @@ export default function RootLayout() {
     );
 
   return (
-    <GestureHandlerRootView>
-      <SafeAreaProvider>
+    <SafeAreaProvider>
+      <GestureHandlerRootView>
         <Stack>
           {/*
         new route not working?
@@ -38,7 +38,7 @@ export default function RootLayout() {
 
           <Stack.Screen name="settings" options={{ headerShown: false }} />
         </Stack>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 }

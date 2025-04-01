@@ -1,7 +1,8 @@
 const en = {
+  lang: "English",
   app: {
     title: "Sight Reader Pro",
-    slogan: "Level up your music reading!",
+    slogan: "Level up your music reading",
   },
   routes: {
     practice: "Practice",
@@ -17,13 +18,15 @@ const en = {
     start: "Start",
   },
   settings: {
-    title: "settings",
+    title: "Settings",
     username: "Username",
     language: "Language",
     volume: "Volume",
     resetMyData: "Reset my data",
+    lang: { placeholder: "Select language" },
   },
   profile: {
+    title: "Profile",
     username: "Username",
     level: "Level",
     progress: "Progress",
@@ -59,9 +62,10 @@ const en = {
 };
 
 const ptBR = {
+  lang: "Português",
   app: {
     title: "Sight Reader Pro",
-    slogan: "Leve sua leitura musical para o próximo nível!",
+    slogan: "Leve sua leitura musical para o próximo nível",
   },
   routes: {
     practice: "Praticar",
@@ -81,9 +85,11 @@ const ptBR = {
     username: "Nome de Usuário",
     language: "Idioma",
     volume: "Volume",
-    resetMyData: "Redefinir meus dados",
+    resetMyData: "Apagar meus dados",
+    lang: { placeholder: "Escolher idioma" },
   },
   profile: {
+    title: "Perfil",
     username: "Nome de Usuário",
     level: "Nível",
     progress: "Progresso",

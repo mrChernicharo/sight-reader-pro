@@ -116,7 +116,7 @@ export function usePianoSound() {
       //
       else {
         const uri = pianoAssets[parsedNote as keyof typeof pianoAssets];
-        _sound = (await Audio.Sound.createAsync(uri, { volume: 1 })).sound;
+        _sound = (await Audio.Sound.createAsync(uri, { volume: 125 })).sound;
         sounds.current.set(parsedNote, _sound);
         _sound.playFromPositionAsync(0);
       }
