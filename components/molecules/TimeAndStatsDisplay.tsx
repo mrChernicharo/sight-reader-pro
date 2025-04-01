@@ -42,7 +42,8 @@ export function TimerAndStatsDisplay({
 const s = StyleSheet.create({
   container: {
     paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingTop: 12,
     // borderWidth: 1,
+    // borderColor: "red",
   },
 });

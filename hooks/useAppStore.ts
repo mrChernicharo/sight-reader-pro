@@ -47,8 +47,8 @@ export const useAppStore = create<AppState & AppActions>()(
     persist(
       (set) => ({
         _hydrated: false,
-        username: "",
-        language: "en",
+        username: "user",
+        language: "ptBR",
         games: [],
         currentGame: null,
         difficulty: Difficulty.Normal,

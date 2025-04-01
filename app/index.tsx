@@ -45,7 +45,7 @@ export default function Home() {
       <AppTextLogo subtitles={t("app.slogan")} />
 
       <AppView style={{ alignItems: "center", rowGap: 12, width: 200 }}>
-        <Link href="/practice">
+        <Link style={s.link} href="/practice">
           <AppButton
             text={t("routes.practice")}
             style={[s.btn, { borderColor: Colors[theme].text }]}
@@ -53,7 +53,7 @@ export default function Home() {
           />
         </Link>
 
-        <Link href="/profile">
+        <Link style={s.link} href="/profile">
           <AppButton
             text={t("routes.profile")}
             style={[s.btn, { borderColor: Colors[theme].text }]}
@@ -61,7 +61,7 @@ export default function Home() {
           />
         </Link>
 
-        <Link href="/settings">
+        <Link style={s.link} href="/settings">
           <AppButton
             text={t("routes.settings")}
             style={[s.btn, { borderColor: Colors[theme].text }]}
@@ -96,5 +96,6 @@ const s = StyleSheet.create({
     // width: "100%",
     // height: "100%",
   },
-  btn: { backgroundColor: "rgba(0, 0, 0, 0)", borderWidth: 1 },
+  link: { width: 200 },
+  btn: { backgroundColor: "rgba(0, 0, 0, 0)", borderWidth: 1, width: 200 },
 });

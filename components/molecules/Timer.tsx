@@ -66,6 +66,7 @@ export function CountdownTimer({
 
 const s = StyleSheet.create({
   container: {
+    paddingTop: 8,
     flexDirection: "row",
     alignItems: "center",
     gap: 12,

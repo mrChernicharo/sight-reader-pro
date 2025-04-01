@@ -13,6 +13,10 @@ const en = {
       cta: "Play",
     },
   },
+  game: {
+    score: "Score",
+    NpM: "notes/min",
+  },
   practice: {
     title: "Practice Setup",
     start: "Start",
@@ -39,6 +43,17 @@ const en = {
   },
   levelDetails: {},
   music: {
+    clef: "Clef",
+    keySignature: "Key Signature",
+    note: "Note",
+    noteRange: "Note Range",
+    scale: "Scale",
+    scaleType: {
+      major: "Major",
+      minor: "Minor",
+      diatonic: "Diatonic",
+      chromatic: "Chromatic",
+    },
     accidents: "Accidents",
     accident: {
       opts: {
@@ -47,17 +62,6 @@ const en = {
         flat: "flat",
       },
     },
-    scale: "Scale",
-    scaleType: {
-      major: "Major",
-      minor: "Minor",
-      diatonic: "Diatonic",
-      chromatic: "Chromatic",
-    },
-    clef: "Clef",
-    keySignature: "Key Signature",
-    note: "Note",
-    noteRange: "Note Range",
   },
 };
 
@@ -75,6 +79,10 @@ const ptBR = {
       title: "Principal",
       cta: "Jogar",
     },
+  },
+  game: {
+    score: "Pontuação",
+    NpM: "notas/min",
   },
   practice: {
     title: "Configuração de Prática",
@@ -102,6 +110,17 @@ const ptBR = {
   },
   levelDetails: {},
   music: {
+    clef: "Clave",
+    keySignature: "Armadura de Clave",
+    note: "Nota",
+    noteRange: "Extensão de Notas",
+    scale: "Escala",
+    scaleType: {
+      major: "Maior",
+      minor: "Menor",
+      diatonic: "Diatônica",
+      chromatic: "Cromática",
+    },
     accidents: "Acidentes",
     accident: {
       opts: {
@@ -110,17 +129,6 @@ const ptBR = {
         flat: "Bemol",
       },
     },
-    scale: "Escala",
-    scaleType: {
-      major: "Maior",
-      minor: "Menor",
-      diatonic: "Diatônica",
-      chromatic: "Cromática",
-    },
-    clef: "Clave",
-    keySignature: "Armadura de Clave",
-    note: "Nota",
-    noteRange: "Extensão de Notas",
   },
 };
 

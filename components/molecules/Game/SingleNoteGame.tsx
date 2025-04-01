@@ -15,11 +15,14 @@ import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Piano } from "../Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import {} from "react-native-safe-area-context";
 
 const DELAY = 60;
 
 export function SingleNoteGameComponent() {
   const theme = useColorScheme() ?? "light";
+  const backgroundColor = Colors[theme].background;
+
   const { id, keySignature: ksig, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
   const { currentGame, saveGameRecord, startNewGame, endGame, setGameState, updateRound, addNewRound } = useAppStore();
@@ -119,10 +122,11 @@ export function SingleNoteGameComponent() {
   const noteProps = { keys: [currNote], clef: level.clef, keySignature };
 
   return (
-    <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
-      <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} />
-
-      <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
+    <SafeAreaView style={[s.container, { backgroundColor }]}>
+      <AppView style={s.top}>
+        <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
+        <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} />
+      </AppView>
 
       {currNote && (
         <AppView>
@@ -147,10 +151,23 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     paddingTop: 36,
+    position: "relative",
+    // borderWidth: 1,
+    // borderColor: "blue",
+  },
+  top: {
+    position: "relative",
+    height: 130,
+    // borderWidth: 2,
+    // borderColor: "green",
   },
   backLink: {
-    left: 16,
+    position: "absolute",
+    top: -120,
+    left: 0,
+    zIndex: 20,
     // borderWidth: 1,
+    // borderColor: "red",
     // transform: [{ translateX: 16 }, { translateY: 16 }],
   },
 });
