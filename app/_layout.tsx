@@ -5,6 +5,7 @@ import { InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const hydrated = useAppStore((state) => state._hydrated);
@@ -18,24 +19,26 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <Stack>
-        {/*
+      <SafeAreaProvider>
+        <Stack>
+          {/*
         new route not working?
         check if its component is DEFAULT EXPORTed
       */}
-        <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
 
-        <Stack.Screen name="level-selection" options={{ headerShown: false }} />
-        <Stack.Screen name="level-details" options={{ headerShown: false }} />
-        <Stack.Screen name="game-level" options={{ headerShown: false }} />
-        <Stack.Screen name="game-over" options={{ headerShown: false }} />
+          <Stack.Screen name="level-selection" options={{ headerShown: false }} />
+          <Stack.Screen name="level-details" options={{ headerShown: false }} />
+          <Stack.Screen name="game-level" options={{ headerShown: false }} />
+          <Stack.Screen name="game-over" options={{ headerShown: false }} />
 
-        <Stack.Screen name="practice" options={{ headerShown: false }} />
+          <Stack.Screen name="practice" options={{ headerShown: false }} />
 
-        <Stack.Screen name="profile" options={{ headerShown: false }} />
+          <Stack.Screen name="profile" options={{ headerShown: false }} />
 
-        <Stack.Screen name="settings" options={{ headerShown: false }} />
-      </Stack>
+          <Stack.Screen name="settings" options={{ headerShown: false }} />
+        </Stack>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

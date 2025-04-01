@@ -11,7 +11,7 @@ import { VolumeSlider } from "@/components/molecules/VolumeSlider";
 
 export default function SettingsScreen() {
   const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
-  const { username, setUsername, _resetStore } = useAppStore();
+  const { username, language, setUsername, _resetStore } = useAppStore();
 
   const title = "Are you sure?";
   const description = "All your data will be erased. This action cannot be reverted";
@@ -74,6 +74,8 @@ export default function SettingsScreen() {
             }}
           />
         </AppView>
+
+        <AppText>{language}</AppText>
 
         <AppView style={{ display: "flex", alignItems: "center" }}>
           <AppText>Volume</AppText>

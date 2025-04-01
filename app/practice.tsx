@@ -6,7 +6,7 @@ import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES, chromatickeySignatureNotes 
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import Slider from "@react-native-community/slider";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Dimensions, SafeAreaView, StyleSheet, Switch, useColorScheme, useWindowDimensions } from "react-native";
+import { Dimensions, StyleSheet, Switch, useColorScheme, useWindowDimensions } from "react-native";
 import RangeSlider from "../components/atoms/RangeSlider";
 import { ScrollView } from "react-native-gesture-handler";
 import { glyphs } from "@/utils/constants";
@@ -21,6 +21,8 @@ import { AppSwitch } from "@/components/atoms/AppSwitch";
 import { KeySignatureSlider } from "@/components/molecules/KeySlider";
 import { SelectList } from "react-native-dropdown-select-list";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
+import { useTranslation } from "@/hooks/useTranslation";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SCALES = Object.values(ScaleType).map((v) => ({
   key: v,
@@ -36,6 +38,7 @@ export default function PracticeScreen() {
   // const lvl = getLevel("treble-01");
   const theme = useColorScheme() ?? "light";
   const { width } = useWindowDimensions();
+  const { t } = useTranslation();
   const { startNewGame } = useAppStore();
 
   const [isBassClef, setIsBassClef] = useState(false);
@@ -131,19 +134,19 @@ export default function PracticeScreen() {
   // }, [clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes]);
 
   return (
-    <SafeAreaView style={[{ height: "100%" }]}>
+    <SafeAreaView>
       <ScrollView contentContainerStyle={[s.container, { backgroundColor: Colors[theme].background }]}>
         <AppView style={s.top}>
           <AppView style={{ position: "absolute", left: 0, top: 4 }}>
             <BackLink />
           </AppView>
-          <AppText type="title">Practice Setup</AppText>
+          <AppText type="defaultSemiBold">{t("practice.title")}</AppText>
         </AppView>
 
         <AppView style={s.controlsContainer}>
           <AppView style={s.clefSwitchContainer}>
             <AppView style={s.clefSwitch}>
-              <AppText>Clef</AppText>
+              <AppText>{t("music.clef")}</AppText>
               <AppText style={{ fontSize: 34, lineHeight: 80 }}>{glyphs.trebleClef}</AppText>
               <AppSwitch value={isBassClef} setValue={setIsBassClef} />
               <AppText
@@ -161,7 +164,7 @@ export default function PracticeScreen() {
 
           <AppView style={s.keyContainer}>
             <AppView style={s.box}>
-              <AppText>Key signature</AppText>
+              <AppText>{t("music.keySignature")}</AppText>
               <AppSwitch value={hasKey} setValue={setHasKey} />
               {hasKey && <AppText style={{ fontSize: 20 }}>{keySignature}</AppText>}
             </AppView>
@@ -171,9 +174,9 @@ export default function PracticeScreen() {
             {hasKey ? (
               <AppView>
                 <AppView style={s.box}>
-                  <AppText>Major</AppText>
+                  <AppText>{t("music.scaleType.major")}</AppText>
                   <AppSwitch value={isMinorKey} setValue={setIsMinorKey} />
-                  <AppText>Minor</AppText>
+                  <AppText>{t("music.scaleType.minor")}</AppText>
                 </AppView>
 
                 <AppView style={s.box}>
@@ -185,7 +188,7 @@ export default function PracticeScreen() {
                 </AppView>
 
                 <AppView>
-                  <AppText>Scale</AppText>
+                  <AppText>{t("music.scale")}</AppText>
                   <SelectList
                     data={SCALES}
                     save="value"
@@ -202,9 +205,7 @@ export default function PracticeScreen() {
                     disabledTextStyles={{
                       color: Colors[theme].textMute,
                     }}
-                    boxStyles={{
-                      marginBottom: 24,
-                    }}
+                    boxStyles={{}}
                     dropdownStyles={{}}
                     disabledItemStyles={{}}
                     dropdownItemStyles={{}}
@@ -213,7 +214,7 @@ export default function PracticeScreen() {
               </AppView>
             ) : (
               <AppView>
-                <AppText>Accients</AppText>
+                <AppText>{t("music.accidents")}</AppText>
                 <SelectList
                   data={ACCIDENTS}
                   save="value"
@@ -230,16 +231,14 @@ export default function PracticeScreen() {
                   disabledTextStyles={{
                     color: Colors[theme].textMute,
                   }}
-                  boxStyles={{
-                    marginBottom: 24,
-                  }}
+                  boxStyles={{}}
                 />
               </AppView>
             )}
           </AppView>
 
           <AppView style={s.rangeSliderContainer}>
-            <AppText>Note Range</AppText>
+            <AppText>{t("music.noteRange")}</AppText>
             <AppView style={s.rangeDisplay}>
               <AppView>
                 <AppText style={[{ fontWeight: "bold" }, { fontSize: 18 }]}>{allNotes[rangeIdx.low]}</AppText>
@@ -268,7 +267,7 @@ export default function PracticeScreen() {
 
         <AppView>
           <AppButton
-            text="Start"
+            text={t("practice.start")}
             onPress={startPracticeGame}
             style={{ width: 300, height: 56 }}
             textStyle={{ color: "white", fontSize: 24 }}
@@ -282,12 +281,10 @@ export default function PracticeScreen() {
 
 const s = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "space-between",
+    // flex: 1,
     alignItems: "center",
     paddingHorizontal: 36,
-    paddingVertical: 64,
-    minHeight: Dimensions.get("window").height + 64 * 2,
+    paddingVertical: 24,
   },
   top: {
     width: "100%",
@@ -318,7 +315,7 @@ const s = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 16,
-    height: 50,
+    height: 42,
     // borderWidth: 1,
     // borderColor: '#999',
   },
