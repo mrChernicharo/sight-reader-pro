@@ -10,7 +10,7 @@ export function useTranslation() {
       let val: any = TRANSLATIONS[lang];
       for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
-        console.log({ segment, key, lang, TRANSLATIONS });
+        // console.log({ segment, key, lang, TRANSLATIONS });
         val = val[segment];
       }
       return val as string;

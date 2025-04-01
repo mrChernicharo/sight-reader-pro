@@ -2,6 +2,7 @@ import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
+import { FadeIn } from "@/components/atoms/FadeIn";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { KeySignature } from "@/utils/enums";
@@ -51,42 +52,48 @@ export default function Home() {
         // ref={confettiRef}
       /> */}
 
-      <AppTextLogo subtitles={t("app.slogan")} />
+      <FadeIn delay={0}>
+        <AppTextLogo subtitles={t("app.slogan")} />
+      </FadeIn>
 
-      <AppView style={{ alignItems: "center", rowGap: 12, width: 200 }}>
-        <Link style={s.link} href="/practice">
+      <FadeIn delay={250}>
+        <AppView style={{ alignItems: "center", rowGap: 12, width: 200 }}>
+          <Link style={s.link} href="/practice">
+            <AppButton
+              text={t("routes.practice")}
+              style={[s.btn, { borderColor: Colors[theme].text }]}
+              textStyle={{ color: Colors[theme].text }}
+            />
+          </Link>
+
+          <Link style={s.link} href="/profile">
+            <AppButton
+              text={t("routes.profile")}
+              style={[s.btn, { borderColor: Colors[theme].text }]}
+              textStyle={{ color: Colors[theme].text }}
+            />
+          </Link>
+
+          <Link style={s.link} href="/settings">
+            <AppButton
+              text={t("routes.settings")}
+              style={[s.btn, { borderColor: Colors[theme].text }]}
+              textStyle={{ color: Colors[theme].text }}
+            />
+          </Link>
+        </AppView>
+      </FadeIn>
+
+      <FadeIn delay={500}>
+        <Link href="/level-selection" asChild>
           <AppButton
-            text={t("routes.practice")}
-            style={[s.btn, { borderColor: Colors[theme].text }]}
-            textStyle={{ color: Colors[theme].text }}
+            text={t("routes.main.cta")}
+            style={{ width: 300, height: 56 }}
+            textStyle={{ color: "white", fontSize: 24 }}
+            activeOpacity={0.7}
           />
         </Link>
-
-        <Link style={s.link} href="/profile">
-          <AppButton
-            text={t("routes.profile")}
-            style={[s.btn, { borderColor: Colors[theme].text }]}
-            textStyle={{ color: Colors[theme].text }}
-          />
-        </Link>
-
-        <Link style={s.link} href="/settings">
-          <AppButton
-            text={t("routes.settings")}
-            style={[s.btn, { borderColor: Colors[theme].text }]}
-            textStyle={{ color: Colors[theme].text }}
-          />
-        </Link>
-      </AppView>
-
-      <Link href="/level-selection" asChild>
-        <AppButton
-          text={t("routes.main.cta")}
-          style={{ width: 300, height: 56 }}
-          textStyle={{ color: "white", fontSize: 24 }}
-          activeOpacity={0.7}
-        />
-      </Link>
+      </FadeIn>
     </AppView>
   );
 }
