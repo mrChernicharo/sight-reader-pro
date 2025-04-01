@@ -117,9 +117,10 @@ export function MelodyGameComponent() {
 
   return (
     <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
-      <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} />
-
-      <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
+      <AppView style={s.top}>
+        <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
+        <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} />
+      </AppView>
 
       {currRound?.values ? (
         <AppView>
@@ -133,14 +134,37 @@ export function MelodyGameComponent() {
 }
 
 const s = StyleSheet.create({
+  // container: {
+  //   flex: 1,
+  //   justifyContent: "space-between",
+  //   paddingTop: 36,
+  // },
+  // backLink: {
+  //   left: 16,
+  //   // borderWidth: 1,
+  //   // transform: [{ translateX: 16 }, { translateY: 16 }],
+  // },
   container: {
     flex: 1,
     justifyContent: "space-between",
     paddingTop: 36,
+    position: "relative",
+    // borderWidth: 1,
+    // borderColor: "blue",
+  },
+  top: {
+    position: "relative",
+    height: 130,
+    // borderWidth: 2,
+    // borderColor: "green",
   },
   backLink: {
-    left: 16,
+    position: "absolute",
+    top: -120,
+    left: 0,
+    zIndex: 20,
     // borderWidth: 1,
+    // borderColor: "red",
     // transform: [{ translateX: 16 }, { translateY: 16 }],
   },
 });

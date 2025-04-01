@@ -86,7 +86,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
       <AppView transparentBG style={[s.score]}>
         <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
           <AppText style={{ color: Colors[theme].textMute }}>{score.hits} hits</AppText>
-          <AppText style={{ color: Colors[theme].textMute }}>{score.hitScore} pts</AppText>
+          <AppText style={{ color: Colors[theme].textMute }}>{intl.format(score.hitScore)} pts</AppText>
           <AppText style={{ color: Colors[theme].textMute }}>{score.multiplier} mult</AppText>
           <AppText style={{ position: "absolute", left: 20, top: 36, color: Colors[theme].textMute }}>X</AppText>
         </AppView>
@@ -98,7 +98,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
         <AppView transparentBG style={{ alignItems: "center" }}>
           <AppText type="subtitle">TOTAL SCORE</AppText>
-          <AppText type="title">{score.value}</AppText>
+          <AppText type="title">{intl.format(score.value)}</AppText>
         </AppView>
       </AppView>
     </AppView>
