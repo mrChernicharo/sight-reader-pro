@@ -40,18 +40,6 @@ export default function Home() {
 
   return (
     <AppView style={s.container}>
-      {/* <Image src="assets/images/logo.svg" style={{ width, height: height / 4 }} /> */}
-
-      {/* <Image source={require("@/assets/images/adaptive-icon.png")} style={s.titleImage} /> */}
-
-      {/* <LottieView
-        style={{ borderWidth: 3, borderColor: "red", width:200, height: 200 }}
-        source={require("@/assets/lottie/confettie-explosion-animation.lottie.json")}
-        autoPlay
-        loop
-        // ref={confettiRef}
-      /> */}
-
       <FadeIn delay={0}>
         <AppTextLogo subtitles={t("app.slogan")} />
       </FadeIn>

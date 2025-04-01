@@ -16,6 +16,7 @@ const en = {
   game: {
     score: "Score",
     NpM: "notes/min",
+    start: "Start Level",
   },
   practice: {
     title: "Practice Setup",
@@ -83,6 +84,7 @@ const ptBR = {
   game: {
     score: "Pontuação",
     NpM: "notas/min",
+    start: "Começar",
   },
   practice: {
     title: "Configuração de Prática",

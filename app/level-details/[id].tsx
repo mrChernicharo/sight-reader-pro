@@ -14,10 +14,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FadeIn } from "@/components/atoms/FadeIn";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function LevelDetails() {
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
   const { id } = useLocalSearchParams() as { id: string };
+  const { t } = useTranslation();
   const level = getLevel(id);
 
   if (!level) return null;
@@ -49,42 +52,58 @@ export default function LevelDetails() {
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.infoContainer}>
-        <BackLink to="/level-selection" style={s.backlink} />
-
-        <AppView style={s.top}>
-          <AppText type="title" style={s.title}>
-            {level.name}
-          </AppText>
+        <FadeIn>
+          <AppView>
+            <AppView style={s.backlinkContainer}>
+              <BackLink to="/level-selection" style={s.backlink} />
+            </AppView>
+            <AppText type="title" style={s.title}>
+              {level.name}
+            </AppText>
+          </AppView>
           <AppText type="subtitle" style={s.subtitle}>
             {level.id}
           </AppText>
-        </AppView>
+        </FadeIn>
 
+        <FadeIn delay={200}>
+          <AppView style={s.midContainer}>
+            <AppText>{level.gameType}</AppText>
+            <AppText>{displayInfo.accidentText}</AppText>
+            <AppText>
+              <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
+            </AppText>
+            <AppText>
+              <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
+            </AppText>
+          </AppView>
+        </FadeIn>
+      </AppView>
+
+      <FadeIn delay={400}>
         <AppView style={s.midContainer}>
-          <AppText>{level.gameType}</AppText>
-          <AppText>{displayInfo.accidentText}</AppText>
-          <AppText>
-            <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
+          <AppText type="subtitle" style={[s.rangeTitle, { marginBottom: displayInfo.rangeTitleOffset }]}>
+            Note Range
           </AppText>
-          <AppText>
-            <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
-          </AppText>
+
+          <SheetMusic.Range
+            clef={level.clef}
+            keys={displayInfo.rangeKeys}
+            keySignature={level.hasKey ? level.keySignatures[0] : KeySignature["C"]}
+          />
         </AppView>
-      </AppView>
+      </FadeIn>
 
-      <AppView style={s.midContainer}>
-        <AppText type="subtitle" style={[s.rangeTitle, { marginBottom: displayInfo.rangeTitleOffset }]}>
-          Note Range
-        </AppText>
-
-        <SheetMusic.Range
-          clef={level.clef}
-          keys={displayInfo.rangeKeys}
-          keySignature={level.hasKey ? level.keySignatures[0] : KeySignature["C"]}
+      <FadeIn delay={600} style={{ width: "100%", height: 46 }}>
+        {/* <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} onPress={handleNewGame} /> */}
+        <AppButton
+          text={t("game.start")}
+          style={{ width: "100%", height: 56 }}
+          textStyle={{ color: "white", fontSize: 24 }}
+          activeOpacity={0.7}
+          onPress={handleNewGame}
         />
-      </AppView>
-
-      <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} onPress={handleNewGame} />
+      </FadeIn>
     </SafeAreaView>
   );
 }
@@ -92,39 +111,54 @@ export default function LevelDetails() {
 const s = StyleSheet.create({
   container: {
     paddingHorizontal: 24,
-    paddingTop: 16,
     paddingBottom: 64,
+    paddingTop: 24,
+    position: "relative",
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
+    // borderWidth: 1,
+    // borderColor: "red",
+  },
+  infoContainer: {
+    width: "100%",
+    // borderWidth: 1,
+    // borderColor: "green",
+  },
+  backlinkContainer: {
+    position: "absolute",
+    top: 6,
+    zIndex: 1000,
   },
   backlink: {
-    transform: [{ translateX: -8 }, { translateY: 0 }],
-  },
-  infoContainer: { width: "100%" },
-  top: {
-    paddingBottom: 8,
     // borderWidth: 1,
+    // borderColor: "green",
   },
   title: {
     textAlign: "center",
+    pointerEvents: "none",
+    // borderWidth: 1,
+    // borderColor: "blue",
   },
   subtitle: {
     color: "gray",
-    paddingTop: 6,
     textAlign: "center",
+    paddingBottom: 24,
+    // borderWidth: 1,
+    // borderColor: "red",
   },
   midContainer: {
     alignItems: "center",
     // borderWidth: 1,
+    // borderColor: "red",
   },
   rangeTitle: {
-    marginTop: 52,
+    marginTop: 74,
     zIndex: 1000,
-    // borderWidth: 1,
   },
   cta: {
-    width: "90%",
+    // borderWidth: 1,
+    // borderColor: "red",
   },
   ctaText: {
     color: "white",
