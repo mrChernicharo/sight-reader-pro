@@ -114,10 +114,10 @@ interface PlayingNote {
 
 export function Piano2({
   keySignature,
-}: //   onPianoKeyPress,
-{
+  onKeyPressed,
+}: {
   keySignature: KeySignature;
-  //   onPianoKeyPress: (note: NoteName) => void;
+  onKeyPressed: (note: NoteName) => void;
 }) {
   const audioContextRef = useRef<AudioContext | null>(null);
   const playingNotesRef = useRef<PR<PlayingNote>>({});

@@ -91,13 +91,13 @@ export function SingleNoteGameComponent() {
     });
   }, [level, id, rounds]);
 
-  const onBackLinkClick = () => {
-    // console.log(">>> onBackLinkClick");
-    if (previousPage === "/practice") {
-      ALL_LEVELS.pop();
-    }
-    endGame();
-  };
+  // const onBackLinkClick = () => {
+  //   // console.log(">>> onBackLinkClick");
+  //   if (previousPage === "/practice") {
+  //     ALL_LEVELS.pop();
+  //   }
+  //   endGame();
+  // };
 
   useEffect(() => {
     const gameInfo: Partial<CurrentGame<GameType.Single>> = {
@@ -126,7 +126,8 @@ export function SingleNoteGameComponent() {
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.top}>
         <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
-        <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} />
+        <BackLink to={previousPage} style={s.backLink} />
+        {/* <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} /> */}
       </AppView>
 
       {currNote && (
@@ -151,8 +152,8 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    paddingTop: 36,
     position: "relative",
+    paddingTop: 8,
     // borderWidth: 1,
     // borderColor: "blue",
   },

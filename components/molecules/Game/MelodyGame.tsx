@@ -91,13 +91,13 @@ export function MelodyGameComponent() {
     });
   }, [level, id, rounds]);
 
-  const onBackLinkClick = () => {
-    // console.log(">>> onBackLinkClick");
-    if (previousPage === "/practice") {
-      ALL_LEVELS.pop();
-    }
-    endGame();
-  };
+  // const onBackLinkClick = () => {
+  //   // console.log(">>> onBackLinkClick");
+  //   if (previousPage === "/practice") {
+  //     ALL_LEVELS.pop();
+  //   }
+  //   endGame();
+  // };
 
   // useEffect(() => {
   //   console.log("::: currentGame :::", { currentGame, currRound, noteProps });
@@ -119,7 +119,8 @@ export function MelodyGameComponent() {
     <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
       <AppView style={s.top}>
         <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
-        <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} />
+        <BackLink to={previousPage} style={s.backLink} />
+        {/* <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} /> */}
       </AppView>
 
       {currRound?.values ? (
