@@ -264,6 +264,8 @@ export function usePianoSound2() {
   const playingNotesRef = useRef<PR<PlayingNote>>({});
   const bufferMapRef = useRef<PR<AudioBuffer>>({});
 
+  const [ready, setReady] = useState(false);
+
   async function playPianoNote(originalNote: Note) {
     console.log("<usePianoSound2> playPianoNote");
     const audioContext = audioContextRef.current;
@@ -311,6 +313,8 @@ export function usePianoSound2() {
   }
 
   useEffect(() => {
+    console.log(`<usePianoSound2> loading Piano Sounds...`);
+
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContext();
     }
@@ -327,16 +331,25 @@ export function usePianoSound2() {
 
       const isLastAsset = i + 1 == audioAssets.length;
       if (isLastAsset) {
-        console.log(`Done loading Piano Sounds. Took ${Date.now() - timeStart}ms`);
+        console.log(`<usePianoSound2> Done loading Piano Sounds. Took ${Date.now() - timeStart}ms`);
+        setReady(true);
       }
     });
 
     return () => {
-      audioContextRef.current?.close();
+      console.log("<usePianoSound2> ...closing audio ctx");
+      audioContextRef.current?.close().then(() => {
+        audioContextRef.current = null;
+        playingNotesRef.current = {};
+        bufferMapRef.current = {};
+        setReady(false);
+        console.log("<usePianoSound2> ...Done closing");
+      });
     };
   }, []);
 
   return {
+    ready,
     playPianoNote,
     releasePianoNote,
   };
