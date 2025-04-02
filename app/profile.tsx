@@ -9,7 +9,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Piano2 } from "@/components/molecules/Piano.2";
+import { Piano2 } from "@/components/molecules/Piano2/Piano.2";
 import { KeySignature, NoteName } from "@/utils/enums";
 
 export default function SettingsScreen() {
@@ -38,6 +38,9 @@ export default function SettingsScreen() {
           keySignature={KeySignature.F}
           onKeyPressed={(note) => {
             console.log("onKeyPressed ::::", note);
+          }}
+          onKeyReleased={(note) => {
+            console.log("onKeyReleased ::::", note);
           }}
         />
       </AppView>

@@ -462,3 +462,7 @@ export function groupArrayElements<T>(arr: T[]): T[] {
 
   return groupedArray;
 }
+
+export async function wait(ms = 1000) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
