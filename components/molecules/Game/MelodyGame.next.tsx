@@ -1,21 +1,19 @@
-import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
-import { Colors } from "@/utils/Colors";
-import { KeySignature, GameState, GameType, NoteName, SoundEffect } from "@/utils/enums";
-import { explodeNote, getPreviousPage, isNoteMatch, randomUID } from "@/utils/helperFns";
-import { ALL_LEVELS, getLevel } from "@/utils/levels";
-import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
-import { usePianoSound, usePianoSound2, useSoundEfx } from "@/hooks/usePianoSound";
+import { usePianoSound2, useSoundEfx } from "@/hooks/usePianoSound";
+import { Colors } from "@/utils/Colors";
+import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
+import { explodeNote, getPreviousPage, isNoteMatch, randomUID } from "@/utils/helperFns";
+import { getLevel } from "@/utils/levels";
+import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
+import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
-import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { Piano } from "../Piano";
-import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
-import { SheetMusic } from "../SheetMusic";
 import { Piano2 } from "../Piano2/Piano.2";
+import { SheetMusic } from "../SheetMusic";
+import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 
 export function MelodyGameComponent() {
   const theme = useColorScheme() ?? "light";
@@ -93,18 +91,6 @@ export function MelodyGameComponent() {
     });
   }, [level, id, rounds]);
 
-  // const onBackLinkClick = () => {
-  //   // console.log(">>> onBackLinkClick");
-  //   if (previousPage === "/practice") {
-  //     ALL_LEVELS.pop();
-  //   }
-  //   endGame();
-  // };
-
-  // useEffect(() => {
-  //   console.log("::: currentGame :::", { currentGame, currRound, noteProps });
-  // }, [currentGame, currRound, noteProps]);
-
   useEffect(() => {
     const gameInfo: Partial<CurrentGame<GameType.Melody>> = {
       levelId: id,
@@ -122,7 +108,6 @@ export function MelodyGameComponent() {
       <AppView style={s.top}>
         <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
         <BackLink to={previousPage} style={s.backLink} />
-        {/* <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} /> */}
       </AppView>
 
       {currRound?.values ? (

@@ -8,7 +8,7 @@ import { explodeNote, getPreviousPage, isNoteMatch, randomUID, wait } from "@/ut
 import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, Note, Round } from "@/utils/types";
-import { RelativePathString, router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Piano2 } from "../Piano2/Piano.2";
@@ -103,10 +103,6 @@ export function SingleNoteGameComponent() {
 
     startNewGame({ ...level, ...gameInfo } as CurrentGame<GameType.Single>);
   }, []);
-
-  // useEffect(() => {
-  //   // console.log("currentGame:::", currentGame);
-  // }, [currentGame]);
 
   if (currentGame?.type !== GameType.Single) return null;
 
