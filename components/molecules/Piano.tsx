@@ -18,7 +18,7 @@ export function Piano({
   onPianoKeyPress: (note: NoteName) => void;
 }) {
   const { width } = useWindowDimensions();
-
+  console.log("<Piano> keySignature :::", keySignature);
   // const chromaticNotes = scaleTypeNoteSequences[ScaleType.Chromatic][keySignature];
   // const keySigBlackNotes = sortBlackNotes(chromaticNotes.filter((noteName) => noteName.length > 1));
   // const BLACK_NOTES = [...keySigBlackNotes.slice(0, 2), "", ...keySigBlackNotes.slice(2)] as NoteName[];
@@ -172,24 +172,24 @@ const s = StyleSheet.create({
   },
 });
 
-function sortBlackNotes(notes: NoteName[]) {
-  if (notes.length !== 5) throw Error("");
-  const res: NoteName[] = [];
+// function sortBlackNotes(notes: NoteName[]) {
+//   if (notes.length !== 5) throw Error("");
+//   const res: NoteName[] = [];
 
-  let startPushing = false;
-  let noteIdx = 0;
-  while (res.length < 5) {
-    if (notes[noteIdx].startsWith("c")) {
-      startPushing = true;
-    }
+//   let startPushing = false;
+//   let noteIdx = 0;
+//   while (res.length < 5) {
+//     if (notes[noteIdx].startsWith("c")) {
+//       startPushing = true;
+//     }
 
-    if (startPushing == true) {
-      res.push(notes[noteIdx]);
-    }
+//     if (startPushing == true) {
+//       res.push(notes[noteIdx]);
+//     }
 
-    if (noteIdx >= 4) noteIdx = 0;
-    else noteIdx++;
-  }
+//     if (noteIdx >= 4) noteIdx = 0;
+//     else noteIdx++;
+//   }
 
-  return res;
-}
+//   return res;
+// }

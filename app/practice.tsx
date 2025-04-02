@@ -119,7 +119,11 @@ export default function PracticeScreen() {
       params: {
         id: levelId,
         clef,
-        keySignature,
+        keySignature: hasKey
+          ? keySignature
+          : [LevelAccidentType.b].includes(accident)
+          ? KeySignature.F
+          : KeySignature.C,
         previousPage: "/practice",
       },
     });
