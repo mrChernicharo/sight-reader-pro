@@ -93,6 +93,10 @@ const pianoAssets = {
   "gb/5": require("@/assets/sounds/piano-notes/Piano.mf.Gb5.mp3"),
   "gb/6": require("@/assets/sounds/piano-notes/Piano.mf.Gb6.mp3"),
   "gb/7": require("@/assets/sounds/piano-notes/Piano.mf.Gb7.mp3"),
+
+  //  A: 'https://software-mansion.github.io/react-native-audio-api/audio/sounds/C4.mp3',
+  // C: 'https://software-mansion.github.io/react-native-audio-api/audio/sounds/Ds4.mp3',
+  // E: 'https://software-mansion.github.io/react-native-audio-api/audio/sounds/Fs4.mp3',
 };
 
 const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
@@ -130,11 +134,10 @@ export function Piano2({
     let buffer = bufferMapRef.current[which];
     const tNow = audioContext?.currentTime;
 
+    console.log("onKeyPressIn :::", { audioContext, buffer, tNow, playingNotes: playingNotesRef.current });
     if (!audioContext || !buffer || !tNow) {
       return;
     }
-
-    console.log("onKeyPressIn :::", { audioContext, buffer, tNow, playingNotes: playingNotesRef.current });
 
     const source = audioContext.createBufferSource();
     source.buffer = buffer;
@@ -176,9 +179,13 @@ export function Piano2({
     }
 
     Object.entries(pianoAssets).forEach(async ([key, url]) => {
-      bufferMapRef.current[key as Note] = await fetch(url)
+      bufferMapRef.current[key as Note] = await fetch(
+        "https://software-mansion.github.io/react-native-audio-api/audio/sounds/C4.mp3"
+      )
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => audioContextRef.current!.decodeAudioData(arrayBuffer));
+
+      // bufferMapRef.current[key as Note] = audioContextRef.current!.decodeAudioData(url);
     });
 
     return () => {
@@ -197,7 +204,7 @@ export function Piano2({
             <Pressable
               style={[s.blackNoteInner]}
               android_ripple={{ radius: 90, color: "#ffffff33" }}
-              android_disableSound
+              // android_disableSound
               //   cancelable
               //   onPress={() => {
               //     if (!note) return;
@@ -220,7 +227,7 @@ export function Piano2({
             <Pressable
               style={[s.blackNoteInner]}
               android_ripple={{ radius: 90, color: "#ffffff33" }}
-              android_disableSound
+              // android_disableSound
               //   cancelable
               //   onPress={() => {
               //     if (!note) return;
@@ -240,7 +247,7 @@ export function Piano2({
           <Pressable
             key={note}
             android_ripple={{ radius: 90, color: "#000000066" }}
-            android_disableSound
+            // android_disableSound
             // cancelable
             // onPress={() => {
             //   onPianoKeyPress(note as NoteName);
