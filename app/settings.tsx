@@ -10,7 +10,7 @@ import { Alert, Platform, SafeAreaView, StyleSheet, TextInput, useColorScheme } 
 import { VolumeSlider } from "@/components/molecules/VolumeSlider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { SelectList } from "react-native-dropdown-select-list";
-import { TRANSLATIONS } from "@/utils/translations";
+import { TRANSLATIONS } from "@/translations";
 
 const SUPPORTED_LANGUAGES = Object.keys(TRANSLATIONS);
 const LANGS = SUPPORTED_LANGUAGES.map((lang) => ({ key: lang, value: (TRANSLATIONS as any)[lang].lang }));

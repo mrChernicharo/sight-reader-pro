@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Text, ViewStyle } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 import { useFocusEffect, useNavigation, usePathname, useRouter } from "expo-router";
@@ -7,61 +7,43 @@ interface FadeInReanimatedProps {
   children: React.ReactNode;
   delay?: number;
   duration?: number;
-  yPos?: number;
+  x?: number;
+  y?: number;
   style?: ViewStyle;
 }
 
-export function FadeIn({ children, yPos = 50, duration = 500, delay = 0, style, ...rest }: FadeInReanimatedProps) {
+export function FadeIn({ children, x = 0, y = 50, duration = 500, delay = 0, style, ...rest }: FadeInReanimatedProps) {
+  const delayTimeout = useRef(0);
   const opacity = useSharedValue(0);
-  const y = useSharedValue(yPos);
-  const router = useRouter();
+  const X = useSharedValue(x);
+  const Y = useSharedValue(y);
   const pathname = usePathname();
-
-  //   useEffect(() => {
-  //     opacity.value = withTiming(1, { duration });
-  //     y.value = withTiming(1, { duration });
-
-  //     //    const unsubscribe = navigation.addListener('blur', () => {
-  //     //   opacity.value = 0;
-  //     // });
-
-  //     return () => {
-  //       opacity.value = 0;
-  //       y.value = 0;
-  //     };
-  //   }, [y, opacity, duration]);
-
-  //   useEffect(() => {
-  //     opacity.value = withTiming(1, { duration });
-  //     y.value = withTiming(1, { duration });
-  //   }, [opacity, y, duration]);
-
-  //   useFocusEffect(() => {
-  //     opacity.value = 0;
-  //     y.value = 0;
-  //   });
 
   useFocusEffect(
     React.useCallback(() => {
       console.log("Component focused:", pathname);
 
-      setTimeout(() => {
+      delayTimeout.current = window.setTimeout(() => {
         opacity.value = withTiming(1, { duration });
-        y.value = withTiming(1, { duration });
+        X.value = withTiming(1, { duration });
+        Y.value = withTiming(1, { duration });
       }, delay);
 
       return () => {
         console.log("Component blurred:", pathname);
         opacity.value = 0;
-        y.value = yPos;
+        X.value = y;
+        Y.value = y;
+
+        window.clearTimeout(delayTimeout.current);
       };
-    }, [pathname, opacity, y, yPos, duration])
+    }, [pathname, opacity, X, Y, x, y, duration])
   );
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
       opacity: opacity.value,
-      transform: [{ translateY: y.value }],
+      transform: [{ translateY: Y.value }, { translateX: X.value }],
     };
   });
 

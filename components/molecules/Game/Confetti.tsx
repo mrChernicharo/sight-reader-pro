@@ -31,13 +31,14 @@ export function Confetti(props: ConfettiProps) {
   const animationProgress = useRef(new Animated.Value(0));
 
   useEffect(() => {
-    Animated.timing(animationProgress.current, {
+    const animation = Animated.timing(animationProgress.current, {
       toValue: 1,
       delay,
       duration,
       easing: Easing.ease,
       useNativeDriver: true,
-    }).start();
+    });
+    animation.start();
   }, []);
 
   return (

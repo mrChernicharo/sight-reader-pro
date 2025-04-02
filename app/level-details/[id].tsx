@@ -68,10 +68,10 @@ export default function LevelDetails() {
 
         <FadeIn delay={200}>
           <AppView style={s.midContainer}>
-            <AppText>{level.gameType}</AppText>
-            <AppText>{displayInfo.accidentText}</AppText>
+            <AppText>{t(`game.type.${level.gameType}`)}</AppText>
+            <AppText>{t(`game.config.${displayInfo.accidentText}`)}</AppText>
             <AppText>
-              <Ionicons name="time-outline" /> {level.durationInSeconds} seconds
+              <Ionicons name="time-outline" /> {level.durationInSeconds} {t("time.seconds")}
             </AppText>
             <AppText>
               <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
@@ -83,7 +83,7 @@ export default function LevelDetails() {
       <FadeIn delay={400}>
         <AppView style={s.midContainer}>
           <AppText type="subtitle" style={[s.rangeTitle, { marginBottom: displayInfo.rangeTitleOffset }]}>
-            Note Range
+            {t("music.noteRange")}
           </AppText>
 
           <SheetMusic.Range
@@ -97,7 +97,7 @@ export default function LevelDetails() {
       <FadeIn delay={600} style={{ width: "100%", height: 46 }}>
         {/* <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} onPress={handleNewGame} /> */}
         <AppButton
-          text={t("game.start")}
+          text={t("game.state.start")}
           style={{ width: "100%", height: 56 }}
           textStyle={{ color: "white", fontSize: 24 }}
           activeOpacity={0.7}

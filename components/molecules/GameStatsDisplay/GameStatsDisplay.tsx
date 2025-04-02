@@ -9,6 +9,7 @@ import { AppView } from "../../atoms/AppView";
 import { GameType } from "@/utils/enums";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
+import { FadeIn } from "@/components/atoms/FadeIn";
 
 export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps) {
   const theme = useColorScheme() ?? "light";
@@ -18,7 +19,13 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
   if (!currentGame?.rounds || currentGame.rounds.length === 0) return <></>;
 
-  const { accuracy, attempts, successes, mistakes, score: gs } = getGameStats(level, currentGame?.rounds, intl);
+  const {
+    accuracy = 1,
+    attempts = 0,
+    successes = 0,
+    mistakes = 0,
+    score: gs = { value: 0 },
+  } = getGameStats(level, currentGame?.rounds, intl);
   const score = gs as LevelScore;
   const notesPerMinute = !hitsPerMinute ? "--" : intl.format(hitsPerMinute ?? 0);
   // useEffect(() => {
@@ -30,75 +37,97 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
       <AppView transparentBG style={[s.separator]} />
 
       <AppView transparentBG style={[s.row]}>
-        <AppView transparentBG style={s.rowItem}>
-          <AppText>
-            <Ionicons name="time-outline" />
-            &nbsp;Notes per minute
-          </AppText>
-          <AppView>
-            <AppText>{notesPerMinute}</AppText>
+        <FadeIn>
+          <AppView transparentBG style={s.rowItem}>
+            <AppText>
+              <Ionicons name="time-outline" />
+              &nbsp;Notes per minute
+            </AppText>
+            <AppView>
+              <AppText>{notesPerMinute}</AppText>
+            </AppView>
           </AppView>
-        </AppView>
+        </FadeIn>
 
-        <AppView transparentBG style={s.rowItem}>
-          <AppText>
-            <Ionicons name="eye-outline" />
-            &nbsp;Accuracy
-          </AppText>
-          <AppView>
-            <AppText>{accuracy}</AppText>
+        <FadeIn>
+          <AppView transparentBG style={s.rowItem}>
+            <AppText>
+              <Ionicons name="eye-outline" />
+              &nbsp;Accuracy
+            </AppText>
+            <AppView>
+              <AppText>{accuracy}</AppText>
+            </AppView>
           </AppView>
-        </AppView>
+        </FadeIn>
       </AppView>
 
       <AppView transparentBG style={[s.row]}>
-        <AppView transparentBG style={[s.rowItem]}>
-          <AppText>
-            <Ionicons name="musical-notes-outline" />
-            &nbsp;Attempts
-          </AppText>
-          <AppView>
-            <AppText>{attempts}</AppText>
+        <FadeIn>
+          <AppView transparentBG style={[s.rowItem]}>
+            <AppText>
+              <Ionicons name="musical-notes-outline" />
+              &nbsp;Attempts
+            </AppText>
+            <AppView>
+              <AppText>{attempts}</AppText>
+            </AppView>
           </AppView>
-        </AppView>
+        </FadeIn>
 
-        <AppView transparentBG style={s.rowItem}>
-          <AppText>
-            <Ionicons name="checkmark" color={Colors[theme].green} />
-            &nbsp;Successes
-          </AppText>
-          <AppView>
-            <AppText>{successes}</AppText>
-          </AppView>
-        </AppView>
+        <FadeIn>
+          <AppView transparentBG style={s.rowItem}>
+            <AppText>
+              <Ionicons name="checkmark" color={Colors[theme].green} />
+              &nbsp;Successes
+            </AppText>
 
-        <AppView transparentBG style={s.rowItem}>
-          <AppText>
-            <Ionicons name="close-outline" color={Colors[theme].red} />
-            &nbsp;Mistakes
-          </AppText>
-          <AppView>
-            <AppText>{mistakes}</AppText>
+            <AppView>
+              <AppText>{successes}</AppText>
+            </AppView>
           </AppView>
-        </AppView>
+        </FadeIn>
+
+        <FadeIn>
+          <AppView transparentBG style={s.rowItem}>
+            <AppText>
+              <Ionicons name="close-outline" color={Colors[theme].red} />
+              &nbsp;Mistakes
+            </AppText>
+
+            <AppView>
+              <AppText>{mistakes}</AppText>
+            </AppView>
+          </AppView>
+        </FadeIn>
       </AppView>
 
       <AppView transparentBG style={[s.score]}>
         <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
-          <AppText style={{ color: Colors[theme].textMute }}>{score.hits} hits</AppText>
-          <AppText style={{ color: Colors[theme].textMute }}>{intl.format(score.hitScore)} pts</AppText>
-          <AppText style={{ color: Colors[theme].textMute }}>{score.multiplier} mult</AppText>
-          <AppText style={{ position: "absolute", left: 20, top: 36, color: Colors[theme].textMute }}>X</AppText>
+          <FadeIn delay={0} x={50} duration={250} y={0}>
+            <AppText style={{ color: Colors[theme].textMute }}>{score.hits} hits</AppText>
+          </FadeIn>
+          <FadeIn delay={300} x={50} duration={250} y={0}>
+            <AppText style={{ color: Colors[theme].textMute }}>{intl.format(score.hitScore)} pts</AppText>
+            <AppText style={{ position: "absolute", left: -20, top: 0, color: Colors[theme].textMute }}>X</AppText>
+          </FadeIn>
+          <FadeIn delay={600} x={50} duration={250} y={0}>
+            <AppText style={{ color: Colors[theme].textMute }}>{score.multiplier} mult</AppText>
+            <AppText style={{ position: "absolute", left: -20, top: 0, color: Colors[theme].textMute }}>X</AppText>
+          </FadeIn>
         </AppView>
 
-        <AppView
-          transparentBG
-          style={[{ height: 1, backgroundColor: Colors[theme].text, width: 160, marginVertical: 12 }]}
-        />
+        <FadeIn delay={1000} x={50} duration={250} y={0}>
+          <AppView transparentBG style={[s.line, { backgroundColor: Colors[theme].text }]} />
+        </FadeIn>
 
         <AppView transparentBG style={{ alignItems: "center" }}>
-          <AppText type="subtitle">TOTAL SCORE</AppText>
-          <AppText type="title">{intl.format(score.value)}</AppText>
+          <FadeIn delay={1500} x={-50} y={0}>
+            <AppText type="subtitle">TOTAL SCORE</AppText>
+          </FadeIn>
+          <FadeIn delay={1600} x={-50} y={0}>
+            <AppText type="title">{intl.format(score.value)}</AppText>
+          </FadeIn>
         </AppView>
       </AppView>
     </AppView>
@@ -125,6 +154,7 @@ const s = StyleSheet.create({
   separator: {
     height: 12,
   },
+  line: { height: 1, width: 160, marginVertical: 12 },
   score: {
     paddingTop: 24,
     justifyContent: "center",

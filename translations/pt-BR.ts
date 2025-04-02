@@ -1,71 +1,3 @@
-const en = {
-  lang: "English",
-  app: {
-    title: "Sight Reader Pro",
-    slogan: "Level up your music reading",
-  },
-  routes: {
-    practice: "Practice",
-    profile: "Profile",
-    settings: "Settings",
-    main: {
-      title: "Main",
-      cta: "Play",
-    },
-  },
-  game: {
-    score: "Score",
-    NpM: "notes/min",
-    start: "Start Level",
-  },
-  practice: {
-    title: "Practice Setup",
-    start: "Start",
-  },
-  settings: {
-    title: "Settings",
-    username: "Username",
-    language: "Language",
-    volume: "Volume",
-    resetMyData: "Reset my data",
-    lang: { placeholder: "Select language" },
-  },
-  profile: {
-    title: "Profile",
-    username: "Username",
-    level: "Level",
-    progress: "Progress",
-    stats: "Statistics",
-    achievements: "Achievements",
-  },
-  levelSelection: {
-    trebleClef: "Treble Clef",
-    bassClef: "Bass Clef",
-  },
-  levelDetails: {},
-  music: {
-    clef: "Clef",
-    keySignature: "Key Signature",
-    note: "Note",
-    noteRange: "Note Range",
-    scale: "Scale",
-    scaleType: {
-      major: "Major",
-      minor: "Minor",
-      diatonic: "Diatonic",
-      chromatic: "Chromatic",
-    },
-    accidents: "Accidents",
-    accident: {
-      opts: {
-        none: "none",
-        sharp: "sharp",
-        flat: "flat",
-      },
-    },
-  },
-};
-
 const ptBR = {
   lang: "Português",
   app: {
@@ -81,10 +13,37 @@ const ptBR = {
       cta: "Jogar",
     },
   },
+  time: {
+    minutes: "minutos",
+    seconds: "segundos",
+  },
   game: {
     score: "Pontuação",
     NpM: "notas/min",
-    start: "Começar",
+    NotesPerMin: "Notas por minuto",
+    accuracy: "Precisão",
+    attempts: "Tentativas",
+    successes: "Acertos",
+    mistakes: "Erros",
+    config: {
+      "no accidents": "Só notas brancas",
+      "♯ sharp accidents": "♯ sustenidos",
+      "♭ flat accidents": "♭ bemóis",
+    },
+    goTo: {
+      next: "Próximo Nível",
+      again: "Jogar Novamente",
+      levelSelection: "Seleção de Nível",
+    },
+    type: {
+      single: "Notas individuais",
+      melody: "Melodia",
+    },
+    state: {
+      start: "Começar",
+      win: "Vitória",
+      lose: "Derrota",
+    },
   },
   practice: {
     title: "Configuração de Prática",
@@ -113,6 +72,10 @@ const ptBR = {
   levelDetails: {},
   music: {
     clef: "Clave",
+    clefs: {
+      treble: "Clave de Sol",
+      bass: "Clave de Fá",
+    },
     keySignature: "Armadura de Clave",
     note: "Nota",
     noteRange: "Extensão de Notas",
@@ -134,7 +97,4 @@ const ptBR = {
   },
 };
 
-export const TRANSLATIONS = {
-  en,
-  "pt-BR": ptBR,
-};
+export default ptBR;

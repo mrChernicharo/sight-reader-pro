@@ -15,7 +15,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     description: "",
     gameType: GameType.Single,
     noteRanges: ["g/4:::c/5"],
-    durationInSeconds: 5,
+    durationInSeconds: 2,
     // durationInSeconds: 30,
     winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
     hasKey: false,

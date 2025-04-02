@@ -1,17 +1,18 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
-import { Colors } from "@/utils/Colors";
-import { GameType } from "@/utils/enums";
-import { getUnlockedLevels } from "@/utils/levels";
-import { SECTIONED_LEVELS } from "@/utils/levels";
-import { Level } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { router } from "expo-router";
-import { Dimensions, Pressable, SafeAreaView, StatusBar, StyleSheet } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { useIntl } from "@/hooks/useIntl";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/utils/Colors";
+import { glyphs } from "@/utils/constants";
+import { GameType } from "@/utils/enums";
+import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
+import { Level } from "@/utils/types";
+import { router } from "expo-router";
+import { Dimensions, Pressable, SafeAreaView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export function getLevelName(item: Level<GameType>) {
   const splitLevelName = item.name.split(" ");
@@ -25,6 +26,7 @@ export default function LevelSelectionScreen() {
   const itemBGColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "background");
   const { games } = useAppStore();
   const { intl } = useIntl();
+  const { t } = useTranslation();
 
   const unlockedLevels = getUnlockedLevels(games, intl);
   const cols = 3;
@@ -38,13 +40,24 @@ export default function LevelSelectionScreen() {
           <BackLink style={styles.backArrow} />
 
           {SECTIONED_LEVELS.map((clefLevels) => {
+            // console.log(JSON.stringify({ clefLevels }, null, 2));
             const grid = makeGrid(clefLevels.data, cols);
+            const clef = clefLevels.data[0].clef;
+            const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
 
             return (
               <AppView key={clefLevels.title}>
-                <AppText type="title" style={styles.sectionTitle}>
-                  {clefLevels.title}
-                </AppText>
+                <AppView style={{ flexDirection: "row", gap: 6 }}>
+                  <AppText
+                    type="title"
+                    style={[styles.sectionTitle, clef == "bass" && { transform: [{ translateY: 5 }] }]}
+                  >
+                    {clefInfo.glyph}
+                  </AppText>
+                  <AppText type="title" style={styles.sectionTitle}>
+                    {t(`music.clefs.${clefInfo.name}`)}
+                  </AppText>
+                </AppView>
 
                 <AppView style={styles.gridSection}>
                   {grid.map((row, rowIdx) => (

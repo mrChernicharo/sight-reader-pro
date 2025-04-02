@@ -1,4 +1,4 @@
-import { TRANSLATIONS } from "@/utils/translations";
+import { TRANSLATIONS } from "@/translations";
 import { useAppStore } from "./useAppStore";
 
 export function useTranslation() {
