@@ -7,6 +7,7 @@ import { AppView } from "../atoms/AppView";
 import { useEffect, useRef } from "react";
 import { Note } from "@/utils/types";
 import { GainNode, AudioBuffer, AudioContext, AudioBufferSourceNode } from "react-native-audio-api";
+import { capitalizeStr } from "@/utils/helperFns";
 
 const pianoAssets = {
   "a/1": "https://mrchernicharo.github.io/piano-notes/Piano.mf.A1.mp3",
@@ -133,8 +134,7 @@ export function Piano2({
     const audioContext = audioContextRef.current;
     let buffer = bufferMapRef.current[which];
     const tNow = audioContext?.currentTime;
-
-    console.log("onKeyPressIn :::", { audioContext, buffer, tNow, playingNotes: playingNotesRef.current });
+    // console.log("onKeyPressIn :::", { audioContext, buffer, tNow, playingNotes: playingNotesRef.current });
     if (!audioContext || !buffer || !tNow) {
       return;
     }
@@ -148,12 +148,13 @@ export function Piano2({
     envelope.connect(audioContext.destination);
 
     envelope.gain.setValueAtTime(0.001, tNow);
-    envelope.gain.exponentialRampToValueAtTime(1, tNow + 0.1);
+    envelope.gain.exponentialRampToValueAtTime(1, tNow + 0.01);
 
     source.start(tNow);
 
     playingNotesRef.current[which] = { source, envelope, startedAt: tNow };
   }
+
   function onKeyPressOut(which: Note) {
     const audioContext = audioContextRef.current!;
     const playingNote = playingNotesRef.current[which];
@@ -178,10 +179,20 @@ export function Piano2({
       audioContextRef.current = new AudioContext();
     }
 
-    Object.entries(pianoAssets).forEach(async ([key, url]) => {
-      bufferMapRef.current[key as Note] = await fetch(url)
+    const audioAssets = Object.entries(pianoAssets);
+    let timeStart = Date.now();
+
+    audioAssets.forEach(async ([key, url], i) => {
+      const audioBuffer = await fetch(url)
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => audioContextRef.current!.decodeAudioData(arrayBuffer));
+
+      bufferMapRef.current[key as Note] = audioBuffer;
+
+      const isLastAsset = i + 1 == audioAssets.length;
+      if (isLastAsset) {
+        console.log(`Done loading Piano Sounds. Took ${Date.now() - timeStart}ms`);
+      }
     });
 
     return () => {
@@ -202,14 +213,10 @@ export function Piano2({
               android_ripple={{ radius: 90, color: "#ffffff33" }}
               // android_disableSound
               //   cancelable
-              //   onPress={() => {
-              //     if (!note) return;
-              //     onPianoKeyPress(note);
-              //   }}
               onPressIn={() => onKeyPressIn(`${note}/3` as Note)}
               onPressOut={() => onKeyPressOut(`${note}/3` as Note)}
             >
-              <AppText style={{ color: "white" }}>{note}</AppText>
+              <AppText style={{ color: "white" }}>{capitalizeStr(note)}</AppText>
             </Pressable>
           </AppView>
         ))}
@@ -225,14 +232,10 @@ export function Piano2({
               android_ripple={{ radius: 90, color: "#ffffff33" }}
               // android_disableSound
               //   cancelable
-              //   onPress={() => {
-              //     if (!note) return;
-              //     onPianoKeyPress(note);
-              //   }}
               onPressIn={() => onKeyPressIn(`${note}/3` as Note)}
               onPressOut={() => onKeyPressOut(`${note}/3` as Note)}
             >
-              <AppText style={{ color: "white" }}>{note}</AppText>
+              <AppText style={{ color: "white" }}>{capitalizeStr(note)}</AppText>
             </Pressable>
           </AppView>
         ))}
@@ -252,7 +255,7 @@ export function Piano2({
             onPressOut={() => onKeyPressOut(`${note}/3` as Note)}
             style={[s.whiteNote, { width: keyWidth }]}
           >
-            <AppText style={{ color: "black" }}>{note}</AppText>
+            <AppText style={{ color: "black" }}>{capitalizeStr(note)}</AppText>
           </Pressable>
         ))}
       </AppView>
