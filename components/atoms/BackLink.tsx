@@ -5,6 +5,7 @@ import { TouchableOpacity, TouchableOpacityProps } from "react-native-gesture-ha
 import { AppView } from "./AppView";
 import { AppText } from "./AppText";
 import { LinkComponent, LinkProps } from "expo-router/build/link/Link";
+import { useEffect } from "react";
 
 export interface BacklinkProps extends Partial<LinkProps<{}>> {
   to?: Href;
@@ -13,6 +14,11 @@ export interface BacklinkProps extends Partial<LinkProps<{}>> {
 export function BackLink(props: BacklinkProps) {
   const { to, style, ...rest } = props;
   const href = (to || "/") as Href;
+
+  useEffect(() => {
+    console.log("Backlink ::: href", href, "to", to);
+  }, [href]);
+
   return (
     <AppView style={{ width: 28 }}>
       <TouchableOpacity style={style}>

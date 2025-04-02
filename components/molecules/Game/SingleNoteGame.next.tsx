@@ -1,14 +1,14 @@
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { useAppStore } from "@/hooks/useAppStore";
-import { usePianoSound, usePianoSound2, useSoundEfx } from "@/hooks/usePianoSound";
+import { usePianoSound2, useSoundEfx } from "@/hooks/usePianoSound";
 import { Colors } from "@/utils/Colors";
 import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import { explodeNote, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, Note, Round } from "@/utils/types";
-import { router, useLocalSearchParams } from "expo-router";
+import { RelativePathString, router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Piano2 } from "../Piano2/Piano.2";
@@ -17,21 +17,24 @@ import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 
 const DELAY = 60;
 
+const getPreviousPage = (prevPage: string, id: string) =>
+  prevPage === "/practice" ? "/" : (`${prevPage}/${id}` as RelativePathString);
+
 export function SingleNoteGameComponent() {
   const theme = useColorScheme() ?? "light";
   const backgroundColor = Colors[theme].background;
-  const { id, keySignature: ksig, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
+  const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
   const { currentGame, saveGameRecord, startNewGame, endGame, setGameState, updateRound, addNewRound } = useAppStore();
-  //   const { playPianoNote } = usePianoSound();
   const { playPianoNote, releasePianoNote } = usePianoSound2();
   const { playSoundEfx } = useSoundEfx();
 
   const gameState = currentGame?.state as GameState;
   const rounds = currentGame?.rounds || [];
-  const keySignature = decodeURIComponent(ksig) as KeySignature;
+  const keySignature = decodeURIComponent(keySig) as KeySignature;
   const level = getLevel(id);
   const possibleNotes = getPossibleNotesInLevel(level, keySignature);
+  const previousPage = getPreviousPage(String(prevPage), id);
 
   const [currNote, setCurrNote] = useState<Note>(
     decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes).value
@@ -42,14 +45,14 @@ export function SingleNoteGameComponent() {
     const { noteName, octave } = explodeNote(currNote);
     const attemptedNote = `${notename}/${+octave}` as Note;
     const success = isNoteMatch(notename, noteName);
-    console.log({ notename, currNote, attemptedNote, success });
+
+    // console.log({ notename, currNote, attemptedNote, success });
 
     if (success) {
-      //   playPianoNote(attemptedNote);
       playPianoNote(attemptedNote);
       setGameState(GameState.Success);
     } else {
-      //   playSoundEfx(SoundEffect.WrongAnswer);
+      playSoundEfx(SoundEffect.WrongAnswer);
       playPianoNote(attemptedNote);
       playPianoNote(currNote);
       setGameState(GameState.Mistake);

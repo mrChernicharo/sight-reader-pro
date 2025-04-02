@@ -2,13 +2,18 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
 import { InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const hydrated = useAppStore((state) => state._hydrated);
+  const path = usePathname();
+
+  useEffect(() => {
+    console.log("path >>>", path);
+  }, [path]);
 
   if (!hydrated)
     return (

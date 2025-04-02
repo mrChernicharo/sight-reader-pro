@@ -126,7 +126,7 @@ export function SingleNoteGameComponent() {
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.top}>
         <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
-        <BackLink to={previousPage} style={s.backLink} />
+        <BackLink to={`${previousPage}/${id}` as any} style={s.backLink} />
         {/* <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkClick} /> */}
       </AppView>
 
