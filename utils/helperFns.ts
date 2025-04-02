@@ -6,6 +6,15 @@ const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
 import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES } from "./keySignature";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
+import { RelativePathString } from "expo-router";
+
+export function getPreviousPage(prevPage: string, id: string) {
+  return prevPage === "/practice" ? "/" : (`${prevPage}/${id}` as RelativePathString);
+}
+
+export async function wait(ms = 1000) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 function isNatural(note: Note): boolean {
   const noteName = note.split("/")[0] as NoteName;
@@ -461,8 +470,4 @@ export function groupArrayElements<T>(arr: T[]): T[] {
   // groupedArray.push(...Array(count).fill(currentElement));
 
   return groupedArray;
-}
-
-export async function wait(ms = 1000) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }

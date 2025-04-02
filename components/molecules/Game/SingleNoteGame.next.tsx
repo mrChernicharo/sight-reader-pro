@@ -4,7 +4,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { usePianoSound2, useSoundEfx } from "@/hooks/usePianoSound";
 import { Colors } from "@/utils/Colors";
 import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
-import { explodeNote, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
+import { explodeNote, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, Note, Round } from "@/utils/types";
@@ -16,9 +16,6 @@ import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 
 const DELAY = 60;
-
-const getPreviousPage = (prevPage: string, id: string) =>
-  prevPage === "/practice" ? "/" : (`${prevPage}/${id}` as RelativePathString);
 
 export function SingleNoteGameComponent() {
   const theme = useColorScheme() ?? "light";
@@ -166,7 +163,7 @@ const s = StyleSheet.create({
   top: {
     position: "relative",
     height: 130,
-    // borderWidth: 2,
+    // borderWidth: 1,
     // borderColor: "green",
   },
   backLink: {
@@ -176,6 +173,5 @@ const s = StyleSheet.create({
     zIndex: 20,
     // borderWidth: 1,
     // borderColor: "red",
-    // transform: [{ translateX: 16 }, { translateY: 16 }],
   },
 });

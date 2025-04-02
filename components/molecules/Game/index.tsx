@@ -1,6 +1,6 @@
 // import { SingleNoteGameComponent } from "./SingleNoteGame";
 import { SingleNoteGameComponent } from "./SingleNoteGame.next";
-import { MelodyGameComponent } from "./MelodyGame";
+import { MelodyGameComponent } from "./MelodyGame.next";
 import { ChordGameComponent } from "./ChordGame";
 import { RhythmGameComponent } from "./RhythmGame";
 
