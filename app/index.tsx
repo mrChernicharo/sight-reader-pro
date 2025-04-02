@@ -40,11 +40,11 @@ export default function Home() {
 
   return (
     <AppView style={s.container}>
-      <FadeIn delay={0}>
+      <FadeIn y={50} x={0} delay={0}>
         <AppTextLogo subtitles={t("app.slogan")} />
       </FadeIn>
 
-      <FadeIn delay={250}>
+      <FadeIn y={50} x={0} delay={250}>
         <AppView style={{ alignItems: "center", rowGap: 12, width: 200 }}>
           <Link style={s.link} href="/practice">
             <AppButton
@@ -72,7 +72,7 @@ export default function Home() {
         </AppView>
       </FadeIn>
 
-      <FadeIn delay={500}>
+      <FadeIn y={50} x={0} delay={500}>
         <Link href="/level-selection" asChild>
           <AppButton
             text={t("routes.main.cta")}

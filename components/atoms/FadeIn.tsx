@@ -12,7 +12,7 @@ interface FadeInReanimatedProps {
   style?: ViewStyle;
 }
 
-export function FadeIn({ children, x = 0, y = 50, duration = 500, delay = 0, style, ...rest }: FadeInReanimatedProps) {
+export function FadeIn({ children, x = 0, y = 0, duration = 500, delay = 0, style, ...rest }: FadeInReanimatedProps) {
   const delayTimeout = useRef(0);
   const opacity = useSharedValue(0);
   const X = useSharedValue(x);
@@ -32,7 +32,7 @@ export function FadeIn({ children, x = 0, y = 50, duration = 500, delay = 0, sty
       return () => {
         console.log("Component blurred:", pathname);
         opacity.value = 0;
-        X.value = y;
+        X.value = x;
         Y.value = y;
 
         window.clearTimeout(delayTimeout.current);

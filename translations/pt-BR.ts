@@ -19,10 +19,13 @@ const ptBR = {
   },
   game: {
     score: "Pontuação",
+    TOTAL_SCORE: "Pontuação Total",
     NpM: "notas/min",
     NotesPerMin: "Notas por minuto",
     accuracy: "Precisão",
     attempts: "Tentativas",
+    hit: "nota",
+    hits: "notas",
     successes: "Acertos",
     mistakes: "Erros",
     config: {
@@ -33,7 +36,7 @@ const ptBR = {
     goTo: {
       next: "Próximo Nível",
       again: "Jogar Novamente",
-      levelSelection: "Seleção de Nível",
+      levelSelection: "Selecionar Nível",
     },
     type: {
       single: "Notas individuais",
@@ -78,7 +81,7 @@ const ptBR = {
     },
     keySignature: "Armadura de Clave",
     note: "Nota",
-    noteRange: "Extensão de Notas",
+    noteRange: "Extensão",
     scale: "Escala",
     scaleType: {
       major: "Maior",

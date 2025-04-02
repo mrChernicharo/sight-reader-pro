@@ -52,7 +52,7 @@ export default function LevelDetails() {
   return (
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.infoContainer}>
-        <FadeIn>
+        <FadeIn y={50} x={0}>
           <AppView>
             <AppView style={s.backlinkContainer}>
               <BackLink to="/level-selection" style={s.backlink} />
@@ -66,7 +66,7 @@ export default function LevelDetails() {
           </AppText>
         </FadeIn>
 
-        <FadeIn delay={200}>
+        <FadeIn y={50} x={0} delay={200}>
           <AppView style={s.midContainer}>
             <AppText>{t(`game.type.${level.gameType}`)}</AppText>
             <AppText>{t(`game.config.${displayInfo.accidentText}`)}</AppText>
@@ -80,7 +80,7 @@ export default function LevelDetails() {
         </FadeIn>
       </AppView>
 
-      <FadeIn delay={400}>
+      <FadeIn y={50} x={0} delay={400}>
         <AppView style={s.midContainer}>
           <AppText type="subtitle" style={[s.rangeTitle, { marginBottom: displayInfo.rangeTitleOffset }]}>
             {t("music.noteRange")}
@@ -94,7 +94,7 @@ export default function LevelDetails() {
         </AppView>
       </FadeIn>
 
-      <FadeIn delay={600} style={{ width: "100%", height: 46 }}>
+      <FadeIn y={50} x={0} delay={600} style={{ width: "100%", height: 46 }}>
         {/* <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} onPress={handleNewGame} /> */}
         <AppButton
           text={t("game.state.start")}

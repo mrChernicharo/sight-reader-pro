@@ -33,7 +33,7 @@ export default function GameOverScreen() {
     intl
   );
   const emoji = hasWon ? " 🎉 " : " 😩 ";
-  const message = (hasWon ? "You Win" : "You Lose") + emoji;
+  const msg = t(hasWon ? "game.state.win" : "game.state.lose");
 
   function goToNextLevel() {
     const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
@@ -95,7 +95,7 @@ export default function GameOverScreen() {
           ) : null}
 
           <AppView transparentBG style={[s.messageContainer]}>
-            <AppText type="title">{message}</AppText>
+            <AppText type="title">{msg + emoji}</AppText>
 
             <GameStatsDisplay level={level} hitsPerMinute={hitsPerMinute} />
 
@@ -104,23 +104,23 @@ export default function GameOverScreen() {
 
           <AppView style={s.btnsContainer}>
             {hasWon ? (
-              <FadeIn delay={2200}>
-                <AppButton text="Next Level" onPress={goToNextLevel} />
+              <FadeIn y={50} x={0} delay={2200}>
+                <AppButton text={t("game.goTo.next")} onPress={goToNextLevel} />
               </FadeIn>
             ) : null}
 
-            <FadeIn delay={2400}>
+            <FadeIn y={50} x={0} delay={2400}>
               <AppButton
-                text="Play again"
+                text={t("game.goTo.again")}
                 style={{ ...(hasWon && { backgroundColor: "transparent" }) }}
                 textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
                 onPress={playAgain}
               />
             </FadeIn>
 
-            <FadeIn delay={2600}>
+            <FadeIn y={50} x={0} delay={2600}>
               <AppButton
-                text="Level selection"
+                text={t("game.goTo.levelSelection")}
                 style={{ backgroundColor: "transparent", marginBottom: 36 }}
                 textStyle={{ color: "gray" }}
                 onPress={goToLevelSelection}

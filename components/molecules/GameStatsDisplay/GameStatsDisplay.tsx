@@ -10,10 +10,12 @@ import { GameType } from "@/utils/enums";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
 import { FadeIn } from "@/components/atoms/FadeIn";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps) {
   const theme = useColorScheme() ?? "light";
   const { intl } = useIntl();
+  const { t } = useTranslation();
 
   const { currentGame } = useAppStore();
 
@@ -37,11 +39,11 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
       <AppView transparentBG style={[s.separator]} />
 
       <AppView transparentBG style={[s.row]}>
-        <FadeIn>
+        <FadeIn y={50} x={0}>
           <AppView transparentBG style={s.rowItem}>
             <AppText>
               <Ionicons name="time-outline" />
-              &nbsp;Notes per minute
+              &nbsp;{t("game.NotesPerMin")}
             </AppText>
             <AppView>
               <AppText>{notesPerMinute}</AppText>
@@ -49,11 +51,11 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
           </AppView>
         </FadeIn>
 
-        <FadeIn>
+        <FadeIn y={50} x={0}>
           <AppView transparentBG style={s.rowItem}>
             <AppText>
               <Ionicons name="eye-outline" />
-              &nbsp;Accuracy
+              &nbsp;{t("game.accuracy")}
             </AppText>
             <AppView>
               <AppText>{accuracy}</AppText>
@@ -63,11 +65,11 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
       </AppView>
 
       <AppView transparentBG style={[s.row]}>
-        <FadeIn>
+        <FadeIn y={50} x={0}>
           <AppView transparentBG style={[s.rowItem]}>
             <AppText>
               <Ionicons name="musical-notes-outline" />
-              &nbsp;Attempts
+              &nbsp;{t("game.attempts")}
             </AppText>
             <AppView>
               <AppText>{attempts}</AppText>
@@ -75,11 +77,11 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
           </AppView>
         </FadeIn>
 
-        <FadeIn>
+        <FadeIn y={50} x={0}>
           <AppView transparentBG style={s.rowItem}>
             <AppText>
               <Ionicons name="checkmark" color={Colors[theme].green} />
-              &nbsp;Successes
+              &nbsp;{t("game.successes")}
             </AppText>
 
             <AppView>
@@ -88,11 +90,11 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
           </AppView>
         </FadeIn>
 
-        <FadeIn>
+        <FadeIn y={50} x={0}>
           <AppView transparentBG style={s.rowItem}>
             <AppText>
               <Ionicons name="close-outline" color={Colors[theme].red} />
-              &nbsp;Mistakes
+              &nbsp;{t("game.mistakes")}
             </AppText>
 
             <AppView>
@@ -105,7 +107,9 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
       <AppView transparentBG style={[s.score]}>
         <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
           <FadeIn delay={0} x={50} duration={250} y={0}>
-            <AppText style={{ color: Colors[theme].textMute }}>{score.hits} hits</AppText>
+            <AppText style={{ color: Colors[theme].textMute }}>
+              {score.hits} {t(score.hits == 1 ? "game.hit" : "game.hits")}
+            </AppText>
           </FadeIn>
           <FadeIn delay={300} x={50} duration={250} y={0}>
             <AppText style={{ color: Colors[theme].textMute }}>{intl.format(score.hitScore)} pts</AppText>
@@ -123,7 +127,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
         <AppView transparentBG style={{ alignItems: "center" }}>
           <FadeIn delay={1500} x={-50} y={0}>
-            <AppText type="subtitle">TOTAL SCORE</AppText>
+            <AppText type="subtitle">{t("game.TOTAL_SCORE")}</AppText>
           </FadeIn>
           <FadeIn delay={1600} x={-50} y={0}>
             <AppText type="title">{intl.format(score.value)}</AppText>

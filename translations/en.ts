@@ -19,10 +19,13 @@ const en = {
   },
   game: {
     score: "Score",
+    TOTAL_SCORE: "Total Score",
     NpM: "notes/min",
     NotesPerMin: "Notes per minute",
     accuracy: "Accuracy",
     attempts: "Attempts",
+    hit: "hit",
+    hits: "hits",
     successes: "Successes",
     mistakes: "Mistakes",
     config: {
