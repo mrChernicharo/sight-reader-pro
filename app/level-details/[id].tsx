@@ -127,7 +127,7 @@ const s = StyleSheet.create({
   },
   backlinkContainer: {
     position: "absolute",
-    top: 6,
+    top: 5,
     zIndex: 1000,
   },
   backlink: {
@@ -143,7 +143,6 @@ const s = StyleSheet.create({
   subtitle: {
     color: "gray",
     textAlign: "center",
-    paddingBottom: 24,
     // borderWidth: 1,
     // borderColor: "red",
   },

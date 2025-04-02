@@ -10,7 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Piano2 } from "@/components/molecules/Piano.2";
-import { KeySignature } from "@/utils/enums";
+import { KeySignature, NoteName } from "@/utils/enums";
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
@@ -34,7 +34,12 @@ export default function SettingsScreen() {
       </AppView>
 
       <AppView>
-        <Piano2 keySignature={KeySignature.F} />
+        <Piano2
+          keySignature={KeySignature.F}
+          onKeyPressed={(note) => {
+            console.log("onKeyPressed ::::", note);
+          }}
+        />
       </AppView>
 
       <FlatList
