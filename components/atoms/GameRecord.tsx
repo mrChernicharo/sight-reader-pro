@@ -17,6 +17,8 @@ export function GameRecord({ game }: { game: Game<GameType> }) {
   const { intl } = useIntl();
   const { successes, mistakes, accuracy } = getGameStats(level, game.rounds, intl);
 
+  if (!level) return null;
+
   return (
     <AppView style={s.container}>
       <AppView>

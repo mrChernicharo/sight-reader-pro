@@ -21,8 +21,7 @@ export function FadeIn({ children, x = 0, y = 0, duration = 500, delay = 0, styl
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("Component focused:", pathname);
-
+      // console.log("Component focused:", pathname);
       delayTimeout.current = window.setTimeout(() => {
         opacity.value = withTiming(1, { duration });
         X.value = withTiming(1, { duration });
@@ -30,7 +29,7 @@ export function FadeIn({ children, x = 0, y = 0, duration = 500, delay = 0, styl
       }, delay);
 
       return () => {
-        console.log("Component blurred:", pathname);
+        // console.log("Component blurred:", pathname);
         opacity.value = 0;
         X.value = x;
         Y.value = y;

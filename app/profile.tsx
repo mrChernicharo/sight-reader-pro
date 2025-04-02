@@ -9,14 +9,15 @@ import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Piano2 } from "@/components/molecules/Piano.2";
+import { KeySignature } from "@/utils/enums";
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
   const { username, games } = useAppStore();
   const theme = useColorScheme() ?? "light";
   const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, "background");
-
-  console.log("games ::: ", games);
+  // console.log("games ::: ", games);
   if (!games) return null;
 
   return (
@@ -30,6 +31,10 @@ export default function SettingsScreen() {
 
       <AppView>
         <AppText>{username}</AppText>
+      </AppView>
+
+      <AppView>
+        <Piano2 keySignature={KeySignature.F} />
       </AppView>
 
       <FlatList
