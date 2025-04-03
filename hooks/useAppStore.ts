@@ -1,4 +1,5 @@
 import { GameState, GameType, Difficulty } from "@/utils/enums";
+import { ALL_LEVELS } from "@/utils/levels";
 import { Game, GameScore, CurrentGame, Round } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
@@ -22,8 +23,7 @@ export interface AppActions {
   saveGameRecord: (game: Game<GameType>) => Promise<void>;
 
   startNewGame: (newGame: CurrentGame<GameType>) => Promise<void>;
-  endGame: () => Promise<void>;
-  setGameState: (gameState: GameState) => Promise<void>;
+  endGame: (previousPage?: string) => Promise<void>;
   addNewRound: (round: Round<GameType>) => Promise<void>;
   updateRound: (val: Partial<Round<GameType>>) => Promise<void>;
 
@@ -32,15 +32,6 @@ export interface AppActions {
 }
 
 type StoreState = AppState & AppActions;
-
-const hasOngoingGame = (state: StoreState) => {
-  const hasCurrentGame = state.currentGame && state.currentGame.rounds;
-  if (!hasCurrentGame) {
-    console.error("no ongoing game!");
-    return false;
-  }
-  return true;
-};
 
 export const useAppStore = create<AppState & AppActions>()(
   devtools(
@@ -65,15 +56,20 @@ export const useAppStore = create<AppState & AppActions>()(
           console.log("START NEW GAME", newGame);
           set({ currentGame: newGame });
         },
-        endGame: async () => {
-          console.log("END GAME");
+        endGame: async (previousPage?: string) => {
+          // console.log("END GAME", previousPage);
           set({ currentGame: null });
+          // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
+          if (previousPage === "/practice") {
+            setTimeout(() => {
+              ALL_LEVELS.pop();
+              // console.log(
+              //   "ALL LEVELS ::::",
+              //   ALL_LEVELS.map((lvl) => lvl.name)
+              // );
+            }, 1000);
+          }
         },
-        setGameState: async (gameState: GameState) =>
-          set((state) => {
-            if (!hasOngoingGame(state)) return state;
-            return { ...state, currentGame: { ...state.currentGame!, state: gameState } };
-          }),
         addNewRound: async (round: Round<GameType>) =>
           set((state) => {
             if (!hasOngoingGame(state)) return state;
@@ -86,7 +82,6 @@ export const useAppStore = create<AppState & AppActions>()(
             const previousRounds = state.currentGame!.rounds.slice(0, -1);
             const updatedRound = { ...latestRound, ...(val as any) };
             // console.log("updateRound ----", { val, latestRound, updatedRound, previousRounds });
-
             return {
               ...state,
               currentGame: { ...state.currentGame!, rounds: [...previousRounds, updatedRound] },
@@ -104,3 +99,12 @@ export const useAppStore = create<AppState & AppActions>()(
     )
   )
 );
+
+function hasOngoingGame(state: StoreState) {
+  const hasCurrentGame = state.currentGame && state.currentGame.rounds;
+  if (!hasCurrentGame) {
+    console.error("no ongoing game!");
+    return false;
+  }
+  return true;
+}

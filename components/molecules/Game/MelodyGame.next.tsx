@@ -5,7 +5,7 @@ import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
 import { Colors } from "@/utils/Colors";
 import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import { explodeNote, getPreviousPage, isNoteMatch, randomUID } from "@/utils/helperFns";
-import { getLevel } from "@/utils/levels";
+import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
@@ -19,7 +19,7 @@ export function MelodyGameComponent() {
   const theme = useColorScheme() ?? "light";
 
   const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
-  const { currentGame, saveGameRecord, startNewGame, endGame, setGameState, updateRound, addNewRound } = useAppStore();
+  const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound } = useAppStore();
   const { pianoReady, playPianoNote } = usePianoSound();
   const { playSoundEfx } = useSoundEfx();
 
@@ -92,9 +92,12 @@ export function MelodyGameComponent() {
     });
   }, [level, id, rounds]);
 
+  const onBackLinkPress = () => {
+    endGame(String(prevPage));
+  };
+
   useEffect(() => {
     // if (!pianoReady) return;
-
     const gameInfo: Partial<CurrentGame<GameType.Melody>> = {
       levelId: id,
       timestamp: Date.now(),
@@ -110,7 +113,7 @@ export function MelodyGameComponent() {
     <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
       <AppView style={s.top}>
         <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
-        <BackLink to={previousPage} style={s.backLink} />
+        <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />
       </AppView>
 
       {currRound?.values ? (

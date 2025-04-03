@@ -8,14 +8,19 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
-  const hydrated = useAppStore((state) => state._hydrated);
+  // const hydrated = useAppStore((state) => state._hydrated);
   const path = usePathname();
+  const { _hydrated, currentGame } = useAppStore();
 
   useEffect(() => {
     console.log("path >>>", path);
   }, [path]);
 
-  if (!hydrated)
+  useEffect(() => {
+    console.log("currentGame >>>", currentGame);
+  }, [currentGame]);
+
+  if (!_hydrated)
     return (
       <AppView>
         <AppText>Loading...</AppText>

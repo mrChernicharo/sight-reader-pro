@@ -35,11 +35,9 @@ const ACCIDENTS = Object.values(LevelAccidentType).map((v) => ({
 // const KEY_SIGNATURES = Object.values(KeySignature).map((v) => ({ label: v, value: v.toLowerCase() }));
 
 export default function PracticeScreen() {
-  // const lvl = getLevel("treble-01");
   const theme = useColorScheme() ?? "light";
   const { width } = useWindowDimensions();
   const { t } = useTranslation();
-  const { startNewGame } = useAppStore();
 
   const [isBassClef, setIsBassClef] = useState(false);
   const [hasKey, setHasKey] = useState<boolean>(false);
@@ -91,6 +89,8 @@ export default function PracticeScreen() {
   const startPracticeGame = useCallback(async () => {
     // console.log({ clef, hasKey, accident, keySignature, range: rangeNotes });
     const levelId: LevelId = `${clef}-practice`;
+    const keySig = hasKey ? keySignature : [LevelAccidentType.b].includes(accident) ? KeySignature.F : KeySignature.C;
+
     const practiceLevel = {
       id: levelId,
       name: "Practice",
@@ -101,25 +101,26 @@ export default function PracticeScreen() {
       winConditions: { bronze: 20, silver: 25, gold: 30 },
       noteRanges: [`${allNotes[rangeIdx.low]}:::${allNotes[rangeIdx.high]}`],
       hasKey,
-      ...(hasKey ? { keySignatures: [keySignature], scaleType: scale } : { accident }),
+      ...(hasKey ? { keySignatures: [keySig], scaleType: scale } : { accident, keySignatures: [keySig] }),
     } as Level<GameType.Single>;
 
+    // !important!
     ALL_LEVELS.push(practiceLevel);
-    console.log(":::: ALL_LEVELS", { ALL_LEVELS: ALL_LEVELS.map((lvl) => lvl.name) });
 
     router.push({
       pathname: "/game-level/[id]",
       params: {
         id: levelId,
         clef,
-        keySignature: hasKey
-          ? keySignature
-          : [LevelAccidentType.b].includes(accident)
-          ? KeySignature.F
-          : KeySignature.C,
+        keySignature: keySig,
         previousPage: "/practice",
       },
     });
+
+    console.log(
+      ":::: ALL_LEVELS",
+      ALL_LEVELS.map((lvl) => lvl.name)
+    );
   }, [clef, hasKey, accident, rangeIdx, keySignatures, keySignature, allNotes, ALL_LEVELS]);
 
   // useEffect(() => {
@@ -130,8 +131,6 @@ export default function PracticeScreen() {
   //   console.log("---", { clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes });
   // }, [clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes]);
 
-  // <SafeAreaView >
-  //   <ScrollView contentContainerStyle={[s.container, { backgroundColor: Colors[theme].background }]}>
   return (
     <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].background }}>
       <ScrollView contentContainerStyle={s.container}>
@@ -191,7 +190,7 @@ export default function PracticeScreen() {
                   <SelectList
                     data={SCALES}
                     save="value"
-                    setSelected={setAccident}
+                    setSelected={setScale}
                     search={false}
                     defaultOption={SCALES[0]}
                     inputStyles={{

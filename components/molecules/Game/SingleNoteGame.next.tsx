@@ -22,17 +22,17 @@ export function SingleNoteGameComponent() {
   const backgroundColor = Colors[theme].background;
   const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
-  const { currentGame, saveGameRecord, startNewGame, endGame, setGameState, updateRound, addNewRound } = useAppStore();
-  const { playPianoNote, releasePianoNote } = usePianoSound();
+  const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound } = useAppStore();
+  const { pianoReady, playPianoNote, releasePianoNote } = usePianoSound();
   const { playSoundEfx } = useSoundEfx();
 
-  const gameState = currentGame?.state as GameState;
   const rounds = currentGame?.rounds || [];
   const keySignature = decodeURIComponent(keySig) as KeySignature;
   const level = getLevel(id);
   const possibleNotes = getPossibleNotesInLevel(level, keySignature);
   const previousPage = getPreviousPage(String(prevPage), id);
 
+  const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState<Note>(
     decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes).value
   );
@@ -90,6 +90,10 @@ export function SingleNoteGameComponent() {
     });
   }, [level, id, rounds]);
 
+  const onBackLinkPress = () => {
+    endGame(String(prevPage));
+  };
+
   useEffect(() => {
     const gameInfo: Partial<CurrentGame<GameType.Single>> = {
       levelId: id,
@@ -112,7 +116,7 @@ export function SingleNoteGameComponent() {
     <SafeAreaView style={[s.container, { backgroundColor }]}>
       <AppView style={s.top}>
         <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
-        <BackLink to={previousPage} style={s.backLink} />
+        <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />
       </AppView>
 
       {currNote && <SingleNoteGameStage gameState={gameState} noteProps={noteProps} />}
