@@ -1,7 +1,7 @@
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { useAppStore } from "@/hooks/useAppStore";
-import { useSoundEfx } from "@/hooks/usePianoSound";
+import { useSoundContext } from "@/hooks/useSoundsContext";
 import { Colors } from "@/utils/Colors";
 import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import { explodeNote, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
@@ -14,7 +14,6 @@ import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { useSoundContext } from "@/hooks/useSoundsContext";
 
 const DELAY = 60;
 
