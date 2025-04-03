@@ -4,6 +4,7 @@ import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { Link } from "expo-router";
 import { useEffect } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
@@ -12,6 +13,23 @@ export default function Home() {
     const theme = useColorScheme() ?? "light";
     const { t } = useTranslation();
     // const { width, height } = useWindowDimensions();
+
+    useEffect(() => {
+        Audio.requestPermissionsAsync().then(({ granted }) => {
+            if (granted) {
+                Audio.setAudioModeAsync({
+                    // IOS
+                    allowsRecordingIOS: true,
+                    interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+                    playsInSilentModeIOS: true,
+                    // Android
+                    shouldDuckAndroid: true,
+                    interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+                    playThroughEarpieceAndroid: true,
+                });
+            }
+        });
+    }, []);
 
     return (
         <AppView style={s.container}>

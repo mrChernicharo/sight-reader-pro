@@ -14,7 +14,7 @@ interface PlayingSound {
 interface SoundContext {
     ready: boolean;
     playPianoNote(note: Note): Promise<void>;
-    releasePianoNote(note: NoteName): Promise<void>;
+    releasePianoNote(note: Note): Promise<void>;
     playSoundEfx(effect: SoundEffect): Promise<void>;
 }
 
@@ -35,6 +35,8 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
     const bufferMapRef = useRef<PR<AudioBuffer>>({});
 
     async function playPianoNote(originalNote: Note) {
+        await releasePianoNote(originalNote);
+
         // console.log("<SoundContext> playPianoNote", originalNote);
         const audioContext = audioContextRef.current;
         let buffer = bufferMapRef.current[originalNote];
@@ -60,24 +62,20 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         playingSoundsRef.current[originalNote] = { source, envelope, startedAt: tNow };
     }
 
-    async function releasePianoNote(originalNote: NoteName) {
-        console.log("<SoundContext> releasePianoNote", console.log("playingNotes :::", playingSoundsRef.current));
-        // const audioContext = audioContextRef.current!;
-        // const playingNote = playingSoundsRef.current[originalNote];
+    async function releasePianoNote(originalNote: Note) {
+        console.log("<SoundContext> releasePianoNote", originalNote);
+        const audioContext = audioContextRef.current!;
+        const sound = playingSoundsRef.current[originalNote];
 
-        // if (!playingNote || !audioContext) {
-        //   return;
-        // }
+        if (!sound || !audioContext) return;
 
-        // const { source, envelope, startedAt } = playingNote;
+        const tStop = Math.max(audioContext.currentTime, sound.startedAt + 5);
 
-        // const tStop = Math.max(audioContext.currentTime, startedAt + 5);
+        sound.envelope.gain.exponentialRampToValueAtTime(0.0001, tStop + 0.08);
+        sound.envelope.gain.setValueAtTime(0, tStop + 0.09);
+        sound.source.stop(tStop + 0.1);
 
-        // envelope.gain.exponentialRampToValueAtTime(0.0001, tStop + 0.08);
-        // envelope.gain.setValueAtTime(0, tStop + 0.09);
-        // source.stop(tStop + 0.1);
-
-        // playingSoundsRef.current[originalNote] = undefined;
+        playingSoundsRef.current[originalNote] = undefined;
     }
 
     async function playSoundEfx(efx: SoundEffect) {
@@ -103,18 +101,14 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         const audioContext = audioContextRef.current!;
         const sound = playingSoundsRef.current[efx];
 
-        if (!sound || !audioContext) {
-            return;
-        }
+        if (!sound || !audioContext) return;
 
-        const { source, envelope, startedAt } = sound;
+        const tStop = Math.max(audioContext.currentTime, sound.startedAt + 5);
 
-        const tStop = Math.max(audioContext.currentTime, startedAt + 5);
+        sound.envelope.gain.exponentialRampToValueAtTime(0.0001, tStop + 0.08);
+        sound.envelope.gain.setValueAtTime(0, tStop + 0.09);
 
-        envelope.gain.exponentialRampToValueAtTime(0.0001, tStop + 0.08);
-        envelope.gain.setValueAtTime(0, tStop + 0.09);
-        source.stop(tStop + 0.1);
-
+        sound.source.stop(tStop + 0.1);
         playingSoundsRef.current[efx] = undefined;
     }
 
