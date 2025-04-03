@@ -5,56 +5,56 @@ import { ReactNode, createContext, useContext, useEffect, useRef, useState } fro
 
 interface SoundContext {
   ready: boolean;
-  playNote(note: Note): Promise<void>;
+  // playNote(note: Note): Promise<void>;
 }
 
 const initialValues: SoundContext = {
   ready: false,
-  playNote: async () => {},
+  // playNote: async () => {},
 };
 
 const SoundContext = createContext<SoundContext>(initialValues);
 
 const SoundContextProvider = (props: { children: ReactNode }) => {
   const [ready, setReady] = useState(false);
-  // @ts-ignore
-  const sounds = useRef<Record<Note, Audio.Sound>>({});
+  // // @ts-ignore
+  // const sounds = useRef<Record<Note, Audio.Sound>>({});
 
   async function loadSounds() {
-    for (const [noteStr, asset] of Object.entries(PIANO_SOUND_ASSETS)) {
-      try {
-        const note = noteStr as Note;
-        const uri = asset as unknown as AVPlaybackSource;
-        const { sound } = await Audio.Sound.createAsync(uri);
-        sounds.current[note] = sound;
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    console.log("sounds loaded!");
-    setReady(true);
+    //   for (const [noteStr, asset] of Object.entries(PIANO_SOUND_ASSETS)) {
+    //     try {
+    //       const note = noteStr as Note;
+    //       const uri = asset as unknown as AVPlaybackSource;
+    //       const { sound } = await Audio.Sound.createAsync(uri);
+    //       sounds.current[note] = sound;
+    //     } catch (err) {
+    //       console.error(err);
+    //     }
+    //   }
+    //   console.log("sounds loaded!");
+    //   setReady(true);
   }
 
   async function unloadSounds() {
-    console.log("unloading sounds...");
-    setReady(false);
-    // const unloadPromises = Object.values(sounds.current).map((sound) => sound.unloadAsync);
-    // const results = await Promise.allSettled(unloadPromises);
-    // console.log("sounds unloaded!", results);
+    //   console.log("unloading sounds...");
+    //   setReady(false);
+    //   // const unloadPromises = Object.values(sounds.current).map((sound) => sound.unloadAsync);
+    //   // const results = await Promise.allSettled(unloadPromises);
+    //   // console.log("sounds unloaded!", results);
   }
 
-  async function playNote(note: Note) {
-    // console.log("playNote ", note);
+  // async function playNote(note: Note) {
+  //   // console.log("playNote ", note);
 
-    const status = (await sounds.current[note]?.getStatusAsync()) as any;
-    if (status && status["isPlaying"]) {
-      // console.log("interrupting old note ", note);
-      await sounds.current[note].stopAsync();
-    }
-    // console.log("play note ", note);
-    await sounds.current[note].playAsync();
-    // console.log("done playing ", note);
-  }
+  //   const status = (await sounds.current[note]?.getStatusAsync()) as any;
+  //   if (status && status["isPlaying"]) {
+  //     // console.log("interrupting old note ", note);
+  //     await sounds.current[note].stopAsync();
+  //   }
+  //   // console.log("play note ", note);
+  //   await sounds.current[note].playAsync();
+  //   // console.log("done playing ", note);
+  // }
 
   useEffect(() => {
     loadSounds();
@@ -64,7 +64,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
     };
   }, []);
 
-  return <SoundContext.Provider value={{ ready, playNote }}>{props.children}</SoundContext.Provider>;
+  return <SoundContext.Provider value={{ ready }}>{props.children}</SoundContext.Provider>;
 };
 
 const useSoundContext = () => {

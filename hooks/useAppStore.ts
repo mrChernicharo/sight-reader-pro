@@ -53,7 +53,7 @@ export const useAppStore = create<AppState & AppActions>()(
         saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),
 
         startNewGame: async (newGame: CurrentGame<GameType>) => {
-          console.log("START NEW GAME", newGame);
+          // console.log("START NEW GAME", newGame);
           set({ currentGame: newGame });
         },
         endGame: async (previousPage?: string) => {

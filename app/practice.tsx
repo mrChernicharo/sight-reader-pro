@@ -117,10 +117,10 @@ export default function PracticeScreen() {
       },
     });
 
-    console.log(
-      ":::: ALL_LEVELS",
-      ALL_LEVELS.map((lvl) => lvl.name)
-    );
+    // console.log(
+    //   ":::: ALL_LEVELS",
+    //   ALL_LEVELS.map((lvl) => lvl.name)
+    // );
   }, [clef, hasKey, accident, rangeIdx, keySignatures, keySignature, allNotes, ALL_LEVELS]);
 
   // useEffect(() => {

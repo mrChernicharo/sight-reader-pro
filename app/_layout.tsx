@@ -1,24 +1,27 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
-import { InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
-import { Stack, usePathname } from "expo-router";
+import { SoundContextProvider } from "@/hooks/useSoundsContext";
+import { usePathname } from "expo-router";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import AppRoutes from "./_app.routes";
 
 export default function RootLayout() {
   // const hydrated = useAppStore((state) => state._hydrated);
   const path = usePathname();
-  const { _hydrated, currentGame } = useAppStore();
+  const { _hydrated, currentGame, endGame } = useAppStore();
+
+  // ensure there's no ongoing game on app startup
+  // store state is always persisted, so games can be wrongly persisted if you close the app during a game
+  useEffect(() => {
+    if (currentGame) endGame();
+  }, []);
 
   useEffect(() => {
-    console.log("path >>>", path);
-  }, [path]);
-
-  useEffect(() => {
-    console.log("currentGame >>>", currentGame);
-  }, [currentGame]);
+    console.log({ path, currentGame });
+  }, [currentGame, path]);
 
   if (!_hydrated)
     return (
@@ -30,24 +33,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView>
-        <Stack>
-          {/*
-        new route not working?
-        check if its component is DEFAULT EXPORTed
-      */}
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-
-          <Stack.Screen name="level-selection" options={{ headerShown: false }} />
-          <Stack.Screen name="level-details" options={{ headerShown: false }} />
-          <Stack.Screen name="game-level" options={{ headerShown: false }} />
-          <Stack.Screen name="game-over" options={{ headerShown: false }} />
-
-          <Stack.Screen name="practice" options={{ headerShown: false }} />
-
-          <Stack.Screen name="profile" options={{ headerShown: false }} />
-
-          <Stack.Screen name="settings" options={{ headerShown: false }} />
-        </Stack>
+        <SoundContextProvider>
+          <AppRoutes />
+        </SoundContextProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );
