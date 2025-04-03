@@ -61,9 +61,13 @@ export function getGamePitchesInAllOctaves(
 }
 
 export function getPossibleNotesInLevel(level: Level<GameType>, keySignature: KeySignature) {
-  // console.log("getPossibleNotesInLevel :::", { level, keySignature });
   let possibleNotes: Note[];
-  if (level.hasKey) {
+  if (!level) {
+    console.warn("getPossibleNotesInLevel :::", { level, keySignature });
+    return [];
+  }
+
+  if (level?.hasKey) {
     possibleNotes = getGamePitchesInAllOctaves({ keySignature, scaleType: level.scaleType });
   } else {
     possibleNotes = getGamePitchesInAllOctaves({ accident: level.accident });
@@ -314,7 +318,11 @@ export function decideNextRound<Round>(
   possibleNotes: Note[],
   previousRound?: Round
 ): Round {
-  switch (level.gameType) {
+  if (!level) {
+    console.warn("decideNextRound ::: no level", { level });
+  }
+
+  switch (level?.gameType) {
     case GameType.Single: {
       const round = {
         value: generateRandomNote(

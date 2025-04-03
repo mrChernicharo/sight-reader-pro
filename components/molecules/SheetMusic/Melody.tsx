@@ -32,7 +32,7 @@ import { Note } from "@/utils/types";
 import { Clef, GameState, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
 import { stemDown } from "@/utils/helperFns";
 import { Colors } from "@/utils/Colors";
-import { explodeNote, getDrawNote, noteDurationDict } from "@/utils/noteFns";
+import { getDrawNote, noteDurationDict } from "@/utils/noteFns";
 
 export interface MusicNoteRangeProps {
   keys: Note[];

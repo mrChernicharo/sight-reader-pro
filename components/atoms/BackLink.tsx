@@ -23,7 +23,7 @@ export function BackLink(props: BacklinkProps) {
   return (
     <AppView style={{ width: 28 }}>
       <TouchableOpacity style={style} onPress={onPress}>
-        <Link {...rest} href={href}>
+        <Link replace {...rest} href={href}>
           <AppText>
             <Ionicons name="chevron-back" size={24} />
           </AppText>

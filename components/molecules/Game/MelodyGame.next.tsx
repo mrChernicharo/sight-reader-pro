@@ -79,7 +79,7 @@ export function MelodyGameComponent() {
   }
 
   const onCountdownFinish = useCallback(async () => {
-    await saveGameRecord({
+    saveGameRecord({
       id: randomUID(),
       levelId: id,
       rounds,
@@ -87,10 +87,7 @@ export function MelodyGameComponent() {
       type: GameType.Melody,
       durationInSeconds: level.durationInSeconds,
     });
-
-    router.replace({
-      pathname: "/game-over",
-    });
+    router.replace({ pathname: "/game-over" });
   }, [level, id, rounds]);
 
   const onBackLinkPress = () => {

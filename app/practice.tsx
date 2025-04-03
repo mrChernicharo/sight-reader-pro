@@ -1,28 +1,27 @@
 import AppButton from "@/components/atoms/AppButton";
+import { AppSwitch } from "@/components/atoms/AppSwitch";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { Accident, Clef, GameType, KeySignature, LevelAccidentType, ScaleType } from "@/utils/enums";
-import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES, chromatickeySignatureNotes } from "@/utils/keySignature";
-import { ALL_LEVELS, getLevel } from "@/utils/levels";
-import Slider from "@react-native-community/slider";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Dimensions, StyleSheet, Switch, useColorScheme, useWindowDimensions } from "react-native";
-import RangeSlider from "../components/atoms/RangeSlider";
-import { ScrollView } from "react-native-gesture-handler";
-import { glyphs } from "@/utils/constants";
 import { BackLink } from "@/components/atoms/BackLink";
-import { Colors } from "@/utils/Colors";
-import { explodeNote, isFlatKeySignature } from "@/utils/helperFns";
-import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
-import { useAppStore } from "@/hooks/useAppStore";
-import { router } from "expo-router";
-import { CurrentGame, Level, LevelId, Note } from "@/utils/types";
-import { AppSwitch } from "@/components/atoms/AppSwitch";
 import { KeySignatureSlider } from "@/components/molecules/KeySlider";
-import { SelectList } from "react-native-dropdown-select-list";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/utils/Colors";
+import { glyphs } from "@/utils/constants";
+import { Clef, GameType, KeySignature, LevelAccidentType, ScaleType } from "@/utils/enums";
+import { explodeNote, isFlatKeySignature } from "@/utils/helperFns";
+import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
+import { ALL_LEVELS } from "@/utils/levels";
+import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
+import { Level, LevelId } from "@/utils/types";
+import { router } from "expo-router";
+import { useCallback, useMemo, useState } from "react";
+import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
+import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import RangeSlider from "../components/atoms/RangeSlider";
 
 const SCALES = Object.values(ScaleType).map((v) => ({
   key: v,
@@ -38,6 +37,8 @@ export default function PracticeScreen() {
   const theme = useColorScheme() ?? "light";
   const { width } = useWindowDimensions();
   const { t } = useTranslation();
+
+  const endGame = useAppStore((state) => state.endGame);
 
   const [isBassClef, setIsBassClef] = useState(false);
   const [hasKey, setHasKey] = useState<boolean>(false);
@@ -136,7 +137,7 @@ export default function PracticeScreen() {
       <ScrollView contentContainerStyle={s.container}>
         <AppView style={s.top}>
           <AppView style={{ position: "absolute", left: 0, top: 4 }}>
-            <BackLink />
+            <BackLink onPress={() => endGame()} />
           </AppView>
           <AppText type="defaultSemiBold">{t("practice.title")}</AppText>
         </AppView>

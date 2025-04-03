@@ -9,15 +9,16 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
 
 export default function RootLayout() {
-  // const hydrated = useAppStore((state) => state._hydrated);
+  const _hydrated = useAppStore((state) => state._hydrated);
+  const currentGame = useAppStore((state) => state.currentGame);
+  const endGame = useAppStore((state) => state.endGame);
   const path = usePathname();
-  const { _hydrated, currentGame, endGame } = useAppStore();
 
   // ensure there's no ongoing game on app startup
   // store state is always persisted, so games can be wrongly persisted if you close the app during a game
   useEffect(() => {
-    if (currentGame) endGame();
-  }, []);
+    if (!_hydrated) endGame();
+  }, [_hydrated]);
 
   useEffect(() => {
     console.log({ path, currentGame: currentGame?.id || null });

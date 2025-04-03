@@ -1,20 +1,13 @@
 import AppButton from "@/components/atoms/AppButton";
-import { AppText } from "@/components/atoms/AppText";
 import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { KeySignature } from "@/utils/enums";
-import { getDrawNote } from "@/utils/noteFns";
-import { Note } from "@/utils/types";
-import { InterruptionModeIOS, InterruptionModeAndroid, Audio } from "expo-av";
-import { Link, router } from "expo-router";
-import LottieView from "lottie-react-native";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
+import { Link } from "expo-router";
 import { useEffect } from "react";
-import { Button, Dimensions, StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, useColorScheme } from "react-native";
 
 export default function Home() {
   const theme = useColorScheme() ?? "light";

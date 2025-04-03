@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { View, StyleSheet, Text, ViewStyle } from "react-native";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
-import { useFocusEffect, useNavigation, usePathname, useRouter } from "expo-router";
+import { useFocusEffect, usePathname } from "expo-router";
+import React, { useRef } from "react";
+import { ViewStyle } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 interface FadeInReanimatedProps {
   children: React.ReactNode;

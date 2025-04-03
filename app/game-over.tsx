@@ -36,6 +36,7 @@ export default function GameOverScreen() {
   const msg = t(hasWon ? "game.state.win" : "game.state.lose");
 
   function goToNextLevel() {
+    endGame();
     const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
     if (nextLevel) {
       router.navigate({
@@ -47,6 +48,7 @@ export default function GameOverScreen() {
     }
   }
   function playAgain() {
+    endGame();
     router.replace({
       pathname: "/game-level/[id]",
       params: {
@@ -57,18 +59,11 @@ export default function GameOverScreen() {
     });
   }
   function goToLevelSelection() {
+    endGame();
     router.navigate({
       pathname: "/level-selection",
     });
   }
-
-  useEffect(() => {
-    // console.log("::: game-over", { level, hasWon });
-    return () => {
-      // console.log("::: game-over UNMOUNT");
-      endGame();
-    };
-  }, [hasWon]);
 
   // useEffect(() => {
   //   console.log("<<< Game Over >>>", { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute });

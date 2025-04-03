@@ -23,7 +23,7 @@ export function SingleNoteGameComponent() {
   const backgroundColor = Colors[theme].background;
   const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
-  const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound } = useAppStore();
+  const { currentGame, saveGameRecord, startNewGame, endGame, addNewRound } = useAppStore();
   const { ready, playPianoNote, releasePianoNote } = useSoundContext();
   const { playSoundEfx } = useSoundEfx();
 
@@ -35,7 +35,7 @@ export function SingleNoteGameComponent() {
 
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
   const [currNote, setCurrNote] = useState<Note>(
-    decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes).value
+    decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3"
   );
 
   async function onPianoKeyPress(notename: NoteName) {
@@ -76,8 +76,7 @@ export function SingleNoteGameComponent() {
 
   const onCountdownFinish = useCallback(async () => {
     setGameState(GameState.Idle);
-
-    await saveGameRecord({
+    saveGameRecord({
       id: randomUID(),
       levelId: id,
       rounds,
@@ -85,10 +84,7 @@ export function SingleNoteGameComponent() {
       type: GameType.Single,
       durationInSeconds: level.durationInSeconds,
     });
-
-    router.replace({
-      pathname: "/game-over",
-    });
+    router.replace({ pathname: "/game-over" });
   }, [level, id, rounds]);
 
   const onBackLinkPress = () => {
@@ -101,15 +97,22 @@ export function SingleNoteGameComponent() {
       timestamp: Date.now(),
       type: GameType.Single,
       rounds: [
-        { value: decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes).value, attempt: null },
+        {
+          value: decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3",
+          attempt: null,
+        },
       ],
       state: GameState.Idle,
     };
 
     startNewGame({ ...level, ...gameInfo } as CurrentGame<GameType.Single>);
+
+    return () => {
+      console.log("SINGLE NOTE GAME UNMOUNT!!!");
+    };
   }, []);
 
-  if (currentGame?.type !== GameType.Single) return null;
+  if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 
   const noteProps = { keys: [currNote], clef: level.clef, keySignature };
 
