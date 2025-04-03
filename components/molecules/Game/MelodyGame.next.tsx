@@ -14,13 +14,14 @@ import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import { useSoundContext } from "@/hooks/useSoundsContext";
 
 export function MelodyGameComponent() {
   const theme = useColorScheme() ?? "light";
 
   const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
   const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound } = useAppStore();
-  const { pianoReady, playPianoNote } = usePianoSound();
+  const { ready, playPianoNote } = useSoundContext();
   const { playSoundEfx } = useSoundEfx();
 
   const rounds = currentGame?.rounds || [];

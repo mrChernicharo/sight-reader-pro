@@ -20,8 +20,8 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    console.log({ path, currentGame });
-  }, [currentGame, path]);
+    console.log({ path, currentGame: currentGame?.id || null });
+  }, [currentGame?.id, path]);
 
   if (!_hydrated)
     return (

@@ -14,6 +14,7 @@ import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import { useSoundContext } from "@/hooks/useSoundsContext";
 
 const DELAY = 60;
 
@@ -23,7 +24,7 @@ export function SingleNoteGameComponent() {
   const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
   const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound } = useAppStore();
-  const { pianoReady, playPianoNote, releasePianoNote } = usePianoSound();
+  const { ready, playPianoNote, releasePianoNote } = useSoundContext();
   const { playSoundEfx } = useSoundEfx();
 
   const rounds = currentGame?.rounds || [];
