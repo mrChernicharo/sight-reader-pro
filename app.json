@@ -21,7 +21,7 @@
         "backgroundColor": "#808080"
       },
       "package": "com.chernicharo.sightreaderpro",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "bundler": "metro",
