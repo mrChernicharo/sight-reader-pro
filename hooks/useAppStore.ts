@@ -33,7 +33,7 @@ export interface AppActions {
 
 type StoreState = AppState & AppActions;
 
-const checkOngoingGame = (state: StoreState) => {
+const hasOngoingGame = (state: StoreState) => {
   const hasCurrentGame = state.currentGame && state.currentGame.rounds;
   if (!hasCurrentGame) {
     console.error("no ongoing game!");
@@ -61,21 +61,27 @@ export const useAppStore = create<AppState & AppActions>()(
         setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
         saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),
 
-        startNewGame: async (newGame: CurrentGame<GameType>) => set({ currentGame: newGame }),
-        endGame: async () => set({ currentGame: null }),
+        startNewGame: async (newGame: CurrentGame<GameType>) => {
+          console.log("START NEW GAME", newGame);
+          set({ currentGame: newGame });
+        },
+        endGame: async () => {
+          console.log("END GAME");
+          set({ currentGame: null });
+        },
         setGameState: async (gameState: GameState) =>
           set((state) => {
-            if (!checkOngoingGame(state)) return state;
+            if (!hasOngoingGame(state)) return state;
             return { ...state, currentGame: { ...state.currentGame!, state: gameState } };
           }),
         addNewRound: async (round: Round<GameType>) =>
           set((state) => {
-            if (!checkOngoingGame(state)) return state;
+            if (!hasOngoingGame(state)) return state;
             return { ...state, currentGame: { ...state.currentGame!, rounds: [...state.currentGame!.rounds, round] } };
           }),
         updateRound: async (val: Partial<Round<GameType>>) => {
           set((state) => {
-            if (!checkOngoingGame(state)) return state;
+            if (!hasOngoingGame(state)) return state;
             const latestRound = state.currentGame!.rounds.slice(-1)[0];
             const previousRounds = state.currentGame!.rounds.slice(0, -1);
             const updatedRound = { ...latestRound, ...(val as any) };

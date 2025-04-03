@@ -9,7 +9,7 @@ import { GAME_WIN_MIN_ACCURACY } from "./constants";
 import { RelativePathString } from "expo-router";
 
 export function getPreviousPage(prevPage: string, id: string) {
-  return prevPage === "/practice" ? "/" : (`${prevPage}/${id}` as RelativePathString);
+  return prevPage === "/practice" ? "/practice" : (`${prevPage}/${id}` as RelativePathString);
 }
 
 export async function wait(ms = 1000) {

@@ -93,6 +93,7 @@ export default function PracticeScreen() {
     const levelId: LevelId = `${clef}-practice`;
     const practiceLevel = {
       id: levelId,
+      name: "Practice",
       clef,
       description: "",
       durationInSeconds: 600,
@@ -104,15 +105,7 @@ export default function PracticeScreen() {
     } as Level<GameType.Single>;
 
     ALL_LEVELS.push(practiceLevel);
-    // console.log(":::: ALL_LEVELS", { ALL_LEVELS });
-
-    await startNewGame({
-      ...practiceLevel,
-      levelId,
-      timestamp: Date.now(),
-      rounds: [],
-      type: GameType.Single,
-    } as unknown as CurrentGame<GameType.Single>);
+    console.log(":::: ALL_LEVELS", { ALL_LEVELS: ALL_LEVELS.map((lvl) => lvl.name) });
 
     router.push({
       pathname: "/game-level/[id]",
@@ -129,9 +122,9 @@ export default function PracticeScreen() {
     });
   }, [clef, hasKey, accident, rangeIdx, keySignatures, keySignature, allNotes, ALL_LEVELS]);
 
-  useEffect(() => {
-    console.log({ rangeIdx });
-  }, [rangeIdx]);
+  // useEffect(() => {
+  //   console.log({ rangeIdx });
+  // }, [rangeIdx]);
 
   // useEffect(() => {
   //   console.log("---", { clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes });

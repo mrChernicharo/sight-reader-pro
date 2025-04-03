@@ -25,7 +25,7 @@ interface PlayingNote {
 
 /*************************************/
 
-export function Piano2({
+export function Piano({
   keySignature,
   onKeyPressed,
   onKeyReleased,

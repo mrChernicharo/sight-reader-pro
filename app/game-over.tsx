@@ -63,9 +63,9 @@ export default function GameOverScreen() {
   }
 
   useEffect(() => {
-    console.log("::: game-over", { level, hasWon });
+    // console.log("::: game-over", { level, hasWon });
     return () => {
-      console.log("::: game-over UNMOUNT");
+      // console.log("::: game-over UNMOUNT");
       endGame();
     };
   }, [hasWon]);

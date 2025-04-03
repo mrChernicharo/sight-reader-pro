@@ -1,7 +1,7 @@
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { useAppStore } from "@/hooks/useAppStore";
-import { usePianoSound2, useSoundEfx } from "@/hooks/usePianoSound";
+import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
 import { Colors } from "@/utils/Colors";
 import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import { explodeNote, getPreviousPage, isNoteMatch, randomUID } from "@/utils/helperFns";
@@ -11,7 +11,7 @@ import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
-import { Piano2 } from "../Piano2/Piano.2";
+import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 
@@ -20,7 +20,7 @@ export function MelodyGameComponent() {
 
   const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
   const { currentGame, saveGameRecord, startNewGame, endGame, setGameState, updateRound, addNewRound } = useAppStore();
-  const { playPianoNote } = usePianoSound2();
+  const { pianoReady, playPianoNote } = usePianoSound();
   const { playSoundEfx } = useSoundEfx();
 
   const rounds = currentGame?.rounds || [];
@@ -50,6 +50,7 @@ export function MelodyGameComponent() {
   };
 
   function onPianoKeyPress(attempt: NoteName) {
+    // if (!currRound) return;
     const currNote = currRound.values[melodyIdx];
     const { noteName, octave } = explodeNote(currNote);
     const success = isNoteMatch(attempt, noteName);
@@ -92,6 +93,8 @@ export function MelodyGameComponent() {
   }, [level, id, rounds]);
 
   useEffect(() => {
+    // if (!pianoReady) return;
+
     const gameInfo: Partial<CurrentGame<GameType.Melody>> = {
       levelId: id,
       timestamp: Date.now(),
@@ -116,7 +119,7 @@ export function MelodyGameComponent() {
         </AppView>
       ) : null}
 
-      <Piano2 keySignature={keySignature} onKeyPressed={onPianoKeyPress} onKeyReleased={(note) => {}} />
+      <Piano keySignature={keySignature} onKeyPressed={onPianoKeyPress} onKeyReleased={(note) => {}} />
     </SafeAreaView>
   );
 }

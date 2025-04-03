@@ -1,7 +1,7 @@
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { useAppStore } from "@/hooks/useAppStore";
-import { usePianoSound2, useSoundEfx } from "@/hooks/usePianoSound";
+import { usePianoSound, useSoundEfx } from "@/hooks/usePianoSound";
 import { Colors } from "@/utils/Colors";
 import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import { explodeNote, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
@@ -11,7 +11,7 @@ import { CurrentGame, GameScreenParams, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
-import { Piano2 } from "../Piano2/Piano.2";
+import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 
@@ -23,7 +23,7 @@ export function SingleNoteGameComponent() {
   const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
   const { currentGame, saveGameRecord, startNewGame, endGame, setGameState, updateRound, addNewRound } = useAppStore();
-  const { playPianoNote, releasePianoNote } = usePianoSound2();
+  const { playPianoNote, releasePianoNote } = usePianoSound();
   const { playSoundEfx } = useSoundEfx();
 
   const gameState = currentGame?.state as GameState;
@@ -117,7 +117,7 @@ export function SingleNoteGameComponent() {
 
       {currNote && <SingleNoteGameStage gameState={gameState} noteProps={noteProps} />}
 
-      <Piano2 keySignature={keySignature} onKeyPressed={onPianoKeyPress} onKeyReleased={onPianoKeyReleased} />
+      <Piano keySignature={keySignature} onKeyPressed={onPianoKeyPress} onKeyReleased={onPianoKeyReleased} />
     </SafeAreaView>
   );
 }

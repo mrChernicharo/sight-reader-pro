@@ -27,7 +27,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     gameType: GameType.Melody,
     timeSignature: TimeSignature["4/4"],
     noteRanges: ["f/4:::d/5"],
-    durationInSeconds: 4,
+    durationInSeconds: 10,
     winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
     hasKey: false,
     accident: LevelAccidentType.None,
