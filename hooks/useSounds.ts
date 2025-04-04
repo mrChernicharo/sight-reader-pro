@@ -103,24 +103,99 @@ interface PlayingSound {
     startedAt: number;
 }
 
-interface SoundContext {
-    ready: boolean;
-    playPianoNote(note: Note): Promise<void>;
-    releasePianoNote(note: Note): Promise<void>;
-    playSoundEfx(effect: SoundEffect): Promise<void>;
-}
+export const useSounds = () => {
+    // const [assets, loadErr] = useAssets([
+    //     require("@/assets/sounds/piano-notes/Piano.mf.A1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.A2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.A3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.A4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.A5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.A6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.A7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Ab1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Ab2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Ab3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Ab4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Ab5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Ab6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Ab7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.B1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.B2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.B3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.B4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.B5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.B6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.B7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Bb1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Bb2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Bb3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Bb4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Bb5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Bb6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Bb7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.C1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.C2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.C3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.C4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.C5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.C6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.C7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.D1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.D2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.D3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.D4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.D5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.D6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.D7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Db1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Db2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Db3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Db4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Db5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Db6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Db7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.E1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.E2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.E3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.E4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.E5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.E6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.E7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Eb1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Eb2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Eb3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Eb4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Eb5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Eb6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Eb7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.F1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.F2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.F3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.F4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.F5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.F6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.F7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.G1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.G2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.G3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.G4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.G5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.G6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.G7.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Gb1.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Gb2.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Gb3.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Gb4.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Gb5.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Gb6.mp3"),
+    //     require("@/assets/sounds/piano-notes/Piano.mf.Gb7.mp3"),
+    //     require("@/assets/sounds/efx/wrong-answer.mp3"),
+    // ]);
 
-const initialValues: SoundContext = {
-    ready: false,
-    playPianoNote: async () => {},
-    releasePianoNote: async () => {},
-    playSoundEfx: async () => {},
-};
+    // const [assets, setAssets] = useState<Asset[]>([]);
+    // const assets = useRef<Asset[]>([]);
 
-const SoundContext = createContext<SoundContext>(initialValues);
-
-const SoundContextProvider = (props: { children: ReactNode }) => {
-    const [assets, loadErr] = useAssets([
+    const requires = [
         require("@/assets/sounds/piano-notes/Piano.mf.A1.mp3"),
         require("@/assets/sounds/piano-notes/Piano.mf.A2.mp3"),
         require("@/assets/sounds/piano-notes/Piano.mf.A3.mp3"),
@@ -206,12 +281,15 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         require("@/assets/sounds/piano-notes/Piano.mf.Gb6.mp3"),
         require("@/assets/sounds/piano-notes/Piano.mf.Gb7.mp3"),
         require("@/assets/sounds/efx/wrong-answer.mp3"),
-    ]);
-    const [ready, setReady] = useState(false);
+    ];
+
+    // Asset.loadAsync(moduleIds).then(setAssets).catch(setError);
 
     const audioContextRef = useRef<AudioContext | null>(null);
     const playingSoundsRef = useRef<PR<PlayingSound>>({});
     const bufferMapRef = useRef<PR<AudioBuffer>>({});
+
+    const [ready, setReady] = useState(false);
 
     async function playPianoNote(originalNote: Note) {
         await releasePianoNote(originalNote);
@@ -297,17 +375,16 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
 
             audioContextRef.current = new AudioContext();
 
-            const allAssets = assets || [];
+            const assets: Asset[] = [];
 
-            console.log("allAssets :::", allAssets.length);
-            // if (!allAssets.length) {
-            //     console.log(`<SoundContext> failed to load Sounds...`);
-            //     return setTimeout(() => {
-            //         loadSounds();
-            //     }, 2000);
-            // }
+            for (const moduleId of requires) {
+                console.log(moduleId);
+                const [asset] = await Asset.loadAsync(moduleId);
+                assets.push(asset);
+            }
+            console.log("assets :::", assets.length);
 
-            const assetPromises = allAssets.map((asset, i) => {
+            const assetPromises = assets.map((asset, i) => {
                 return new Promise((resolve) => {
                     const key = pluckNoteFromMp3Filename(asset.name);
                     const file = asset.localUri;
@@ -347,16 +424,12 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         };
     }, []);
 
-    return (
-        <SoundContext.Provider value={{ ready, playPianoNote, releasePianoNote, playSoundEfx }}>
-            {props.children}
-        </SoundContext.Provider>
-    );
+    return {
+        ready,
+        playPianoNote,
+        playSoundEfx,
+    };
 };
-
-const useSoundContext = () => useContext(SoundContext);
-
-export { SoundContextProvider, useSoundContext };
 
 function pluckNoteFromMp3Filename(filename: string) {
     if (filename.startsWith("Piano")) {
