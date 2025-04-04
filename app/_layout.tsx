@@ -32,12 +32,12 @@ export default function RootLayout() {
         );
 
     return (
-        <SoundContextProvider>
-            <SafeAreaProvider>
-                <GestureHandlerRootView>
+        <SafeAreaProvider>
+            <GestureHandlerRootView>
+                <SoundContextProvider>
                     <AppRoutes />
-                </GestureHandlerRootView>
-            </SafeAreaProvider>
-        </SoundContextProvider>
+                </SoundContextProvider>
+            </GestureHandlerRootView>
+        </SafeAreaProvider>
     );
 }

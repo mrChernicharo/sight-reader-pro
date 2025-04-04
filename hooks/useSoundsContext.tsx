@@ -1,9 +1,8 @@
-import { NoteName, SoundEffect } from "@/utils/enums";
+import { SoundEffect } from "@/utils/enums";
 import { Note } from "@/utils/types";
+import { Asset } from "expo-asset";
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 import { AudioBuffer, AudioBufferSourceNode, AudioContext, GainNode } from "react-native-audio-api";
-import { Asset, useAssets } from "expo-asset";
-import { wait } from "@/utils/helperFns";
 
 const requires = [
     require("@/assets/sounds/piano-notes/Piano.mf.A1.mp3"),
