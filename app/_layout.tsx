@@ -1,6 +1,7 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
+import { SoundContextProvider } from "@/hooks/useSoundsContext";
 import { usePathname } from "expo-router";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -31,10 +32,12 @@ export default function RootLayout() {
         );
 
     return (
-        <SafeAreaProvider>
-            <GestureHandlerRootView>
-                <AppRoutes />
-            </GestureHandlerRootView>
-        </SafeAreaProvider>
+        <SoundContextProvider>
+            <SafeAreaProvider>
+                <GestureHandlerRootView>
+                    <AppRoutes />
+                </GestureHandlerRootView>
+            </SafeAreaProvider>
+        </SoundContextProvider>
     );
 }
