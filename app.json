@@ -37,6 +37,7 @@
             }
         },
         "plugins": [
+            "expo-asset",
             "expo-router",
             [
                 "expo-dev-launcher",
@@ -44,13 +45,7 @@
                     "launchMode": "most-recent"
                 }
             ],
-            "expo-font",
-            [
-                "expo-asset",
-                {
-                    "assets": ["./assets/sounds/piano-notes"]
-                }
-            ]
+            "expo-font"
         ]
     }
 }
