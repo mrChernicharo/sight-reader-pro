@@ -53,7 +53,7 @@ export const useAppStore = create<AppState & AppActions>()(
                         username: "",
                         language: null,
                         difficulty: Difficulty.Normal,
-                        knowledge: null,
+                        knowledge: null, // uncomment to force starting app at "/init" route
                         globalVolume: 1,
                         games: [],
                         currentGame: null,

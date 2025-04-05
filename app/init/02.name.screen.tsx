@@ -21,7 +21,7 @@ export default function NameScreen() {
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 4 }}>
+                <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink to="/init/01.lang.screen" />
                 </AppView>
                 <AppText type="defaultSemiBold">{t("routes.init.name.title")}</AppText>

@@ -25,7 +25,7 @@ export default function LangScreen() {
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 4 }}>
+                <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink />
                 </AppView>
                 <AppText type="defaultSemiBold">{t("routes.init.lang.title")}</AppText>
@@ -48,14 +48,6 @@ export default function LangScreen() {
             </AppView>
 
             <AppView style={s.btnContainer}>
-                {/* <Link asChild href="/init/02.name.screen">
-                    <AppButton
-                        text={t("routes.next")}
-                        style={[s.btn, { borderColor: Colors[theme].text }]}
-                        textStyle={{ color: "white" }}
-                    />
-                </Link> */}
-
                 <AppButton
                     disabled={!language}
                     text={t("routes.next")}

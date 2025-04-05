@@ -22,6 +22,7 @@ const ptBR = {
             },
             knowledge: {
                 title: "Você já sabe ler partituras?",
+                you: "Seu nível é",
             },
         },
         next: "Próximo",

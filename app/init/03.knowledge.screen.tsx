@@ -14,11 +14,36 @@ import { Link } from "expo-router";
 import { Knowledge } from "@/utils/enums";
 
 const knowledgeOptions = [
-    { key: "music.knowledge.novice.title", value: "music.knowledge.novice.description", emoji: "👶" },
-    { key: "music.knowledge.beginner.title", value: "music.knowledge.beginner.description", emoji: "🌱" },
-    { key: "music.knowledge.intermediary.title", value: "music.knowledge.intermediary.description", emoji: "🧑‍🏫" },
-    { key: "music.knowledge.advanced.title", value: "music.knowledge.advanced.description", emoji: "🧑‍🎓" },
-    { key: "music.knowledge.pro.title", value: "music.knowledge.pro.description", emoji: "🧑‍🎤" },
+    {
+        key: "novice",
+        title: "music.knowledge.novice.title",
+        value: "music.knowledge.novice.description",
+        emoji: "👶",
+    },
+    {
+        key: "beginner",
+        title: "music.knowledge.beginner.title",
+        value: "music.knowledge.beginner.description",
+        emoji: "🌱",
+    },
+    {
+        key: "intermediary",
+        title: "music.knowledge.intermediary.title",
+        value: "music.knowledge.intermediary.description",
+        emoji: "🧑‍🏫",
+    },
+    {
+        key: "advanced",
+        title: "music.knowledge.advanced.title",
+        value: "music.knowledge.advanced.description",
+        emoji: "🧑‍🎓",
+    },
+    {
+        key: "pro",
+        title: "music.knowledge.pro.title",
+        value: "music.knowledge.pro.description",
+        emoji: "🧑‍🎤",
+    },
 ];
 
 export default function KnowledgeScreen() {
@@ -31,29 +56,45 @@ export default function KnowledgeScreen() {
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 4 }}>
+                <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink to="/init/02.name.screen" />
                 </AppView>
                 <AppText type="defaultSemiBold">{t("routes.init.knowledge.title")}</AppText>
             </AppView>
 
             <AppView style={s.listContainer}>
-                {knowledgeOptions.map((opt) => (
-                    <Pressable
-                        key={opt.key}
-                        android_ripple={{ radius: 240 }}
-                        onPress={() => setKnowledge(opt.key as Knowledge)}
+                <AppView>
+                    {knowledgeOptions.map((opt) => (
+                        <Pressable
+                            key={opt.key}
+                            android_ripple={{ radius: 240 }}
+                            onPress={() => setKnowledge(opt.key as Knowledge)}
+                            style={{ padding: 8 }}
+                        >
+                            <AppText>
+                                {opt.emoji} {t(opt.value)}
+                            </AppText>
+                        </Pressable>
+                    ))}
+                </AppView>
+
+                {knowledge && (
+                    <AppView
+                        style={{
+                            // borderWidth: 2,
+                            // borderColor: "red",
+                            alignItems: "center",
+                        }}
                     >
-                        <AppText>
-                            {opt.emoji} {t(opt.key)}
-                        </AppText>
-                        <AppText>{t(opt.value)}</AppText>
-                    </Pressable>
-                ))}
+                        <AppText type="mdSemiBold">{t("routes.init.knowledge.you")}</AppText>
+                        <AppText type="title">{t(`music.knowledge.${knowledge}.title`)}</AppText>
+                    </AppView>
+                )}
             </AppView>
 
             <AppView style={s.btnContainer}>
                 <AppButton
+                    // disabled={true}
                     disabled={!knowledge}
                     text={t("routes.next")}
                     style={[s.btn, { borderColor: Colors[theme].text }]}
@@ -72,7 +113,6 @@ const s = StyleSheet.create({
         justifyContent: "center",
         paddingHorizontal: 36,
         paddingVertical: 24,
-        height: "100%",
         position: "relative",
         // borderWidth: 2,
         // borderColor: "red",
@@ -86,9 +126,7 @@ const s = StyleSheet.create({
     listContainer: {
         width: "100%",
         display: "flex",
-        gap: 12,
-        paddingHorizontal: 12,
-        paddingBottom: 120,
+        gap: 40,
         // borderWidth: 2,
         // borderColor: "red",
     },

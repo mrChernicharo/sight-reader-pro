@@ -2,7 +2,7 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
 import { SoundContextProvider } from "@/hooks/useSoundsContext";
-import { usePathname } from "expo-router";
+import { Redirect, router, usePathname } from "expo-router";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -11,6 +11,9 @@ import AppRoutes from "./_app.routes";
 export default function RootLayout() {
     const _hydrated = useAppStore((state) => state._hydrated);
     const currentGame = useAppStore((state) => state.currentGame);
+    const language = useAppStore((state) => state.language);
+    const knowledge = useAppStore((state) => state.knowledge);
+    const username = useAppStore((state) => state.username);
     const endGame = useAppStore((state) => state.endGame);
     const path = usePathname();
 
@@ -21,8 +24,14 @@ export default function RootLayout() {
     }, [_hydrated]);
 
     useEffect(() => {
-        console.log({ path, currentGame: currentGame?.id || null });
+        console.log({ path, ...(currentGame && { currentGame: currentGame.id }) });
     }, [currentGame?.id, path]);
+
+    useEffect(() => {
+        if (!language && !username && !knowledge) {
+            router.replace("/init/01.lang.screen");
+        }
+    }, [language, knowledge, username]);
 
     if (!_hydrated)
         return (

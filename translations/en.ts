@@ -22,6 +22,7 @@ const en = {
             },
             knowledge: {
                 title: "Do you know how to read sheet music?",
+                you: "Your level is",
             },
         },
         next: "Next",

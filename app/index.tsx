@@ -43,13 +43,13 @@ export default function Home() {
                         />
                     </Link>
 
-                    <Link style={s.link} href="/init/01.lang.screen">
+                    {/* <Link style={s.link} href="/init/01.lang.screen">
                         <AppButton
                             text={t("routes.init.title")}
                             style={[s.btn, { borderColor: Colors[theme].text }]}
                             textStyle={{ color: Colors[theme].text }}
                         />
-                    </Link>
+                    </Link> */}
                 </AppView>
             </FadeIn>
 
@@ -76,5 +76,5 @@ const s = StyleSheet.create({
         paddingBottom: 52,
     },
     link: { width: 200 },
-    btn: { backgroundColor: "rgba(0, 0, 0, 0)", borderWidth: 1, width: 200 },
+    btn: { backgroundColor: "transparent", borderWidth: 1, width: 200 },
 });
