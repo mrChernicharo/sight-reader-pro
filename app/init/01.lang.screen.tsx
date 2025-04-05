@@ -21,13 +21,16 @@ export default function LangScreen() {
     const { language } = useAppStore();
     const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
     const setLanguage = useAppStore((state) => state.setLanguage);
+    console.log(language);
+    // const langObj = language ? { key: t(`${language}.title`), value: language } : undefined;
+    // console.log(langObj);
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 1 }}>
+                {/* <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink />
-                </AppView>
+                </AppView> */}
                 <AppText type="defaultSemiBold">{t("routes.init.lang.title")}</AppText>
             </AppView>
 
@@ -39,7 +42,7 @@ export default function LangScreen() {
                     setSelected={setLanguage}
                     search={false}
                     placeholder={t("settings.lang.placeholder")}
-                    defaultOption={language ? LANGS[0] : undefined}
+                    // defaultOption={language}
                     inputStyles={{ color: textColor, backgroundColor: Colors[theme].background, width: "100%" }}
                     dropdownTextStyles={{ color: textColor }}
                     disabledTextStyles={{ color: Colors[theme].textMute }}
@@ -53,7 +56,7 @@ export default function LangScreen() {
                     text={t("routes.next")}
                     style={[s.btn, { borderColor: Colors[theme].text }]}
                     textStyle={{ color: "white" }}
-                    onPress={() => router.push({ pathname: "/init/02.name.screen" })}
+                    onPress={() => router.push({ pathname: "/init/02.knowledge.screen" })}
                 />
             </AppView>
         </SafeAreaView>

@@ -14,6 +14,7 @@ export interface AppState {
     globalVolume: number;
     games: Game<GameType>[];
     currentGame: CurrentGame<GameType> | null;
+    initTourCompleted: boolean;
     _hydrated: boolean;
 }
 
@@ -22,6 +23,7 @@ export interface AppActions {
     setGlobalVolume: (volume: number) => Promise<void>;
     setLanguage: (lang: "en" | "pt-BR") => Promise<void>;
     setKnowledge: (knowledge: Knowledge) => Promise<void>;
+    setInitTourCompleted: (initTourCompleted: boolean) => Promise<void>;
 
     saveGameRecord: (game: Game<GameType>) => Promise<void>;
     startNewGame: (newGame: CurrentGame<GameType>) => Promise<void>;
@@ -41,8 +43,9 @@ export const useAppStore = create<AppState & AppActions>()(
             (set) => ({
                 username: "",
                 language: null,
-                difficulty: Difficulty.Normal,
                 knowledge: null,
+                initTourCompleted: false,
+                difficulty: Difficulty.Normal,
                 globalVolume: 1,
                 games: [],
                 currentGame: null,
@@ -52,8 +55,10 @@ export const useAppStore = create<AppState & AppActions>()(
                     set({
                         username: "",
                         language: null,
+                        knowledge: null,
+                        initTourCompleted: false,
+                        // initTourCompleted: true,
                         difficulty: Difficulty.Normal,
-                        knowledge: null, // uncomment to force starting app at "/init" route
                         globalVolume: 1,
                         games: [],
                         currentGame: null,
@@ -65,6 +70,8 @@ export const useAppStore = create<AppState & AppActions>()(
                 setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
                 setKnowledge: async (knowledge: Knowledge) => set(() => ({ knowledge: knowledge })),
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
+                setInitTourCompleted: async (initTourCompleted: boolean) =>
+                    set(() => ({ initTourCompleted: initTourCompleted })),
 
                 saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),
 

@@ -22,7 +22,7 @@ export default function NameScreen() {
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
             <AppView style={s.top}>
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
-                    <BackLink to="/init/01.lang.screen" />
+                    <BackLink to="/init/02.knowledge.screen" />
                 </AppView>
                 <AppText type="defaultSemiBold">{t("routes.init.name.title")}</AppText>
             </AppView>
@@ -53,7 +53,7 @@ export default function NameScreen() {
                     text={t("routes.next")}
                     style={[s.btn, { borderColor: Colors[theme].text }]}
                     textStyle={{ color: "white" }}
-                    onPress={() => router.push({ pathname: "/init/03.knowledge.screen" })}
+                    onPress={() => router.push({ pathname: "/" })}
                 />
             </AppView>
         </SafeAreaView>

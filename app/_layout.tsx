@@ -14,6 +14,7 @@ export default function RootLayout() {
     const language = useAppStore((state) => state.language);
     const knowledge = useAppStore((state) => state.knowledge);
     const username = useAppStore((state) => state.username);
+    const initTourCompleted = useAppStore((state) => state.initTourCompleted);
     const endGame = useAppStore((state) => state.endGame);
     const path = usePathname();
 
@@ -28,10 +29,10 @@ export default function RootLayout() {
     }, [currentGame?.id, path]);
 
     useEffect(() => {
-        if (!language && !username && !knowledge) {
+        if (!initTourCompleted) {
             router.replace("/init/01.lang.screen");
         }
-    }, [language, knowledge, username]);
+    }, [initTourCompleted]);
 
     if (!_hydrated)
         return (

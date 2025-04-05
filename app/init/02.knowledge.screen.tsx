@@ -57,7 +57,7 @@ export default function KnowledgeScreen() {
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
             <AppView style={s.top}>
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
-                    <BackLink to="/init/02.name.screen" />
+                    <BackLink to="/init/01.lang.screen" />
                 </AppView>
                 <AppText type="defaultSemiBold">{t("routes.init.knowledge.title")}</AppText>
             </AppView>
@@ -94,12 +94,11 @@ export default function KnowledgeScreen() {
 
             <AppView style={s.btnContainer}>
                 <AppButton
-                    // disabled={true}
                     disabled={!knowledge}
                     text={t("routes.next")}
                     style={[s.btn, { borderColor: Colors[theme].text }]}
                     textStyle={{ color: "white" }}
-                    onPress={() => router.push({ pathname: "/" })}
+                    onPress={() => router.push({ pathname: "/init/03.name.screen" })}
                 />
             </AppView>
         </SafeAreaView>
