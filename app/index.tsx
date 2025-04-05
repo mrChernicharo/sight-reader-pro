@@ -45,7 +45,7 @@ export default function Home() {
 
                     <Link style={s.link} href="/init/01.lang.screen">
                         <AppButton
-                            text={t("routes.init")}
+                            text={t("routes.init.title")}
                             style={[s.btn, { borderColor: Colors[theme].text }]}
                             textStyle={{ color: Colors[theme].text }}
                         />

@@ -1,3 +1,4 @@
+import { TRANSLATIONS } from "@/translations";
 import { Accident, SoundEffect } from "./enums";
 
 export const GAME_WIN_MIN_ACCURACY = 0.6;
@@ -21,6 +22,9 @@ export const drawAccidents: Record<Accident, string> = {
     [Accident["x"]]: "##",
     [Accident["bb"]]: "bb",
 };
+
+export const SUPPORTED_LANGUAGES = Object.keys(TRANSLATIONS);
+export const LANGS = SUPPORTED_LANGUAGES.map((lang) => ({ key: lang, value: (TRANSLATIONS as any)[lang].lang }));
 
 // export const soundEfxAssets = {
 //     [SoundEffect.WrongAnswer]: "https://mrchernicharo.github.io/piano-notes/wrong-answer.mp3",

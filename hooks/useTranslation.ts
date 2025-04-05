@@ -6,14 +6,21 @@ export function useTranslation() {
 
     return {
         t: (key: string) => {
-            const segments = key.split(".");
-            let val: any = TRANSLATIONS[lang];
-            for (let i = 0; i < segments.length; i++) {
-                const segment = segments[i];
-                // console.log({ segment, key, lang, TRANSLATIONS });
-                val = val[segment];
+            try {
+                const segments = key.split(".");
+                let val: any = TRANSLATIONS[lang];
+                for (let i = 0; i < segments.length; i++) {
+                    const segment = segments[i];
+                    // console.log({ segment, key, lang, TRANSLATIONS });
+                    val = val[segment];
+                }
+
+                if (typeof val != "string") throw Error("oops");
+
+                return val ?? key;
+            } catch (error) {
+                return key;
             }
-            return val ?? key;
         },
     };
 }
