@@ -17,6 +17,12 @@ const ptBR = {
             lang: {
                 title: "Escolher idioma",
             },
+            name: {
+                title: "Como devemos te chamar?",
+            },
+            knowledge: {
+                title: "Você já sabe ler partituras?",
+            },
         },
         next: "Próximo",
         prev: "Anterior",
@@ -104,6 +110,13 @@ const ptBR = {
                 sharp: "Sustenido",
                 flat: "Bemol",
             },
+        },
+        knowledge: {
+            novice: { title: "novato", description: "não, não faço a menor ideia" },
+            beginner: { title: "iniciante", description: "não, mas conheço mais ou menos como funciona" },
+            intermediary: { title: "intermediário", description: "mais ou menos, leio mal mas sei" },
+            advanced: { title: "avançado", description: "sim, leio razoavelmente bem" },
+            pro: { title: "pro", description: "sim, leio profissionalmente" },
         },
     },
 };

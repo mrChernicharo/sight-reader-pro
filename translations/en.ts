@@ -17,6 +17,12 @@ const en = {
             lang: {
                 title: "Select Language",
             },
+            name: {
+                title: "What should we call you?",
+            },
+            knowledge: {
+                title: "Do you know how to read sheet music?",
+            },
         },
         next: "Next",
         prev: "Previous",
@@ -104,6 +110,13 @@ const en = {
                 sharp: "sharp",
                 flat: "flat",
             },
+        },
+        knowledge: {
+            novice: { title: "novice", description: "no, I have no idea" },
+            beginner: { title: "beginner", description: "no, but I have a general understanding" },
+            intermediary: { title: "intermediary", description: "kind of, I read poorly but I know how" },
+            advanced: { title: "advanced", description: "yes, I read reasonably well" },
+            pro: { title: "pro", description: "yes, I read professionally" },
         },
     },
 };

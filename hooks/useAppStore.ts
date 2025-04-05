@@ -1,27 +1,29 @@
-import { GameState, GameType, Difficulty } from "@/utils/enums";
+import { Difficulty, GameType, Knowledge } from "@/utils/enums";
 import { ALL_LEVELS } from "@/utils/levels";
-import { Game, GameScore, CurrentGame, Round } from "@/utils/types";
+import { CurrentGame, Game, Round } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 import { create } from "zustand";
-import { persist, createJSONStorage, devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 export interface AppState {
-    _hydrated: boolean;
     username: string;
-    language: "en" | "pt-BR";
+    language: null | "en" | "pt-BR";
     difficulty: Difficulty;
+    knowledge: Knowledge | null;
     globalVolume: number;
     games: Game<GameType>[];
     currentGame: CurrentGame<GameType> | null;
+    _hydrated: boolean;
 }
 
 export interface AppActions {
     setUsername: (name: string) => Promise<void>;
     setGlobalVolume: (volume: number) => Promise<void>;
     setLanguage: (lang: "en" | "pt-BR") => Promise<void>;
-    saveGameRecord: (game: Game<GameType>) => Promise<void>;
+    setKnowledge: (knowledge: Knowledge) => Promise<void>;
 
+    saveGameRecord: (game: Game<GameType>) => Promise<void>;
     startNewGame: (newGame: CurrentGame<GameType>) => Promise<void>;
     endGame: (previousPage?: string) => Promise<void>;
     addNewRound: (round: Round<GameType>) => Promise<void>;
@@ -37,19 +39,31 @@ export const useAppStore = create<AppState & AppActions>()(
     devtools(
         persist(
             (set) => ({
-                _hydrated: false,
-                username: "user",
-                language: "pt-BR",
+                username: "",
+                language: null,
+                difficulty: Difficulty.Normal,
+                knowledge: null,
+                globalVolume: 1,
                 games: [],
                 currentGame: null,
-                difficulty: Difficulty.Normal,
-                globalVolume: 1,
+                _hydrated: false,
+
+                _resetStore: async () =>
+                    set({
+                        username: "",
+                        language: null,
+                        difficulty: Difficulty.Normal,
+                        knowledge: null,
+                        globalVolume: 1,
+                        games: [],
+                        currentGame: null,
+                    }),
                 setHydrated: async (hydrated: boolean) => set({ _hydrated: hydrated }),
-                _resetStore: async () => set({ games: [], username: "", globalVolume: 1 }),
 
                 setUsername: async (name: string) => set(() => ({ username: name })),
                 setLanguage: async (lang: "en" | "pt-BR") => set({ language: lang }),
                 setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
+                setKnowledge: async (knowledge: Knowledge) => set(() => ({ knowledge: knowledge })),
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
 
                 saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),

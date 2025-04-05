@@ -10,14 +10,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { SelectList } from "react-native-dropdown-select-list";
 import { LANGS } from "@/utils/constants";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import AppButton from "@/components/atoms/AppButton";
+import { DEFAULT_LANGUAGE } from "@/translations";
 
 export default function LangScreen() {
     const theme = useColorScheme() ?? "light";
     const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
-    const {} = useAppStore();
+    const { language } = useAppStore();
     const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
     const setLanguage = useAppStore((state) => state.setLanguage);
 
@@ -38,30 +39,30 @@ export default function LangScreen() {
                     setSelected={setLanguage}
                     search={false}
                     placeholder={t("settings.lang.placeholder")}
-                    // defaultOption={language}
-                    inputStyles={{
-                        color: textColor,
-                        backgroundColor: Colors[theme].background,
-                        width: "100%",
-                    }}
-                    dropdownTextStyles={{
-                        color: textColor,
-                    }}
-                    disabledTextStyles={{
-                        color: Colors[theme].textMute,
-                    }}
+                    defaultOption={language ? LANGS[0] : undefined}
+                    inputStyles={{ color: textColor, backgroundColor: Colors[theme].background, width: "100%" }}
+                    dropdownTextStyles={{ color: textColor }}
+                    disabledTextStyles={{ color: Colors[theme].textMute }}
                     boxStyles={{}}
                 />
             </AppView>
 
-            <AppView>
-                <Link style={s.link} href="/init/02.name.screen">
+            <AppView style={s.btnContainer}>
+                {/* <Link asChild href="/init/02.name.screen">
                     <AppButton
                         text={t("routes.next")}
                         style={[s.btn, { borderColor: Colors[theme].text }]}
-                        textStyle={{ color: Colors[theme].text }}
+                        textStyle={{ color: "white" }}
                     />
-                </Link>
+                </Link> */}
+
+                <AppButton
+                    disabled={!language}
+                    text={t("routes.next")}
+                    style={[s.btn, { borderColor: Colors[theme].text }]}
+                    textStyle={{ color: "white" }}
+                    onPress={() => router.push({ pathname: "/init/02.name.screen" })}
+                />
             </AppView>
         </SafeAreaView>
     );
@@ -75,9 +76,9 @@ const s = StyleSheet.create({
         paddingHorizontal: 36,
         paddingVertical: 24,
         height: "100%",
-        borderWidth: 2,
-        borderColor: "red",
         position: "relative",
+        // borderWidth: 2,
+        // borderColor: "red",
     },
     top: {
         width: "100%",
@@ -85,6 +86,12 @@ const s = StyleSheet.create({
         position: "absolute",
         alignItems: "center",
     },
-    link: { width: 200 },
-    btn: { backgroundColor: "rgba(0, 0, 0, 0)", borderWidth: 1, width: 200 },
+    btnContainer: {
+        position: "absolute",
+        width: "100%",
+        bottom: 50,
+        // borderWidth: 2,
+        // borderColor: "red",
+    },
+    btn: { width: "100%" },
 });
