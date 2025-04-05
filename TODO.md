@@ -6,14 +6,14 @@ draw ranges
 
 home
 
-- practice
-  - practice-settings
-    - game practice
-- play
-  - path-selection
-    - level-selection
-      - game level
-- settings
+-   practice
+    -   practice-settings
+        -   game practice
+-   play
+    -   path-selection
+        -   level-selection
+            -   game level
+-   settings
 
 ---
 
@@ -24,8 +24,8 @@ background colors (dark mode)
 display previous games
 display statistics previous games
 
-- accuracy
-- notes/minute
+-   accuracy
+-   notes/minute
 
 ---
 
@@ -40,6 +40,10 @@ fix isNoteMatch for notes lice cb, b#, e# ...
 translations
 
 ---
+
+level-selection better design
+note-drawing and accidents
+gainNode volume
 
 ---
 

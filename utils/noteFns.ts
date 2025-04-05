@@ -1,360 +1,387 @@
 import { drawAccidents } from "./constants";
 import {
-  LevelAccidentType,
-  GameType,
-  KeySignature,
-  ScaleType,
-  NoteNameBase,
-  Accident,
-  NoteName,
-  NoteDuration,
+    LevelAccidentType,
+    GameType,
+    KeySignature,
+    ScaleType,
+    NoteNameBase,
+    Accident,
+    NoteName,
+    NoteDuration,
 } from "./enums";
 import {
-  NOTE_INDICES,
-  addHalfSteps,
-  explodeNote,
-  getNoteIdx,
-  getRandInRange,
-  groupArrayElements,
-  isNoteMatch,
-  shuffle,
+    NOTE_INDICES,
+    addHalfSteps,
+    explodeNote,
+    getNoteIdx,
+    getRandInRange,
+    groupArrayElements,
+    isNoteMatch,
+    shuffle,
 } from "./helperFns";
 import { accidentNoteSequences, scaleTypeNoteSequences } from "./keySignature";
 import { Note, ChordRound, Level, MelodyRound, NoteRange, RhythmRound, SingleNoteRound, MelodyNote } from "./types";
 
 export function getGamePitchesInAllOctaves(
-  options: { keySignature: KeySignature; scaleType: ScaleType } | { accident: LevelAccidentType }
+    options: { keySignature: KeySignature; scaleType: ScaleType } | { accident: LevelAccidentType }
 ): Note[] {
-  // console.log("::: getGamePitchesInAllOctaves :::", { options, accidentNoteSequences });
-  let result: Note[];
-  if ((options as any)?.accident) {
-    const safeOpts = options as { accident: LevelAccidentType };
-    result = accidentNoteSequences[safeOpts.accident];
-  }
-  //
-  else if ((options as any)?.keySignature) {
-    const safeOpts = options as { keySignature: KeySignature; scaleType: ScaleType };
+    // console.log("::: getGamePitchesInAllOctaves :::", { options, accidentNoteSequences });
+    let result: Note[];
+    if ((options as any)?.accident) {
+        const safeOpts = options as { accident: LevelAccidentType };
+        result = accidentNoteSequences[safeOpts.accident];
+    }
+    //
+    else if ((options as any)?.keySignature) {
+        const safeOpts = options as { keySignature: KeySignature; scaleType: ScaleType };
 
-    // console.log(":::", { safeOpts });
+        // console.log(":::", { safeOpts });
 
-    const noteMap = scaleTypeNoteSequences[safeOpts.scaleType];
-    const scaleNoteNames = noteMap[safeOpts.keySignature];
+        const noteMap = scaleTypeNoteSequences[safeOpts.scaleType];
+        const scaleNoteNames = noteMap[safeOpts.keySignature];
 
-    const availableNotes: Note[] = [];
+        const availableNotes: Note[] = [];
 
-    const allNotes = Array.from(NOTE_INDICES);
-    allNotes.forEach(([idx, notes]) => {
-      notes.forEach((note) => {
-        const [nn, oct] = note.split("/");
-        if (scaleNoteNames.includes(nn as NoteName)) {
-          availableNotes.push(note);
-        }
-      });
-    });
+        const allNotes = Array.from(NOTE_INDICES);
+        allNotes.forEach(([idx, notes]) => {
+            notes.forEach((note) => {
+                const [nn, oct] = note.split("/");
+                if (scaleNoteNames.includes(nn as NoteName)) {
+                    availableNotes.push(note);
+                }
+            });
+        });
 
-    result = availableNotes;
-  } else {
-    result = [];
-  }
-  // console.log("getGamePitchesInAllOctaves:::", { result });
-  return result as Note[];
+        result = availableNotes;
+    } else {
+        result = [];
+    }
+    // console.log("getGamePitchesInAllOctaves:::", { result });
+    return result as Note[];
 }
 
 export function getPossibleNotesInLevel(level: Level<GameType>, keySignature: KeySignature) {
-  let possibleNotes: Note[];
-  if (!level) {
-    console.warn("getPossibleNotesInLevel :::", { level, keySignature });
-    return [];
-  }
+    let possibleNotes: Note[];
+    if (!level) {
+        console.warn("getPossibleNotesInLevel :::", { level, keySignature });
+        return [];
+    }
 
-  if (level?.hasKey) {
-    possibleNotes = getGamePitchesInAllOctaves({ keySignature, scaleType: level.scaleType });
-  } else {
-    possibleNotes = getGamePitchesInAllOctaves({ accident: level.accident });
-  }
-  return possibleNotes;
+    if (level?.hasKey) {
+        possibleNotes = getGamePitchesInAllOctaves({ keySignature, scaleType: level.scaleType });
+    } else {
+        possibleNotes = getGamePitchesInAllOctaves({ accident: level.accident });
+    }
+    return possibleNotes;
 }
 
 function generateRandomNote(
-  level: Level<GameType.Single>,
-  keySignature: KeySignature,
-  possibleNotes: Note[],
-  previousRound?: SingleNoteRound
+    level: Level<GameType.Single>,
+    keySignature: KeySignature,
+    possibleNotes: Note[],
+    previousRound?: SingleNoteRound
 ): Note {
-  if (level.gameType !== GameType.Single) throw Error("gameType incompatible");
+    if (level.gameType !== GameType.Single) throw Error("gameType incompatible");
 
-  let rangeNotes = getNotesInRange(level.noteRanges, possibleNotes, keySignature);
-  if (previousRound) {
-    rangeNotes = rangeNotes.filter((note) => note !== previousRound.value);
-  }
-  const nextNote = pickNextRoundNote(rangeNotes);
-  // console.log("::: generateRandomNote :::", { possibleNotes, rangeNotes, nextNote });
-  return nextNote;
+    let rangeNotes = getNotesInRange(level.noteRanges, possibleNotes, keySignature);
+    if (previousRound) {
+        rangeNotes = rangeNotes.filter((note) => note !== previousRound.value);
+    }
+    const nextNote = pickNextRoundNote(rangeNotes);
+    // console.log("::: generateRandomNote :::", { possibleNotes, rangeNotes, nextNote });
+    return nextNote;
 }
 
 function generateRandomChord(level: Level<GameType.Chord>, previousRound: ChordRound) {
-  if (level.gameType !== GameType.Chord) throw Error("gameType incompatible");
+    if (level.gameType !== GameType.Chord) throw Error("gameType incompatible");
 }
 
 export const noteDurationDict = {
-  [NoteDuration.w]: 16,
-  [NoteDuration["h."]]: 12,
-  [NoteDuration.h]: 8,
-  [NoteDuration["q."]]: 6,
-  [NoteDuration.q]: 4,
-  [NoteDuration["8th."]]: 3,
-  [NoteDuration["8th"]]: 2,
-  [NoteDuration["16th"]]: 1,
+    [NoteDuration.w]: 16,
+    [NoteDuration["h."]]: 12,
+    [NoteDuration.h]: 8,
+    [NoteDuration["q."]]: 6,
+    [NoteDuration.q]: 4,
+    [NoteDuration["8th."]]: 3,
+    [NoteDuration["8th"]]: 2,
+    [NoteDuration["16th"]]: 1,
 };
 
 export const melodyPatterns = [
-  // 4 beats
-  [NoteDuration.w],
-  // 3 beats
-  [NoteDuration["h."]],
-  [NoteDuration.h, NoteDuration.q],
-  [NoteDuration.q, NoteDuration.h],
-  // 2 beats
-  [NoteDuration.h],
-  [NoteDuration["q."], NoteDuration["8th"]],
-  [NoteDuration["8th"], NoteDuration["q."]],
-  // 1 beat
-  [NoteDuration.q],
-  [NoteDuration["8th"], NoteDuration["8th"]],
-  [NoteDuration["8th."], NoteDuration["16th"]],
-  [NoteDuration["16th"], NoteDuration["8th."]],
-  [NoteDuration["8th"], NoteDuration["16th"], NoteDuration["16th"]],
-  [NoteDuration["16th"], NoteDuration["16th"], NoteDuration["8th"]],
-  [NoteDuration["16th"], NoteDuration["8th"], NoteDuration["16th"]],
+    // 4 beats
+    [NoteDuration.w],
+    // 3 beats
+    [NoteDuration["h."]],
+    [NoteDuration.h, NoteDuration.q],
+    [NoteDuration.q, NoteDuration.h],
+    // 2 beats
+    [NoteDuration.h],
+    [NoteDuration["q."], NoteDuration["8th"]],
+    [NoteDuration["8th"], NoteDuration["q."]],
+    // 1 beat
+    [NoteDuration.q],
+    [NoteDuration["8th"], NoteDuration["8th"]],
+    [NoteDuration["8th."], NoteDuration["16th"]],
+    [NoteDuration["16th"], NoteDuration["8th."]],
+    [NoteDuration["8th"], NoteDuration["16th"], NoteDuration["16th"]],
+    [NoteDuration["16th"], NoteDuration["16th"], NoteDuration["8th"]],
+    [NoteDuration["16th"], NoteDuration["8th"], NoteDuration["16th"]],
 ];
 
 function generateRandomMelody(
-  level: Level<GameType.Melody>,
-  keySignature: KeySignature,
-  possibleNotes: Note[],
-  previousRound: MelodyRound
+    level: Level<GameType.Melody>,
+    keySignature: KeySignature,
+    possibleNotes: Note[],
+    previousRound: MelodyRound
 ): MelodyRound {
-  if (level.gameType !== GameType.Melody) throw Error("gameType incompatible");
-  const rangeNotes = getNotesInRange(level.noteRanges, possibleNotes, keySignature);
+    if (level.gameType !== GameType.Melody) throw Error("gameType incompatible");
+    const rangeNotes = getNotesInRange(level.noteRanges, possibleNotes, keySignature);
 
-  const slots = +level.timeSignature.split("/")[0];
-  const totalTime = slots * 4;
-  let fillTimeLeft = totalTime;
+    const slots = +level.timeSignature.split("/")[0];
+    const totalTime = slots * 4;
+    let fillTimeLeft = totalTime;
 
-  const durationList: NoteDuration[][] = [];
-  while (fillTimeLeft > 0) {
-    const randIdx = getRandInRange(0, melodyPatterns.length - 1);
+    const durationList: NoteDuration[][] = [];
+    while (fillTimeLeft > 0) {
+        const randIdx = getRandInRange(0, melodyPatterns.length - 1);
 
-    const pattern = melodyPatterns[randIdx];
-    const patternTime = pattern.reduce((acc, duration) => acc + noteDurationDict[duration], 0);
+        const pattern = melodyPatterns[randIdx];
+        const patternTime = pattern.reduce((acc, duration) => acc + noteDurationDict[duration], 0);
 
-    if (patternTime <= fillTimeLeft) {
-      durationList.push(pattern);
-      fillTimeLeft = totalTime - durationList.flat().reduce((acc, duration) => acc + noteDurationDict[duration], 0);
+        if (patternTime <= fillTimeLeft) {
+            durationList.push(pattern);
+            fillTimeLeft =
+                totalTime - durationList.flat().reduce((acc, duration) => acc + noteDurationDict[duration], 0);
+        }
     }
-  }
 
-  const melodyRound: MelodyRound = { attempts: [], values: [], durations: durationList };
-  durationList.forEach((pattern) => {
-    pattern.forEach((duration) => {
-      const value = pickNextRoundNote(rangeNotes);
-      melodyRound.values.push(value);
+    const melodyRound: MelodyRound = { attempts: [], values: [], durations: durationList };
+    durationList.forEach((pattern) => {
+        pattern.forEach((duration) => {
+            const value = pickNextRoundNote(rangeNotes);
+            melodyRound.values.push(value);
+        });
     });
-  });
 
-  // console.log(":::generateRandomMelody", { slots, durationList, melodyRound });
-  /// 4 slots -> [w]
-  /// 4 slots -> [h,h]
-  /// 4 slots -> [q,8,8,q,8,8]
+    // console.log(":::generateRandomMelody", JSON.stringify({ slots, durationList, melodyRound }, null, 2));
+    /// 4 slots -> [w]
+    /// 4 slots -> [h,h]
+    /// 4 slots -> [q,8,8,q,8,8]
 
-  return melodyRound;
+    return melodyRound;
 }
 
 function generateRandomRhythm(level: Level<GameType>, previousRound: RhythmRound) {
-  if (level.gameType !== GameType.Rhythm) throw Error("gameType incompatible");
+    if (level.gameType !== GameType.Rhythm) throw Error("gameType incompatible");
 }
 
 function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: Note[], keySignature: KeySignature) {
-  // console.log(":::getNotesInRange", { keyNotesInAllOctaves, ranges });
-  // const isFlatKSig = isFlatKeySignature(keySignature);
-  const noteSet = new Set<Note>();
+    // console.log(":::getNotesInRange", { keyNotesInAllOctaves, ranges });
+    // const isFlatKSig = isFlatKeySignature(keySignature);
+    const noteSet = new Set<Note>();
 
-  for (const range of ranges) {
-    let [rangeNoteLow, rangeNoteHigh] = range.split(":::") as [Note, Note];
-    let [rangeNoteIdxLow, rangeNoteIdxHigh] = [rangeNoteLow, rangeNoteHigh].map(getNoteIdx);
+    for (const range of ranges) {
+        let [rangeNoteLow, rangeNoteHigh] = range.split(":::") as [Note, Note];
+        let [rangeNoteIdxLow, rangeNoteIdxHigh] = [rangeNoteLow, rangeNoteHigh].map(getNoteIdx);
 
-    if (rangeNoteIdxLow > rangeNoteIdxHigh) {
-      [rangeNoteHigh, rangeNoteLow] = [rangeNoteLow, rangeNoteHigh];
-      [rangeNoteIdxHigh, rangeNoteIdxLow] = [rangeNoteIdxLow, rangeNoteIdxHigh];
+        if (rangeNoteIdxLow > rangeNoteIdxHigh) {
+            [rangeNoteHigh, rangeNoteLow] = [rangeNoteLow, rangeNoteHigh];
+            [rangeNoteIdxHigh, rangeNoteIdxLow] = [rangeNoteIdxLow, rangeNoteIdxHigh];
+        }
+
+        let loKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteLow);
+        while (loKeyIdx < 0) {
+            rangeNoteLow = addHalfSteps(rangeNoteLow, 1, keySignature);
+            loKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteLow);
+        }
+
+        let hiKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteHigh);
+        while (hiKeyIdx < 0) {
+            rangeNoteHigh = addHalfSteps(rangeNoteHigh, -1, keySignature);
+            hiKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteHigh);
+        }
+
+        rangeNoteIdxLow = getNoteIdx(rangeNoteLow);
+        rangeNoteIdxHigh = getNoteIdx(rangeNoteHigh);
+
+        keyNotesInAllOctaves.forEach((note) => {
+            if (getNoteIdx(note) >= rangeNoteIdxLow && getNoteIdx(note) <= rangeNoteIdxHigh) {
+                noteSet.add(note);
+            }
+        });
+
+        // console.log(":::getNotesInRange", {
+        //   range,
+        //   keyNotesInAllOctaves,
+        //   rangeNoteHigh,
+        //   rangeNoteIdxHigh,
+        //   rangeNoteLow,
+        //   rangeNoteIdxLow,
+        //   keySignature,
+        //   isFlatKSig,
+        // });
     }
 
-    let loKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteLow);
-    while (loKeyIdx < 0) {
-      rangeNoteLow = addHalfSteps(rangeNoteLow, 1, keySignature);
-      loKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteLow);
-    }
-
-    let hiKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteHigh);
-    while (hiKeyIdx < 0) {
-      rangeNoteHigh = addHalfSteps(rangeNoteHigh, -1, keySignature);
-      hiKeyIdx = keyNotesInAllOctaves.findIndex((n) => n === rangeNoteHigh);
-    }
-
-    rangeNoteIdxLow = getNoteIdx(rangeNoteLow);
-    rangeNoteIdxHigh = getNoteIdx(rangeNoteHigh);
-
-    keyNotesInAllOctaves.forEach((note) => {
-      if (getNoteIdx(note) >= rangeNoteIdxLow && getNoteIdx(note) <= rangeNoteIdxHigh) {
-        noteSet.add(note);
-      }
-    });
-
-    // console.log(":::getNotesInRange", {
-    //   range,
-    //   keyNotesInAllOctaves,
-    //   rangeNoteHigh,
-    //   rangeNoteIdxHigh,
-    //   rangeNoteLow,
-    //   rangeNoteIdxLow,
-    //   keySignature,
-    //   isFlatKSig,
-    // });
-  }
-
-  const result = Array.from(noteSet);
-  // console.log(":::getNotesInRange", { result, noteSet });
-  return result;
+    const result = Array.from(noteSet);
+    // console.log(":::getNotesInRange", { result, noteSet });
+    return result;
 }
 
 function pickNextRoundNote(rangeNotes: Note[]): Note {
-  const chosenIdx = getRandInRange(0, rangeNotes.length - 1);
-  const chosenNote = rangeNotes[chosenIdx];
-  // console.log(":::pickNextRoundNote", { rangeNotes, chosenIdx, chosenNote });
-  return chosenNote;
+    const chosenIdx = getRandInRange(0, rangeNotes.length - 1);
+    const chosenNote = rangeNotes[chosenIdx];
+    // console.log(":::pickNextRoundNote", { rangeNotes, chosenIdx, chosenNote });
+    return chosenNote;
+}
+
+export function getDrawNote2(
+    note: Note,
+    keySignature: KeySignature,
+    keys: Note[][], // [[lo, hi], [lo, hi]]
+    noteIdx?: number
+): { drawNote: string; drawAccident: string } {
+    // const result = {
+    //     drawNote: `${drawNoteName}${noBeQuadroAccident}/${octave}` as Note,
+    //     drawAccident: drawAccidents[drawNoteAccident as Accident],
+    // };
+
+    console.log({
+        note,
+        keySignature,
+        keys,
+        noteIdx,
+    });
+
+    return {
+        drawNote: `c/3` as Note,
+        drawAccident: "#",
+    };
 }
 
 export function getDrawNote(
-  note: Note,
-  keySignature: KeySignature,
-  keys: Note[],
-  noteIdx?: number
+    note: Note,
+    keySignature: KeySignature,
+    keys: Note[],
+    noteIdx?: number
 ): { drawNote: string; drawAccident: string } {
-  const noteMap = scaleTypeNoteSequences[ScaleType.Diatonic];
-  const keyNotes = noteMap[keySignature];
-  const { baseName, accident, octave, noteName } = explodeNote(note);
+    const noteMap = scaleTypeNoteSequences[ScaleType.Diatonic];
+    const keyNotes = noteMap[keySignature];
+    const { baseName, accident, octave, noteName } = explodeNote(note);
 
-  let drawNoteName = "";
-  let drawNoteAccident = "";
-  let result = { drawNote: note, drawAccident: "" };
-  let sameNoteBefore: Note | undefined;
-  // @TODO: consider past notes when assigning drawAccidents
-  for (const keyNote of keyNotes) {
-    const { baseName: keyNoteBaseName, accident: keyAccident } = explodeNote(`${keyNote}/${octave}` as Note);
+    console.log("getDrawNote:::", { note, keySignature, keys, noteIdx });
 
-    if (baseName == keyNoteBaseName) {
-      if (noteIdx !== undefined) {
-        const previousNotes = keys.filter((n, nIdx) => nIdx < noteIdx);
-        const reversedPreviousNotes = previousNotes.toReversed();
+    let drawNoteName = "";
+    let drawNoteAccident = "";
+    let result = { drawNote: note, drawAccident: "" };
+    let sameNoteBefore: Note | undefined;
+    // @TODO: consider past notes when assigning drawAccidents
+    for (const keyNote of keyNotes) {
+        const { baseName: keyNoteBaseName, accident: keyAccident } = explodeNote(`${keyNote}/${octave}` as Note);
 
-        sameNoteBefore = reversedPreviousNotes.find((n) => {
-          const { baseName: bn, noteName: nn, octave: nOct } = explodeNote(n);
-          return bn == baseName && octave == nOct;
-        });
+        if (baseName == keyNoteBaseName) {
+            if (noteIdx !== undefined) {
+                const previousNotes = keys.filter((n, nIdx) => nIdx < noteIdx);
+                const reversedPreviousNotes = previousNotes.toReversed();
 
-        // console.log({
-        //   note,
-        //   keyNoteBaseName,
-        //   keyAccident,
-        //   noteIdx,
-        //   previousNotes,
-        //   reversedPreviousNotes,
-        //   sameNoteBefore,
-        // });
-      }
+                sameNoteBefore = reversedPreviousNotes.find((n) => {
+                    const { baseName: bn, noteName: nn, octave: nOct } = explodeNote(n);
+                    return bn == baseName && octave == nOct;
+                });
 
-      drawNoteName = baseName;
+                // console.log({
+                //   note,
+                //   keyNoteBaseName,
+                //   keyAccident,
+                //   noteIdx,
+                //   previousNotes,
+                //   reversedPreviousNotes,
+                //   sameNoteBefore,
+                // });
+            }
 
-      if (keyAccident && accident) {
-        // draw without the accident
-      }
-      if (keyAccident && !accident) {
-        // draw bequadro
-        drawNoteAccident = "[]";
-      }
-      if ((!keyAccident && accident) || (!keyAccident && !accident)) {
-        // draw normal
-        drawNoteAccident = accident;
-      }
+            drawNoteName = baseName;
 
-      if (sameNoteBefore) {
-        const { noteName: beforeNoteName, accident: beforeAccident } = explodeNote(sameNoteBefore);
+            if (keyAccident && accident) {
+                // draw without the accident
+            }
+            if (keyAccident && !accident) {
+                // draw bequadro
+                drawNoteAccident = "[]";
+            }
+            if ((!keyAccident && accident) || (!keyAccident && !accident)) {
+                // draw normal
+                drawNoteAccident = accident;
+            }
 
-        if (beforeAccident === accident) {
-          drawNoteAccident = "";
+            if (sameNoteBefore) {
+                const { noteName: beforeNoteName, accident: beforeAccident } = explodeNote(sameNoteBefore);
+
+                if (beforeAccident === accident) {
+                    drawNoteAccident = "";
+                }
+                if (beforeAccident && !accident) {
+                    drawNoteAccident = "[]";
+                }
+                if (beforeAccident == "[]" && accident) {
+                    drawNoteAccident = accident;
+                }
+            }
+
+            const noBeQuadroAccident = drawNoteAccident === Accident["[]"] ? "" : drawNoteAccident;
+            result = {
+                drawNote: `${drawNoteName}${noBeQuadroAccident}/${octave}` as Note,
+                drawAccident: drawAccidents[drawNoteAccident as Accident],
+            };
         }
-        if (beforeAccident && !accident) {
-          drawNoteAccident = "[]";
-        }
-        if (beforeAccident == "[]" && accident) {
-          drawNoteAccident = accident;
-        }
-      }
-
-      const noBeQuadroAccident = drawNoteAccident === Accident["[]"] ? "" : drawNoteAccident;
-      result = {
-        drawNote: `${drawNoteName}${noBeQuadroAccident}/${octave}` as Note,
-        drawAccident: drawAccidents[drawNoteAccident as Accident],
-      };
     }
-  }
 
-  // console.log("getDrawNote:::", { note, result });
-  return result;
+    // console.log("getDrawNote:::", { note, result });
+    return result;
 }
 
 export function decideNextRound<Round>(
-  level: Level<GameType>,
-  keySignature: KeySignature,
-  possibleNotes: Note[],
-  previousRound?: Round
+    level: Level<GameType>,
+    keySignature: KeySignature,
+    possibleNotes: Note[],
+    previousRound?: Round
 ): Round {
-  if (!level) {
-    console.warn("decideNextRound ::: no level", { level });
-  }
+    if (!level) {
+        console.warn("decideNextRound ::: no level", { level });
+    }
 
-  switch (level?.gameType) {
-    case GameType.Single: {
-      const round = {
-        value: generateRandomNote(
-          level as Level<GameType.Single>,
-          keySignature,
-          possibleNotes,
-          previousRound as SingleNoteRound
-        ),
-        attempt: null,
-      } as SingleNoteRound;
-      // console.log(">>>>decideNextRound", { level, keySignature, previousRound, round });
-      return round as Round;
+    switch (level?.gameType) {
+        case GameType.Single: {
+            const round = {
+                value: generateRandomNote(
+                    level as Level<GameType.Single>,
+                    keySignature,
+                    possibleNotes,
+                    previousRound as SingleNoteRound
+                ),
+                attempt: null,
+            } as SingleNoteRound;
+            // console.log(">>>>decideNextRound", { level, keySignature, previousRound, round });
+            return round as Round;
+        }
+        case GameType.Chord: {
+            //   return generateRandomChord(level, previousRound as ChordRound),
+            return { value: ["c/4", "e/4", "g/4"], attempt: [] } as Round;
+        }
+        case GameType.Melody: {
+            const round = generateRandomMelody(
+                level as Level<GameType.Melody>,
+                keySignature,
+                possibleNotes,
+                previousRound as MelodyRound
+            );
+            // console.log(">>>>decideNextRound", { level, keySignature, previousRound, round });
+            return round as Round;
+        }
+        case GameType.Rhythm: {
+            // return generateRandomRhythm(level, previousRound as RhythmRound),
+            return [{ value: 12, attempt: null }] as Round;
+        }
     }
-    case GameType.Chord: {
-      //   return generateRandomChord(level, previousRound as ChordRound),
-      return { value: ["c/4", "e/4", "g/4"], attempt: [] } as Round;
-    }
-    case GameType.Melody: {
-      const round = generateRandomMelody(
-        level as Level<GameType.Melody>,
-        keySignature,
-        possibleNotes,
-        previousRound as MelodyRound
-      );
-      // console.log(">>>>decideNextRound", { level, keySignature, previousRound, round });
-      return round as Round;
-    }
-    case GameType.Rhythm: {
-      // return generateRandomRhythm(level, previousRound as RhythmRound),
-      return [{ value: 12, attempt: null }] as Round;
-    }
-  }
 }
 /*********
  *

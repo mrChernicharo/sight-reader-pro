@@ -3,7 +3,7 @@ import { RangeComponent } from "./Range";
 import { MelodyComponent } from "./Melody";
 
 export const SheetMusic = {
-  SingleNote: SingleNoteComponent,
-  Range: RangeComponent,
-  Melody: MelodyComponent,
+    SingleNote: SingleNoteComponent,
+    Melody: MelodyComponent,
+    RangeDisplay: RangeComponent,
 };

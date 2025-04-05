@@ -1,19 +1,23 @@
 import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident } from "./enums";
 import { GameScore, Level, LevelScore, MelodyRound, Note, Round, SingleNoteRound, WinConditions } from "./types";
-
-const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
-
 import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES } from "./keySignature";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
 import { RelativePathString } from "expo-router";
 
-export function getPreviousPage(prevPage: string, id: string) {
-    return prevPage === "/practice" ? "/practice" : (`${prevPage}/${id}` as RelativePathString);
-}
+const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+export const randomUID = (length = 12) =>
+    Array(length)
+        .fill(0)
+        .map((item) => ID_CHARS.split("")[Math.round(Math.random() * ID_CHARS.length)])
+        .join("");
 
 export async function wait(ms = 1000) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function getPreviousPage(prevPage: string, id: string) {
+    return prevPage === "/practice" ? "/practice" : (`${prevPage}/${id}` as RelativePathString);
 }
 
 function isNatural(note: Note): boolean {
@@ -171,12 +175,6 @@ export function buildPitchIndexDicts() {
 }
 
 export const { PITCH_INDICES, NOTE_INDICES } = buildPitchIndexDicts();
-
-export const randomUID = (length = 12) =>
-    Array(length)
-        .fill(0)
-        .map((item) => ID_CHARS.split("")[Math.round(Math.random() * ID_CHARS.length)])
-        .join("");
 
 export function padZero(n: number) {
     return n > 9 ? String(n) : `0${n}`;

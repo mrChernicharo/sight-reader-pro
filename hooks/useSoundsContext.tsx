@@ -139,13 +139,15 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         source.buffer = buffer;
 
         const envelope = audioContext.createGain();
-
+        // console.log("gain", envelope.gain);
         source.connect(envelope);
         envelope.connect(audioContext.destination);
 
         envelope.gain.setValueAtTime(0.001, tNow);
-        envelope.gain.exponentialRampToValueAtTime(1, tNow + 0.01);
 
+        envelope.gain.exponentialRampToValueAtTime(9, tNow + 0.02);
+        // envelope.gain.exponentialRampToValueAtTime(12, tNow + 0.01);
+        // envelope.gain.exponentialRampToValueAtTime(6, tNow + 0.01);
         source.start(tNow);
 
         playingSoundsRef.current[originalNote] = { source, envelope, startedAt: tNow };
