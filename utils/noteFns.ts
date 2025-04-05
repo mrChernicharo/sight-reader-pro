@@ -261,14 +261,15 @@ export function getDrawNote2(
 export function getDrawNote(
     note: Note,
     keySignature: KeySignature,
-    keys: Note[],
-    noteIdx?: number
+    roundKeys: Note[],
+    noteIdx?: number // <- melody game only
 ): { drawNote: string; drawAccident: string } {
     const noteMap = scaleTypeNoteSequences[ScaleType.Diatonic];
     const keyNotes = noteMap[keySignature];
     const { baseName, accident, octave, noteName } = explodeNote(note);
+    const isMelodyGame = noteIdx !== undefined;
 
-    console.log("getDrawNote:::", { note, keySignature, keys, noteIdx });
+    console.log("getDrawNote:::", { note, keySignature, roundKeys, noteIdx, isMelodyGame });
 
     let drawNoteName = "";
     let drawNoteAccident = "";
@@ -279,8 +280,8 @@ export function getDrawNote(
         const { baseName: keyNoteBaseName, accident: keyAccident } = explodeNote(`${keyNote}/${octave}` as Note);
 
         if (baseName == keyNoteBaseName) {
-            if (noteIdx !== undefined) {
-                const previousNotes = keys.filter((n, nIdx) => nIdx < noteIdx);
+            if (isMelodyGame) {
+                const previousNotes = roundKeys.filter((n, nIdx) => nIdx < noteIdx);
                 const reversedPreviousNotes = previousNotes.toReversed();
 
                 sameNoteBefore = reversedPreviousNotes.find((n) => {
@@ -288,15 +289,15 @@ export function getDrawNote(
                     return bn == baseName && octave == nOct;
                 });
 
-                // console.log({
-                //   note,
-                //   keyNoteBaseName,
-                //   keyAccident,
-                //   noteIdx,
-                //   previousNotes,
-                //   reversedPreviousNotes,
-                //   sameNoteBefore,
-                // });
+                console.log({
+                    //   note,
+                    //   keyNoteBaseName,
+                    //   keyAccident,
+                    //   noteIdx,
+                    //   previousNotes,
+                    //   reversedPreviousNotes,
+                    sameNoteBefore,
+                });
             }
 
             drawNoteName = baseName;

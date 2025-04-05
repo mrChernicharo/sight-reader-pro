@@ -42,6 +42,14 @@ export default function Home() {
                             textStyle={{ color: Colors[theme].text }}
                         />
                     </Link>
+
+                    <Link style={s.link} href="/init/01.lang.screen">
+                        <AppButton
+                            text={t("routes.init")}
+                            style={[s.btn, { borderColor: Colors[theme].text }]}
+                            textStyle={{ color: Colors[theme].text }}
+                        />
+                    </Link>
                 </AppView>
             </FadeIn>
 

@@ -42,8 +42,27 @@ translations
 ---
 
 level-selection better design
-note-drawing and accidents
-gainNode volume
+note-drawing and accidents (looks ✅)
+gainNode volume ✅
+
+---
+
+grab initial info on first app init
+
+-   select language
+-   como devemos te chamar?
+-   vc sabe ler partitura?
+    -   sim, leio profissionalmente
+    -   sim, leio razoavelmente bem
+    -   mais ou menos, leio mal mas sei
+    -   não, mas conheço mais ou menos como funciona
+    -   não, não faço a menor ideia
+
+tutorials
+
+-   how to read music score
+    -   basics
+    -   accidents
 
 ---
 
