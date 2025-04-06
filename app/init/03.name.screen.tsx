@@ -16,7 +16,7 @@ export default function NameScreen() {
     const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
     const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
-    const { username, setUsername } = useAppStore();
+    const { username, setUsername, setInitTourCompleted } = useAppStore();
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
@@ -53,7 +53,10 @@ export default function NameScreen() {
                     text={t("routes.next")}
                     style={[s.btn, { borderColor: Colors[theme].text }]}
                     textStyle={{ color: "white" }}
-                    onPress={() => router.push({ pathname: "/" })}
+                    onPress={async () => {
+                        await setInitTourCompleted(true);
+                        router.push({ pathname: "/" });
+                    }}
                 />
             </AppView>
         </SafeAreaView>

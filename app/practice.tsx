@@ -17,7 +17,7 @@ import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { Level, LevelId } from "@/utils/types";
 import { router } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
-import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
+import { Button, StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -294,6 +294,13 @@ export default function PracticeScreen() {
                         textStyle={{ color: "white", fontSize: 24 }}
                         activeOpacity={0.7}
                     />
+                    {/* <Button
+                        title={t("practice.start")}
+                        onPress={startPracticeGame}
+                        // ={{ width: 300, height: 56 }}
+                        // textStyle={{ color: "white", fontSize: 24 }}
+                        // activeOpacity={0.7}
+                    /> */}
                 </AppView>
             </ScrollView>
         </SafeAreaView>
