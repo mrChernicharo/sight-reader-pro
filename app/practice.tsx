@@ -46,7 +46,7 @@ export default function PracticeScreen() {
     const [keySigIndex, setKeySigIndex] = useState(7);
     const [accident, setAccident] = useState(LevelAccidentType.None);
     const [scale, setScale] = useState(ScaleType.Chromatic);
-    const [rangeIdx, setRangeIdx] = useState({ low: 13, high: 16 });
+    const [rangeIdx, setRangeIdx] = useState({ low: 13, high: 25 });
 
     const clef = isBassClef ? Clef.Bass : Clef.Treble;
     const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;

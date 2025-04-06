@@ -103,14 +103,14 @@ interface PlayingSound {
 interface SoundContext {
     ready: boolean;
     playPianoNote(note: Note): Promise<void>;
-    releasePianoNote(note: Note): Promise<void>;
+    releasePianoNote(note: Note): void;
     playSoundEfx(effect: SoundEffect): Promise<void>;
 }
 
 const initialValues: SoundContext = {
     ready: false,
     playPianoNote: async () => {},
-    releasePianoNote: async () => {},
+    releasePianoNote: () => {},
     playSoundEfx: async () => {},
 };
 
@@ -124,7 +124,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
     const [ready, setReady] = useState(false);
 
     async function playPianoNote(originalNote: Note) {
-        await releasePianoNote(originalNote);
+        releasePianoNote(originalNote);
 
         // console.log("<SoundContext> playPianoNote", originalNote);
         const audioContext = audioContextRef.current;
@@ -145,15 +145,15 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
 
         envelope.gain.setValueAtTime(0.001, tNow);
 
-        envelope.gain.exponentialRampToValueAtTime(9, tNow + 0.02);
+        // envelope.gain.exponentialRampToValueAtTime(9, tNow + 0.02);
         // envelope.gain.exponentialRampToValueAtTime(12, tNow + 0.01);
-        // envelope.gain.exponentialRampToValueAtTime(6, tNow + 0.01);
+        envelope.gain.exponentialRampToValueAtTime(6, tNow + 0.02);
         source.start(tNow);
 
         playingSoundsRef.current[originalNote] = { source, envelope, startedAt: tNow };
     }
 
-    async function releasePianoNote(originalNote: Note) {
+    function releasePianoNote(originalNote: Note) {
         // console.log("<SoundContext> releasePianoNote", originalNote);
         const audioContext = audioContextRef.current!;
         const sound = playingSoundsRef.current[originalNote];
