@@ -11,10 +11,10 @@ import AppRoutes from "./_app.routes";
 export default function RootLayout() {
     const _hydrated = useAppStore((state) => state._hydrated);
     const currentGame = useAppStore((state) => state.currentGame);
-    const language = useAppStore((state) => state.language);
-    const knowledge = useAppStore((state) => state.knowledge);
-    const username = useAppStore((state) => state.username);
-    const initTourCompleted = useAppStore((state) => state.initTourCompleted);
+    // const language = useAppStore((state) => state.language);
+    // const knowledge = useAppStore((state) => state.knowledge);
+    // const username = useAppStore((state) => state.username);
+    const initTourCompleted = useAppStore((state) => state.completedTours.init);
     const endGame = useAppStore((state) => state.endGame);
     const path = usePathname();
 

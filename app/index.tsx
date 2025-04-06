@@ -16,15 +16,16 @@ export default function Home() {
     const theme = useColorScheme() ?? "light";
     const { t } = useTranslation();
     const username = useAppStore((state) => state.username);
-    const homeTourCompleted = useAppStore((state) => state.homeTourCompleted);
-    const setHomeTourCompleted = useAppStore((state) => state.setHomeTourCompleted);
+    const homeTourCompleted = useAppStore((state) => state.completedTours.home);
+    const setTourCompleted = useAppStore((state) => state.setTourCompleted);
 
     const [ShowWelcome, setShowWelcome] = useState(false);
     const [ShowCTA, setShowCTA] = useState(false);
 
     useEffect(() => {
         if (!homeTourCompleted) {
-            setTimeout(() => setShowWelcome(true), 400);
+            // setTimeout(() => setShowWelcome(true), 400);
+            setShowWelcome(true);
         }
     }, [homeTourCompleted]);
 
@@ -91,20 +92,19 @@ export default function Home() {
 
             <Tooltip
                 isVisible={ShowCTA}
+                placement="top"
                 content={
                     <AppView>
                         <AppText>Clique aqui para jogar</AppText>
                     </AppView>
                 }
-                placement="top"
-                onClose={undefined}
             >
                 <FadeIn y={50} x={0} delay={500}>
                     <Link
                         asChild
                         href="/level-selection"
                         onPress={() => {
-                            setHomeTourCompleted(true);
+                            setTourCompleted("home", true);
                         }}
                     >
                         <AppButton

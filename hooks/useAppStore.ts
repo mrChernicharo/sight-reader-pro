@@ -6,6 +6,11 @@ import { Platform } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
+interface CompletedTours {
+    init: boolean;
+    home: boolean;
+}
+
 export interface AppState {
     username: string;
     language: null | "en" | "pt-BR";
@@ -14,8 +19,7 @@ export interface AppState {
     globalVolume: number;
     games: Game<GameType>[];
     currentGame: CurrentGame<GameType> | null;
-    initTourCompleted: boolean;
-    homeTourCompleted: boolean;
+    completedTours: CompletedTours;
     _hydrated: boolean;
 }
 
@@ -25,8 +29,9 @@ export interface AppActions {
     setLanguage: (lang: "en" | "pt-BR") => Promise<void>;
     setKnowledge: (knowledge: Knowledge) => Promise<void>;
 
-    setInitTourCompleted: (initTourCompleted: boolean) => Promise<void>;
-    setHomeTourCompleted: (homeTourCompleted: boolean) => Promise<void>;
+    // setInitTourCompleted: (initTourCompleted: boolean) => Promise<void>;
+    // setHomeTourCompleted: (homeTourCompleted: boolean) => Promise<void>;
+    setTourCompleted: (tourName: string, completed: boolean) => Promise<void>;
 
     saveGameRecord: (game: Game<GameType>) => Promise<void>;
     startNewGame: (newGame: CurrentGame<GameType>) => Promise<void>;
@@ -47,25 +52,28 @@ export const useAppStore = create<AppState & AppActions>()(
                 username: "",
                 language: null,
                 knowledge: null,
-                initTourCompleted: false,
-                homeTourCompleted: false,
-                difficulty: Difficulty.Normal,
                 globalVolume: 1,
                 games: [],
                 currentGame: null,
+                completedTours: {
+                    init: false,
+                    home: false,
+                },
+                difficulty: Difficulty.Normal,
                 _hydrated: false,
 
                 _resetStore: async () =>
                     set({
                         username: "",
                         language: null,
-                        // knowledge: null,
-                        // initTourCompleted: false,
-                        // homeTourCompleted: false,
-                        difficulty: Difficulty.Normal,
                         globalVolume: 1,
                         games: [],
                         currentGame: null,
+                        // completedTours: {
+                        //     init: false,
+                        //     home: false,
+                        // },
+                        difficulty: Difficulty.Normal,
                     }),
                 setHydrated: async (hydrated: boolean) => set({ _hydrated: hydrated }),
 
@@ -75,8 +83,8 @@ export const useAppStore = create<AppState & AppActions>()(
                 setKnowledge: async (knowledge: Knowledge) => set(() => ({ knowledge: knowledge })),
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
 
-                setInitTourCompleted: async (initTourCompleted: boolean) => set(() => ({ initTourCompleted })),
-                setHomeTourCompleted: async (homeTourCompleted: boolean) => set(() => ({ homeTourCompleted })),
+                setTourCompleted: async (tourName: string, completed: boolean) =>
+                    set((state) => ({ ...state, completedTours: { ...state.completedTours, [tourName]: completed } })),
 
                 saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),
 
