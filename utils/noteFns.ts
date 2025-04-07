@@ -60,7 +60,7 @@ export function getGamePitchesInAllOctaves(
     return result as Note[];
 }
 
-export function getPossibleNotesInLevel(level: Level<GameType>, keySignature: KeySignature) {
+export function getPossibleNotesInLevel(level: Level<GameType>, keySignature = KeySignature.C) {
     let possibleNotes: Note[];
     if (!level) {
         console.warn("getPossibleNotesInLevel :::", { level, keySignature });
@@ -269,7 +269,7 @@ export function getDrawNote(
     const { baseName, accident, octave, noteName } = explodeNote(note);
     const isMelodyGame = noteIdx !== undefined;
 
-    console.log("getDrawNote:::", { note, keySignature, roundKeys, noteIdx, isMelodyGame });
+    // console.log("getDrawNote:::", { note, keySignature, roundKeys, noteIdx, isMelodyGame });
 
     let drawNoteName = "";
     let drawNoteAccident = "";
@@ -287,16 +287,6 @@ export function getDrawNote(
                 sameNoteBefore = reversedPreviousNotes.find((n) => {
                     const { baseName: bn, noteName: nn, octave: nOct } = explodeNote(n);
                     return bn == baseName && octave == nOct;
-                });
-
-                console.log({
-                    //   note,
-                    //   keyNoteBaseName,
-                    //   keyAccident,
-                    //   noteIdx,
-                    //   previousNotes,
-                    //   reversedPreviousNotes,
-                    sameNoteBefore,
                 });
             }
 

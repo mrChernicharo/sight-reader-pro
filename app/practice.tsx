@@ -10,13 +10,13 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
 import { Clef, GameType, KeySignature, LevelAccidentType, ScaleType, TimeSignature, WinRank } from "@/utils/enums";
-import { explodeNote, isFlatKeySignature } from "@/utils/helperFns";
+import { explodeNote, isFlatKeySignature, wait } from "@/utils/helperFns";
 import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
 import { ALL_LEVELS } from "@/utils/levels";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { Level, LevelId } from "@/utils/types";
 import { router } from "expo-router";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { ScrollView } from "react-native-gesture-handler";
@@ -78,7 +78,7 @@ export default function PracticeScreen() {
         });
     }, [clef, hasKey, keySignature, accident]);
 
-    // const rangeNotes = allNotes.filter((_, idx) => rangeIdx.low < idx && idx < rangeIdx.high);
+    const rangeNotes = allNotes.filter((_, idx) => rangeIdx.low < idx && idx < rangeIdx.high);
 
     const handleValueChange = useCallback(
         (low: number, high: number) => {
@@ -87,27 +87,31 @@ export default function PracticeScreen() {
         [setRangeIdx]
     );
 
+    // CREATE A LEVEL IN MEMORY, THEN REFERENCE IT WITHIN GAME COMPONENT
     const startPracticeGame = useCallback(async () => {
         console.log({ clef, hasKey, accident, keySignature });
         const levelId: LevelId = `${clef}-practice`;
-        const keySig = hasKey
-            ? keySignature
-            : [LevelAccidentType.b].includes(accident)
-            ? KeySignature.F
-            : KeySignature.C;
+        // const keySig = hasKey
+        //     ? keySignature
+        //     : [LevelAccidentType.b].includes(accident)
+        //     ? KeySignature.F
+        //     : KeySignature.C;
 
-        // const practiceLevelSingle = {
-        //     id: levelId,
-        //     name: "Practice",
-        //     clef,
-        //     description: "",
-        //     durationInSeconds: 600,
-        //     gameType: GameType.Single,
-        //     winConditions: { bronze: 20, silver: 25, gold: 30 },
-        //     noteRanges: [`${allNotes[rangeIdx.low]}:::${allNotes[rangeIdx.high]}`],
-        //     hasKey,
-        //     ...(hasKey ? { keySignatures: [keySig], scaleType: scale } : { accident }),
-        // } as Level<GameType.Single>;
+        const noteRanges = [`${allNotes[rangeIdx.low]}:::${allNotes[rangeIdx.high]}`];
+        // console.log("allNotes::::", allNotes, allNotes[rangeIdx.low], allNotes[rangeIdx.high]);
+
+        const practiceLevelSingle = {
+            id: levelId,
+            name: "Practice",
+            clef,
+            description: "",
+            durationInSeconds: 600,
+            gameType: GameType.Single,
+            winConditions: { bronze: 20, silver: 25, gold: 30 },
+            noteRanges,
+            hasKey,
+            ...(hasKey ? { keySignatures: [keySignature], scaleType: scale } : { accident }),
+        } as Level<GameType.Single>;
 
         const practiceLevelMelody = {
             id: levelId,
@@ -116,35 +120,29 @@ export default function PracticeScreen() {
             description: "",
             gameType: GameType.Melody,
             timeSignature: TimeSignature["4/4"],
-            noteRanges: [`${allNotes[rangeIdx.low]}:::${allNotes[rangeIdx.high]}`],
+            noteRanges,
             durationInSeconds: 600,
             winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
             hasKey: false,
             accident: LevelAccidentType["#"],
         } as Level<GameType.Melody>;
 
+        console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
+
         // !important!
-        ALL_LEVELS.push(practiceLevelMelody);
+        ALL_LEVELS.push(practiceLevelSingle);
+
+        await wait(200);
 
         router.push({
             pathname: "/game-level/[id]",
-            params: {
-                id: levelId,
-                clef,
-                keySignature: keySig,
-                previousPage: "/practice",
-            },
+            params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
+    }, [clef, hasKey, accident, rangeIdx.low, rangeIdx.high, keySignatures, keySignature, allNotes, ALL_LEVELS]);
 
-        // console.log(
-        //   ":::: ALL_LEVELS",
-        //   ALL_LEVELS.map((lvl) => lvl.name)
-        // );
-    }, [clef, hasKey, accident, rangeIdx, keySignatures, keySignature, allNotes, ALL_LEVELS]);
-
-    // useEffect(() => {
-    //   console.log({ rangeIdx });
-    // }, [rangeIdx]);
+    useEffect(() => {
+        console.log({ rangeIdx });
+    }, [rangeIdx]);
 
     // useEffect(() => {
     //   console.log("---", { clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes });

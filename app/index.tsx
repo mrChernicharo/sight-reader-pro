@@ -24,7 +24,6 @@ export default function Home() {
 
     useEffect(() => {
         if (!homeTourCompleted) {
-            // setTimeout(() => setShowWelcome(true), 400);
             setShowWelcome(true);
         }
     }, [homeTourCompleted]);

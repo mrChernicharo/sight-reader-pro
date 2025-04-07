@@ -2,11 +2,15 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
 import { SoundContextProvider } from "@/hooks/useSoundsContext";
-import { Redirect, router, usePathname } from "expo-router";
+import { CurrentGame, GameScreenParams, Round } from "@/utils/types";
+import { router, useLocalSearchParams, usePathname } from "expo-router";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
+import { GameType, GameState } from "@/utils/enums";
+import { getLevel } from "@/utils/levels";
+import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 
 export default function RootLayout() {
     const _hydrated = useAppStore((state) => state._hydrated);
@@ -16,17 +20,37 @@ export default function RootLayout() {
     // const username = useAppStore((state) => state.username);
     const initTourCompleted = useAppStore((state) => state.completedTours.init);
     const endGame = useAppStore((state) => state.endGame);
+    const startNewGame = useAppStore((state) => state.startNewGame);
     const path = usePathname();
+    const { id, keySignature, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
     // ensure there's no ongoing game on app startup
     // store state is always persisted, so games can be wrongly persisted if you close the app during a game
     useEffect(() => {
         if (!_hydrated) endGame();
+
+        router.replace("/practice");
+        // router.replace("/game-level/practice");
+        // const level = getLevel("practice");
+        // const possibleNotes = getPossibleNotesInLevel(level, keySignature);
+        // const firstRound = decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3";
+        // const gameInfo: Partial<CurrentGame<GameType.Single>> = {
+        //     levelId: id,
+        //     timestamp: Date.now(),
+        //     type: GameType.Single,
+        //     rounds: [{ value: firstRound, attempt: null }],
+        //     state: GameState.Idle,
+        // };
+        // startNewGame({ ...level, ...gameInfo } as CurrentGame<GameType.Single>);
     }, [_hydrated]);
 
     useEffect(() => {
-        console.log({ path, ...(currentGame && { currentGame: currentGame.id }) });
+        console.log({ path, ...(currentGame && { currentGame: currentGame }) });
     }, [currentGame?.id, path]);
+
+    useEffect(() => {
+        console.log({ id, keySignature, previousPage });
+    }, [id, keySignature, previousPage]);
 
     useEffect(() => {
         if (!initTourCompleted) {
@@ -34,9 +58,7 @@ export default function RootLayout() {
         }
     }, [initTourCompleted]);
 
-    useEffect(() => {
-        router.replace("/level-selection");
-    }, []);
+    useEffect(() => {}, []);
 
     if (!_hydrated)
         return (

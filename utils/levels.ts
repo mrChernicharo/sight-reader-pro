@@ -512,9 +512,9 @@ export const SECTIONED_LEVELS: SectionedLevel[] = [
 ];
 
 export function getLevel(levelId: string) {
-    // if (!id) return
-    // if (id.endsWith('practice')) return
-    return ALL_LEVELS.find((lvl) => lvl.id === levelId)!;
+    const level = ALL_LEVELS.find((lvl) => lvl.id === levelId)!;
+    console.log("<getLevel>", { level, levelId });
+    return level;
 }
 
 export function assembleLevelInfo(clef: Clef, levelInfo: Partial<Level<GameType>>[]): Level<GameType>[] {

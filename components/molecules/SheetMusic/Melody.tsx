@@ -50,7 +50,7 @@ export function MelodyComponent(props: MusicNoteRangeProps) {
     const { clef, keys, durations, keySignature, timeSignature, roundResults } = props;
     const MARGIN = width * 0.06;
 
-    console.log("props ::: MelodyComponent", props);
+    // console.log("props ::: MelodyComponent", props);
 
     const svgResult = runVexFlowRangeCode(
         width - MARGIN * 2,

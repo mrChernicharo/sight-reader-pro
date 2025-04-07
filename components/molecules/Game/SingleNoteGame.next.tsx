@@ -90,19 +90,14 @@ export function SingleNoteGameComponent() {
     };
 
     useEffect(() => {
+        const firstRound = decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3";
         const gameInfo: Partial<CurrentGame<GameType.Single>> = {
             levelId: id,
             timestamp: Date.now(),
             type: GameType.Single,
-            rounds: [
-                {
-                    value: decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3",
-                    attempt: null,
-                },
-            ],
+            rounds: [{ value: firstRound, attempt: null }],
             state: GameState.Idle,
         };
-
         startNewGame({ ...level, ...gameInfo } as CurrentGame<GameType.Single>);
 
         return () => {

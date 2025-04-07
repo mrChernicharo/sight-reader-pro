@@ -9,6 +9,9 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 interface CompletedTours {
     init: boolean;
     home: boolean;
+    levelSelection: boolean;
+    game: boolean;
+    practice: boolean;
 }
 
 export interface AppState {
@@ -29,9 +32,7 @@ export interface AppActions {
     setLanguage: (lang: "en" | "pt-BR") => Promise<void>;
     setKnowledge: (knowledge: Knowledge) => Promise<void>;
 
-    // setInitTourCompleted: (initTourCompleted: boolean) => Promise<void>;
-    // setHomeTourCompleted: (homeTourCompleted: boolean) => Promise<void>;
-    setTourCompleted: (tourName: string, completed: boolean) => Promise<void>;
+    setTourCompleted: (tourName: keyof CompletedTours, completed: boolean) => Promise<void>;
 
     saveGameRecord: (game: Game<GameType>) => Promise<void>;
     startNewGame: (newGame: CurrentGame<GameType>) => Promise<void>;
@@ -58,6 +59,9 @@ export const useAppStore = create<AppState & AppActions>()(
                 completedTours: {
                     init: false,
                     home: false,
+                    levelSelection: false,
+                    game: false,
+                    practice: false,
                 },
                 difficulty: Difficulty.Normal,
                 _hydrated: false,
@@ -72,6 +76,9 @@ export const useAppStore = create<AppState & AppActions>()(
                         // completedTours: {
                         //     init: false,
                         //     home: false,
+                        //     levelSelection: false,
+                        //     game: false,
+                        //     practice: false,
                         // },
                         difficulty: Difficulty.Normal,
                     }),
@@ -83,13 +90,15 @@ export const useAppStore = create<AppState & AppActions>()(
                 setKnowledge: async (knowledge: Knowledge) => set(() => ({ knowledge: knowledge })),
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
 
-                setTourCompleted: async (tourName: string, completed: boolean) =>
+                setTourCompleted: async (tourName: keyof CompletedTours, completed: boolean) =>
                     set((state) => ({ ...state, completedTours: { ...state.completedTours, [tourName]: completed } })),
 
                 saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),
 
                 startNewGame: async (newGame: CurrentGame<GameType>) => {
-                    // console.log("START NEW GAME", newGame);
+                    // prettier-ignore
+                    console.log("START NEW GAME:::", newGame, "ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
+
                     set({ currentGame: newGame });
                 },
                 endGame: async (previousPage?: string) => {
@@ -98,11 +107,9 @@ export const useAppStore = create<AppState & AppActions>()(
                     // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
                     if (previousPage === "/practice") {
                         setTimeout(() => {
+                            // prettier-ignore
+                            console.log("END GAME:::ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
                             ALL_LEVELS.pop();
-                            // console.log(
-                            //   "ALL LEVELS ::::",
-                            //   ALL_LEVELS.map((lvl) => lvl.name)
-                            // );
                         }, 1000);
                     }
                 },
