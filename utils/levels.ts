@@ -512,8 +512,8 @@ export const SECTIONED_LEVELS: SectionedLevel[] = [
 ];
 
 export function getLevel(levelId: string) {
+    // console.log("<getLevel>", { level, levelId });
     const level = ALL_LEVELS.find((lvl) => lvl.id === levelId)!;
-    console.log("<getLevel>", { level, levelId });
     return level;
 }
 

@@ -9,15 +9,15 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
-import { Clef, GameType, KeySignature, LevelAccidentType, ScaleType, TimeSignature, WinRank } from "@/utils/enums";
+import { Clef, GameType, LevelAccidentType, ScaleType, TimeSignature, WinRank } from "@/utils/enums";
 import { explodeNote, isFlatKeySignature, wait } from "@/utils/helperFns";
 import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
 import { ALL_LEVELS } from "@/utils/levels";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { Level, LevelId } from "@/utils/types";
 import { router } from "expo-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button, StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
+import { useCallback, useMemo, useState } from "react";
+import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -89,7 +89,7 @@ export default function PracticeScreen() {
 
     // CREATE A LEVEL IN MEMORY, THEN REFERENCE IT WITHIN GAME COMPONENT
     const startPracticeGame = useCallback(async () => {
-        console.log({ clef, hasKey, accident, keySignature });
+        // console.log({ clef, hasKey, accident, keySignature });
         const levelId: LevelId = `${clef}-practice`;
         // const keySig = hasKey
         //     ? keySignature
@@ -127,7 +127,7 @@ export default function PracticeScreen() {
             accident: LevelAccidentType["#"],
         } as Level<GameType.Melody>;
 
-        console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
+        // console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
 
         // !important!
         ALL_LEVELS.push(practiceLevelSingle);
@@ -140,9 +140,9 @@ export default function PracticeScreen() {
         });
     }, [clef, hasKey, accident, rangeIdx.low, rangeIdx.high, keySignatures, keySignature, allNotes, ALL_LEVELS]);
 
-    useEffect(() => {
-        console.log({ rangeIdx });
-    }, [rangeIdx]);
+    // useEffect(() => {
+    //     console.log({ rangeIdx });
+    // }, [rangeIdx]);
 
     // useEffect(() => {
     //   console.log("---", { clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes });

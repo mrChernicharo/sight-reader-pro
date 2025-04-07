@@ -14,6 +14,9 @@ import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import Tooltip from "react-native-walkthrough-tooltip";
+import { AppText } from "@/components/atoms/AppText";
+import AppButton from "@/components/atoms/AppButton";
 
 const DELAY = 60;
 
@@ -89,6 +92,14 @@ export function SingleNoteGameComponent() {
         endGame(String(prevPage));
     };
 
+    const hasCompletedTour = useAppStore((state) => state.completedTours.game);
+    const setTourCompleted = useAppStore((state) => state.setTourCompleted);
+
+    const [tourStep, setTourStep] = useState(0);
+
+    useEffect(() => {}, []);
+
+    // start game
     useEffect(() => {
         const firstRound = decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3";
         const gameInfo: Partial<CurrentGame<GameType.Single>> = {
@@ -116,9 +127,76 @@ export function SingleNoteGameComponent() {
                 <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />
             </AppView>
 
-            {currNote && <SingleNoteGameStage gameState={gameState} noteProps={noteProps} />}
+            <Tooltip
+                isVisible={tourStep == 0}
+                placement="center"
+                content={
+                    <AppView transparentBG style={{ alignItems: "center" }}>
+                        <AppText>Essa é a tela principal</AppText>
+                        <AppText>É aqui que o jogo acontece</AppText>
+                        <AppButton
+                            text="OK"
+                            onPress={() => {
+                                setTourStep(1);
+                            }}
+                        />
+                    </AppView>
+                }
+            />
+            <Tooltip
+                isVisible={tourStep == 3}
+                placement="center"
+                content={
+                    <AppView transparentBG style={{ alignItems: "center" }}>
+                        <AppText>Toque o máximo de notas que puder</AppText>
+                        <AppText>Antes que o tempo acabe!</AppText>
+                        <AppText>Acumule pontos e avance pelas fases</AppText>
+                        <AppText type="mdSemiBold">Bora começar?</AppText>
+                        <AppButton
+                            text="Vamos nessa!"
+                            onPress={() => {
+                                setTourStep(-1);
+                                // setTourCompleted("game", true)
+                            }}
+                        />
+                    </AppView>
+                }
+            />
 
-            <Piano keySignature={keySignature} onKeyPressed={onPianoKeyPress} onKeyReleased={onPianoKeyReleased} />
+            {currNote && (
+                <Tooltip
+                    isVisible={tourStep == 1}
+                    placement="bottom"
+                    tooltipStyle={{ zIndex: 2000, transform: [{ translateY: 0 }] }}
+                    contentStyle={{ height: 132 }}
+                    content={
+                        <AppView transparentBG style={{ alignItems: "center" }}>
+                            <AppText>
+                                Essa é a Pauta musical. Notas musicais vão aparecer aqui. Por exemplo, temos uma nota{" "}
+                                <AppText type="mdSemiBold">{explodeNote(currNote).noteName.toUpperCase()}</AppText>
+                            </AppText>
+                            <AppButton text="OK" onPress={() => setTourStep(2)} />
+                        </AppView>
+                    }
+                >
+                    <SingleNoteGameStage gameState={gameState} noteProps={noteProps} />
+                </Tooltip>
+            )}
+
+            <Tooltip
+                isVisible={tourStep == 2}
+                placement="top"
+                tooltipStyle={{ transform: [{ translateY: -220 }] }}
+                contentStyle={{ height: 112 }}
+                content={
+                    <AppView transparentBG style={{ alignItems: "center" }}>
+                        <AppText>O seu trabalho é tocar no Piano as notas que forem aparecerendo na Pauta</AppText>
+                        <AppButton text="OK" onPress={() => setTourStep(3)} />
+                    </AppView>
+                }
+            >
+                <Piano keySignature={keySignature} onKeyPressed={onPianoKeyPress} onKeyReleased={onPianoKeyReleased} />
+            </Tooltip>
         </SafeAreaView>
     );
 }
