@@ -20,6 +20,7 @@ export interface AppState {
     difficulty: Difficulty;
     knowledge: Knowledge | null;
     globalVolume: number;
+    showPianoNoteNames: boolean;
     games: Game<GameType>[];
     currentGame: CurrentGame<GameType> | null;
     completedTours: CompletedTours;
@@ -28,9 +29,10 @@ export interface AppState {
 
 export interface AppActions {
     setUsername: (name: string) => Promise<void>;
-    setGlobalVolume: (volume: number) => Promise<void>;
     setLanguage: (lang: "en" | "pt-BR") => Promise<void>;
     setKnowledge: (knowledge: Knowledge) => Promise<void>;
+    setGlobalVolume: (volume: number) => Promise<void>;
+    toggleShowPianoNoteNames: (show: boolean) => Promise<void>;
 
     setTourCompleted: (tourName: keyof CompletedTours, completed: boolean) => Promise<void>;
 
@@ -54,6 +56,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 language: null,
                 knowledge: null,
                 globalVolume: 1,
+                showPianoNoteNames: true,
                 games: [],
                 currentGame: null,
                 completedTours: {
@@ -70,7 +73,9 @@ export const useAppStore = create<AppState & AppActions>()(
                     set({
                         username: "",
                         language: null,
+                        // knowledge: null,
                         globalVolume: 1,
+                        showPianoNoteNames: true,
                         games: [],
                         currentGame: null,
                         completedTours: {
@@ -89,6 +94,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
                 setKnowledge: async (knowledge: Knowledge) => set(() => ({ knowledge: knowledge })),
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
+                toggleShowPianoNoteNames: async (show: boolean) => set(() => ({ showPianoNoteNames: show })),
 
                 setTourCompleted: async (tourName: keyof CompletedTours, completed: boolean) =>
                     set((state) => ({ ...state, completedTours: { ...state.completedTours, [tourName]: completed } })),

@@ -66,9 +66,10 @@ tutorials
 
 ---
 
+level-selection-walkthrough
 translate walkthroughs (tours)
 style walkthroughs
-translate pianoKeys
+translate pianoKeys ✅
 save practice params in store
 volume settings https://www.npmjs.com/package/react-native-volume-manager
 

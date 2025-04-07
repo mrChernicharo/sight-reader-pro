@@ -57,6 +57,8 @@ export default function RootLayout() {
 
     useEffect(() => {
         NavigationBar.setBackgroundColorAsync("rgba(0,0,0,0)");
+
+        router.navigate("/level-selection/(tabs)");
     }, []);
 
     if (!_hydrated)

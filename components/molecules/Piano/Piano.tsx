@@ -1,5 +1,7 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
+import { useAppStore } from "@/hooks/useAppStore";
+import { useTranslation } from "@/hooks/useTranslation";
 import { KeySignature, NoteName } from "@/utils/enums";
 import { capitalizeStr } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
@@ -20,7 +22,10 @@ export function Piano({
     onKeyPressed: (note: NoteName) => void;
     onKeyReleased: (note: NoteName) => void;
 }) {
+    const { t } = useTranslation();
     const { width } = useWindowDimensions();
+    const showPianoNoteNames = useAppStore((state) => state.showPianoNoteNames);
+
     const pianoBlackKeySpec = FLAT_KEY_SIGNATURES.includes(keySignature) ? "Flat" : "Sharp";
     const BLACK_NOTES = blackNoteNames[pianoBlackKeySpec];
     const [blackNotesLeft, blackNotesRight] = [BLACK_NOTES.slice(0, 2), BLACK_NOTES.slice(3)];
@@ -44,7 +49,9 @@ export function Piano({
                             onPressIn={() => onKeyPressed(note)}
                             onPressOut={() => onKeyReleased(note)}
                         >
-                            <AppText style={{ color: "white" }}>{capitalizeStr(note)}</AppText>
+                            {showPianoNoteNames && (
+                                <AppText style={{ color: "white" }}>{capitalizeStr(t(`music.notes.${note}`))}</AppText>
+                            )}
                         </Pressable>
                     </AppView>
                 ))}
@@ -64,7 +71,9 @@ export function Piano({
                             onPressIn={() => onKeyPressed(note)}
                             onPressOut={() => onKeyReleased(note)}
                         >
-                            <AppText style={{ color: "white" }}>{capitalizeStr(note)}</AppText>
+                            {showPianoNoteNames && (
+                                <AppText style={{ color: "white" }}>{capitalizeStr(t(`music.notes.${note}`))}</AppText>
+                            )}
                         </Pressable>
                     </AppView>
                 ))}
@@ -79,7 +88,9 @@ export function Piano({
                         onPressOut={() => onKeyReleased(note as NoteName)}
                         style={[s.whiteNote, { width: keyWidth }]}
                     >
-                        <AppText style={{ color: "black" }}>{capitalizeStr(note)}</AppText>
+                        {showPianoNoteNames && (
+                            <AppText style={{ color: "black" }}>{capitalizeStr(t(`music.notes.${note}`))}</AppText>
+                        )}
                     </Pressable>
                 ))}
             </AppView>

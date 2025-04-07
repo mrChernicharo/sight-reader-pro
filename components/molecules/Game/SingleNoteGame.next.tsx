@@ -160,9 +160,6 @@ export function SingleNoteGameComponent() {
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 0}
                 placement="center"
-                onClose={() => {
-                    setTourStep(1);
-                }}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <AppText forceBlackText>Essa é a tela principal</AppText>

@@ -11,12 +11,19 @@ import { VolumeSlider } from "@/components/molecules/VolumeSlider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { SelectList } from "react-native-dropdown-select-list";
 import { LANGS } from "@/utils/constants";
+import { AppSwitch } from "@/components/atoms/AppSwitch";
 
 export default function SettingsScreen() {
+    const { t } = useTranslation();
     const theme = useColorScheme() ?? "light";
     const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
-    const { username, language, setUsername, setLanguage, _resetStore } = useAppStore();
-    const { t } = useTranslation();
+    const { username, language, showPianoNoteNames, setUsername, setLanguage, toggleShowPianoNoteNames, _resetStore } =
+        useAppStore();
+
+    const [_showPianoNoteNames, setShowPianoNoteNames] = useState(showPianoNoteNames);
+    useEffect(() => {
+        toggleShowPianoNoteNames(_showPianoNoteNames);
+    }, [_showPianoNoteNames]);
 
     const title = "Are you sure?";
     const description = "All your data will be erased. This action cannot be reverted";
@@ -73,11 +80,6 @@ export default function SettingsScreen() {
                     />
                 </AppView>
 
-                <AppView style={{ display: "flex", alignItems: "center" }}>
-                    <AppText>Volume</AppText>
-                    <VolumeSlider />
-                </AppView>
-
                 <AppView style={{ paddingHorizontal: 12 }}>
                     <AppText
                         style={{
@@ -98,7 +100,7 @@ export default function SettingsScreen() {
                             color: textColor,
                             backgroundColor: Colors[theme].background,
                             width: "100%",
-                            lineHeight: 28,
+                            // lineHeight: 28,
                         }}
                         dropdownTextStyles={{
                             color: textColor,
@@ -108,6 +110,30 @@ export default function SettingsScreen() {
                         }}
                         boxStyles={{}}
                     />
+                </AppView>
+
+                {showPianoNoteNames}
+                <AppView>
+                    <AppText style={{ textAlign: "center" }}>{t("settings.showPianoNotes.title")}</AppText>
+                    <AppView
+                        style={{
+                            height: 40,
+                            width: 200,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: 8,
+                        }}
+                    >
+                        <AppText>{t("settings.showPianoNotes.off")}</AppText>
+                        <AppSwitch value={showPianoNoteNames} setValue={setShowPianoNoteNames} />
+                        <AppText>{t("settings.showPianoNotes.on")}</AppText>
+                    </AppView>
+                </AppView>
+
+                <AppView style={{ display: "flex", alignItems: "center" }}>
+                    <AppText>Volume</AppText>
+                    <VolumeSlider />
                 </AppView>
 
                 <AppButton

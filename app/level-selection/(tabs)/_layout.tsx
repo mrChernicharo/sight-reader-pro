@@ -1,3 +1,4 @@
+import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
@@ -11,8 +12,10 @@ import { Clef, GameType } from "@/utils/enums";
 import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
 import { Level } from "@/utils/types";
 import { router, Tabs } from "expo-router";
+import { useState } from "react";
 import { Dimensions, Pressable, SafeAreaView, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import Tooltip from "react-native-walkthrough-tooltip";
 
 export default function TabLayout() {
     const { t } = useTranslation();
@@ -70,6 +73,9 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
     const grid = makeGrid(clefLevels.data, cols);
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
 
+    const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
+    const [tourStep, setTourStep] = useState(0);
+
     return (
         <SafeAreaView style={{ minHeight: "100%" }}>
             <ScrollView contentContainerStyle={{ backgroundColor }}>
@@ -90,7 +96,6 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                                 {t(`music.clefs.${clefInfo.name}`)}
                             </AppText>
                         </AppView>
-
                         <AppView style={tabStyles.gridSection}>
                             {grid.map((row, rowIdx) => (
                                 <AppView key={`row-${rowIdx}`} style={tabStyles.gridRow}>
@@ -127,6 +132,7 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                         </AppView>
                     </AppView>
                 </AppView>
+
                 <AppView style={tabStyles.footerFiller}></AppView>
             </ScrollView>
         </SafeAreaView>
