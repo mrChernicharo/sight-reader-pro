@@ -28,6 +28,11 @@ export function SingleNoteGameComponent() {
     const { currentGame, saveGameRecord, startNewGame, endGame, addNewRound } = useAppStore();
     const { playPianoNote, playSoundEfx } = useSoundContext();
 
+    const hasCompletedTour = useAppStore((state) => state.completedTours.game);
+    const setTourCompleted = useAppStore((state) => state.setTourCompleted);
+
+    const [tourStep, setTourStep] = useState(0);
+
     const rounds = currentGame?.rounds || [];
     const keySignature = decodeURIComponent(keySig) as KeySignature;
     const level = getLevel(id);
@@ -92,15 +97,9 @@ export function SingleNoteGameComponent() {
         endGame(String(prevPage));
     };
 
-    const hasCompletedTour = useAppStore((state) => state.completedTours.game);
-    const setTourCompleted = useAppStore((state) => state.setTourCompleted);
-
-    const [tourStep, setTourStep] = useState(0);
-
-    useEffect(() => {}, []);
-
     // start game
     useEffect(() => {
+        // if (!level || !currNote || currentGame?.type !== GameType.Single) return;
         const firstRound = decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3";
         const gameInfo: Partial<CurrentGame<GameType.Single>> = {
             levelId: id,
@@ -116,6 +115,10 @@ export function SingleNoteGameComponent() {
         };
     }, []);
 
+    useEffect(() => {
+        console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });
+    }, [hasCompletedTour, tourStep]);
+
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 
     const noteProps = { keys: [currNote], clef: level.clef, keySignature };
@@ -124,30 +127,37 @@ export function SingleNoteGameComponent() {
         <SafeAreaView style={[s.container, { backgroundColor }]}>
             <AppView style={s.top}>
                 <Tooltip
-                    isVisible={tourStep == 3}
+                    isVisible={!hasCompletedTour && tourStep == 3}
                     placement="bottom"
                     contentStyle={{ height: 110 }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText>Estatísticas e informações da partida vão aparecer aqui</AppText>
+                            <AppText>As estatísticas e informações da partida vão estar aqui em cima</AppText>
                             <AppButton
                                 text="Entendi"
                                 onPress={() => {
                                     setTourStep(4);
-                                    // setTourCompleted("game", true)
+                                    setTourCompleted("game", true);
                                 }}
                             />
                         </AppView>
                     }
                 >
-                    <TimerAndStatsDisplay stopped={true} onCountdownFinish={onCountdownFinish} levelId={id} />
+                    <TimerAndStatsDisplay
+                        stopped={!hasCompletedTour}
+                        onCountdownFinish={onCountdownFinish}
+                        levelId={id}
+                    />
                 </Tooltip>
                 <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />
             </AppView>
 
             <Tooltip
-                isVisible={tourStep == 0}
+                isVisible={!hasCompletedTour && tourStep == 0}
                 placement="center"
+                onClose={() => {
+                    setTourStep(1);
+                }}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <AppText>Essa é a tela principal</AppText>
@@ -162,7 +172,7 @@ export function SingleNoteGameComponent() {
                 }
             />
             <Tooltip
-                isVisible={tourStep == 4}
+                isVisible={!hasCompletedTour && tourStep == 4}
                 placement="center"
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
@@ -172,9 +182,10 @@ export function SingleNoteGameComponent() {
                         <AppText type="mdSemiBold">Bora começar?</AppText>
                         <AppButton
                             text="Vamos nessa!"
-                            onPress={() => {
-                                setTourStep(-1);
-                                // setTourCompleted("game", true)
+                            style={{ marginTop: 10 }}
+                            onPress={async () => {
+                                await setTourCompleted("game", true);
+                                setTourStep(0);
                             }}
                         />
                     </AppView>
@@ -183,10 +194,10 @@ export function SingleNoteGameComponent() {
 
             {currNote && (
                 <Tooltip
-                    isVisible={tourStep == 1}
+                    isVisible={!hasCompletedTour && tourStep == 1}
                     placement="bottom"
-                    tooltipStyle={{ zIndex: 2000, transform: [{ translateY: 0 }] }}
-                    contentStyle={{ height: 132 }}
+                    tooltipStyle={{ transform: [{ translateY: 0 }] }}
+                    contentStyle={{ height: 106 }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <AppText>
@@ -202,7 +213,7 @@ export function SingleNoteGameComponent() {
             )}
 
             <Tooltip
-                isVisible={tourStep == 2}
+                isVisible={!hasCompletedTour && tourStep == 2}
                 placement="top"
                 tooltipStyle={{ transform: [{ translateY: -220 }] }}
                 contentStyle={{ height: 112 }}

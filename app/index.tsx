@@ -34,7 +34,7 @@ export default function Home() {
                 isVisible={ShowWelcome}
                 placement="center"
                 content={
-                    <AppView style={{ alignItems: "center" }}>
+                    <AppView transparentBG style={{ alignItems: "center" }}>
                         <AppText type="subtitle">Boas vindas, {username}</AppText>
                         <AppText>Obrigado por usar o Sight Reader Pro!</AppText>
                         <AppText>Vamos iniciar nosso treinamento?</AppText>

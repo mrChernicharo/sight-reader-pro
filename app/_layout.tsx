@@ -28,20 +28,7 @@ export default function RootLayout() {
     // store state is always persisted, so games can be wrongly persisted if you close the app during a game
     useEffect(() => {
         if (!_hydrated) endGame();
-
-        router.replace("/practice");
-        // router.replace("/game-level/practice");
-        // const level = getLevel("practice");
-        // const possibleNotes = getPossibleNotesInLevel(level, keySignature);
-        // const firstRound = decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3";
-        // const gameInfo: Partial<CurrentGame<GameType.Single>> = {
-        //     levelId: id,
-        //     timestamp: Date.now(),
-        //     type: GameType.Single,
-        //     rounds: [{ value: firstRound, attempt: null }],
-        //     state: GameState.Idle,
-        // };
-        // startNewGame({ ...level, ...gameInfo } as CurrentGame<GameType.Single>);
+        // router.replace("/practice");
     }, [_hydrated]);
 
     useEffect(() => {
