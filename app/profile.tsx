@@ -2,15 +2,13 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { GameRecord } from "@/components/atoms/GameRecord";
-import { Colors } from "@/utils/Colors";
 import { useAppStore } from "@/hooks/useAppStore";
-import { Dimensions, ScrollView, StyleSheet, useColorScheme } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Piano } from "@/components/molecules/Piano/Piano";
-import { KeySignature, NoteName } from "@/utils/enums";
+import { Colors } from "@/utils/Colors";
+import { Dimensions, StyleSheet, useColorScheme } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
     const { t } = useTranslation();

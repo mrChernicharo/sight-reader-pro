@@ -15,30 +15,30 @@ import { useIntl } from "@/hooks/useIntl";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
+import { StatusBar } from "expo-status-bar";
+import * as NavigationBar from "expo-navigation-bar";
 import { useColorScheme } from "react-native";
-
+// useEffect(() => {
+// }, []);
 export default function RootLayout() {
-    const _hydrated = useAppStore((state) => state._hydrated);
-    const currentGame = useAppStore((state) => state.currentGame);
-    // const language = useAppStore((state) => state.language);
-    // const knowledge = useAppStore((state) => state.knowledge);
-    // const username = useAppStore((state) => state.username);
-    const initTourCompleted = useAppStore((state) => state.completedTours.init);
-    const endGame = useAppStore((state) => state.endGame);
-    const startNewGame = useAppStore((state) => state.startNewGame);
     const path = usePathname();
     const { id, keySignature, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
+    const _hydrated = useAppStore((state) => state._hydrated);
+    const currentGame = useAppStore((state) => state.currentGame);
+    const initTourCompleted = useAppStore((state) => state.completedTours.init);
     const theme = useColorScheme() ?? "light";
     const backgroundColor = useThemeColor(
         { light: Colors.light.background, dark: Colors.dark.background },
         "background"
     );
+
+    const endGame = useAppStore((state) => state.endGame);
+
     // ensure there's no ongoing game on app startup
     // store state is always persisted, so games can be wrongly persisted if you close the app during a game
     useEffect(() => {
         if (!_hydrated) endGame();
-        // router.replace("/practice");
     }, [_hydrated]);
 
     useEffect(() => {
@@ -55,7 +55,9 @@ export default function RootLayout() {
         }
     }, [initTourCompleted]);
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        NavigationBar.setBackgroundColorAsync("rgba(0,0,0,0)");
+    }, []);
 
     if (!_hydrated)
         return (
@@ -68,6 +70,7 @@ export default function RootLayout() {
         <SafeAreaProvider>
             <GestureHandlerRootView>
                 <SoundContextProvider>
+                    <StatusBar translucent style={theme == "light" ? "dark" : "light"} />
                     <AppRoutes />
                 </SoundContextProvider>
             </GestureHandlerRootView>

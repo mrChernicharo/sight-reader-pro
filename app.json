@@ -46,7 +46,8 @@
                     "launchMode": "most-recent"
                 }
             ],
-            "expo-font"
+            "expo-font",
+            "expo-navigation-bar"
         ]
     }
 }

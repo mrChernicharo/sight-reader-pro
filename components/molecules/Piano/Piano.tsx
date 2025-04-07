@@ -24,7 +24,7 @@ export function Piano({
     const pianoBlackKeySpec = FLAT_KEY_SIGNATURES.includes(keySignature) ? "Flat" : "Sharp";
     const BLACK_NOTES = blackNoteNames[pianoBlackKeySpec];
     const [blackNotesLeft, blackNotesRight] = [BLACK_NOTES.slice(0, 2), BLACK_NOTES.slice(3)];
-    const keyboardMargin = width * 0.06;
+    const keyboardMargin = 0.0;
     const keyWidth = (width - keyboardMargin * 2) / 7;
 
     return (
@@ -33,7 +33,7 @@ export function Piano({
             <AppView
                 style={[
                     s.blackNotes,
-                    { width: keyboardMargin + keyWidth * 1.36, left: keyboardMargin + keyWidth / 1.65 },
+                    { width: keyboardMargin + keyWidth * 2.35, left: keyboardMargin + keyWidth / 1.63 },
                 ]}
             >
                 {blackNotesLeft.map((note) => (
@@ -53,7 +53,7 @@ export function Piano({
             <AppView
                 style={[
                     s.blackNotes,
-                    { width: keyboardMargin + keyWidth * 2.35, right: keyboardMargin + keyWidth / 1.75 },
+                    { width: keyboardMargin + keyWidth * 2.35, right: keyboardMargin + keyWidth / 0.96 },
                 ]}
             >
                 {blackNotesRight.map((note) => (
