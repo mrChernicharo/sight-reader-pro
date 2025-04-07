@@ -34,6 +34,10 @@ export default function RootLayout() {
         }
     }, [initTourCompleted]);
 
+    useEffect(() => {
+        router.replace("/level-selection");
+    }, []);
+
     if (!_hydrated)
         return (
             <AppView>

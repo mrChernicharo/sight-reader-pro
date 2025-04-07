@@ -502,11 +502,11 @@ export let ALL_LEVELS = [...TREBLE_LEVELS, ...BASS_LEVELS];
 
 export const SECTIONED_LEVELS: SectionedLevel[] = [
     {
-        title: "Treble Clef",
+        title: Clef.Treble,
         data: TREBLE_LEVELS,
     },
     {
-        title: "Bass Clef",
+        title: Clef.Bass,
         data: BASS_LEVELS,
     },
 ];

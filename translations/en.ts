@@ -8,6 +8,7 @@ const en = {
         practice: "Practice",
         profile: "Profile",
         settings: "Settings",
+        levelSelection: "Level Selection",
         main: {
             title: "Main",
             cta: "Play",

@@ -8,6 +8,7 @@ const ptBR = {
         practice: "Praticar",
         profile: "Perfil",
         settings: "Configurações",
+        levelSelection: "Selecionar Nível",
         main: {
             title: "Principal",
             cta: "Jogar",
