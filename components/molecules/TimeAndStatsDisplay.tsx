@@ -10,43 +10,45 @@ import { GameStatsDisplaySimple } from "./GameStatsDisplay/GameStatsDisplaySimpl
 import { useIntl } from "@/hooks/useIntl";
 
 export function TimerAndStatsDisplay({
-  levelId,
-  onCountdownFinish,
+    levelId,
+    stopped,
+    onCountdownFinish,
 }: {
-  levelId: string;
-  onCountdownFinish: () => void;
+    levelId: string;
+    stopped?: boolean;
+    onCountdownFinish: () => void;
 }) {
-  const { intl } = useIntl();
+    const { intl } = useIntl();
 
-  const level = getLevel(levelId);
-  const [hitsPerMinute, setHitsPerMinute] = useState(0);
-  const { currentGame } = useAppStore();
-  const { successes } = getGameStats(level, currentGame?.rounds ?? [], intl);
+    const level = getLevel(levelId);
+    const [hitsPerMinute, setHitsPerMinute] = useState(0);
+    const { currentGame } = useAppStore();
+    const { successes } = getGameStats(level, currentGame?.rounds ?? [], intl);
 
-  function onTick(secondsRemaining: number) {
-    const elapsedPercent = (level.durationInSeconds - secondsRemaining) / level.durationInSeconds;
-    const minuteFraction = 60 / level.durationInSeconds;
-    const _hitsPerMinute = (successes * minuteFraction) / elapsedPercent;
-    setHitsPerMinute(_hitsPerMinute);
+    function onTick(secondsRemaining: number) {
+        const elapsedPercent = (level.durationInSeconds - secondsRemaining) / level.durationInSeconds;
+        const minuteFraction = 60 / level.durationInSeconds;
+        const _hitsPerMinute = (successes * minuteFraction) / elapsedPercent;
+        setHitsPerMinute(_hitsPerMinute);
 
-    if (elapsedPercent >= 1) {
-      onCountdownFinish();
+        if (elapsedPercent >= 1) {
+            onCountdownFinish();
+        }
     }
-  }
 
-  return (
-    <AppView style={s.container}>
-      <GameStatsDisplaySimple level={level} hitsPerMinute={hitsPerMinute} />
+    return (
+        <AppView style={s.container}>
+            <GameStatsDisplaySimple level={level} hitsPerMinute={hitsPerMinute} />
 
-      <CountdownTimer initialTime={level.durationInSeconds} onTick={onTick} />
-    </AppView>
-  );
+            <CountdownTimer stopped={stopped} initialTime={level.durationInSeconds} onTick={onTick} />
+        </AppView>
+    );
 }
 const s = StyleSheet.create({
-  container: {
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    // borderWidth: 1,
-    // borderColor: "red",
-  },
+    container: {
+        paddingHorizontal: 24,
+        paddingTop: 12,
+        // borderWidth: 1,
+        // borderColor: "red",
+    },
 });

@@ -123,7 +123,25 @@ export function SingleNoteGameComponent() {
     return (
         <SafeAreaView style={[s.container, { backgroundColor }]}>
             <AppView style={s.top}>
-                <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
+                <Tooltip
+                    isVisible={tourStep == 3}
+                    placement="bottom"
+                    contentStyle={{ height: 110 }}
+                    content={
+                        <AppView transparentBG style={{ alignItems: "center" }}>
+                            <AppText>Estatísticas e informações da partida vão aparecer aqui</AppText>
+                            <AppButton
+                                text="Entendi"
+                                onPress={() => {
+                                    setTourStep(4);
+                                    // setTourCompleted("game", true)
+                                }}
+                            />
+                        </AppView>
+                    }
+                >
+                    <TimerAndStatsDisplay stopped={true} onCountdownFinish={onCountdownFinish} levelId={id} />
+                </Tooltip>
                 <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />
             </AppView>
 
@@ -144,7 +162,7 @@ export function SingleNoteGameComponent() {
                 }
             />
             <Tooltip
-                isVisible={tourStep == 3}
+                isVisible={tourStep == 4}
                 placement="center"
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
