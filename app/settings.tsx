@@ -55,7 +55,7 @@ export default function SettingsScreen() {
         <SafeAreaView style={{ minHeight: "100%" }}>
             <AppView style={s.container}>
                 <AppView style={s.top}>
-                    <AppView style={{ position: "absolute", left: 0, top: 4 }}>
+                    <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                         <BackLink />
                     </AppView>
                     <AppText type="title">{t("settings.title")}</AppText>

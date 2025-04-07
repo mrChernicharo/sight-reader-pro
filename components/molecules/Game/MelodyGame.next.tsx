@@ -140,7 +140,7 @@ const s = StyleSheet.create({
     },
     backLink: {
         position: "absolute",
-        top: -120,
+        top: -118,
         left: 0,
         zIndex: 20,
         // borderWidth: 1,

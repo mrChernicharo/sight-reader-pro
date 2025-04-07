@@ -1,12 +1,18 @@
 import { AppText } from "@/components/atoms/AppText";
+import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
+import { useAppStore } from "@/hooks/useAppStore";
+import { useIntl } from "@/hooks/useIntl";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Tabs } from "expo-router";
-import { Dimensions, StyleSheet } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { Clef, GameType } from "@/utils/enums";
+import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
+import { Level } from "@/utils/types";
+import { router, Tabs } from "expo-router";
+import { Dimensions, Pressable, SafeAreaView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function TabLayout() {
     const { t } = useTranslation();
@@ -43,6 +49,87 @@ export default function TabLayout() {
                 }}
             />
         </Tabs>
+    );
+}
+
+const cols = 3;
+
+export function LevelSelectionTab({ clef }: { clef: Clef }) {
+    const { intl } = useIntl();
+    const { t } = useTranslation();
+    const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "background");
+    const backgroundColor = useThemeColor(
+        { light: Colors.light.background, dark: Colors.dark.background },
+        "background"
+    );
+    const games = useAppStore((state) => state.games);
+
+    const unlockedLevels = getUnlockedLevels(games, intl);
+
+    const clefLevels = SECTIONED_LEVELS.find((lvls) => lvls.title == clef)!;
+    const grid = makeGrid(clefLevels.data, cols);
+    const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
+
+    return (
+        <SafeAreaView style={{ minHeight: "100%" }}>
+            <ScrollView contentContainerStyle={{ backgroundColor }}>
+                <AppView style={tabStyles.container}>
+                    <AppView style={tabStyles.top}>
+                        <AppView style={{ position: "absolute", left: 0, top: 1 }}>
+                            <BackLink />
+                        </AppView>
+                        <AppText type="defaultSemiBold">{t("routes.levelSelection")}</AppText>
+                    </AppView>
+
+                    <AppView key={clefLevels.title}>
+                        <AppView style={{ flexDirection: "row", gap: 6 }}>
+                            <AppText type="title" style={[tabStyles.sectionTitle, { transform: [{ translateY: 5 }] }]}>
+                                {clefInfo.glyph}
+                            </AppText>
+                            <AppText type="title" style={tabStyles.sectionTitle}>
+                                {t(`music.clefs.${clefInfo.name}`)}
+                            </AppText>
+                        </AppView>
+
+                        <AppView style={tabStyles.gridSection}>
+                            {grid.map((row, rowIdx) => (
+                                <AppView key={`row-${rowIdx}`} style={tabStyles.gridRow}>
+                                    {row.map((level) => {
+                                        const { levelName, levelIdx } = getLevelName(level);
+                                        const disabled = level.index > unlockedLevels[level.clef] + 1;
+                                        return (
+                                            <Pressable
+                                                key={level.id}
+                                                disabled={disabled}
+                                                onPress={() => {
+                                                    router.push({
+                                                        pathname: "/level-details/[id]",
+                                                        params: { id: level.id },
+                                                    });
+                                                }}
+                                            >
+                                                <AppView
+                                                    style={[
+                                                        tabStyles.item,
+                                                        {
+                                                            backgroundColor: disabled ? "gray" : accentColor,
+                                                        },
+                                                    ]}
+                                                >
+                                                    <AppText>{levelName}</AppText>
+                                                    <AppText>{levelIdx}</AppText>
+                                                </AppView>
+                                            </Pressable>
+                                        );
+                                    })}
+                                </AppView>
+                            ))}
+                        </AppView>
+                    </AppView>
+                </AppView>
+                <AppView style={tabStyles.footerFiller}></AppView>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
@@ -84,7 +171,7 @@ export const tabStyles = StyleSheet.create({
     },
 });
 
-export function makeGrid<T>(nums: T[], cols = 2) {
+function makeGrid<T>(nums: T[], cols = 2) {
     const grid: T[][] = [];
     nums.forEach((n, i) => {
         if (i % cols == 0) {
@@ -95,4 +182,11 @@ export function makeGrid<T>(nums: T[], cols = 2) {
     });
 
     return grid;
+}
+
+function getLevelName(item: Level<GameType>) {
+    const splitLevelName = item.name.split(" ");
+    const levelIdx = splitLevelName.pop();
+    const levelName = splitLevelName.join(" ");
+    return { levelIdx, levelName };
 }

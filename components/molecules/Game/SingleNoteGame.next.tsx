@@ -282,12 +282,13 @@ const s = StyleSheet.create({
     top: {
         position: "relative",
         height: 130,
+        paddingHorizontal: 24,
         // borderWidth: 1,
         // borderColor: "green",
     },
     backLink: {
         position: "absolute",
-        top: -120,
+        top: -118,
         left: 0,
         zIndex: 20,
         // borderWidth: 1,

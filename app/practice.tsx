@@ -152,7 +152,7 @@ export default function PracticeScreen() {
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].background }}>
             <ScrollView contentContainerStyle={s.container}>
                 <AppView style={s.top}>
-                    <AppView style={{ position: "absolute", left: 0, top: 4 }}>
+                    <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                         <BackLink onPress={() => endGame()} />
                     </AppView>
                     <AppText type="defaultSemiBold">{t("practice.title")}</AppText>
