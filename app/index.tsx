@@ -26,6 +26,12 @@ export default function Home() {
         if (!homeTourCompleted) {
             setShowWelcome(true);
         }
+
+        (async () => {
+            // await NavigationBar.setVisibilityAsync("hidden");
+            // await NavigationBar.setBehaviorAsync('overlay-swipe')
+            // await NavigationBar.setBackgroundColorAsync("white");
+        })();
     }, [homeTourCompleted]);
 
     return (
@@ -35,9 +41,11 @@ export default function Home() {
                 placement="center"
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText type="subtitle">Boas vindas, {username}</AppText>
-                        <AppText>Obrigado por usar o Sight Reader Pro!</AppText>
-                        <AppText>Vamos iniciar nosso treinamento?</AppText>
+                        <AppText forceBlackText type="subtitle">
+                            Boas vindas, {username}
+                        </AppText>
+                        <AppText forceBlackText>Obrigado por usar o Sight Reader Pro!</AppText>
+                        <AppText forceBlackText>Vamos iniciar nosso treinamento?</AppText>
                         <AppButton
                             text="Ok, vamos lá"
                             onPress={() => {
@@ -93,8 +101,8 @@ export default function Home() {
                 isVisible={ShowCTA}
                 placement="top"
                 content={
-                    <AppView>
-                        <AppText>Clique aqui para jogar</AppText>
+                    <AppView transparentBG>
+                        <AppText forceBlackText>Clique aqui para jogar</AppText>
                     </AppView>
                 }
             >

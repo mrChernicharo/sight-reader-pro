@@ -117,7 +117,7 @@ export default function LevelSelectionScreen() {
                         flex: 1,
                         alignItems: "center",
                         paddingTop: 5,
-                        borderColor: selectedClef == Clef.Treble ? accentColor : backgroundColor,
+                        borderColor: selectedClef == Clef.Treble ? "purple" : backgroundColor,
                         borderTopWidth: 3,
                     }}
                 >
@@ -132,7 +132,7 @@ export default function LevelSelectionScreen() {
                         flex: 1,
                         alignItems: "center",
                         paddingTop: 5,
-                        borderColor: selectedClef == Clef.Bass ? accentColor : backgroundColor,
+                        borderColor: selectedClef == Clef.Bass ? "purple" : backgroundColor,
                         borderTopWidth: 3,
                     }}
                 >

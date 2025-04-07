@@ -11,6 +11,11 @@ import AppRoutes from "./_app.routes";
 import { GameType, GameState } from "@/utils/enums";
 import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
+import { useIntl } from "@/hooks/useIntl";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/utils/Colors";
+import { useColorScheme } from "react-native";
 
 export default function RootLayout() {
     const _hydrated = useAppStore((state) => state._hydrated);
@@ -24,6 +29,11 @@ export default function RootLayout() {
     const path = usePathname();
     const { id, keySignature, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
+    const theme = useColorScheme() ?? "light";
+    const backgroundColor = useThemeColor(
+        { light: Colors.light.background, dark: Colors.dark.background },
+        "background"
+    );
     // ensure there's no ongoing game on app startup
     // store state is always persisted, so games can be wrongly persisted if you close the app during a game
     useEffect(() => {

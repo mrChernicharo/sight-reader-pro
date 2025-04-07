@@ -31,7 +31,7 @@ export function SingleNoteGameComponent() {
     const hasCompletedTour = useAppStore((state) => state.completedTours.game);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
 
-    const [tourStep, setTourStep] = useState(0);
+    const [tourStep, setTourStep] = useState(-1);
 
     const rounds = currentGame?.rounds || [];
     const keySignature = decodeURIComponent(keySig) as KeySignature;
@@ -116,6 +116,10 @@ export function SingleNoteGameComponent() {
     }, []);
 
     useEffect(() => {
+        setTimeout(() => setTourStep(0), 200);
+    }, []);
+
+    useEffect(() => {
         console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });
     }, [hasCompletedTour, tourStep]);
 
@@ -132,12 +136,13 @@ export function SingleNoteGameComponent() {
                     contentStyle={{ height: 110 }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText>As estatísticas e informações da partida vão estar aqui em cima</AppText>
+                            <AppText forceBlackText>
+                                As estatísticas e informações da partida vão estar aqui em cima
+                            </AppText>
                             <AppButton
                                 text="Entendi"
                                 onPress={() => {
                                     setTourStep(4);
-                                    setTourCompleted("game", true);
                                 }}
                             />
                         </AppView>
@@ -160,8 +165,8 @@ export function SingleNoteGameComponent() {
                 }}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText>Essa é a tela principal</AppText>
-                        <AppText>É aqui que o jogo acontece</AppText>
+                        <AppText forceBlackText>Essa é a tela principal</AppText>
+                        <AppText forceBlackText>É aqui que o jogo acontece</AppText>
                         <AppButton
                             text="OK"
                             onPress={() => {
@@ -176,10 +181,12 @@ export function SingleNoteGameComponent() {
                 placement="center"
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText>Toque o máximo de notas que puder</AppText>
-                        <AppText>Antes que o tempo acabe!</AppText>
-                        <AppText>Acumule pontos e avance pelas fases</AppText>
-                        <AppText type="mdSemiBold">Bora começar?</AppText>
+                        <AppText forceBlackText>Toque o máximo de notas que puder</AppText>
+                        <AppText forceBlackText>Antes que o tempo acabe!</AppText>
+                        <AppText forceBlackText>Acumule pontos e avance pelas fases</AppText>
+                        <AppText forceBlackText type="mdSemiBold">
+                            Bora começar?
+                        </AppText>
                         <AppButton
                             text="Vamos nessa!"
                             style={{ marginTop: 10 }}
@@ -197,12 +204,15 @@ export function SingleNoteGameComponent() {
                     isVisible={!hasCompletedTour && tourStep == 1}
                     placement="bottom"
                     tooltipStyle={{ transform: [{ translateY: 0 }] }}
-                    contentStyle={{ height: 106 }}
+                    contentStyle={{ height: 126 }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText>
-                                Essa é a Pauta musical. Notas musicais vão aparecer aqui. Por exemplo, temos uma nota{" "}
-                                <AppText type="mdSemiBold">{explodeNote(currNote).noteName.toUpperCase()}</AppText>
+                            <AppText forceBlackText>
+                                Aqui fica a Pauta musical. Notas musicais vão aparecer aqui. Por exemplo, agora temos
+                                uma nota{" "}
+                                <AppText forceBlackText type="mdSemiBold">
+                                    {explodeNote(currNote).noteName.toUpperCase()}
+                                </AppText>
                             </AppText>
                             <AppButton text="OK" onPress={() => setTourStep(2)} />
                         </AppView>
@@ -219,7 +229,9 @@ export function SingleNoteGameComponent() {
                 contentStyle={{ height: 112 }}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText>O seu trabalho é tocar no Piano as notas que forem aparecerendo na Pauta</AppText>
+                        <AppText forceBlackText>
+                            O seu trabalho é tocar no Piano as notas que forem aparecerendo na Pauta
+                        </AppText>
                         <AppButton text="OK" onPress={() => setTourStep(3)} />
                     </AppView>
                 }

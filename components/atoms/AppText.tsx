@@ -3,20 +3,22 @@ import { Text, type TextProps, StyleSheet } from "react-native";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 
-type TT = "default" | "defaultSemiBold" | "md" | "mdSemiBold" | "lg" | "title" | "subtitle" | "link";
+type TextType = "default" | "defaultSemiBold" | "md" | "mdSemiBold" | "lg" | "title" | "subtitle" | "link";
 
 export type AppTextProps = TextProps & {
     lightColor?: string;
     darkColor?: string;
-    type?: TT;
+    type?: TextType;
+    forceBlackText?: boolean;
 };
 
-export function AppText({ style, lightColor, darkColor, type, ...rest }: AppTextProps) {
+export function AppText({ style, lightColor, darkColor, forceBlackText, type, ...rest }: AppTextProps) {
     // const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-    const color = useThemeColor(
+    const themeColor = useThemeColor(
         { light: (lightColor = Colors.light.text), dark: (darkColor = Colors.dark.text) },
         "text"
     );
+    const color = forceBlackText ? "black" : themeColor;
 
     const textStyle = s[type!] ? s[type!] : s.default;
 
