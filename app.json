@@ -1,52 +1,52 @@
 {
-  "expo": {
-    "name": "sight-reader-pro",
-    "slug": "sight-reader-pro",
-    "version": "1.0.9",
-    "orientation": "portrait",
-    "icon": "./assets/images/sight-reader-art.png",
-    "scheme": "sight-reader-pro",
-    "userInterfaceStyle": "automatic",
-    "android": {
-      "versionCode": 9,
-      "package": "com.chernicharo.sightreaderpro",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/sight-reader-art.png",
-        "backgroundColor": "#808080"
-      }
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.chernicharo.sightreaderpro"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "splash": {
-      "image": "./assets/images/app-splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#000000"
-    },
-    "experiments": {
-      "typedRoutes": true
-    },
-    "extra": {
-      "eas": {
-        "projectId": "2f9fca84-3023-4178-b59c-f9c2818a7c3b"
-      }
-    },
-    "plugins": [
-      "expo-asset",
-      "expo-router",
-      [
-        "expo-dev-launcher",
-        {
-          "launchMode": "most-recent"
-        }
-      ],
-      "expo-font"
-    ]
-  }
+    "expo": {
+        "name": "sight-reader-pro",
+        "slug": "sight-reader-pro",
+        "version": "1.0.10",
+        "orientation": "portrait",
+        "icon": "./assets/images/sight-reader-art.png",
+        "scheme": "sight-reader-pro",
+        "userInterfaceStyle": "automatic",
+        "android": {
+            "versionCode": 10,
+            "package": "com.chernicharo.sightreaderpro",
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/images/sight-reader-art.png",
+                "backgroundColor": "#808080"
+            }
+        },
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.chernicharo.sightreaderpro"
+        },
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./assets/images/favicon.png"
+        },
+        "splash": {
+            "image": "./assets/images/app-splash.png",
+            "resizeMode": "cover",
+            "backgroundColor": "#000000"
+        },
+        "experiments": {
+            "typedRoutes": true
+        },
+        "extra": {
+            "eas": {
+                "projectId": "2f9fca84-3023-4178-b59c-f9c2818a7c3b"
+            }
+        },
+        "plugins": [
+            "expo-asset",
+            "expo-router",
+            [
+                "expo-dev-launcher",
+                {
+                    "launchMode": "most-recent"
+                }
+            ],
+            "expo-font"
+        ]
+    }
 }
