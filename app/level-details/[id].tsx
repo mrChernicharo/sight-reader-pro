@@ -58,7 +58,7 @@ export default function LevelDetails() {
                 <FadeIn y={50} x={0}>
                     <AppView>
                         <AppView style={s.backlinkContainer}>
-                            <BackLink to="/level-selection" style={s.backlink} />
+                            <BackLink to="/level-selection/(tabs)" style={s.backlink} />
                         </AppView>
                         <AppText type="title" style={s.title}>
                             {level.name}
