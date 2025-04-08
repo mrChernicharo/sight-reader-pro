@@ -51,7 +51,7 @@ export default function RootLayout() {
         NavigationBar.setButtonStyleAsync(theme == "light" ? "dark" : "light");
 
         // @TODO: REMOVE THIS BEFORE BUILD
-        // router.navigate("/level-selection/(tabs)");
+        // router.navigate("/level-selection");
         // router.navigate("/practice");
     }, [theme]);
 

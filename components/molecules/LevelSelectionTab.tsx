@@ -79,7 +79,7 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                 </AppView>
 
                 <Tooltip
-                    isVisible={tourStep == 0}
+                    isVisible={false && tourStep == 0}
                     placement="center"
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
@@ -95,7 +95,7 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                 />
 
                 <Tooltip
-                    isVisible={tourStep == 1}
+                    isVisible={false && tourStep == 1}
                     placement="bottom"
                     tooltipStyle={{ transform: [{ translateY: -60 }] }}
                     content={
@@ -112,7 +112,7 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                 />
 
                 <Tooltip
-                    isVisible={tourStep == 2}
+                    isVisible={false && tourStep == 2}
                     placement="center"
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>

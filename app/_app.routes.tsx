@@ -9,7 +9,7 @@ export default function AppRoutes() {
 
             <Stack.Screen name="init" options={{ headerShown: false }} />
 
-            <Stack.Screen name="level-selection/(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="level-selection" options={{ headerShown: false }} />
 
             <Stack.Screen name="level-details" options={{ headerShown: false }} />
             <Stack.Screen name="game-level" options={{ headerShown: false }} />

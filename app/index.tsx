@@ -109,7 +109,7 @@ export default function Home() {
                 <FadeIn y={50} x={0} delay={500}>
                     <Link
                         asChild
-                        href="/level-selection/(tabs)"
+                        href="/level-selection"
                         onPress={() => {
                             setTourCompleted("home", true);
                         }}

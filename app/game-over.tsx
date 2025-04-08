@@ -61,7 +61,7 @@ export default function GameOverScreen() {
     function goToLevelSelection() {
         endGame();
         router.navigate({
-            pathname: "/level-selection/(tabs)",
+            pathname: "/level-selection",
         });
     }
 
