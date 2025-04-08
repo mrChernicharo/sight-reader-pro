@@ -151,8 +151,8 @@ const en = {
         },
     },
     tour: {
-        init: { "0": "Obrigado por usar o Sight Reader Pro!::: Vamos começar?" },
-        home: { "0": "", "1": "", "2": "", "3": "", "4": "" },
+        init: {},
+        home: { "0": "Obrigado por usar o Sight Reader Pro!::: Vamos começar?" },
         levelSelection: {
             "0": "Boas vindas à tela de Seleção de Nível",
             "1": "Selecione a Clave desejada aqui embaixo:::Cada Clave tem vários desafios diferentes",

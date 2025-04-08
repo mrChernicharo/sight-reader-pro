@@ -19,6 +19,7 @@ import { AppText } from "@/components/atoms/AppText";
 import AppButton from "@/components/atoms/AppButton";
 import { useTranslation } from "@/hooks/useTranslation";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
+import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 
 const DELAY = 60;
 
@@ -137,6 +138,7 @@ export function SingleNoteGameComponent() {
                 <Tooltip
                     isVisible={!hasCompletedTour && tourStep == 3}
                     placement="bottom"
+                    topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                     contentStyle={{ height: 110 }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
@@ -162,6 +164,7 @@ export function SingleNoteGameComponent() {
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 0}
                 placement="center"
+                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.0" />
@@ -177,6 +180,7 @@ export function SingleNoteGameComponent() {
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 4}
                 placement="center"
+                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.4" />
@@ -201,7 +205,8 @@ export function SingleNoteGameComponent() {
                     isVisible={!hasCompletedTour && tourStep == 1}
                     placement="bottom"
                     tooltipStyle={{ transform: [{ translateY: 0 }] }}
-                    contentStyle={{ height: 126 }}
+                    topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
+                    // contentStyle={{ height: 126 }}
                     parentWrapperStyle={{}}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
@@ -220,6 +225,7 @@ export function SingleNoteGameComponent() {
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 2}
                 placement="top"
+                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 tooltipStyle={{ transform: [{ translateY: -60 }] }}
                 contentStyle={{ height: 112 }}
                 content={

@@ -28,8 +28,10 @@ export default function Home() {
     const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
     useLayoutEffect(() => {
-        if (!hasCompletedTour) setTourStep(0);
-    }, [hasCompletedTour]);
+        setTimeout(() => {
+            if (path == "/" && !hasCompletedTour) setTourStep(0);
+        });
+    }, [hasCompletedTour, path]);
 
     return (
         <AppView style={s.container}>
@@ -43,7 +45,7 @@ export default function Home() {
                         <AppText {...tourTextProps} type="subtitle">
                             {greetingMessage}
                         </AppText>
-                        <TooltipTextLines keypath="tour.init.0" />
+                        <TooltipTextLines keypath="tour.home.0" />
                         <AppButton
                             text="Ok, vamos lá"
                             onPress={() => {

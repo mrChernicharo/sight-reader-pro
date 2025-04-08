@@ -6,6 +6,9 @@ import { Platform } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
+let DEV_RESET = false;
+// DEV_RESET = true;
+
 interface PracticeSettings {
     clef: Clef;
     hasKey: boolean;
@@ -98,25 +101,42 @@ export const useAppStore = create<AppState & AppActions>()(
                 _hydrated: false,
 
                 _resetStore: async () =>
-                    set({
-                        username: "",
-                        language: null,
-                        knowledge: null, // don't override knowledge
-                        selectedLevelsClef: Clef.Treble,
-                        showPianoNoteNames: true,
-                        globalVolume: 1,
-                        games: [],
-                        currentGame: null,
-                        completedTours: {
-                            // init: true,
-                            // home: true,
-                            init: false,
-                            home: false,
-                            levelSelection: false,
-                            game: false,
-                            practice: false,
-                        },
-                    }),
+                    set(
+                        DEV_RESET
+                            ? {
+                                  username: "",
+                                  language: null,
+                                  knowledge: null, // don't override knowledge
+                                  selectedLevelsClef: Clef.Treble,
+                                  showPianoNoteNames: true,
+                                  globalVolume: 1,
+                                  games: [],
+                                  currentGame: null,
+                                  completedTours: {
+                                      init: false,
+                                      home: false,
+                                      levelSelection: false,
+                                      game: false,
+                                      practice: false,
+                                  },
+                              }
+                            : {
+                                  username: "",
+                                  language: null,
+                                  selectedLevelsClef: Clef.Treble,
+                                  showPianoNoteNames: true,
+                                  globalVolume: 1,
+                                  games: [],
+                                  currentGame: null,
+                                  completedTours: {
+                                      init: true,
+                                      home: true,
+                                      levelSelection: false,
+                                      game: false,
+                                      practice: false,
+                                  },
+                              }
+                    ),
                 setHydrated: async (hydrated: boolean) => set({ _hydrated: hydrated }),
 
                 setUsername: async (name: string) => set(() => ({ username: name })),
