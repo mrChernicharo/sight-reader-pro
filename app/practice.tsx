@@ -25,30 +25,41 @@ import RangeSlider from "../components/atoms/RangeSlider";
 
 // const KEY_SIGNATURES = Object.values(KeySignature).map((v) => ({ label: v, value: v.toLowerCase() }));
 
+const ACCIDENTS = Object.values(LevelAccidentType).map((v) => ({
+    key: v,
+    value: v.toLowerCase(),
+}));
 export default function PracticeScreen() {
     const theme = useColorScheme() ?? "light";
     const { width } = useWindowDimensions();
     const { t } = useTranslation();
 
     const { practiceSettings, updatePracticeSettings, endGame } = useAppStore();
-    const { clef, hasKey, isMinorKey, accident, scaleType } = practiceSettings;
-
-    const ACCIDENTS = Object.values(LevelAccidentType).map((v) => ({
-        key: v,
-        value: v.toLowerCase(),
-    }));
-    const defaultAccident = ACCIDENTS.find((acc) => acc.key === accident);
+    const {
+        clef,
+        hasKey,
+        isMinorKey,
+        accident,
+        scaleType,
+        keySignature: storedKeySignature,
+        noteRangeIndices,
+    } = practiceSettings;
 
     const SCALES = Object.values(ScaleType).map((v) => ({
         key: v,
         value: t(`music.scaleType.${v}`),
     }));
-    const defaultScale = SCALES.find((acc) => acc.key === scaleType);
 
-    const [keySigIndex, setKeySigIndex] = useState(7);
-    const [rangeIdx, setRangeIdx] = useState(defaultNoteRangeIndices);
+    const DEFAULT_SCALE = SCALES.find((acc) => acc.key === scaleType);
+    const DEFAULT_ACCIDENT = ACCIDENTS.find((acc) => acc.key === accident);
 
     const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;
+    const currKSIdx = keySigArray.findIndex((key) => key === storedKeySignature);
+    const initialKSIdx = currKSIdx > -1 ? currKSIdx : 7;
+
+    const [keySigIndex, setKeySigIndex] = useState(initialKSIdx);
+    const [rangeIdx, setRangeIdx] = useState(noteRangeIndices);
+
     const CURR_KEY_SIGNATURES = keySigArray.map((v) => ({
         label: v,
         value: v.toLowerCase(),
@@ -133,13 +144,15 @@ export default function PracticeScreen() {
         });
     }, [clef, hasKey, accident, rangeIdx.low, rangeIdx.high, CURR_KEY_SIGNATURES, keySignature, allNotes, ALL_LEVELS]);
 
-    // useEffect(() => {
-    //     console.log({ rangeIdx });
-    // }, [rangeIdx]);
+    useEffect(() => {
+        console.log({ rangeIdx });
+    }, [rangeIdx]);
 
     useEffect(() => {
-        console.log({ keySignature });
+        updatePracticeSettings("keySignature", keySignature);
     }, [keySignature]);
+
+    // useEffect(() => {}, [])
 
     // useEffect(() => {
     //   console.log("---", { clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes });
@@ -215,7 +228,7 @@ export default function PracticeScreen() {
                                     save="value"
                                     setSelected={(val: LevelAccidentType) => updatePracticeSettings("accident", val)}
                                     search={false}
-                                    defaultOption={defaultAccident}
+                                    defaultOption={DEFAULT_ACCIDENT}
                                     inputStyles={{
                                         color: Colors[theme].text,
                                         backgroundColor: Colors[theme].bg,
@@ -238,7 +251,7 @@ export default function PracticeScreen() {
                                 save="key"
                                 setSelected={(val: ScaleType) => updatePracticeSettings("scaleType", val)}
                                 search={false}
-                                defaultOption={defaultScale}
+                                defaultOption={DEFAULT_SCALE}
                                 inputStyles={{
                                     color: Colors[theme].text,
                                     backgroundColor: Colors[theme].bg,
