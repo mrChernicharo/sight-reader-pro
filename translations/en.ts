@@ -55,6 +55,7 @@ const en = {
             levelSelection: "Level Selection",
         },
         type: {
+            title: "Game Type",
             single: "Single Notes",
             melody: "Melody",
         },

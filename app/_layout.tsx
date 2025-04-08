@@ -52,7 +52,7 @@ export default function RootLayout() {
 
         // @TODO: REMOVE THIS BEFORE BUILD
         // router.navigate("/level-selection/(tabs)");
-        router.navigate("/practice");
+        // router.navigate("/practice");
     }, [theme]);
 
     if (!_hydrated)

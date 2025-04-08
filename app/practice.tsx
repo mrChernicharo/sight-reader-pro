@@ -9,7 +9,7 @@ import { defaultNoteRangeIndices, useAppStore } from "@/hooks/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
-import { Clef, GameType, LevelAccidentType, ScaleType, TimeSignature, WinRank } from "@/utils/enums";
+import { Clef, GameType, KeySignature, LevelAccidentType, ScaleType, TimeSignature, WinRank } from "@/utils/enums";
 import { explodeNote, isFlatKeySignature, wait } from "@/utils/helperFns";
 import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
 import { ALL_LEVELS } from "@/utils/levels";
@@ -30,8 +30,8 @@ const ACCIDENTS = Object.values(LevelAccidentType).map((v) => ({
     value: v.toLowerCase(),
 }));
 export default function PracticeScreen() {
+    // const { width } = useWindowDimensions();
     const theme = useColorScheme() ?? "light";
-    const { width } = useWindowDimensions();
     const { t } = useTranslation();
 
     const { practiceSettings, updatePracticeSettings, endGame } = useAppStore();
@@ -41,30 +41,20 @@ export default function PracticeScreen() {
         isMinorKey,
         accident,
         scaleType,
-        keySignature: storedKeySignature,
+        keySignature = KeySignature.C,
         noteRangeIndices,
+        gameType,
     } = practiceSettings;
 
-    const SCALES = Object.values(ScaleType).map((v) => ({
-        key: v,
-        value: t(`music.scaleType.${v}`),
-    }));
-
+    const SCALES = Object.values(ScaleType).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) }));
     const DEFAULT_SCALE = SCALES.find((acc) => acc.key === scaleType);
     const DEFAULT_ACCIDENT = ACCIDENTS.find((acc) => acc.key === accident);
 
     const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;
-    const currKSIdx = keySigArray.findIndex((key) => key === storedKeySignature);
-    const initialKSIdx = currKSIdx > -1 ? currKSIdx : 7;
+    const altKeySigArray = isMinorKey ? MAJOR_KEY_SIGNATURES : MINOR_KEY_SIGNATURES;
+    const keySigIndex = keySigArray.findIndex((key) => key === keySignature);
 
-    const [keySigIndex, setKeySigIndex] = useState(initialKSIdx);
-    const [rangeIdx, setRangeIdx] = useState(noteRangeIndices);
-
-    const CURR_KEY_SIGNATURES = keySigArray.map((v) => ({
-        label: v,
-        value: v.toLowerCase(),
-    }));
-    const keySignature = CURR_KEY_SIGNATURES[keySigIndex].label;
+    const CURR_KEY_SIGNATURES = keySigArray.map((v) => ({ label: v, value: v.toLowerCase() }));
 
     const allNotes = useMemo(() => {
         const notes = hasKey
@@ -88,21 +78,20 @@ export default function PracticeScreen() {
         });
     }, [clef, hasKey, keySignature, accident]);
 
-    const rangeNotes = allNotes.filter((_, idx) => rangeIdx.low < idx && idx < rangeIdx.high);
+    // const rangeNotes = allNotes.filter((_, idx) => noteRangeIndices.low < idx && idx < noteRangeIndices.high);
 
-    const onNoteRangeSliderChange = useCallback(
-        (low: number, high: number) => {
-            setRangeIdx({ low, high });
-        },
-        [setRangeIdx]
-    );
+    // const [gameType, setGameType] = useState(GameType.Single);
+
+    const onNoteRangeSliderChange = useCallback((low: number, high: number) => {
+        updatePracticeSettings("noteRangeIndices", { low, high });
+    }, []);
 
     // CREATE A LEVEL IN MEMORY, THEN REFERENCE IT WITHIN GAME COMPONENT
     const startPracticeGame = useCallback(async () => {
         // console.log({ clef, hasKey, accident, keySignature });
         const levelId: LevelId = `${clef}-practice`;
-        const noteRanges = [`${allNotes[rangeIdx.low]}:::${allNotes[rangeIdx.high]}`];
-        // console.log("allNotes::::", allNotes, allNotes[rangeIdx.low], allNotes[rangeIdx.high]);
+        const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}`];
+        // console.log("allNotes::::", allNotes, allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]);
 
         const practiceLevelSingle = {
             id: levelId,
@@ -127,14 +116,12 @@ export default function PracticeScreen() {
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             hasKey,
             ...(hasKey ? { keySignatures: [keySignature], scaleType } : { accident }),
-            accident: LevelAccidentType["#"],
         } as Level<GameType.Melody>;
 
         // console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
-
-        // !important!
-        // ALL_LEVELS.push(practiceLevelSingle);
-        ALL_LEVELS.push(practiceLevelMelody);
+        // !important! Practice games are pushed into levels before game begins, then they are popped out from levels
+        const game = gameType == GameType.Single ? practiceLevelSingle : practiceLevelMelody;
+        ALL_LEVELS.push(game);
 
         await wait(200);
 
@@ -142,21 +129,21 @@ export default function PracticeScreen() {
             pathname: "/game-level/[id]",
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
-    }, [clef, hasKey, accident, rangeIdx.low, rangeIdx.high, CURR_KEY_SIGNATURES, keySignature, allNotes, ALL_LEVELS]);
-
-    useEffect(() => {
-        console.log({ rangeIdx });
-    }, [rangeIdx]);
-
-    useEffect(() => {
-        updatePracticeSettings("keySignature", keySignature);
-    }, [keySignature]);
-
-    // useEffect(() => {}, [])
+    }, [
+        clef,
+        hasKey,
+        accident,
+        noteRangeIndices.low,
+        noteRangeIndices.high,
+        CURR_KEY_SIGNATURES,
+        keySignature,
+        allNotes,
+        ALL_LEVELS,
+    ]);
 
     // useEffect(() => {
-    //   console.log("---", { clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes });
-    // }, [clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes]);
+    //     console.log("---", { hasKey, accident, keySignature });
+    // }, [hasKey, accident, keySignature]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
@@ -192,10 +179,36 @@ export default function PracticeScreen() {
                         </AppView>
                     </AppView>
 
+                    <AppView style={s.clefSwitchContainer}>
+                        <AppView style={s.clefSwitch}>
+                            {/* <AppText>{t("music.clef")}</AppText> */}
+                            <AppText>{t("game.type.single")}</AppText>
+                            <AppSwitch
+                                value={gameType == GameType.Melody}
+                                setValue={(val) => {
+                                    const type = val ? GameType.Melody : GameType.Single;
+                                    // console.log({ val, type });
+                                    updatePracticeSettings("gameType", type);
+                                }}
+                            />
+                            <AppText>{t("game.type.melody")}</AppText>
+                        </AppView>
+                    </AppView>
+
                     <AppView style={s.keyContainer}>
                         <AppView style={s.box}>
                             <AppText>{t("music.keySignature")}</AppText>
-                            <AppSwitch value={hasKey} setValue={(val) => updatePracticeSettings("hasKey", val)} />
+                            <AppSwitch
+                                value={hasKey}
+                                setValue={async (val) => {
+                                    // console.log(val);
+                                    if (!val) {
+                                        updatePracticeSettings("keySignature", KeySignature.C);
+                                        updatePracticeSettings("isMinorKey", false);
+                                    }
+                                    updatePracticeSettings("hasKey", val);
+                                }}
+                            />
                             {hasKey && <AppText style={{ fontSize: 20 }}>{keySignature}</AppText>}
                         </AppView>
                     </AppView>
@@ -207,7 +220,11 @@ export default function PracticeScreen() {
                                     <AppText>{t("music.scaleType.major")}</AppText>
                                     <AppSwitch
                                         value={isMinorKey}
-                                        setValue={(val) => updatePracticeSettings("isMinorKey", val)}
+                                        setValue={(val) => {
+                                            const relativeKeySig = altKeySigArray[keySigIndex];
+                                            updatePracticeSettings("isMinorKey", val);
+                                            updatePracticeSettings("keySignature", relativeKeySig);
+                                        }}
                                     />
                                     <AppText>{t("music.scaleType.minor")}</AppText>
                                 </AppView>
@@ -216,7 +233,10 @@ export default function PracticeScreen() {
                                     <KeySignatureSlider
                                         keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
                                         keySigIndex={keySigIndex}
-                                        setKeySigIndex={setKeySigIndex}
+                                        setKeySigIndex={(n) => {
+                                            const keySig = keySigArray.find((_, i) => i == n);
+                                            updatePracticeSettings("keySignature", keySig);
+                                        }}
                                     />
                                 </AppView>
                             </AppView>
@@ -275,12 +295,12 @@ export default function PracticeScreen() {
                         <AppView style={s.rangeDisplay}>
                             <AppView>
                                 <AppText style={[{ fontWeight: "bold" }, { fontSize: 18 }]}>
-                                    {allNotes[rangeIdx.low]}
+                                    {allNotes[noteRangeIndices.low]}
                                 </AppText>
                             </AppView>
                             <AppView>
                                 <AppText style={[{ fontWeight: "bold" }, { fontSize: 18 }]}>
-                                    {allNotes[rangeIdx.high]}
+                                    {allNotes[noteRangeIndices.high]}
                                 </AppText>
                             </AppView>
                         </AppView>
@@ -290,8 +310,8 @@ export default function PracticeScreen() {
                             max={allNotes.length - 1}
                             step={1}
                             handleValueChange={onNoteRangeSliderChange}
-                            high={rangeIdx.high}
-                            low={rangeIdx.low}
+                            high={noteRangeIndices.high}
+                            low={noteRangeIndices.low}
                         />
                     </AppView>
 
@@ -299,7 +319,7 @@ export default function PracticeScreen() {
                         <SheetMusic.RangeDisplay
                             clef={clef}
                             keySignature={keySignature}
-                            keys={[[allNotes[rangeIdx.low], allNotes[rangeIdx.high]]]}
+                            keys={[[allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]]]}
                         />
                     </AppView>
                 </AppView>

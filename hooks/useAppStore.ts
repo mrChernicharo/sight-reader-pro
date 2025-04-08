@@ -14,6 +14,7 @@ interface PracticeSettings {
     keySignature: KeySignature;
     scaleType: ScaleType;
     noteRangeIndices: { low: number; high: number };
+    gameType: GameType;
 }
 interface CompletedTours {
     init: boolean;
@@ -47,6 +48,7 @@ const defaultPracticeSettings: PracticeSettings = {
     keySignature: KeySignature.C,
     scaleType: ScaleType.Diatonic,
     noteRangeIndices: defaultNoteRangeIndices,
+    gameType: GameType.Single,
 };
 
 export interface AppActions {

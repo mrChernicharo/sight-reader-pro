@@ -55,6 +55,7 @@ const ptBR = {
             levelSelection: "Selecionar Nível",
         },
         type: {
+            title: "Tipo de jogo",
             single: "Notas individuais",
             melody: "Melodia",
         },
