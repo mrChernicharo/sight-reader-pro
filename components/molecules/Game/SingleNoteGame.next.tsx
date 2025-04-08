@@ -206,7 +206,7 @@ export function SingleNoteGameComponent() {
                     placement="bottom"
                     tooltipStyle={{ transform: [{ translateY: 0 }] }}
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                    // contentStyle={{ height: 126 }}
+                    contentStyle={{ height: 160 }}
                     parentWrapperStyle={{}}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>

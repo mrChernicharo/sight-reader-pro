@@ -5,7 +5,7 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { Colors } from "@/utils/Colors";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, Platform, SafeAreaView, StyleSheet, TextInput, useColorScheme } from "react-native";
 import { VolumeSlider } from "@/components/molecules/VolumeSlider";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -20,39 +20,46 @@ export default function SettingsScreen() {
     const { username, language, showPianoNoteNames, setUsername, setLanguage, toggleShowPianoNoteNames, _resetStore } =
         useAppStore();
 
+    const inputRef = useRef<any>(null);
+
     const [_showPianoNoteNames, setShowPianoNoteNames] = useState(showPianoNoteNames);
+
     useEffect(() => {
         toggleShowPianoNoteNames(_showPianoNoteNames);
     }, [_showPianoNoteNames]);
 
     const createTwoButtonAlert = () => {
-        const onConfirm = () => {
-            console.log("OK Pressed");
-            _resetStore();
-        };
-        const onCancel = () => {
-            console.log("Cancel Pressed");
-        };
+        return new Promise((resolve) => {
+            const onConfirm = async () => {
+                console.log("OK Pressed");
+                await _resetStore();
+                resolve(true);
+            };
+            const onCancel = () => {
+                console.log("Cancel Pressed");
+                resolve(false);
+            };
 
-        if (Platform.OS === "web") {
-            if (confirm(`${t(`settings.resetMyData.title`)} \n${t(`settings.resetMyData.description`)}`)) {
-                onConfirm();
+            if (Platform.OS === "web") {
+                if (confirm(`${t(`settings.resetMyData.title`)} \n${t(`settings.resetMyData.description`)}`)) {
+                    onConfirm();
+                } else {
+                    onCancel();
+                }
             } else {
-                onCancel();
+                Alert.alert(t(`settings.resetMyData.title`), t(`settings.resetMyData.description`), [
+                    {
+                        text: "Cancel",
+                        onPress: onCancel,
+                        style: "cancel",
+                    },
+                    {
+                        text: "OK",
+                        onPress: onConfirm,
+                    },
+                ]);
             }
-        } else {
-            Alert.alert(t(`settings.resetMyData.title`), t(`settings.resetMyData.description`), [
-                {
-                    text: "Cancel",
-                    onPress: onCancel,
-                    style: "cancel",
-                },
-                {
-                    text: "OK",
-                    onPress: onConfirm,
-                },
-            ]);
-        }
+        });
     };
 
     return (
@@ -69,6 +76,7 @@ export default function SettingsScreen() {
                     <AppText>{t("settings.username")}</AppText>
                     <TextInput
                         style={[s.input, { color: textColor }]}
+                        ref={inputRef}
                         // onChangeText={setLocalUsername}
                         defaultValue={username}
                         onSubmitEditing={(ev) => {
@@ -138,7 +146,10 @@ export default function SettingsScreen() {
                     textStyle={{ color: "white" }}
                     style={{ backgroundColor: "red" }}
                     activeOpacity={0.7}
-                    onPress={() => createTwoButtonAlert()}
+                    onPress={async () => {
+                        await createTwoButtonAlert();
+                        // inputRef.current.focus();
+                    }}
                 />
             </AppView>
         </SafeAreaView>
