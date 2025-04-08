@@ -18,6 +18,7 @@ import Tooltip from "react-native-walkthrough-tooltip";
 import { AppText } from "@/components/atoms/AppText";
 import AppButton from "@/components/atoms/AppButton";
 import { useTranslation } from "@/hooks/useTranslation";
+import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 
 const DELAY = 60;
 
@@ -139,9 +140,7 @@ export function SingleNoteGameComponent() {
                     contentStyle={{ height: 110 }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText {...tourTextProps}>
-                                As estatísticas e informações da partida vão estar aqui em cima
-                            </AppText>
+                            <TooltipTextLines keypath="tour.game.3" />
                             <AppButton
                                 text="Entendi"
                                 onPress={() => {
@@ -165,8 +164,7 @@ export function SingleNoteGameComponent() {
                 placement="center"
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText {...tourTextProps}>Essa é a tela principal</AppText>
-                        <AppText {...tourTextProps}>É aqui que o jogo acontece</AppText>
+                        <TooltipTextLines keypath="tour.game.0" />
                         <AppButton
                             text="OK"
                             onPress={() => {
@@ -181,12 +179,11 @@ export function SingleNoteGameComponent() {
                 placement="center"
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText {...tourTextProps}>Toque o máximo de notas que puder</AppText>
-                        <AppText {...tourTextProps}>Antes que o tempo acabe!</AppText>
-                        <AppText {...tourTextProps}>Acumule pontos e avance pelas fases</AppText>
+                        <TooltipTextLines keypath="tour.game.4" />
                         <AppText {...tourTextProps} type="mdSemiBold">
                             Bora começar?
                         </AppText>
+
                         <AppButton
                             text="Vamos nessa!"
                             style={{ marginTop: 10 }}
@@ -208,12 +205,9 @@ export function SingleNoteGameComponent() {
                     parentWrapperStyle={{}}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText {...tourTextProps}>
-                                Aqui fica a Pauta musical. Notas musicais vão aparecer aqui. Por exemplo, agora temos
-                                uma nota{" "}
-                                <AppText {...tourTextProps} type="mdSemiBold">
-                                    {t(`music.notes.${explodeNote(currNote).noteName}`).toUpperCase()}
-                                </AppText>
+                            <TooltipTextLines keypath="tour.game.1" />
+                            <AppText {...tourTextProps} type="mdSemiBold">
+                                {t(`music.notes.${explodeNote(currNote).noteName}`).toUpperCase()}
                             </AppText>
                             <AppButton text="OK" onPress={() => setTourStep(2)} />
                         </AppView>
@@ -230,9 +224,7 @@ export function SingleNoteGameComponent() {
                 contentStyle={{ height: 112 }}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText {...tourTextProps}>
-                            O seu trabalho é tocar no Piano as notas que forem aparecerendo na Pauta
-                        </AppText>
+                        <TooltipTextLines keypath="tour.game.2" />
                         <AppButton text="OK" onPress={() => setTourStep(3)} />
                     </AppView>
                 }

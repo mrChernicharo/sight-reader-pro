@@ -101,15 +101,17 @@ export const useAppStore = create<AppState & AppActions>()(
                     set({
                         username: "",
                         language: null,
-                        // knowledge: null, // don't override knowledge
+                        knowledge: null, // don't override knowledge
                         selectedLevelsClef: Clef.Treble,
                         showPianoNoteNames: true,
                         globalVolume: 1,
                         games: [],
                         currentGame: null,
                         completedTours: {
-                            init: true,
-                            home: true,
+                            // init: true,
+                            // home: true,
+                            init: false,
+                            home: false,
                             levelSelection: false,
                             game: false,
                             practice: false,

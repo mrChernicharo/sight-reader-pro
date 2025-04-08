@@ -75,7 +75,11 @@ const en = {
         language: "Language",
         volume: "Volume",
         showPianoNotes: { title: "Show piano note names", on: "on", off: "off" },
-        resetMyData: "Reset my data",
+        resetMyData: {
+            title: "Reset my data",
+            heading: "Are you sure?",
+            description: "All your data will be erased. This action cannot be reverted",
+        },
         lang: { placeholder: "Select language" },
     },
     profile: {
@@ -147,11 +151,21 @@ const en = {
         },
     },
     tour: {
-        init: { "0": "" },
-        home: { "0": "" },
-        levelSelection: { "0": "Essa é a tela de Seleção de Nível", "1": "Joga duro!" },
-        game: { "0": "" },
-        practice: { "0": "" },
+        init: { "0": "Obrigado por usar o Sight Reader Pro!::: Vamos começar?" },
+        home: { "0": "", "1": "", "2": "", "3": "", "4": "" },
+        levelSelection: {
+            "0": "Boas vindas à tela de Seleção de Nível",
+            "1": "Selecione a Clave desejada aqui embaixo:::Cada Clave tem vários desafios diferentes",
+            "2": "Vença o primeiro nível:::para ir destravando novas Fases, cada vez mais desafiadoras",
+        },
+        game: {
+            "0": "Essa é a tela principal:::É aqui que o jogo acontece",
+            "1": "Aqui fica a Pauta musical. Notas musicais vão aparecer aqui. Por exemplo, agora temos uma nota",
+            "2": "O seu trabalho é tocar no Piano as notas que forem aparecerendo na Pauta",
+            "3": "As estatísticas e informações da partida vão estar aqui em cima",
+            "4": "Toque o máximo de notas que puder:::Antes que o tempo acabe!:::Acumule pontos e avance pelas fases",
+        },
+        practice: { "0": "", "1": "", "2": "", "3": "", "4": "" },
     },
 };
 

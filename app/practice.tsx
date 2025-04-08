@@ -179,22 +179,6 @@ export default function PracticeScreen() {
                         </AppView>
                     </AppView>
 
-                    <AppView style={s.clefSwitchContainer}>
-                        <AppView style={s.clefSwitch}>
-                            {/* <AppText>{t("music.clef")}</AppText> */}
-                            <AppText>{t("game.type.single")}</AppText>
-                            <AppSwitch
-                                value={gameType == GameType.Melody}
-                                setValue={(val) => {
-                                    const type = val ? GameType.Melody : GameType.Single;
-                                    // console.log({ val, type });
-                                    updatePracticeSettings("gameType", type);
-                                }}
-                            />
-                            <AppText>{t("game.type.melody")}</AppText>
-                        </AppView>
-                    </AppView>
-
                     <AppView style={s.keyContainer}>
                         <AppView style={s.box}>
                             <AppText>{t("music.keySignature")}</AppText>
@@ -325,6 +309,22 @@ export default function PracticeScreen() {
                 </AppView>
 
                 <AppView>
+                    <AppView style={{ borderWidth: 0, paddingBottom: 16 }}>
+                        <AppView style={s.clefSwitch}>
+                            {/* <AppText>{t("music.clef")}</AppText> */}
+                            <AppText>{t("game.type.single")}</AppText>
+                            <AppSwitch
+                                value={gameType == GameType.Melody}
+                                setValue={(val) => {
+                                    const type = val ? GameType.Melody : GameType.Single;
+                                    // console.log({ val, type });
+                                    updatePracticeSettings("gameType", type);
+                                }}
+                            />
+                            <AppText>{t("game.type.melody")}</AppText>
+                        </AppView>
+                    </AppView>
+
                     <AppButton
                         text={t("practice.start")}
                         onPress={startPracticeGame}

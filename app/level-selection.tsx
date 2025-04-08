@@ -6,27 +6,16 @@ import { useIntl } from "@/hooks/useIntl";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { glyphs } from "@/utils/constants";
-import { Clef, GameType } from "@/utils/enums";
+import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
-import { Level } from "@/utils/types";
 import { useLayoutEffect, useState } from "react";
-import {
-    Dimensions,
-    Platform,
-    Pressable,
-    SafeAreaView,
-    StatusBar,
-    StyleProp,
-    StyleSheet,
-    TextStyle,
-} from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Tooltip, { TooltipChildrenContext } from "react-native-walkthrough-tooltip";
+import Tooltip from "react-native-walkthrough-tooltip";
 
-import { router } from "expo-router";
 import AppButton from "@/components/atoms/AppButton";
 import { LevelTile } from "@/components/atoms/LevelTile";
+import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { BottomTabs } from "@/components/molecules/BottomTabs";
 
 const cols = 3;
@@ -49,12 +38,9 @@ export default function LevelSelectionScreen() {
     const grid = makeGrid(clefLevels.data, cols);
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
 
-    const topAdjustment = Platform.OS === "android" ? -StatusBar.currentHeight! : 0;
-    const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
-
     useLayoutEffect(() => {
         if (!hasCompletedTour) setTourStep(0);
-    }, []);
+    }, [hasCompletedTour]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%" }}>
@@ -85,15 +71,16 @@ export default function LevelSelectionScreen() {
                                                 const isFirstLevel = rowIdx == 0 && lvlIdx == 0;
                                                 return isFirstLevel ? (
                                                     <Tooltip
+                                                        key={`tooltip-${level.id}`}
                                                         isVisible={tourStep == 2}
                                                         placement="right"
-                                                        topAdjustment={topAdjustment}
+                                                        topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                                                         contentStyle={{ minHeight: 160 }}
                                                         content={
                                                             <AppView transparentBG style={{ alignItems: "center" }}>
-                                                                <AppText {...tourTextProps}>
-                                                                    {t(`tour.levelSelection.${tourStep}`)}
-                                                                </AppText>
+                                                                <TooltipTextLines
+                                                                    keypath={`tour.levelSelection.${tourStep}`}
+                                                                />
                                                                 <AppButton
                                                                     text="OK"
                                                                     onPress={() => {
@@ -127,10 +114,10 @@ export default function LevelSelectionScreen() {
                         <Tooltip
                             isVisible={tourStep == 0}
                             placement="center"
-                            topAdjustment={topAdjustment}
+                            topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                             content={
                                 <AppView transparentBG style={{ alignItems: "center" }}>
-                                    <AppText {...tourTextProps}>{t(`tour.levelSelection.${tourStep}`)}</AppText>
+                                    <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
                                     <AppButton
                                         text="OK"
                                         onPress={() => {
@@ -151,10 +138,10 @@ export default function LevelSelectionScreen() {
                 isVisible={tourStep == 1}
                 placement="top"
                 tooltipStyle={{ transform: [{ translateY: -100 }] }}
-                topAdjustment={topAdjustment}
+                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText {...tourTextProps}>{t(`tour.levelSelection.${tourStep}`)}</AppText>
+                        <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
                         <AppButton
                             text="OK"
                             onPress={() => {

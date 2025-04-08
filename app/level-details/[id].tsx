@@ -82,7 +82,7 @@ export default function LevelDetails() {
                         </AppView>
                     </FadeIn>
 
-                    <FadeIn y={0} x={200} delay={800}>
+                    <FadeIn y={50} x={0} delay={300}>
                         <AppView style={{ borderBottomWidth: 1, borderColor: muteColor }} />
                     </FadeIn>
                 </AppView>

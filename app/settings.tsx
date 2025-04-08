@@ -25,10 +25,7 @@ export default function SettingsScreen() {
         toggleShowPianoNoteNames(_showPianoNoteNames);
     }, [_showPianoNoteNames]);
 
-    const title = "Are you sure?";
-    const description = "All your data will be erased. This action cannot be reverted";
-
-    const createTwoButtonAlert = (title: string, description: string) => {
+    const createTwoButtonAlert = () => {
         const onConfirm = () => {
             console.log("OK Pressed");
             _resetStore();
@@ -38,13 +35,13 @@ export default function SettingsScreen() {
         };
 
         if (Platform.OS === "web") {
-            if (confirm(`${title} \n${description}`)) {
+            if (confirm(`${t(`settings.resetMyData.title`)} \n${t(`settings.resetMyData.description`)}`)) {
                 onConfirm();
             } else {
                 onCancel();
             }
         } else {
-            Alert.alert(title, description, [
+            Alert.alert(t(`settings.resetMyData.title`), t(`settings.resetMyData.description`), [
                 {
                     text: "Cancel",
                     onPress: onCancel,
@@ -137,11 +134,11 @@ export default function SettingsScreen() {
                 </AppView>
 
                 <AppButton
-                    text={t("settings.resetMyData")}
+                    text={t("settings.resetMyData.title")}
                     textStyle={{ color: "white" }}
                     style={{ backgroundColor: "red" }}
                     activeOpacity={0.7}
-                    onPress={() => createTwoButtonAlert(title, description)}
+                    onPress={() => createTwoButtonAlert()}
                 />
             </AppView>
         </SafeAreaView>

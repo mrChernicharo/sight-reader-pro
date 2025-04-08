@@ -1,5 +1,6 @@
 import { TRANSLATIONS } from "@/translations";
 import { Accident, SoundEffect } from "./enums";
+import { Platform, StatusBar } from "react-native";
 
 export const GAME_WIN_MIN_ACCURACY = 0.6;
 
@@ -25,6 +26,8 @@ export const drawAccidents: Record<Accident, string> = {
 
 export const SUPPORTED_LANGUAGES = Object.keys(TRANSLATIONS);
 export const LANGS = SUPPORTED_LANGUAGES.map((lang) => ({ key: lang, value: (TRANSLATIONS as any)[lang].lang }));
+
+export const WALKTHROUGH_TOP_ADJUSTMENT = Platform.OS === "android" ? -StatusBar.currentHeight! : 0;
 
 // export const soundEfxAssets = {
 //     [SoundEffect.WrongAnswer]: "https://mrchernicharo.github.io/piano-notes/wrong-answer.mp3",

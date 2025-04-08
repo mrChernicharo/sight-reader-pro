@@ -66,7 +66,7 @@ tutorials
 
 ---
 
-level-selection-walkthrough
+level-selection-walkthrough ✅
 translate walkthroughs (tours)
 style walkthroughs
 translate pianoKeys ✅
