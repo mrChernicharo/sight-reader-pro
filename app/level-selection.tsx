@@ -26,6 +26,8 @@ import Tooltip, { TooltipChildrenContext } from "react-native-walkthrough-toolti
 
 import { router } from "expo-router";
 import AppButton from "@/components/atoms/AppButton";
+import { LevelTile } from "@/components/atoms/LevelTile";
+import { BottomTabs } from "@/components/molecules/BottomTabs";
 
 const cols = 3;
 
@@ -84,7 +86,6 @@ export default function LevelSelectionScreen() {
                                         <AppView key={`row-${rowIdx}`} style={s.gridRow}>
                                             {row.map((level, lvlIdx) => {
                                                 const isFirstLevel = rowIdx == 0 && lvlIdx == 0;
-
                                                 return isFirstLevel ? (
                                                     <Tooltip
                                                         isVisible={tourStep == 2}
@@ -146,6 +147,7 @@ export default function LevelSelectionScreen() {
                     </AppView>
                 </AppView>
             </ScrollView>
+
             {/* Bottom Tabs */}
             <Tooltip
                 isVisible={tourStep == 1}
@@ -164,66 +166,9 @@ export default function LevelSelectionScreen() {
                     </AppView>
                 }
             >
-                <AppView style={s.bottomTabs}>
-                    <Pressable
-                        android_ripple={{ radius: 240 }}
-                        onPress={() => setSelectedClef(Clef.Treble)}
-                        style={{
-                            flex: 1,
-                            alignItems: "center",
-                            paddingTop: 5,
-                            borderColor: clef == Clef.Treble ? accentColor : backgroundColor,
-                            borderTopWidth: 3,
-                        }}
-                    >
-                        <AppText type="lg" style={{ lineHeight: 54 }}>
-                            {glyphs[`trebleClef`]}
-                        </AppText>
-                    </Pressable>
-                    <Pressable
-                        android_ripple={{ radius: 240 }}
-                        onPress={() => setSelectedClef(Clef.Bass)}
-                        style={{
-                            flex: 1,
-                            alignItems: "center",
-                            paddingTop: 5,
-                            borderColor: clef == Clef.Bass ? accentColor : backgroundColor,
-                            borderTopWidth: 3,
-                        }}
-                    >
-                        <AppText type="title" style={{ lineHeight: 54 }}>
-                            {glyphs[`bassClef`]}
-                        </AppText>
-                    </Pressable>
-                </AppView>
+                <BottomTabs />
             </Tooltip>
         </SafeAreaView>
-    );
-}
-
-interface LevelTileProps {
-    level: Level<GameType>;
-    isLocked: boolean;
-}
-function LevelTile({ level, isLocked }: LevelTileProps) {
-    const { levelName, levelIdx } = getLevelName(level);
-    const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "bg");
-    const backgroundColor = isLocked ? "gray" : accentColor;
-    return (
-        <Pressable
-            disabled={isLocked}
-            onPress={() => {
-                router.push({
-                    pathname: "/level-details/[id]",
-                    params: { id: level.id },
-                });
-            }}
-        >
-            <AppView style={[s.item, { backgroundColor }]}>
-                <AppText>{levelName}</AppText>
-                <AppText>{levelIdx}</AppText>
-            </AppView>
-        </Pressable>
     );
 }
 
@@ -260,14 +205,6 @@ export const s = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    bottomTabs: {
-        position: "absolute",
-        bottom: 0,
-        zIndex: 100,
-        flexDirection: "row",
-        // borderWidth: 1,
-        // borderColor: "red",
-    },
     footerFiller: { height: 40 },
 });
 
@@ -282,11 +219,4 @@ function makeGrid<T>(nums: T[], cols = 2) {
     });
 
     return grid;
-}
-
-function getLevelName(item: Level<GameType>) {
-    const splitLevelName = item.name.split(" ");
-    const levelIdx = splitLevelName.pop();
-    const levelName = splitLevelName.join(" ");
-    return { levelIdx, levelName };
 }
