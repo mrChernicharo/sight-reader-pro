@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
     const { t } = useTranslation();
-    const { username, games } = useAppStore();
+    const { username = "user", games } = useAppStore();
     const theme = useColorScheme() ?? "light";
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     // console.log("games ::: ", games);
@@ -37,7 +37,7 @@ export default function SettingsScreen() {
                 data={games}
                 keyExtractor={(game) => game.id}
                 renderItem={({ item: game }) => <GameRecord game={game} />}
-                style={{ borderWidth: 2, borderColor: "#818181", height: Dimensions.get("screen").height - 124 }}
+                style={s.flatlist}
             />
             {/* </AppView> */}
         </SafeAreaView>
@@ -61,11 +61,10 @@ const s = StyleSheet.create({
         width: "100%",
         gap: 12,
     },
-    input: {
-        borderWidth: 1,
-        borderColor: "#999",
-        borderRadius: 4,
-        paddingVertical: 4,
-        paddingHorizontal: 8,
+    flatlist: {
+        borderWidth: 2,
+        borderColor: "#818181",
+        borderStyle: "dashed",
+        height: Dimensions.get("screen").height - 124,
     },
 });

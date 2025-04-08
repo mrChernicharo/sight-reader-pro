@@ -146,6 +146,17 @@ const ptBR = {
             ab: "Lá♭",
         },
     },
+    tour: {
+        init: { "0": "" },
+        home: { "0": "" },
+        levelSelection: {
+            "0": "Essa é a tela de Seleção de Nível",
+            "1": "Selecione a Clave desejada aqui embaixo. Cada Clave tem vários desafios diferentes",
+            "2": "Vença o primeiro nível para ir destravando níveis cada vez mais difíceis",
+        },
+        game: { "0": "" },
+        practice: { "0": "" },
+    },
 };
 
 export default ptBR;

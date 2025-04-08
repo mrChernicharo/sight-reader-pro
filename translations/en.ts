@@ -146,6 +146,13 @@ const en = {
             ab: "ab",
         },
     },
+    tour: {
+        init: { "0": "" },
+        home: { "0": "" },
+        levelSelection: { "0": "Essa é a tela de Seleção de Nível", "1": "Joga duro!" },
+        game: { "0": "" },
+        practice: { "0": "" },
+    },
 };
 
 export default en;

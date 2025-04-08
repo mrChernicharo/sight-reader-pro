@@ -83,7 +83,7 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                     placement="center"
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText {...tourTextProps}>Essa é a tela de Seleção de nível</AppText>
+                            <AppText {...tourTextProps}>{t(`tour.levelSelection.${tourStep}`)}</AppText>
                             <AppButton
                                 text="OK"
                                 onPress={() => {
@@ -96,10 +96,11 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
 
                 <Tooltip
                     isVisible={tourStep == 1}
-                    placement="center"
+                    placement="bottom"
+                    tooltipStyle={{ transform: [{ translateY: -60 }] }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText {...tourTextProps}>Joga duro!</AppText>
+                            <AppText {...tourTextProps}>{t(`tour.levelSelection.${tourStep}`)}</AppText>
                             <AppButton
                                 text="OK"
                                 onPress={() => {
@@ -110,6 +111,21 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                     }
                 />
 
+                <Tooltip
+                    isVisible={tourStep == 2}
+                    placement="center"
+                    content={
+                        <AppView transparentBG style={{ alignItems: "center" }}>
+                            <AppText {...tourTextProps}>{t(`tour.levelSelection.${tourStep}`)}</AppText>
+                            <AppButton
+                                text="OK"
+                                onPress={() => {
+                                    setTourStep(-1);
+                                }}
+                            />
+                        </AppView>
+                    }
+                />
                 <AppView style={tabStyles.footerFiller}></AppView>
             </ScrollView>
         </SafeAreaView>
