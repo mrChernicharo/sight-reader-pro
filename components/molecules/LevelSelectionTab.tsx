@@ -11,9 +11,11 @@ import { Clef, GameType } from "@/utils/enums";
 import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
 import { Level } from "@/utils/types";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Dimensions, Pressable, SafeAreaView, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import Tooltip from "react-native-walkthrough-tooltip";
+import AppButton from "../atoms/AppButton";
 
 const cols = 3;
 
@@ -30,7 +32,11 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
 
     const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
-    const [tourStep, setTourStep] = useState(0);
+    const [tourStep, setTourStep] = useState(-1);
+
+    useLayoutEffect(() => {
+        setTourStep(0);
+    }, []);
 
     return (
         <SafeAreaView style={{ minHeight: "100%" }}>
@@ -69,6 +75,38 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                         </AppView>
                     </AppView>
                 </AppView>
+
+                <Tooltip
+                    isVisible={tourStep == 0}
+                    placement="center"
+                    content={
+                        <AppView transparentBG style={{ alignItems: "center" }}>
+                            <AppText>Essa é a tela de Seleção de nível</AppText>
+                            <AppButton
+                                text="OK"
+                                onPress={() => {
+                                    setTourStep(1);
+                                }}
+                            />
+                        </AppView>
+                    }
+                />
+
+                <Tooltip
+                    isVisible={tourStep == 1}
+                    placement="center"
+                    content={
+                        <AppView transparentBG style={{ alignItems: "center" }}>
+                            <AppText>Joga duro!</AppText>
+                            <AppButton
+                                text="OK"
+                                onPress={() => {
+                                    setTourStep(2);
+                                }}
+                            />
+                        </AppView>
+                    }
+                />
 
                 <AppView style={tabStyles.footerFiller}></AppView>
             </ScrollView>

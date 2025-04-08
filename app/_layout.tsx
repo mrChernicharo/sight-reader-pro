@@ -50,7 +50,7 @@ export default function RootLayout() {
         NavigationBar.setBackgroundColorAsync("rgba(0,0,0,0)");
 
         // @TODO: REMOVE THIS BEFORE BUILD
-        router.navigate("/level-selection/(tabs)");
+        // router.navigate("/level-selection/(tabs)");
     }, []);
 
     if (!_hydrated)
