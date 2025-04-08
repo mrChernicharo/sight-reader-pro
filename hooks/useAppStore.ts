@@ -32,6 +32,7 @@ export interface AppState {
     globalVolume: number;
     games: Game<GameType>[];
     currentGame: CurrentGame<GameType> | null;
+    selectedLevelsClef: Clef;
     completedTours: CompletedTours;
     practiceSettings: PracticeSettings;
     // difficulty: Difficulty;
@@ -57,6 +58,7 @@ export interface AppActions {
     setKnowledge: (knowledge: Knowledge) => Promise<void>;
     setGlobalVolume: (volume: number) => Promise<void>;
     toggleShowPianoNoteNames: (show: boolean) => Promise<void>;
+    setSelectedLevelsClef: (clef: Clef) => Promise<void>;
 
     setTourCompleted: (tourName: keyof CompletedTours, completed: boolean) => Promise<void>;
 
@@ -84,6 +86,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 globalVolume: 1,
                 games: [],
                 currentGame: null,
+                selectedLevelsClef: Clef.Treble,
                 practiceSettings: defaultPracticeSettings,
                 completedTours: {
                     init: false,
@@ -99,6 +102,7 @@ export const useAppStore = create<AppState & AppActions>()(
                         username: "",
                         language: null,
                         // knowledge: null, // don't override knowledge
+                        selectedLevelsClef: Clef.Treble,
                         showPianoNoteNames: true,
                         globalVolume: 1,
                         games: [],
@@ -118,6 +122,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 setKnowledge: async (knowledge: Knowledge) => set(() => ({ knowledge: knowledge })),
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
                 toggleShowPianoNoteNames: async (show: boolean) => set(() => ({ showPianoNoteNames: show })),
+                setSelectedLevelsClef: async (clef: Clef) => set(() => ({ selectedLevelsClef: clef })),
                 // setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
 
                 setTourCompleted: async (tourName: keyof CompletedTours, completed: boolean) =>
