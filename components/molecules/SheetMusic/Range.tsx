@@ -32,13 +32,14 @@ import { stemDown } from "@/utils/helperFns";
 import { Colors } from "@/utils/Colors";
 import { getDrawNote } from "@/utils/noteFns";
 
+const height = 176;
+const yPos = 30;
+
 export interface MusicNoteRangeProps {
     keys: [Note, Note][];
     clef: Clef;
     keySignature: KeySignature;
 }
-
-const height = 168;
 
 export function RangeComponent(props: MusicNoteRangeProps) {
     // const { height, width, scale, fontScale } = useWindowDimensions();
@@ -141,7 +142,7 @@ function runVexFlowRangeCode(
         .setStrokeStyle(color)
         .setLineWidth(2);
 
-    const stave = new Stave(0, 32, width);
+    const stave = new Stave(0, yPos, width);
     stave.setContext(context);
     stave.setClef(clef);
     stave.setKeySignature(keySignature);
@@ -210,8 +211,7 @@ function runVexFlowRangeCode(
 
 const styles = StyleSheet.create({
     container: {
-        height,
-        // borderWidth: 2,
+        // borderWidth: 1,
         // borderStyle: "dashed",
         // backgroundColor: "#F5FCFF",
     },

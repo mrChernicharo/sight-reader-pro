@@ -26,7 +26,8 @@ export function KeySignatureSlider({
                 maximumValue={keySignatures.length - 1}
                 value={keySigIndex}
                 onValueChange={setKeySigIndex}
-                // minimumTrackTintColor="white"
+                minimumTrackTintColor="#5b99d4"
+                thumbTintColor="#5b99d4"
                 maximumTrackTintColor={theme === "light" ? "black" : "white"}
             />
             <AppText style={{ fontSize: 32 }}> {glyphs.sharp}</AppText>

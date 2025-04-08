@@ -49,11 +49,11 @@ export default function PracticeScreen() {
     const [rangeIdx, setRangeIdx] = useState(defaultNoteRangeIndices);
 
     const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;
-    const keySignatures = keySigArray.map((v) => ({
+    const CURR_KEY_SIGNATURES = keySigArray.map((v) => ({
         label: v,
         value: v.toLowerCase(),
     }));
-    const keySignature = keySignatures[keySigIndex].label;
+    const keySignature = CURR_KEY_SIGNATURES[keySigIndex].label;
 
     const allNotes = useMemo(() => {
         const notes = hasKey
@@ -131,7 +131,7 @@ export default function PracticeScreen() {
             pathname: "/game-level/[id]",
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
-    }, [clef, hasKey, accident, rangeIdx.low, rangeIdx.high, keySignatures, keySignature, allNotes, ALL_LEVELS]);
+    }, [clef, hasKey, accident, rangeIdx.low, rangeIdx.high, CURR_KEY_SIGNATURES, keySignature, allNotes, ALL_LEVELS]);
 
     // useEffect(() => {
     //     console.log({ rangeIdx });
@@ -201,7 +201,7 @@ export default function PracticeScreen() {
 
                                 <AppView style={s.box}>
                                     <KeySignatureSlider
-                                        keySignatures={keySignatures.map((item) => item.label)}
+                                        keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
                                         keySigIndex={keySigIndex}
                                         setKeySigIndex={setKeySigIndex}
                                     />
@@ -364,7 +364,8 @@ const s = StyleSheet.create({
     },
     sheetMusicContainer: {
         // borderWidth: 1,
+        // borderStyle: "dashed",
         // borderColor: "red",
-        paddingBottom: 24,
+        marginBottom: 24,
     },
 });
