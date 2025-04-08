@@ -71,7 +71,8 @@ translate walkthroughs (tours)
 style walkthroughs
 translate pianoKeys ✅
 save practice params in store
-volume settings https://www.npmjs.com/package/react-native-volume-manager
+globalVolume and volume settings https://www.npmjs.com/package/react-native-volume-manager
+scrollable level details
 
 ---
 

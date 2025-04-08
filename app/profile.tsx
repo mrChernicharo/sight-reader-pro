@@ -19,25 +19,25 @@ export default function SettingsScreen() {
     if (!games) return null;
 
     return (
-        <SafeAreaView style={{ backgroundColor }}>
+        <SafeAreaView style={[s.container, { backgroundColor }]}>
             <AppView style={s.top}>
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink />
                 </AppView>
-                <AppText type="title">{t("profile.title")}</AppText>
+                <AppText type="defaultSemiBold">{t("profile.title")}</AppText>
+
+                <AppView>
+                    <AppText>{username}</AppText>
+                </AppView>
             </AppView>
 
-            <AppView>
-                <AppText>{username}</AppText>
-            </AppView>
             {/* <AppView> */}
 
             <FlatList
                 data={games}
                 keyExtractor={(game) => game.id}
                 renderItem={({ item: game }) => <GameRecord game={game} />}
-                style={{ height: Dimensions.get("screen").height - 132 }}
-                // style={{ borderWidth: 2, height: Dimensions.get("screen").height - 132 }}
+                style={{ borderWidth: 2, borderColor: "#818181", height: Dimensions.get("screen").height - 124 }}
             />
             {/* </AppView> */}
         </SafeAreaView>
@@ -46,9 +46,11 @@ export default function SettingsScreen() {
 
 const s = StyleSheet.create({
     container: {
-        paddingHorizontal: 36,
-        paddingVertical: 64,
+        // paddingVertical: 64,
+        paddingHorizontal: 24,
         width: "100%",
+        // minHeight: Dimensions.get("window").height,
+        // minHeight: Dimensions.get("screen").height,
     },
     top: {
         position: "relative",

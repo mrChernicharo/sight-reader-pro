@@ -47,11 +47,13 @@ export default function RootLayout() {
     }, [initTourCompleted]);
 
     useEffect(() => {
-        NavigationBar.setBackgroundColorAsync("rgba(0,0,0,0)");
+        NavigationBar.setBackgroundColorAsync(theme == "light" ? Colors.light.bg : Colors.dark.bg);
+        NavigationBar.setButtonStyleAsync(theme == "light" ? "dark" : "light");
 
         // @TODO: REMOVE THIS BEFORE BUILD
         // router.navigate("/level-selection/(tabs)");
-    }, []);
+        router.navigate("/practice");
+    }, [theme]);
 
     if (!_hydrated)
         return (

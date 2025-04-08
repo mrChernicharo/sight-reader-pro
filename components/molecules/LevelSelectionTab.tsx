@@ -12,7 +12,7 @@ import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
 import { Level } from "@/utils/types";
 import { router } from "expo-router";
 import { useLayoutEffect, useState } from "react";
-import { Dimensions, Pressable, SafeAreaView, StyleSheet } from "react-native";
+import { Dimensions, Pressable, SafeAreaView, StyleProp, StyleSheet, TextStyle } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Tooltip from "react-native-walkthrough-tooltip";
 import AppButton from "../atoms/AppButton";
@@ -37,6 +37,8 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
     useLayoutEffect(() => {
         setTourStep(0);
     }, []);
+
+    const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
     return (
         <SafeAreaView style={{ minHeight: "100%" }}>
@@ -81,7 +83,7 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                     placement="center"
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText>Essa é a tela de Seleção de nível</AppText>
+                            <AppText {...tourTextProps}>Essa é a tela de Seleção de nível</AppText>
                             <AppButton
                                 text="OK"
                                 onPress={() => {
@@ -97,7 +99,7 @@ export function LevelSelectionTab({ clef }: { clef: Clef }) {
                     placement="center"
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText>Joga duro!</AppText>
+                            <AppText {...tourTextProps}>Joga duro!</AppText>
                             <AppButton
                                 text="OK"
                                 onPress={() => {
