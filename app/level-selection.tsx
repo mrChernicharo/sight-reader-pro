@@ -39,25 +39,22 @@ export default function LevelSelectionScreen() {
 
     const games = useAppStore((state) => state.games);
     const clef = useAppStore((state) => state.selectedLevelsClef);
-    const setSelectedClef = useAppStore((state) => state.setSelectedLevelsClef);
+    const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
+    const setTourCompleted = useAppStore((state) => state.setTourCompleted);
+
+    const [tourStep, setTourStep] = useState(-1);
 
     const unlockedLevels = getUnlockedLevels(games, intl);
-    // const [clef, setSelectedClef] = useState(Clef.Treble);
-
     const clefLevels = SECTIONED_LEVELS.find((lvls) => lvls.title == clef)!;
     const grid = makeGrid(clefLevels.data, cols);
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
 
-    const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
-    const [tourStep, setTourStep] = useState(-1);
-
     const topAdjustment = Platform.OS === "android" ? -StatusBar.currentHeight! : 0;
+    const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
     useLayoutEffect(() => {
-        setTourStep(0);
+        if (!hasCompletedTour) setTourStep(0);
     }, []);
-
-    const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
     return (
         <SafeAreaView style={{ minHeight: "100%" }}>
@@ -100,6 +97,7 @@ export default function LevelSelectionScreen() {
                                                                 <AppButton
                                                                     text="OK"
                                                                     onPress={() => {
+                                                                        setTourCompleted("levelSelection", true);
                                                                         setTourStep(-1);
                                                                     }}
                                                                 />
