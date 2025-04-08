@@ -38,6 +38,8 @@ export interface MusicNoteRangeProps {
     keySignature: KeySignature;
 }
 
+const height = 168;
+
 export function RangeComponent(props: MusicNoteRangeProps) {
     // const { height, width, scale, fontScale } = useWindowDimensions();
     const theme = useColorScheme() ?? "light";
@@ -127,7 +129,7 @@ function runVexFlowRangeCode(
     const width = widthPerRangeCount[keys.length as 1 | 2 | 3] + widthPerKeySig[keySignature];
     const context = new ReactNativeSVGContext(NotoFontPack, {
         width,
-        height: 280,
+        height,
     });
 
     // console.log("::", { clef, keys, keySignature });
@@ -139,7 +141,7 @@ function runVexFlowRangeCode(
         .setStrokeStyle(color)
         .setLineWidth(2);
 
-    const stave = new Stave(0, 80, width);
+    const stave = new Stave(0, 32, width);
     stave.setContext(context);
     stave.setClef(clef);
     stave.setKeySignature(keySignature);
@@ -208,7 +210,7 @@ function runVexFlowRangeCode(
 
 const styles = StyleSheet.create({
     container: {
-        height: 280,
+        height,
         // borderWidth: 2,
         // borderStyle: "dashed",
         // backgroundColor: "#F5FCFF",

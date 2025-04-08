@@ -12,7 +12,6 @@ import { SectionedLevel, Level, Game } from "./types";
 const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "basics 01",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["g/4:::c/5"],
         durationInSeconds: 30,
@@ -22,7 +21,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "basics 02",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["f/4:::d/5"],
@@ -33,11 +31,10 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "basics 03",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/5:::d/5"],
-        durationInSeconds: 300,
+        durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
         hasKey: false,
         accident: LevelAccidentType["b"],
@@ -45,7 +42,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "basics 04",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["d/4:::f/5"],
@@ -56,7 +52,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "G",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["d/4:::e/5"],
         durationInSeconds: 30,
@@ -66,8 +61,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         scaleType: ScaleType.Diatonic,
     },
     {
-        name: "D",
-        description: "",
+        name: "D Major",
         gameType: GameType.Single,
         noteRanges: ["d/4:::f#/5"],
         durationInSeconds: 30,
@@ -77,8 +71,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         scaleType: ScaleType.Diatonic,
     },
     {
-        name: "A",
-        description: "",
+        name: "A Major",
         gameType: GameType.Single,
         noteRanges: ["c#/4:::a/5"],
         durationInSeconds: 30,
@@ -88,8 +81,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         scaleType: ScaleType.Diatonic,
     },
     {
-        name: "F",
-        description: "",
+        name: "F Major",
         gameType: GameType.Single,
         noteRanges: ["c/4:::a/5"],
         durationInSeconds: 30,
@@ -99,8 +91,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         scaleType: ScaleType.Diatonic,
     },
     {
-        name: "Bb",
-        description: "",
+        name: "Bb Major",
         gameType: GameType.Single,
         noteRanges: ["bb/3:::bb/5"],
         durationInSeconds: 30,
@@ -110,8 +101,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         scaleType: ScaleType.Diatonic,
     },
     {
-        name: "Eb",
-        description: "",
+        name: "Eb Major",
         gameType: GameType.Single,
         noteRanges: ["bb/3:::c/6"],
         durationInSeconds: 30,
@@ -122,7 +112,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "E melody",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["a/3:::c#/6"],
@@ -134,7 +123,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Ab melody",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["ab/3:::c/6"],
@@ -146,7 +134,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "major-keys 01",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["c/4:::a/5"],
         durationInSeconds: 30,
@@ -156,7 +143,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "major-keys 02",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["b/3:::b/5"],
         durationInSeconds: 30,
@@ -166,7 +152,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "chromatic 01",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/4:::a/5"],
@@ -177,7 +162,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "chromatic 02",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["b/3:::b/5"],
@@ -188,7 +172,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "chromatic 03",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["a/3:::c/6"],
@@ -199,7 +182,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "chromatic 04",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["g/3:::c/6"],
@@ -210,7 +192,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "major-keys 03",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["b/3:::b/5"],
         durationInSeconds: 30,
@@ -220,7 +201,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "major-keys 04",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["a/3:::c/5"],
         durationInSeconds: 30,
@@ -230,7 +210,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "minor-keys 01",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["c/4:::a/5"],
         durationInSeconds: 30,
@@ -240,7 +219,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "minor-keys 02",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["b/3:::b/5"],
         durationInSeconds: 30,
@@ -250,7 +228,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "D#m",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["a/3:::c/6"],
         durationInSeconds: 30,
@@ -261,7 +238,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "A#m",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["a/3:::c/6"],
         durationInSeconds: 30,
@@ -272,7 +248,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "F#",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["a/3:::c/6"],
         durationInSeconds: 30,
@@ -283,7 +258,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "minor-keys 03",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["b/3:::b/5"],
         durationInSeconds: 30,
@@ -293,7 +267,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "minor-keys 04",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["a/3:::c/5"],
         durationInSeconds: 30,
@@ -303,7 +276,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Gb",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["gb/3:::bb/5"],
         durationInSeconds: 30,
@@ -314,7 +286,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Cb",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["a/3:::c/6"],
         durationInSeconds: 30,
@@ -325,7 +296,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Flute 01",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["c/4:::c/7"],
         durationInSeconds: 30,
@@ -335,7 +305,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Flute 02",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["c/4:::c/7"],
         durationInSeconds: 30,
@@ -345,7 +314,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Flute 03",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/4:::c/7"],
@@ -356,7 +324,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Guitar 01",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["e/3:::e/6"],
         durationInSeconds: 30,
@@ -366,7 +333,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Guitar 02",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["e/3:::e/6"],
         durationInSeconds: 30,
@@ -376,7 +342,6 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "Guitar 03",
-        description: "",
         gameType: GameType.Melody,
         timeSignature: TimeSignature["4/4"],
         noteRanges: ["e/3:::e/6"],
@@ -385,72 +350,11 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         hasKey: false,
         accident: LevelAccidentType["b"],
     },
-
-    // {
-    //   name: "basics 02",
-    //   description: "",
-    //   gameType: GameType.Single,
-    //   noteRanges: ["f/4:::d/5"],
-    //   durationInSeconds: 30,[WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
-    //   keySignatures: [KeySignature.C],
-    //   scaleType: ScaleType.Diatonic,
-    // },
-    // {
-    //   name: "basics 03",
-    //   description: "",
-    //   gameType: GameType.Single,
-    //   noteRanges: ["e/4:::e/5"],
-    //   durationInSeconds: 30,[WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
-    //   keySignatures: [KeySignature.G, KeySignature.F, KeySignature.D],
-    //   scaleType: ScaleType.Diatonic,
-    // },
-    // {
-    //   name: "basics 04",
-    //   description: "",
-    //   gameType: GameType.Single,
-    //   noteRanges: ["d/4:::f#/5"],
-    //   durationInSeconds: 30,[WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
-    //   accident: LevelAccidentType["#"],
-    // },
-    // {
-    //   name: "basics 05",
-    //   description: "",
-    //   gameType: GameType.Single,
-    //   noteRanges: ["db/4:::ab/5"],
-    //   durationInSeconds: 30,[WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
-    //   accident: LevelAccidentType["b"],
-    // },
-
-    // {
-    //   name: "melody 01",
-    //   description: "",
-    //   gameType: GameType.Melody,
-    //   noteRanges: ["db/4:::ab/5"],
-    //   // durationInSeconds: 30,
-    //   durationInSeconds: 30,[WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
-    //   hasKey: true,
-    //   keySignatures: [KeySignature.Eb],
-    //   scaleType: ScaleType.Chromatic,
-    //   timeSignature: TimeSignature["4/4"],
-    // },
-    // {
-    //   name: "melody 02",
-    //   description: "",
-    //   gameType: GameType.Melody,
-    //   noteRanges: ["b/3:::a/5"],
-    //   // durationInSeconds: 30,
-    //   durationInSeconds: 320,[WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
-    //   hasKey: true,
-    //   keySignatures: [KeySignature.D],
-    //   scaleType: ScaleType.Diatonic,
-    //   timeSignature: TimeSignature["4/4"],
-    // },
 ]);
 
 const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "basics 01",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["g/2:::c/3"],
         durationInSeconds: 30,
@@ -459,7 +363,6 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     },
     {
         name: "chromatic keys",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["c/2:::g/2", "c/3:::g/3"],
         durationInSeconds: 30,
@@ -469,7 +372,6 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     },
     {
         name: "range test",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["a/2:::e/4"],
         durationInSeconds: 30,
@@ -479,7 +381,6 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     },
     {
         name: "2 ranges",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["c/2:::g/2", "c/3:::g/3"],
         durationInSeconds: 30,
@@ -489,12 +390,78 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     },
     {
         name: "3 ranges!",
-        description: "",
         gameType: GameType.Single,
         noteRanges: ["c/2:::g/2", "c/3:::g/3", "c/4:::g/4"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
         accident: LevelAccidentType["#"],
+    },
+    {
+        name: "Simple Intervals",
+        gameType: GameType.Melody,
+        noteRanges: ["c/2:::g/3"],
+        durationInSeconds: 45,
+        winConditions: { [WinRank.Gold]: 25, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
+        accident: LevelAccidentType.None,
+    },
+    {
+        name: "Key of F Major",
+        gameType: GameType.Single,
+        noteRanges: ["f/2:::c/4"],
+        durationInSeconds: 40,
+        winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
+        keySignatures: [KeySignature.F],
+        scaleType: ScaleType.Diatonic,
+    },
+    {
+        name: "Minor Thirds",
+        gameType: GameType.Single,
+        noteRanges: ["a/2:::e/3"],
+        durationInSeconds: 45,
+        winConditions: { [WinRank.Gold]: 25, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
+        accident: LevelAccidentType.None,
+    },
+    {
+        name: "Sharp Keys",
+        gameType: GameType.Single,
+        noteRanges: ["g/2:::d/4"],
+        durationInSeconds: 40,
+        winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
+        keySignatures: [KeySignature.G, KeySignature.D],
+        scaleType: ScaleType.Diatonic,
+    },
+    {
+        name: "Octave Practice",
+        gameType: GameType.Melody,
+        noteRanges: ["c/2:::c/4"],
+        durationInSeconds: 50,
+        winConditions: { [WinRank.Gold]: 28, [WinRank.Silver]: 23, [WinRank.Bronze]: 18 },
+        accident: LevelAccidentType.None,
+    },
+    {
+        name: "Flat Keys Advanced",
+        gameType: GameType.Single,
+        noteRanges: ["b/2:::f/4"],
+        durationInSeconds: 45,
+        winConditions: { [WinRank.Gold]: 25, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
+        keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab],
+        scaleType: ScaleType.Diatonic,
+    },
+    {
+        name: "Mixed Intervals",
+        gameType: GameType.Melody,
+        noteRanges: ["d/2:::a/3", "g/2:::e/3"],
+        durationInSeconds: 50,
+        winConditions: { [WinRank.Gold]: 28, [WinRank.Silver]: 23, [WinRank.Bronze]: 18 },
+        accident: LevelAccidentType.None,
+    },
+    {
+        name: "All accidentals",
+        gameType: GameType.Single,
+        noteRanges: ["c/2:::c/4"],
+        durationInSeconds: 45,
+        winConditions: { [WinRank.Gold]: 25, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
+        accident: LevelAccidentType.b,
     },
 ]);
 

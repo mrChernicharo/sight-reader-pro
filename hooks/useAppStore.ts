@@ -1,4 +1,4 @@
-import { Difficulty, GameType, Knowledge } from "@/utils/enums";
+import { Clef, GameType, KeySignature, Knowledge, LevelAccidentType, ScaleType } from "@/utils/enums";
 import { ALL_LEVELS } from "@/utils/levels";
 import { CurrentGame, Game, Round } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -6,6 +6,15 @@ import { Platform } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
+interface PracticeSettings {
+    clef: Clef;
+    hasKey: boolean;
+    isMinorKey: boolean;
+    accident: LevelAccidentType;
+    keySignature: KeySignature;
+    scaleType: ScaleType;
+    noteRangeIndices: { low: number; high: number };
+}
 interface CompletedTours {
     init: boolean;
     home: boolean;
@@ -17,15 +26,28 @@ interface CompletedTours {
 export interface AppState {
     username: string;
     language: null | "en" | "pt-BR";
-    difficulty: Difficulty;
     knowledge: Knowledge | null;
-    globalVolume: number;
     showPianoNoteNames: boolean;
+    globalVolume: number;
     games: Game<GameType>[];
     currentGame: CurrentGame<GameType> | null;
     completedTours: CompletedTours;
+    practiceSettings: PracticeSettings;
+    // difficulty: Difficulty;
     _hydrated: boolean;
 }
+
+export const defaultNoteRangeIndices = { low: 13, high: 25 };
+
+const defaultPracticeSettings: PracticeSettings = {
+    accident: LevelAccidentType.None,
+    clef: Clef.Treble,
+    hasKey: false,
+    isMinorKey: false,
+    keySignature: KeySignature.C,
+    scaleType: ScaleType.Diatonic,
+    noteRangeIndices: defaultNoteRangeIndices,
+};
 
 export interface AppActions {
     setUsername: (name: string) => Promise<void>;
@@ -41,6 +63,7 @@ export interface AppActions {
     endGame: (previousPage?: string) => Promise<void>;
     addNewRound: (round: Round<GameType>) => Promise<void>;
     updateRound: (val: Partial<Round<GameType>>) => Promise<void>;
+    updatePracticeSettings: (setting: keyof PracticeSettings, value: any) => Promise<void>;
 
     setHydrated: (hydrated: boolean) => Promise<void>;
     _resetStore: () => Promise<void>;
@@ -55,10 +78,11 @@ export const useAppStore = create<AppState & AppActions>()(
                 username: "",
                 language: null,
                 knowledge: null,
-                globalVolume: 1,
                 showPianoNoteNames: true,
+                globalVolume: 1,
                 games: [],
                 currentGame: null,
+                practiceSettings: defaultPracticeSettings,
                 completedTours: {
                     init: false,
                     home: false,
@@ -66,16 +90,15 @@ export const useAppStore = create<AppState & AppActions>()(
                     game: false,
                     practice: false,
                 },
-                difficulty: Difficulty.Normal,
                 _hydrated: false,
 
                 _resetStore: async () =>
                     set({
                         username: "",
                         language: null,
-                        // knowledge: null,
-                        globalVolume: 1,
+                        // knowledge: null, // don't override knowledge
                         showPianoNoteNames: true,
+                        globalVolume: 1,
                         games: [],
                         currentGame: null,
                         completedTours: {
@@ -85,16 +108,15 @@ export const useAppStore = create<AppState & AppActions>()(
                             game: false,
                             practice: false,
                         },
-                        difficulty: Difficulty.Normal,
                     }),
                 setHydrated: async (hydrated: boolean) => set({ _hydrated: hydrated }),
 
                 setUsername: async (name: string) => set(() => ({ username: name })),
                 setLanguage: async (lang: "en" | "pt-BR") => set({ language: lang }),
-                setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
                 setKnowledge: async (knowledge: Knowledge) => set(() => ({ knowledge: knowledge })),
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
                 toggleShowPianoNoteNames: async (show: boolean) => set(() => ({ showPianoNoteNames: show })),
+                // setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
 
                 setTourCompleted: async (tourName: keyof CompletedTours, completed: boolean) =>
                     set((state) => ({ ...state, completedTours: { ...state.completedTours, [tourName]: completed } })),
@@ -140,6 +162,13 @@ export const useAppStore = create<AppState & AppActions>()(
                             currentGame: { ...state.currentGame!, rounds: [...previousRounds, updatedRound] },
                         };
                     });
+                },
+
+                updatePracticeSettings: async (setting: keyof PracticeSettings, value: any) => {
+                    set((state) => ({
+                        ...state,
+                        practiceSettings: { ...state.practiceSettings, [setting]: value },
+                    }));
                 },
             }),
             {
