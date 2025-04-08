@@ -54,7 +54,7 @@ export default function KnowledgeScreen() {
     const { knowledge, setKnowledge } = useAppStore();
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
+        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink to="/init/01.lang.screen" />

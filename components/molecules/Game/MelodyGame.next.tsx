@@ -106,7 +106,7 @@ export function MelodyGameComponent() {
     }, [id]);
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
+        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
                 <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
                 <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />

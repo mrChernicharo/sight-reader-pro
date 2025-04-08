@@ -2,24 +2,18 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
 import { SoundContextProvider } from "@/hooks/useSoundsContext";
-import { CurrentGame, GameScreenParams, Round } from "@/utils/types";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { Colors } from "@/utils/Colors";
+import { GameScreenParams } from "@/utils/types";
+import * as NavigationBar from "expo-navigation-bar";
 import { router, useLocalSearchParams, usePathname } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
-import { GameType, GameState } from "@/utils/enums";
-import { getLevel } from "@/utils/levels";
-import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
-import { useIntl } from "@/hooks/useIntl";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useTranslation } from "@/hooks/useTranslation";
-import { Colors } from "@/utils/Colors";
-import { StatusBar } from "expo-status-bar";
-import * as NavigationBar from "expo-navigation-bar";
-import { useColorScheme } from "react-native";
-// useEffect(() => {
-// }, []);
+
 export default function RootLayout() {
     const path = usePathname();
     const { id, keySignature, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
@@ -28,10 +22,7 @@ export default function RootLayout() {
     const currentGame = useAppStore((state) => state.currentGame);
     const initTourCompleted = useAppStore((state) => state.completedTours.init);
     const theme = useColorScheme() ?? "light";
-    const backgroundColor = useThemeColor(
-        { light: Colors.light.background, dark: Colors.dark.background },
-        "background"
-    );
+    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
 
     const endGame = useAppStore((state) => state.endGame);
 
@@ -58,6 +49,7 @@ export default function RootLayout() {
     useEffect(() => {
         NavigationBar.setBackgroundColorAsync("rgba(0,0,0,0)");
 
+        // @TODO: REMOVE THIS BEFORE BUILD
         router.navigate("/level-selection/(tabs)");
     }, []);
 

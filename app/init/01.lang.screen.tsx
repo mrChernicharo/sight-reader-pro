@@ -26,7 +26,7 @@ export default function LangScreen() {
     // console.log(langObj);
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
+        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
                 {/* <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink />
@@ -43,7 +43,7 @@ export default function LangScreen() {
                     search={false}
                     placeholder={t("settings.lang.placeholder")}
                     // defaultOption={language}
-                    inputStyles={{ color: textColor, backgroundColor: Colors[theme].background, width: "100%" }}
+                    inputStyles={{ color: textColor, backgroundColor: Colors[theme].bg, width: "100%" }}
                     dropdownTextStyles={{ color: textColor }}
                     disabledTextStyles={{ color: Colors[theme].textMute }}
                     boxStyles={{}}

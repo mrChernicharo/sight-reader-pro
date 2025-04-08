@@ -98,7 +98,7 @@ export default function SettingsScreen() {
                         // defaultOption={language}
                         inputStyles={{
                             color: textColor,
-                            backgroundColor: Colors[theme].background,
+                            backgroundColor: Colors[theme].bg,
                             width: "100%",
                             // lineHeight: 28,
                         }}

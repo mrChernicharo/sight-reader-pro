@@ -21,10 +21,7 @@ export default function GameOverScreen() {
     const { intl } = useIntl();
     const { t } = useTranslation();
     const theme = useColorScheme() ?? "light";
-    const backgroundColor = useThemeColor(
-        { light: Colors.light.background, dark: Colors.dark.background },
-        "background"
-    );
+    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const { games, currentGame, endGame } = useAppStore();
 
     const level = getLevel(currentGame?.levelId ?? "basics 01");

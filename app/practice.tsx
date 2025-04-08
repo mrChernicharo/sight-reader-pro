@@ -149,7 +149,7 @@ export default function PracticeScreen() {
     // }, [clef, hasKey, accident, keySignatures, keySignature, rangeNotes, allNotes]);
 
     return (
-        <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].background }}>
+        <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
             <ScrollView contentContainerStyle={s.container}>
                 <AppView style={s.top}>
                     <AppView style={{ position: "absolute", left: 0, top: 1 }}>
@@ -212,7 +212,7 @@ export default function PracticeScreen() {
                                         defaultOption={SCALES[0]}
                                         inputStyles={{
                                             color: Colors[theme].text,
-                                            backgroundColor: Colors[theme].background,
+                                            backgroundColor: Colors[theme].bg,
                                         }}
                                         dropdownTextStyles={{
                                             color: Colors[theme].text,
@@ -238,7 +238,7 @@ export default function PracticeScreen() {
                                     defaultOption={ACCIDENTS[0]}
                                     inputStyles={{
                                         color: Colors[theme].text,
-                                        backgroundColor: Colors[theme].background,
+                                        backgroundColor: Colors[theme].bg,
                                     }}
                                     dropdownTextStyles={{
                                         color: Colors[theme].text,

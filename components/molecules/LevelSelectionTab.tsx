@@ -20,10 +20,7 @@ const cols = 3;
 export function LevelSelectionTab({ clef }: { clef: Clef }) {
     const { intl } = useIntl();
     const { t } = useTranslation();
-    const backgroundColor = useThemeColor(
-        { light: Colors.light.background, dark: Colors.dark.background },
-        "background"
-    );
+    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const games = useAppStore((state) => state.games);
 
     const unlockedLevels = getUnlockedLevels(games, intl);
@@ -85,7 +82,7 @@ interface LevelTileProps {
 }
 function LevelTile({ level, isLocked }: LevelTileProps) {
     const { levelName, levelIdx } = getLevelName(level);
-    const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "background");
+    const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "bg");
     const backgroundColor = isLocked ? "gray" : accentColor;
     return (
         <Pressable

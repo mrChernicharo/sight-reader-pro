@@ -19,7 +19,7 @@ export default function NameScreen() {
     const { username, setUsername, setTourCompleted } = useAppStore();
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].background }]}>
+        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink to="/init/02.knowledge.screen" />

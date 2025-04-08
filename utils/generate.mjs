@@ -26,7 +26,7 @@ export default function ${capitalName}Screen() {
     const {} = useAppStore()
 
     return (
-        <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].background }}>
+        <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
             <ScrollView contentContainerStyle={s.container}>
                 <AppView style={s.top}>
                     <AppView style={{ position: "absolute", left: 0, top: 4 }}>

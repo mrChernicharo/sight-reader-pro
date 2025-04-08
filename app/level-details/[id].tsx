@@ -18,10 +18,7 @@ import { FadeIn } from "@/components/atoms/FadeIn";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function LevelDetails() {
-    const backgroundColor = useThemeColor(
-        { light: Colors.light.background, dark: Colors.dark.background },
-        "background"
-    );
+    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const { id } = useLocalSearchParams() as { id: string };
     const { t } = useTranslation();
     const level = getLevel(id);

@@ -14,10 +14,7 @@ export default function SettingsScreen() {
     const { t } = useTranslation();
     const { username, games } = useAppStore();
     const theme = useColorScheme() ?? "light";
-    const backgroundColor = useThemeColor(
-        { light: Colors.light.background, dark: Colors.dark.background },
-        "background"
-    );
+    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     // console.log("games ::: ", games);
     if (!games) return null;
 

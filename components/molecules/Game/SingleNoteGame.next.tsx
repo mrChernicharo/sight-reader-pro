@@ -24,7 +24,7 @@ const DELAY = 60;
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
     const theme = useColorScheme() ?? "light";
-    const backgroundColor = Colors[theme].background;
+    const backgroundColor = Colors[theme].bg;
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
     const { currentGame, saveGameRecord, startNewGame, endGame, addNewRound } = useAppStore();
@@ -255,7 +255,7 @@ function SingleNoteGameStage({
     };
 }) {
     const theme = useColorScheme() ?? "light";
-    //   const backgroundColor = Colors[theme].background;
+    //   const backgroundColor = Colors[theme].bg;
     return (
         <>
             {gameState === GameState.Idle ? <SheetMusic.SingleNote {...noteProps} /> : null}
