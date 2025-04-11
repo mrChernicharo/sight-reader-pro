@@ -383,6 +383,9 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
         const scaleIdx = mapRange(groupProgress, 0, scales.length - 1, 1);
         const keySignatureIdx = mapRange(groupProgress, 0, keySignatures.length - 1, 1);
 
+        const loNoteIdx = mapRange(groupProgress, noteRanges.min[1], noteRanges.min[0], 1);
+        const hiNoteIdx = mapRange(groupProgress, noteRanges.max[0], noteRanges.max[1], 1);
+
         levels.push({
             id: `${name}-${padZero(i)}`,
             index: i,
@@ -396,7 +399,8 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
             },
             keySignature: keySignatures[keySignatureIdx],
             scale: scales[scaleIdx],
-            noteRanges: [`c/3:::c/4`],
+            noteRanges: [`${loNoteIdx}:::${hiNoteIdx}`],
+            // noteRanges: [`${NOTE_INDICES[String(loNoteIdx)][0]}:::${NOTE_INDICES[String(hiNoteIdx)][0]}`],
         });
     }
 

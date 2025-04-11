@@ -83,7 +83,7 @@ const TEST_LEVELS_A = makeLevelGroup({
     durations: { min: 20, max: 40 },
     keySignatures: [KeySignature.C],
     levelCount: 12,
-    noteRanges: { min: [20, 25], max: [34, 38] },
+    noteRanges: { min: [20, 25], max: [30, 35] },
     scales: [Scale.Diatonic, Scale.Pentatonic],
     winConditions: {
         min: {
@@ -105,7 +105,7 @@ const TEST_LEVELS_B = makeLevelGroup({
     durations: { min: 30, max: 60 },
     keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab, KeySignature.Db],
     levelCount: 12,
-    noteRanges: { min: [20, 25], max: [34, 38] },
+    noteRanges: { min: [18, 24], max: [32, 38] },
     scales: [Scale.Diatonic, Scale.Pentatonic, Scale.Melodic],
     winConditions: {
         min: {
@@ -121,5 +121,5 @@ const TEST_LEVELS_B = makeLevelGroup({
     },
 });
 
-console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_A, null, 2));
+// console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_A, null, 2));
 console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_B, null, 2));
