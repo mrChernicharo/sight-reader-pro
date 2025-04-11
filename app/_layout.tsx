@@ -6,6 +6,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 import { GameScreenParams } from "@/utils/types";
 import * as NavigationBar from "expo-navigation-bar";
+import * as SystemUI from "expo-system-ui";
 import { router, useLocalSearchParams, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -49,7 +50,7 @@ export default function RootLayout() {
     useEffect(() => {
         NavigationBar.setBackgroundColorAsync(theme == "light" ? Colors.light.bg : Colors.dark.bg);
         NavigationBar.setButtonStyleAsync(theme == "light" ? "dark" : "light");
-
+        SystemUI.setBackgroundColorAsync(theme == "light" ? Colors.light.bg : Colors.dark.bg);
         // @TODO: REMOVE THIS BEFORE BUILD
         // router.navigate("/level-selection");
         // router.navigate("/practice");

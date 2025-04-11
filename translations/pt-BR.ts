@@ -3,6 +3,7 @@ const ptBR = {
     app: {
         title: "Sight Reader Pro",
         slogan: "Leve sua leitura musical para o próximo nível",
+        welcome: "Boas vindas",
     },
     routes: {
         practice: "Praticar",

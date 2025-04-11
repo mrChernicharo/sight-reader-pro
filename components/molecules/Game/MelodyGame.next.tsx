@@ -4,16 +4,17 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
 import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import { explodeNote, getPreviousPage, isNoteMatch, randomUID } from "@/utils/helperFns";
-import { ALL_LEVELS, getLevel } from "@/utils/levels";
+import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { useSoundContext } from "@/hooks/useSoundsContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export function MelodyGameComponent() {
     const theme = useColorScheme() ?? "light";

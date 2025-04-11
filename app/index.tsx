@@ -9,7 +9,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { Link, usePathname } from "expo-router";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { StyleProp, StyleSheet, TextStyle, useColorScheme } from "react-native";
 
 import Tooltip from "react-native-walkthrough-tooltip";
@@ -24,7 +24,7 @@ export default function Home() {
 
     const [tourStep, setTourStep] = useState(-1);
 
-    const greetingMessage = "Boas vindas" + (username ? `, ${username}` : "!");
+    const greetingMessage = t("welcome") + (username ? `, ${username}` : "!");
     const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
     useLayoutEffect(() => {

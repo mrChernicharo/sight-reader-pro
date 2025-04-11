@@ -9,7 +9,7 @@ import { Colors } from "@/utils/Colors";
 import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
 import { useLayoutEffect, useState } from "react";
-import { Dimensions, SafeAreaView, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Tooltip from "react-native-walkthrough-tooltip";
 
@@ -17,6 +17,7 @@ import AppButton from "@/components/atoms/AppButton";
 import { LevelTile } from "@/components/atoms/LevelTile";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { BottomTabs } from "@/components/molecules/BottomTabs";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const cols = 3;
 
@@ -43,93 +44,91 @@ export default function LevelSelectionScreen() {
     }, [hasCompletedTour]);
 
     return (
-        <SafeAreaView style={{ minHeight: "100%" }}>
+        <SafeAreaView style={{ minHeight: "100%", backgroundColor }}>
             <ScrollView contentContainerStyle={{ backgroundColor }}>
                 <AppView>
-                    <AppView>
-                        <AppView style={s.container}>
-                            <AppView style={s.top}>
-                                <AppView style={{ position: "absolute", left: 0, top: 1 }}>
-                                    <BackLink />
-                                </AppView>
-                                <AppText type="defaultSemiBold">{t("routes.levelSelection")}</AppText>
+                    <AppView style={s.container}>
+                        <AppView style={s.top}>
+                            <AppView style={{ position: "absolute", left: 0, top: 1 }}>
+                                <BackLink />
                             </AppView>
+                            <AppText type="defaultSemiBold">{t("routes.levelSelection")}</AppText>
+                        </AppView>
 
-                            <AppView key={clefLevels.title}>
-                                <AppView style={{ flexDirection: "row", gap: 6 }}>
-                                    <AppText type="title" style={[s.sectionTitle, { transform: [{ translateY: 5 }] }]}>
-                                        {clefInfo.glyph}
-                                    </AppText>
-                                    <AppText type="title" style={s.sectionTitle}>
-                                        {t(`music.clefs.${clefInfo.name}`)}
-                                    </AppText>
-                                </AppView>
-                                <AppView style={s.gridSection}>
-                                    {grid.map((row, rowIdx) => (
-                                        <AppView key={`row-${rowIdx}`} style={s.gridRow}>
-                                            {row.map((level, lvlIdx) => {
-                                                const isFirstLevel = rowIdx == 0 && lvlIdx == 0;
-                                                return isFirstLevel ? (
-                                                    <Tooltip
-                                                        key={`tooltip-${level.id}`}
-                                                        isVisible={tourStep == 2}
-                                                        placement="right"
-                                                        topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                                                        contentStyle={{ minHeight: 160 }}
-                                                        content={
-                                                            <AppView transparentBG style={{ alignItems: "center" }}>
-                                                                <TooltipTextLines
-                                                                    keypath={`tour.levelSelection.${tourStep}`}
-                                                                />
-                                                                <AppButton
-                                                                    text="OK"
-                                                                    onPress={() => {
-                                                                        setTourCompleted("levelSelection", true);
-                                                                        setTourStep(-1);
-                                                                    }}
-                                                                />
-                                                            </AppView>
-                                                        }
-                                                    >
-                                                        <LevelTile
-                                                            key={level.id}
-                                                            level={level}
-                                                            isLocked={level.index > unlockedLevels[level.clef] + 1}
-                                                        />
-                                                    </Tooltip>
-                                                ) : (
+                        <AppView key={clefLevels.title}>
+                            <AppView style={{ flexDirection: "row", gap: 6 }}>
+                                <AppText type="title" style={[s.sectionTitle, { transform: [{ translateY: 5 }] }]}>
+                                    {clefInfo.glyph}
+                                </AppText>
+                                <AppText type="title" style={s.sectionTitle}>
+                                    {t(`music.clefs.${clefInfo.name}`)}
+                                </AppText>
+                            </AppView>
+                            <AppView style={s.gridSection}>
+                                {grid.map((row, rowIdx) => (
+                                    <AppView key={`row-${rowIdx}`} style={s.gridRow}>
+                                        {row.map((level, lvlIdx) => {
+                                            const isFirstLevel = rowIdx == 0 && lvlIdx == 0;
+                                            return isFirstLevel ? (
+                                                <Tooltip
+                                                    key={`tooltip-${level.id}`}
+                                                    isVisible={tourStep == 2}
+                                                    placement="right"
+                                                    topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
+                                                    contentStyle={{ minHeight: 160 }}
+                                                    content={
+                                                        <AppView transparentBG style={{ alignItems: "center" }}>
+                                                            <TooltipTextLines
+                                                                keypath={`tour.levelSelection.${tourStep}`}
+                                                            />
+                                                            <AppButton
+                                                                text="OK"
+                                                                onPress={() => {
+                                                                    setTourCompleted("levelSelection", true);
+                                                                    setTourStep(-1);
+                                                                }}
+                                                            />
+                                                        </AppView>
+                                                    }
+                                                >
                                                     <LevelTile
                                                         key={level.id}
                                                         level={level}
                                                         isLocked={level.index > unlockedLevels[level.clef] + 1}
                                                     />
-                                                );
-                                            })}
-                                        </AppView>
-                                    ))}
-                                </AppView>
+                                                </Tooltip>
+                                            ) : (
+                                                <LevelTile
+                                                    key={level.id}
+                                                    level={level}
+                                                    isLocked={level.index > unlockedLevels[level.clef] + 1}
+                                                />
+                                            );
+                                        })}
+                                    </AppView>
+                                ))}
                             </AppView>
                         </AppView>
-
-                        <Tooltip
-                            isVisible={tourStep == 0}
-                            placement="center"
-                            topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                            content={
-                                <AppView transparentBG style={{ alignItems: "center" }}>
-                                    <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
-                                    <AppButton
-                                        text="OK"
-                                        onPress={() => {
-                                            setTourStep(1);
-                                        }}
-                                    />
-                                </AppView>
-                            }
-                        />
-
-                        <AppView style={s.footerFiller}></AppView>
                     </AppView>
+
+                    <Tooltip
+                        isVisible={tourStep == 0}
+                        placement="center"
+                        topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
+                        content={
+                            <AppView transparentBG style={{ alignItems: "center" }}>
+                                <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
+                                <AppButton
+                                    text="OK"
+                                    onPress={() => {
+                                        setTourStep(1);
+                                    }}
+                                />
+                            </AppView>
+                        }
+                    />
+
+                    <AppView style={s.footerFiller}></AppView>
                 </AppView>
             </ScrollView>
 

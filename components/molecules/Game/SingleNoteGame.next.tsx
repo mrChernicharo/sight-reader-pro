@@ -10,7 +10,7 @@ import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { SafeAreaView, StyleProp, StyleSheet, TextStyle, useColorScheme } from "react-native";
+import { StyleProp, StyleSheet, TextStyle, useColorScheme } from "react-native";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
@@ -20,6 +20,7 @@ import AppButton from "@/components/atoms/AppButton";
 import { useTranslation } from "@/hooks/useTranslation";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const DELAY = 60;
 

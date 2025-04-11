@@ -161,3 +161,57 @@ export enum Knowledge {
     advanced = "advanced",
     pro = "pro",
 }
+
+export enum Interval {
+    Uni = 1,
+    Sec = 2,
+    Thr = 3,
+    Fou = 4,
+    Fif = 5,
+    Six = 6,
+    Sev = 7,
+    Oct = 8,
+    Nin = 9,
+    Ten = 10,
+    Ele = 11,
+    Twe = 12,
+    Thi = 13,
+    // Add more if needed
+}
+
+export enum FullInterval {
+    P1 = 1,
+    m2 = -2,
+    M2 = 2,
+    m3 = -3,
+    M3 = 3,
+    P4 = 4,
+    A4 = 4.5, // Tritone
+    d5 = -5, // Tritone
+    P5 = 5,
+    m6 = -6,
+    M6 = 6,
+    m7 = -7,
+    M7 = 7,
+    P8 = 8,
+    A1 = 1.5,
+    d2 = -1.5,
+    A2 = 2.5,
+    d3 = -2.5,
+    A3 = 3.5,
+    d4 = 3.5,
+    A5 = 5.5,
+    d6 = -5.5,
+    A6 = 6.5,
+    d7 = -6.5,
+    A7 = 7.5,
+    d8 = 7.5,
+    A8 = 8.5,
+    m9 = -9,
+    M9 = 9,
+    P11 = 11,
+    A11 = 11.5,
+    m13 = -13,
+    M13 = 13,
+    // Add more augmented, diminished, etc., for ninths, elevenths, etc., as needed
+}

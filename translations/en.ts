@@ -3,6 +3,7 @@ const en = {
     app: {
         title: "Sight Reader Pro",
         slogan: "Level up your music reading",
+        welcome: "Welcome",
     },
     routes: {
         practice: "Practice",

@@ -6,12 +6,13 @@ import { Colors } from "@/utils/Colors";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Platform, SafeAreaView, StyleSheet, TextInput, useColorScheme } from "react-native";
+import { Alert, Platform, StyleSheet, TextInput, useColorScheme } from "react-native";
 import { VolumeSlider } from "@/components/molecules/VolumeSlider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { SelectList } from "react-native-dropdown-select-list";
 import { LANGS } from "@/utils/constants";
 import { AppSwitch } from "@/components/atoms/AppSwitch";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
     const { t } = useTranslation();
@@ -63,7 +64,7 @@ export default function SettingsScreen() {
     };
 
     return (
-        <SafeAreaView style={{ minHeight: "100%" }}>
+        <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
             <AppView style={s.container}>
                 <AppView style={s.top}>
                     <AppView style={{ position: "absolute", left: 0, top: 1 }}>
