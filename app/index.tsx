@@ -93,7 +93,7 @@ export default function Home() {
                 <Link asChild href="/level-selection">
                     <AppButton
                         text={t("routes.main.cta")}
-                        style={{ width: 300, height: 56 }}
+                        style={s.cta}
                         textStyle={{ color: "white", fontSize: 24 }}
                         activeOpacity={0.7}
                     />
@@ -112,4 +112,5 @@ const s = StyleSheet.create({
         paddingBottom: 52,
     },
     btn: { backgroundColor: "transparent", borderWidth: 1, width: 200 },
+    cta: { width: 300, height: 56 },
 });

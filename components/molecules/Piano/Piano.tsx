@@ -29,7 +29,7 @@ export function Piano({
     const pianoBlackKeySpec = FLAT_KEY_SIGNATURES.includes(keySignature) ? "Flat" : "Sharp";
     const BLACK_NOTES = blackNoteNames[pianoBlackKeySpec];
     const [blackNotesLeft, blackNotesRight] = [BLACK_NOTES.slice(0, 2), BLACK_NOTES.slice(3)];
-    const keyboardMargin = 0.0;
+    const keyboardMargin = 0;
     const keyWidth = (width - keyboardMargin * 2) / 7;
 
     return (

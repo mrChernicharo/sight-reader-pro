@@ -83,14 +83,6 @@ export default function LevelDetails() {
                 </FadeIn>
 
                 <FadeIn y={50} x={0} delay={400} style={s.musicSheetContainer}>
-                    <AppText
-                        type="subtitle"
-                        style={[s.rangeTitle]}
-                        // style={[s.rangeTitle, { marginBottom: displayInfo.rangeTitleOffset }]}
-                    >
-                        {t("music.noteRange")}
-                    </AppText>
-
                     <SheetMusic.RangeDisplay
                         clef={level.clef}
                         keys={displayInfo.rangeKeys}
@@ -145,7 +137,7 @@ const s = StyleSheet.create({
     },
     midContainer: {
         alignItems: "center",
-        paddingBottom: 16,
+        paddingVertical: 24,
         // borderWidth: 1,
         // borderColor: "orange",
     },
@@ -163,14 +155,15 @@ const s = StyleSheet.create({
         flex: 1,
         position: "relative",
         width: "100%",
+        alignItems: "center",
         // borderWidth: 1,
         // borderColor: "orange",
     },
     cta: {
-        width: "100%",
         height: 56,
         position: "absolute",
-        bottom: 20,
+        bottom: 42,
+        width: 300,
     },
     ctaText: {
         color: "white",
