@@ -14,6 +14,8 @@ import { useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
+import { Clef, KeySignature } from "@/utils/enums";
+import { makeLevelGroup, Scale } from "@/utils/types.v2";
 
 export default function RootLayout() {
     const path = usePathname();
@@ -74,3 +76,50 @@ export default function RootLayout() {
         </SafeAreaProvider>
     );
 }
+
+const TEST_LEVELS_A = makeLevelGroup({
+    name: "basics",
+    clef: Clef.Treble,
+    durations: { min: 20, max: 40 },
+    keySignatures: [KeySignature.C],
+    levelCount: 12,
+    noteRanges: { min: [20, 25], max: [34, 38] },
+    scales: [Scale.Diatonic, Scale.Pentatonic],
+    winConditions: {
+        min: {
+            bronze: 12,
+            silver: 18,
+            gold: 24,
+        },
+        max: {
+            bronze: 16,
+            silver: 22,
+            gold: 28,
+        },
+    },
+});
+
+const TEST_LEVELS_B = makeLevelGroup({
+    name: "mid",
+    clef: Clef.Treble,
+    durations: { min: 30, max: 60 },
+    keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab, KeySignature.Db],
+    levelCount: 12,
+    noteRanges: { min: [20, 25], max: [34, 38] },
+    scales: [Scale.Diatonic, Scale.Pentatonic, Scale.Melodic],
+    winConditions: {
+        min: {
+            bronze: 16,
+            silver: 22,
+            gold: 28,
+        },
+        max: {
+            bronze: 22,
+            silver: 28,
+            gold: 34,
+        },
+    },
+});
+
+console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_A, null, 2));
+console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_B, null, 2));

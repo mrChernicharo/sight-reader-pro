@@ -20,11 +20,11 @@ export const WHITE_NOTES_ALL_OCTAVES: Note[] = [];
 WHITE_NOTES_ALL_OCTAVES.push("b/0");
 let oct = 1;
 while (oct < 8) {
-  WHITE_NOTES.forEach((n) => {
-    const note = `${n}/${oct}` as Note;
-    WHITE_NOTES_ALL_OCTAVES.push(note);
-  });
-  oct++;
+    WHITE_NOTES.forEach((n) => {
+        const note = `${n}/${oct}` as Note;
+        WHITE_NOTES_ALL_OCTAVES.push(note);
+    });
+    oct++;
 }
 WHITE_NOTES_ALL_OCTAVES.push("c/8");
 
@@ -33,11 +33,11 @@ export const NOTES_SHARP_ALL_OCTAVES: Note[] = [];
 NOTES_SHARP_ALL_OCTAVES.push("b/0");
 oct = 1;
 while (oct < 8) {
-  ALL_NOTES_SHARP.forEach((n) => {
-    const note = `${n}/${oct}` as Note;
-    NOTES_SHARP_ALL_OCTAVES.push(note);
-  });
-  oct++;
+    ALL_NOTES_SHARP.forEach((n) => {
+        const note = `${n}/${oct}` as Note;
+        NOTES_SHARP_ALL_OCTAVES.push(note);
+    });
+    oct++;
 }
 NOTES_SHARP_ALL_OCTAVES.push("c/8");
 
@@ -46,11 +46,11 @@ export const NOTES_FLAT_ALL_OCTAVES: Note[] = [];
 NOTES_FLAT_ALL_OCTAVES.push("b/0");
 oct = 1;
 while (oct < 8) {
-  ALL_NOTES_FLAT.forEach((n) => {
-    const note = `${n}/${oct}` as Note;
-    NOTES_FLAT_ALL_OCTAVES.push(note);
-  });
-  oct++;
+    ALL_NOTES_FLAT.forEach((n) => {
+        const note = `${n}/${oct}` as Note;
+        NOTES_FLAT_ALL_OCTAVES.push(note);
+    });
+    oct++;
 }
 NOTES_FLAT_ALL_OCTAVES.push("c/8");
 
@@ -59,11 +59,11 @@ export const NOTES_SHARP_FLAT_ALL_OCTAVES: Note[] = [];
 oct = 1;
 NOTES_SHARP_FLAT_ALL_OCTAVES.push("b/0");
 while (oct < 8) {
-  ALL_NOTES.forEach((n) => {
-    const note = `${n}/${oct}` as Note;
-    NOTES_SHARP_FLAT_ALL_OCTAVES.push(note);
-  });
-  oct++;
+    ALL_NOTES.forEach((n) => {
+        const note = `${n}/${oct}` as Note;
+        NOTES_SHARP_FLAT_ALL_OCTAVES.push(note);
+    });
+    oct++;
 }
 NOTES_SHARP_FLAT_ALL_OCTAVES.push("c/8");
 
@@ -72,11 +72,11 @@ export const DOUBLE_SHARP_NOTES_ALL_OCTAVES: Note[] = [];
 oct = 1;
 DOUBLE_SHARP_NOTES_ALL_OCTAVES.push("b/0");
 while (oct < 8) {
-  ALL_NOTES_SHARP_DOUBLE_SHARP.forEach((n) => {
-    const note = `${n}/${oct}` as Note;
-    DOUBLE_SHARP_NOTES_ALL_OCTAVES.push(note);
-  });
-  oct++;
+    ALL_NOTES_SHARP_DOUBLE_SHARP.forEach((n) => {
+        const note = `${n}/${oct}` as Note;
+        DOUBLE_SHARP_NOTES_ALL_OCTAVES.push(note);
+    });
+    oct++;
 }
 DOUBLE_SHARP_NOTES_ALL_OCTAVES.push("c/8");
 
@@ -85,34 +85,34 @@ export const DOUBLE_FLAT_NOTES_ALL_OCTAVES: Note[] = [];
 oct = 1;
 DOUBLE_FLAT_NOTES_ALL_OCTAVES.push("b/0");
 while (oct < 8) {
-  ALL_NOTES_FLAT_DOUBLE_FLAT.forEach((n) => {
-    const note = `${n}/${oct}` as Note;
-    DOUBLE_FLAT_NOTES_ALL_OCTAVES.push(note);
-  });
-  oct++;
+    ALL_NOTES_FLAT_DOUBLE_FLAT.forEach((n) => {
+        const note = `${n}/${oct}` as Note;
+        DOUBLE_FLAT_NOTES_ALL_OCTAVES.push(note);
+    });
+    oct++;
 }
 DOUBLE_FLAT_NOTES_ALL_OCTAVES.push("c/8");
 
 // all
 export const POSSIBLE_NOTES_ALL_OCTAVES = Array.from(
-  new Set([...DOUBLE_SHARP_NOTES_ALL_OCTAVES, ...DOUBLE_FLAT_NOTES_ALL_OCTAVES])
+    new Set([...DOUBLE_SHARP_NOTES_ALL_OCTAVES, ...DOUBLE_FLAT_NOTES_ALL_OCTAVES])
 );
 
 // console.log(ALL_NOTES_FLAT_ALL_OCTAVES, ALL_NOTES_FLAT_ALL_OCTAVES.length);
 
 export const noteMathTable: NoteName[][] = [
-  [NoteName["c"], NoteName["b#"], NoteName["dbb"]],
-  [NoteName["c#"], NoteName["db"]],
-  [NoteName["d"], NoteName["cx"], NoteName["ebb"]],
-  [NoteName["d#"], NoteName["eb"]],
-  [NoteName["e"], NoteName["dx"], NoteName["fb"]],
-  [NoteName["f"], NoteName["e#"], NoteName["gbb"]],
-  [NoteName["f#"], NoteName["gb"]],
-  [NoteName["g"], NoteName["fx"], NoteName["abb"]],
-  [NoteName["g#"], NoteName["ab"]],
-  [NoteName["a"], NoteName["gx"], NoteName["bbb"]],
-  [NoteName["a#"], NoteName["bb"]],
-  [NoteName["b"], NoteName["ax"], NoteName["cb"]],
+    [NoteName["c"], NoteName["b#"], NoteName["dbb"]],
+    [NoteName["c#"], NoteName["db"]],
+    [NoteName["d"], NoteName["cx"], NoteName["ebb"]],
+    [NoteName["d#"], NoteName["eb"]],
+    [NoteName["e"], NoteName["dx"], NoteName["fb"]],
+    [NoteName["f"], NoteName["e#"], NoteName["gbb"]],
+    [NoteName["f#"], NoteName["gb"]],
+    [NoteName["g"], NoteName["fx"], NoteName["abb"]],
+    [NoteName["g#"], NoteName["ab"]],
+    [NoteName["a"], NoteName["gx"], NoteName["bbb"]],
+    [NoteName["a#"], NoteName["bb"]],
+    [NoteName["b"], NoteName["ax"], NoteName["cb"]],
 ];
 
 // export const noteMathTable = [
