@@ -12,7 +12,7 @@ import { Level, Note } from "@/utils/types";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StatusBar, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -52,68 +52,60 @@ export default function LevelDetails() {
     }
 
     return (
-        <SafeAreaView style={{ minHeight: Dimensions.get("window").height, backgroundColor }}>
+        <SafeAreaView style={{ minHeight: "100%", backgroundColor }}>
             <ScrollView contentContainerStyle={s.container}>
-                <AppView style={s.infoContainer}>
-                    <FadeIn y={50} x={0}>
-                        <AppView>
-                            <AppView style={s.backlinkContainer}>
-                                <BackLink to="/level-selection" style={s.backlink} />
-                            </AppView>
-                            <AppText type="title" style={s.title}>
-                                {level.name}
-                            </AppText>
-                        </AppView>
-                        <AppText type="subtitle" style={s.subtitle}>
-                            {level.id}
-                        </AppText>
-                    </FadeIn>
-
-                    <FadeIn y={50} x={0} delay={200}>
-                        <AppView style={s.midContainer}>
-                            <AppText>{t(`game.type.${level.gameType}`)}</AppText>
-                            <AppText>{t(`game.config.${displayInfo.accidentText}`)}</AppText>
-                            <AppText>
-                                <Ionicons name="time-outline" /> {level.durationInSeconds} {t("time.seconds")}
-                            </AppText>
-                            <AppText>
-                                <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
-                            </AppText>
-                        </AppView>
-                    </FadeIn>
-
-                    <FadeIn y={50} x={0} delay={300}>
-                        <AppView style={{ borderBottomWidth: 1, borderColor: muteColor }} />
-                    </FadeIn>
-                </AppView>
-
-                <FadeIn y={50} x={0} delay={400}>
-                    <AppView style={s.musicSheetContainer}>
-                        <AppText type="subtitle" style={[s.rangeTitle, { marginBottom: displayInfo.rangeTitleOffset }]}>
-                            {t("music.noteRange")}
-                        </AppText>
-
-                        <AppView style={s.musicSheetInnerContainer}>
-                            <SheetMusic.RangeDisplay
-                                clef={level.clef}
-                                keys={displayInfo.rangeKeys}
-                                keySignature={level.hasKey ? level.keySignatures[0] : KeySignature["C"]}
-                            />
-                        </AppView>
+                <FadeIn y={50} x={0} style={s.topContainer}>
+                    <AppView style={s.backlinkContainer}>
+                        <BackLink to="/level-selection" />
                     </AppView>
+                    <AppText type="title" style={s.title}>
+                        {level.name}
+                    </AppText>
+                    <AppText type="subtitle" style={s.subtitle}>
+                        {level.id}
+                    </AppText>
                 </FadeIn>
 
-                <FadeIn y={50} x={0} delay={600} style={{ width: "100%" }}>
-                    {/* <AppButton text="Start Level" textStyle={s.ctaText} containerStyle={s.cta} onPress={handleNewGame} /> */}
-                    <AppView style={s.ctaContainer}>
-                        <AppButton
-                            text={t("game.state.start")}
-                            style={s.cta}
-                            textStyle={{ color: "white", fontSize: 24 }}
-                            activeOpacity={0.7}
-                            onPress={handleNewGame}
-                        />
-                    </AppView>
+                <FadeIn y={50} x={0} delay={200} style={s.midContainer}>
+                    <AppText>{t(`game.type.${level.gameType}`)}</AppText>
+                    <AppText>{t(`game.config.${displayInfo.accidentText}`)}</AppText>
+                    <AppText>
+                        <Ionicons name="time-outline" /> {level.durationInSeconds} {t("time.seconds")}
+                    </AppText>
+                    <AppText>
+                        <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
+                    </AppText>
+                </FadeIn>
+
+                {/* Separator */}
+                <FadeIn y={50} x={0} delay={300}>
+                    <AppView style={{ borderBottomWidth: 1, borderColor: muteColor }} />
+                </FadeIn>
+
+                <FadeIn y={50} x={0} delay={400} style={s.musicSheetContainer}>
+                    <AppText
+                        type="subtitle"
+                        style={[s.rangeTitle]}
+                        // style={[s.rangeTitle, { marginBottom: displayInfo.rangeTitleOffset }]}
+                    >
+                        {t("music.noteRange")}
+                    </AppText>
+
+                    <SheetMusic.RangeDisplay
+                        clef={level.clef}
+                        keys={displayInfo.rangeKeys}
+                        keySignature={level.hasKey ? level.keySignatures[0] : KeySignature["C"]}
+                    />
+                </FadeIn>
+
+                <FadeIn y={50} x={0} delay={600} style={s.ctaContainer}>
+                    <AppButton
+                        text={t("game.state.start")}
+                        style={s.cta}
+                        textStyle={{ color: "white", fontSize: 24 }}
+                        activeOpacity={0.7}
+                        onPress={handleNewGame}
+                    />
                 </FadeIn>
             </ScrollView>
         </SafeAreaView>
@@ -122,14 +114,13 @@ export default function LevelDetails() {
 
 const s = StyleSheet.create({
     container: {
-        position: "relative",
-        // borderWidth: 1,
-        // borderColor: "red",
         alignItems: "center",
         paddingHorizontal: 36,
-        paddingVertical: 24,
+        minHeight: Dimensions.get("window").height,
+        // borderWidth: 1,
+        // borderColor: "red",
     },
-    infoContainer: {
+    topContainer: {
         width: "100%",
         // borderWidth: 1,
         // borderColor: "green",
@@ -139,12 +130,7 @@ const s = StyleSheet.create({
         top: 5,
         zIndex: 1000,
     },
-    backlink: {
-        // borderWidth: 1,
-        // borderColor: "green",
-    },
     title: {
-        // width: "100%",
         textAlign: "center",
         pointerEvents: "none",
         // borderWidth: 1,
@@ -153,6 +139,7 @@ const s = StyleSheet.create({
     subtitle: {
         color: "gray",
         textAlign: "center",
+        width: "100%",
         // borderWidth: 1,
         // borderColor: "red",
     },
@@ -164,29 +151,26 @@ const s = StyleSheet.create({
     },
     rangeTitle: {
         textAlign: "center",
-        // zIndex: 100,
         // borderWidth: 1,
         // borderColor: "red",
     },
     musicSheetContainer: {
+        height: 180,
         // borderWidth: 1,
-        // borderColor: "purple",
-        paddingTop: 8,
-    },
-    musicSheetInnerContainer: {
-        transform: [{ translateY: 100 }],
-        // borderWidth: 1,
-        // borderColor: "red",
+        // borderColor: "green",
     },
     ctaContainer: {
+        flex: 1,
+        position: "relative",
         width: "100%",
-        transform: [{ translateY: -50 }],
         // borderWidth: 1,
-        // borderColor: "red",
+        // borderColor: "orange",
     },
     cta: {
         width: "100%",
         height: 56,
+        position: "absolute",
+        bottom: 20,
     },
     ctaText: {
         color: "white",

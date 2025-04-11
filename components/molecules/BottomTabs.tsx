@@ -10,12 +10,13 @@ import { Dimensions, Pressable, StyleSheet } from "react-native";
 export function BottomTabs() {
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "accent");
+    const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
     const clef = useAppStore((state) => state.selectedLevelsClef);
     const setSelectedClef = useAppStore((state) => state.setSelectedLevelsClef);
     return (
         <AppView style={s.bottomTabs}>
             <Pressable
-                android_ripple={{ radius: 240 }}
+                android_ripple={{ radius: 180, color: textColor }}
                 onPress={() => setSelectedClef(Clef.Treble)}
                 style={{
                     flex: 1,
@@ -30,7 +31,7 @@ export function BottomTabs() {
                 </AppText>
             </Pressable>
             <Pressable
-                android_ripple={{ radius: 240 }}
+                android_ripple={{ radius: 180, color: textColor }}
                 onPress={() => setSelectedClef(Clef.Bass)}
                 style={{
                     flex: 1,

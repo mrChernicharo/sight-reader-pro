@@ -6,7 +6,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { Dimensions, StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -27,7 +27,7 @@ export default function SettingsScreen() {
                 <AppText type="defaultSemiBold">{t("profile.title")}</AppText>
 
                 <AppView>
-                    <AppText>{username}</AppText>
+                    <AppText type="md">{username}</AppText>
                 </AppView>
             </AppView>
 
@@ -46,11 +46,9 @@ export default function SettingsScreen() {
 
 const s = StyleSheet.create({
     container: {
-        // paddingVertical: 64,
         paddingHorizontal: 24,
         width: "100%",
-        // minHeight: Dimensions.get("window").height,
-        // minHeight: Dimensions.get("screen").height,
+        minHeight: "100%",
     },
     top: {
         position: "relative",
@@ -62,9 +60,9 @@ const s = StyleSheet.create({
         gap: 12,
     },
     flatlist: {
-        borderWidth: 2,
-        borderColor: "#818181",
-        borderStyle: "dashed",
-        height: Dimensions.get("screen").height - 124,
+        flex: 1,
+        // borderWidth: 2,
+        // borderColor: "#818181",
+        // borderStyle: "dashed",
     },
 });
