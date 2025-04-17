@@ -406,7 +406,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
         accident: LevelAccidentType.None,
     },
     {
-        name: "Key of F Major",
+        name: "F Major",
         gameType: GameType.Single,
         noteRanges: ["f/2:::c/4"],
         durationInSeconds: 40,
@@ -440,7 +440,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
         accident: LevelAccidentType.None,
     },
     {
-        name: "Flat Keys Advanced",
+        name: "Flat Keys",
         gameType: GameType.Single,
         noteRanges: ["b/2:::f/4"],
         durationInSeconds: 45,

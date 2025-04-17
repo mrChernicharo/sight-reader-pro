@@ -91,7 +91,7 @@ export default function GameOverScreen() {
                     if (ref) setTimeout(ref.scrollToEnd, 2200);
                 }}
             >
-                <AppView style={{ minHeight: Dimensions.get("screen").height - 60 }}>
+                <AppView style={{ minHeight: Dimensions.get("screen").height - (isPracticeLevel ? 60 : 0) }}>
                     {hasWon ? (
                         <>
                             <Confetti x={-120} duration={2000} />
@@ -111,7 +111,7 @@ export default function GameOverScreen() {
                     <AppView style={[s.btnsContainer, { pointerEvents: btnsEnabled ? "auto" : "none" }]}>
                         {isPracticeLevel ? (
                             <>
-                                <FadeIn y={50} x={0} delay={2200}>
+                                <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>
                                     <Link asChild href={"/practice"}>
                                         <AppButton text={"OK!"} />
                                     </Link>
@@ -120,7 +120,7 @@ export default function GameOverScreen() {
                         ) : (
                             <>
                                 {hasWon ? (
-                                    <FadeIn y={50} x={0} delay={2200} style={{ paddingVertical: 24 }}>
+                                    <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>
                                         <AppButton text={t("game.goTo.next")} onPress={goToNextLevel} />
                                     </FadeIn>
                                 ) : null}
@@ -155,7 +155,7 @@ const s = StyleSheet.create({
     container: {
         justifyContent: "center",
         alignItems: "center",
-        // paddingBottom: 64,
+        paddingBottom: 12,
         // paddingTop: 12,
         minHeight: Dimensions.get("screen").height,
     },

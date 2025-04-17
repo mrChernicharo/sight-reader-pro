@@ -57,8 +57,9 @@ export default function NameScreen() {
                     textStyle={{ color: "white" }}
                     onPress={async () => {
                         // await setInitTourCompleted(true);
+                        console.log("hhhhoy");
                         await setTourCompleted("init", true);
-                        router.push({ pathname: "/" });
+                        router.replace({ pathname: "/" });
                     }}
                 />
             </AppView>

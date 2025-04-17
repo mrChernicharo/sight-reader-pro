@@ -27,3 +27,8 @@ ios/
 .builds
 
 
+*.apk
+*.aab
+*.ipa
+*.tar.gz
+*.app

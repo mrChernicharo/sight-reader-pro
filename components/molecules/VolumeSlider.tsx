@@ -30,7 +30,7 @@ export function VolumeSlider() {
             />
 
             <AppView style={{ width: 58 }}>
-                <AppText style={{ fontSize: 24, lineHeight: 32, textAlign: "right" }}>
+                <AppText style={{ fontSize: 22, lineHeight: 32, textAlign: "right" }}>
                     {Number(globalVolume * 100).toFixed(0)}%
                 </AppText>
             </AppView>
