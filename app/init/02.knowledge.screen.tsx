@@ -5,7 +5,8 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
-import { StyleSheet, TextInput, useColorScheme, useWindowDimensions } from "react-native";
+import { StyleSheet, TextInput, useWindowDimensions } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppButton from "@/components/atoms/AppButton";
@@ -47,7 +48,7 @@ const knowledgeOptions = [
 ];
 
 export default function KnowledgeScreen() {
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     // const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
     const { width, height } = useWindowDimensions();
     const { t } = useTranslation();

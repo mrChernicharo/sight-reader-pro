@@ -6,14 +6,15 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
     const { t } = useTranslation();
     const { username = "user", games } = useAppStore();
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     // console.log("games ::: ", games);
     if (!games) return null;

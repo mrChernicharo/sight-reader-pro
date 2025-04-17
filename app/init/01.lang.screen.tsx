@@ -4,7 +4,7 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
-import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -13,9 +13,10 @@ import { LANGS } from "@/utils/constants";
 import { Link, router } from "expo-router";
 import AppButton from "@/components/atoms/AppButton";
 import { DEFAULT_LANGUAGE } from "@/translations";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function LangScreen() {
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
     const { language } = useAppStore();

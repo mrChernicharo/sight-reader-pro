@@ -1,7 +1,8 @@
 import { glyphs } from "@/utils/constants";
 import { KeySignature } from "@/utils/enums";
 import Slider from "@react-native-community/slider";
-import { StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
 
@@ -14,7 +15,7 @@ export function KeySignatureSlider({
     keySigIndex: number;
     setKeySigIndex: (n: number) => void;
 }) {
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
 
     return (
         <AppView style={s.keySlider}>

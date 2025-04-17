@@ -10,7 +10,7 @@ import * as SystemUI from "expo-system-ui";
 import { router, useLocalSearchParams, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
@@ -24,7 +24,7 @@ export default function RootLayout() {
     const _hydrated = useAppStore((state) => state._hydrated);
     const currentGame = useAppStore((state) => state.currentGame);
     const initTourCompleted = useAppStore((state) => state.completedTours.init);
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
 
     const endGame = useAppStore((state) => state.endGame);

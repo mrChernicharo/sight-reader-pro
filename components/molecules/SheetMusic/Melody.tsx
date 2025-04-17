@@ -26,7 +26,8 @@ import { Beam } from "vexflow/src/beam";
 // @ts-ignore
 import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context";
 
-import { AppRegistry, StyleSheet, Text, View, useColorScheme, useWindowDimensions } from "react-native";
+import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { AppText } from "../../atoms/AppText";
 import { Note } from "@/utils/types";
 import { Clef, GameState, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
@@ -44,7 +45,7 @@ export interface MusicNoteRangeProps {
 }
 
 export function MelodyComponent(props: MusicNoteRangeProps) {
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const textColor = Colors[theme].text;
     const { width } = useWindowDimensions();
     const { clef, keys, durations, keySignature, timeSignature, roundResults } = props;

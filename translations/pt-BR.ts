@@ -157,12 +157,12 @@ const ptBR = {
         home: { "0": "Obrigado por usar o Sight Reader Pro!::: Vamos começar?", "0_ok": "Ok, vamos lá" },
         levelSelection: {
             "0": "Boas vindas à tela de Seleção de Nível",
-            "1": "Selecione a Clave desejada aqui embaixo:::Cada Clave contém vários desafios diferentes",
+            "1": "Selecione a Clave desejada aqui embaixo.:::Cada Clave contém vários desafios diferentes",
             "2": "Vença o primeiro nível:::para ir destravando novas Fases, cada vez mais desafiadoras",
         },
         game: {
             "0": "Essa é a tela principal:::É aqui que o jogo acontece",
-            "1": "Aqui fica a Pauta musical:::Notas musicais vão aparecer na Pauta:::Por exemplo, agora temos uma nota",
+            "1": "Aqui fica a Pauta musical.:::Notas musicais vão aparecer na Pauta.:::Por exemplo, agora temos uma nota",
             "2": "O seu trabalho é tocar no Piano as notas que forem aparecerendo na Pauta",
             "3": "As estatísticas e informações da partida vão estar aqui em cima",
             "3_ok": "Entendi",

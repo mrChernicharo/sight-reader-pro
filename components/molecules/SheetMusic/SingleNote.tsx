@@ -14,7 +14,8 @@ import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
-import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { GameScore, Level, Note } from "@/utils/types";
 import { Clef, GameState, KeySignature } from "@/utils/enums";
 import { Colors } from "@/utils/Colors";
@@ -64,7 +65,7 @@ const widthPerKeySig = {
 export function SingleNoteComponent(props: MusicNoteProps) {
     const width = 180 + widthPerKeySig[props.keySignature];
     // const { height, width, scale, fontScale } = useWindowDimensions();
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const textColor = Colors[theme].text;
     const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
     const { clef, keys, keySignature, noteColor } = props;

@@ -23,6 +23,7 @@ import {
 } from "react-native";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 import Tooltip, { TooltipChildrenContext } from "react-native-walkthrough-tooltip";
+import { useTheme } from "@/hooks/useTheme";
 
 import { router } from "expo-router";
 import AppButton from "@/components/atoms/AppButton";
@@ -33,7 +34,7 @@ interface LevelTileProps {
 }
 export function LevelTile({ level, isLocked }: LevelTileProps) {
     const { levelName, levelIdx } = getLevelName(level);
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "bg");
     const backgroundColor = isLocked ? "gray" : accentColor;
 
@@ -43,10 +44,10 @@ export function LevelTile({ level, isLocked }: LevelTileProps) {
             style={[s.item, { backgroundColor }]}
             android_ripple={{ radius: 90, color: Colors[theme].text }}
             onPress={() => {
-                // router.push({
-                //     pathname: "/level-details/[id]",
-                //     params: { id: level.id },
-                // });
+                router.push({
+                    pathname: "/level-details/[id]",
+                    params: { id: level.id },
+                });
             }}
         >
             {/* <AppView style={[s.item, { backgroundColor }]}> */}

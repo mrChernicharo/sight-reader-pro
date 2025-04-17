@@ -8,15 +8,16 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
-import { Link, usePathname } from "expo-router";
-import { useLayoutEffect, useState } from "react";
-import { StyleProp, StyleSheet, TextStyle, useColorScheme } from "react-native";
+import { Link, router, usePathname } from "expo-router";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 
 import Tooltip from "react-native-walkthrough-tooltip";
 
 export default function Home() {
     const path = usePathname();
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const { t } = useTranslation();
     const username = useAppStore((state) => state.username);
     const hasCompletedTour = useAppStore((state) => state.completedTours.home);
@@ -32,6 +33,11 @@ export default function Home() {
             if (path == "/" && !hasCompletedTour) setTourStep(0);
         });
     }, [hasCompletedTour, path]);
+
+    useEffect(() => {
+        router.dismissAll();
+        // router.dissmissAll();
+    }, []);
 
     return (
         <AppView style={s.container}>

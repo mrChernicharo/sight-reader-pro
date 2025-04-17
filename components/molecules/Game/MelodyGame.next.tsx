@@ -9,7 +9,8 @@ import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
@@ -17,7 +18,7 @@ import { useSoundContext } from "@/hooks/useSoundsContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export function MelodyGameComponent() {
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
 
     const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
     const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound } = useAppStore();

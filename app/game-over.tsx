@@ -13,14 +13,15 @@ import { getGameStats, pickKeySignature } from "@/utils/helperFns";
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { router } from "expo-router";
 import { useEffect } from "react";
-import { Dimensions, StyleSheet, useColorScheme } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function GameOverScreen() {
     const { intl } = useIntl();
     const { t } = useTranslation();
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const { games, currentGame, endGame } = useAppStore();
 
@@ -39,7 +40,7 @@ export default function GameOverScreen() {
         endGame();
         const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
         if (nextLevel) {
-            router.navigate({
+            router.push({
                 pathname: "/level-details/[id]",
                 params: { id: nextLevel.id, clef: nextLevel.clef },
             });
@@ -49,7 +50,7 @@ export default function GameOverScreen() {
     }
     function playAgain() {
         endGame();
-        router.replace({
+        router.push({
             pathname: "/game-level/[id]",
             params: {
                 id: level.id,
@@ -60,7 +61,7 @@ export default function GameOverScreen() {
     }
     function goToLevelSelection() {
         endGame();
-        router.navigate({
+        router.push({
             pathname: "/level-selection",
         });
     }
@@ -80,7 +81,7 @@ export default function GameOverScreen() {
                     if (ref) setTimeout(ref.scrollToEnd, 2200);
                 }}
             >
-                <AppView style={{ minHeight: Dimensions.get("screen").height }}>
+                <AppView style={{ minHeight: Dimensions.get("screen").height - 100 }}>
                     {hasWon ? (
                         <>
                             <Confetti x={-120} duration={2000} />

@@ -6,7 +6,8 @@ import { Colors } from "@/utils/Colors";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useEffect, useRef, useState } from "react";
-import { Alert, Platform, StyleSheet, TextInput, useColorScheme } from "react-native";
+import { Alert, Platform, StyleSheet, TextInput } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { VolumeSlider } from "@/components/molecules/VolumeSlider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { SelectList } from "react-native-dropdown-select-list";
@@ -16,7 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
     const { t } = useTranslation();
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
     const { username, language, showPianoNoteNames, setUsername, setLanguage, toggleShowPianoNoteNames, _resetStore } =
         useAppStore();
@@ -77,6 +78,7 @@ export default function SettingsScreen() {
                     <AppText>{t("settings.username")}</AppText>
                     <TextInput
                         style={[s.input, { color: textColor }]}
+                        placeholderTextColor={textColor}
                         ref={inputRef}
                         // onChangeText={setLocalUsername}
                         defaultValue={username}

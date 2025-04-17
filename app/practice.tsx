@@ -17,7 +17,8 @@ import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { Level, LevelId } from "@/utils/types";
 import { router } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { StyleSheet, useColorScheme, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { SelectList } from "react-native-dropdown-select-list";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -31,7 +32,7 @@ const ACCIDENTS = Object.values(LevelAccidentType).map((v) => ({
 }));
 export default function PracticeScreen() {
     // const { width } = useWindowDimensions();
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const { t } = useTranslation();
 
     const { practiceSettings, updatePracticeSettings, endGame } = useAppStore();

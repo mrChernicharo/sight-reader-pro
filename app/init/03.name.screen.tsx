@@ -4,7 +4,8 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
-import { StyleSheet, TextInput, useColorScheme, useWindowDimensions } from "react-native";
+import { StyleSheet, TextInput, useWindowDimensions } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -12,8 +13,8 @@ import AppButton from "@/components/atoms/AppButton";
 import { Link, router } from "expo-router";
 
 export default function NameScreen() {
-    const theme = useColorScheme() ?? "light";
-    const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
+    const theme = useTheme();
+    const textColor = Colors[theme].text;
     const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
     const { username, setUsername, setTourCompleted } = useAppStore();
@@ -31,6 +32,7 @@ export default function NameScreen() {
                 <AppText>{t("settings.username")}</AppText>
                 <TextInput
                     style={[s.input, { color: textColor }]}
+                    placeholderTextColor={textColor}
                     // onChangeText={setLocalUsername}
                     defaultValue={username}
                     placeholder={t("settings.username")}

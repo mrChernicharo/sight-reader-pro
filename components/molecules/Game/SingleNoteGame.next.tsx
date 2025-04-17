@@ -10,7 +10,8 @@ import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { StyleProp, StyleSheet, TextStyle, useColorScheme } from "react-native";
+import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { useTheme } from "@/hooks/useTheme";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
@@ -26,7 +27,7 @@ const DELAY = 60;
 
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     const backgroundColor = Colors[theme].bg;
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
@@ -255,7 +256,7 @@ function SingleNoteGameStage({
         keySignature: KeySignature;
     };
 }) {
-    const theme = useColorScheme() ?? "light";
+    const theme = useTheme();
     //   const backgroundColor = Colors[theme].bg;
     return (
         <>

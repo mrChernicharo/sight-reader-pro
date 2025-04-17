@@ -1,3 +1,3 @@
 import { useColorScheme } from "react-native";
 
-const useTheme = () => useColorScheme() ?? "light";
+export const useTheme = () => useColorScheme() ?? "light";
