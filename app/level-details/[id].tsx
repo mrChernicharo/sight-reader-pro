@@ -162,7 +162,7 @@ const s = StyleSheet.create({
     cta: {
         height: 56,
         position: "absolute",
-        bottom: 42,
+        bottom: 56,
         width: 300,
     },
     ctaText: {

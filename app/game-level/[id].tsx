@@ -4,25 +4,25 @@ import { GameType } from "@/utils/enums";
 import { getLevel } from "@/utils/levels";
 import { useLocalSearchParams } from "expo-router";
 
-const comps = {
-  [GameType.Single]: <GameComponent.SingleNote />,
-  [GameType.Melody]: <GameComponent.Melody />,
-  [GameType.Chord]: <GameComponent.Chord />,
-  [GameType.Rhythm]: <GameComponent.Rhythm />,
+const GameComponents = {
+    [GameType.Single]: <GameComponent.SingleNote />,
+    [GameType.Melody]: <GameComponent.Melody />,
+    [GameType.Chord]: <GameComponent.Chord />,
+    [GameType.Rhythm]: <GameComponent.Rhythm />,
 };
 
 export default function GameLevel() {
-  const { id } = useLocalSearchParams() as { id: string };
+    const { id } = useLocalSearchParams() as { id: string };
 
-  const level = getLevel(id);
-  // console.log("gameLevel ::: ", { level });
+    const level = getLevel(id);
+    // console.log("gameLevel ::: ", { level });
 
-  if (!level || !id)
-    return (
-      <>
-        <AppText>Loading...</AppText>
-      </>
-    );
+    if (!level || !id)
+        return (
+            <>
+                <AppText>Loading...</AppText>
+            </>
+        );
 
-  return <>{comps[level.gameType]}</>;
+    return <>{GameComponents[level.gameType]}</>;
 }

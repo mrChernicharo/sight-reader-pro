@@ -47,7 +47,8 @@ export default function Home() {
                         </AppText>
                         <TooltipTextLines keypath="tour.home.0" />
                         <AppButton
-                            text="Ok, vamos lá"
+                            style={{ marginVertical: 6 }}
+                            text={t("tour.home.0_ok")}
                             onPress={() => {
                                 setTourStep(-1);
                                 setTourCompleted("home", true);

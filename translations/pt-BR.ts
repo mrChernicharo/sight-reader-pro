@@ -154,10 +154,10 @@ const ptBR = {
     },
     tour: {
         init: {},
-        home: { "0": "Obrigado por usar o Sight Reader Pro!::: Vamos começar?" },
+        home: { "0": "Obrigado por usar o Sight Reader Pro!::: Vamos começar?", "0_ok": "Ok, vamos lá" },
         levelSelection: {
             "0": "Boas vindas à tela de Seleção de Nível",
-            "1": "Selecione a Clave desejada aqui embaixo:::Cada Clave tem vários desafios diferentes",
+            "1": "Selecione a Clave desejada aqui embaixo:::Cada Clave contém vários desafios diferentes",
             "2": "Vença o primeiro nível:::para ir destravando novas Fases, cada vez mais desafiadoras",
         },
         game: {
@@ -165,7 +165,10 @@ const ptBR = {
             "1": "Aqui fica a Pauta musical:::Notas musicais vão aparecer na Pauta:::Por exemplo, agora temos uma nota",
             "2": "O seu trabalho é tocar no Piano as notas que forem aparecerendo na Pauta",
             "3": "As estatísticas e informações da partida vão estar aqui em cima",
+            "3_ok": "Entendi",
             "4": "Toque o máximo de notas que puder:::Antes que o tempo acabe!:::Acumule pontos e avance pelas fases",
+            "4_ready": "Bora começar?",
+            "4_ok": "Vamos nessa!",
         },
         practice: { "0": "", "1": "", "2": "", "3": "", "4": "" },
     },

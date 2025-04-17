@@ -14,14 +14,14 @@ import { useLayoutEffect, useState } from "react";
 import {
     Dimensions,
     Platform,
-    Pressable,
     SafeAreaView,
     StatusBar,
     StyleProp,
     StyleSheet,
     TextStyle,
+    useColorScheme,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Pressable, ScrollView } from "react-native-gesture-handler";
 import Tooltip, { TooltipChildrenContext } from "react-native-walkthrough-tooltip";
 
 import { router } from "expo-router";
@@ -33,22 +33,26 @@ interface LevelTileProps {
 }
 export function LevelTile({ level, isLocked }: LevelTileProps) {
     const { levelName, levelIdx } = getLevelName(level);
+    const theme = useColorScheme() ?? "light";
     const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "bg");
     const backgroundColor = isLocked ? "gray" : accentColor;
+
     return (
         <Pressable
             disabled={isLocked}
+            style={[s.item, { backgroundColor }]}
+            android_ripple={{ radius: 90, color: Colors[theme].text }}
             onPress={() => {
-                router.push({
-                    pathname: "/level-details/[id]",
-                    params: { id: level.id },
-                });
+                // router.push({
+                //     pathname: "/level-details/[id]",
+                //     params: { id: level.id },
+                // });
             }}
         >
-            <AppView style={[s.item, { backgroundColor }]}>
-                <AppText>{levelName}</AppText>
-                <AppText>{levelIdx}</AppText>
-            </AppView>
+            {/* <AppView style={[s.item, { backgroundColor }]}> */}
+            <AppText>{levelName}</AppText>
+            <AppText>{levelIdx}</AppText>
+            {/* </AppView> */}
         </Pressable>
     );
 }

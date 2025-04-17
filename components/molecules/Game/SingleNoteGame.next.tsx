@@ -140,12 +140,13 @@ export function SingleNoteGameComponent() {
                     isVisible={!hasCompletedTour && tourStep == 3}
                     placement="bottom"
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                    contentStyle={{ height: 110 }}
+                    contentStyle={{}}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.3" />
                             <AppButton
-                                text="Entendi"
+                                style={{ marginVertical: 8 }}
+                                text={t("tour.game.3_ok")}
                                 onPress={() => {
                                     setTourStep(4);
                                 }}
@@ -170,6 +171,7 @@ export function SingleNoteGameComponent() {
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.0" />
                         <AppButton
+                            style={{ marginVertical: 8 }}
                             text="OK"
                             onPress={() => {
                                 setTourStep(1);
@@ -186,12 +188,12 @@ export function SingleNoteGameComponent() {
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.4" />
                         <AppText {...tourTextProps} type="mdSemiBold">
-                            Bora começar?
+                            {t("tour.game.4_ready")}
                         </AppText>
 
                         <AppButton
-                            text="Vamos nessa!"
-                            style={{ marginTop: 10 }}
+                            style={{ marginVertical: 8 }}
+                            text={t("tour.game.4_ok")}
                             onPress={async () => {
                                 await setTourCompleted("game", true);
                                 setTourStep(0);
@@ -207,7 +209,7 @@ export function SingleNoteGameComponent() {
                     placement="bottom"
                     tooltipStyle={{ transform: [{ translateY: 0 }] }}
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                    contentStyle={{ height: 160 }}
+                    contentStyle={{}}
                     parentWrapperStyle={{}}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
@@ -215,7 +217,7 @@ export function SingleNoteGameComponent() {
                             <AppText {...tourTextProps} type="mdSemiBold">
                                 {t(`music.notes.${explodeNote(currNote).noteName}`).toUpperCase()}
                             </AppText>
-                            <AppButton text="OK" onPress={() => setTourStep(2)} />
+                            <AppButton style={{ marginVertical: 8 }} text="OK" onPress={() => setTourStep(2)} />
                         </AppView>
                     }
                 >
@@ -228,11 +230,11 @@ export function SingleNoteGameComponent() {
                 placement="top"
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 tooltipStyle={{ transform: [{ translateY: -60 }] }}
-                contentStyle={{ height: 112 }}
+                contentStyle={{}}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.2" />
-                        <AppButton text="OK" onPress={() => setTourStep(3)} />
+                        <AppButton style={{ marginVertical: 8 }} text="OK" onPress={() => setTourStep(3)} />
                     </AppView>
                 }
             >

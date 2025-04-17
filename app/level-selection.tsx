@@ -75,13 +75,14 @@ export default function LevelSelectionScreen() {
                                                     isVisible={tourStep == 2}
                                                     placement="right"
                                                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                                                    contentStyle={{ minHeight: 160 }}
+                                                    contentStyle={{ minHeight: 146 }}
                                                     content={
                                                         <AppView transparentBG style={{ alignItems: "center" }}>
                                                             <TooltipTextLines
                                                                 keypath={`tour.levelSelection.${tourStep}`}
                                                             />
                                                             <AppButton
+                                                                style={{ marginVertical: 8 }}
                                                                 text="OK"
                                                                 onPress={() => {
                                                                     setTourCompleted("levelSelection", true);
@@ -119,6 +120,7 @@ export default function LevelSelectionScreen() {
                             <AppView transparentBG style={{ alignItems: "center" }}>
                                 <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
                                 <AppButton
+                                    style={{ marginVertical: 8 }}
                                     text="OK"
                                     onPress={() => {
                                         setTourStep(1);
@@ -142,6 +144,7 @@ export default function LevelSelectionScreen() {
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
                         <AppButton
+                            style={{ marginVertical: 8 }}
                             text="OK"
                             onPress={() => {
                                 setTourStep(2);
