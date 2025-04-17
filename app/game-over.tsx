@@ -11,8 +11,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { getGameStats, pickKeySignature } from "@/utils/helperFns";
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
-import { router } from "expo-router";
-import { useEffect } from "react";
+import { Link, router } from "expo-router";
+import { useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { ScrollView } from "react-native-gesture-handler";
@@ -26,6 +26,7 @@ export default function GameOverScreen() {
     const { games, currentGame, endGame } = useAppStore();
 
     const level = getLevel(currentGame?.levelId ?? "basics 01");
+    const isPracticeLevel = level?.id && ["treble-practice", "bass-practice"].includes(level.id);
     const lastGame = games.at(-1);
 
     const { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute } = getGameStats(
@@ -35,6 +36,8 @@ export default function GameOverScreen() {
     );
     const emoji = hasWon ? " 🎉 " : " 😩 ";
     const msg = t(hasWon ? "game.state.win" : "game.state.lose");
+
+    const [btnsEnabled, setBtnsEnabled] = useState(false);
 
     function goToNextLevel() {
         endGame();
@@ -70,6 +73,13 @@ export default function GameOverScreen() {
     //   console.log("<<< Game Over >>>", { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute });
     // }, [attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute]);
 
+    useEffect(() => {
+        setTimeout(() => {
+            setBtnsEnabled(true);
+            console.log("setBtnsEnabled:::::");
+        }, 3800);
+    }, []);
+
     if (!level || !lastGame) return null;
     if (!currentGame || !currentGame?.rounds?.length) return null;
 
@@ -81,7 +91,7 @@ export default function GameOverScreen() {
                     if (ref) setTimeout(ref.scrollToEnd, 2200);
                 }}
             >
-                <AppView style={{ minHeight: Dimensions.get("screen").height - 100 }}>
+                <AppView style={{ minHeight: Dimensions.get("screen").height - 60 }}>
                     {hasWon ? (
                         <>
                             <Confetti x={-120} duration={2000} />
@@ -98,30 +108,42 @@ export default function GameOverScreen() {
                         {hasWon ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
                     </AppView>
 
-                    <AppView style={s.btnsContainer}>
-                        {hasWon ? (
-                            <FadeIn y={50} x={0} delay={2200}>
-                                <AppButton text={t("game.goTo.next")} onPress={goToNextLevel} />
-                            </FadeIn>
-                        ) : null}
+                    <AppView style={[s.btnsContainer, { pointerEvents: btnsEnabled ? "auto" : "none" }]}>
+                        {isPracticeLevel ? (
+                            <>
+                                <FadeIn y={50} x={0} delay={2200}>
+                                    <Link asChild href={"/practice"}>
+                                        <AppButton text={"OK!"} />
+                                    </Link>
+                                </FadeIn>
+                            </>
+                        ) : (
+                            <>
+                                {hasWon ? (
+                                    <FadeIn y={50} x={0} delay={2200} style={{ paddingVertical: 24 }}>
+                                        <AppButton text={t("game.goTo.next")} onPress={goToNextLevel} />
+                                    </FadeIn>
+                                ) : null}
 
-                        <FadeIn y={50} x={0} delay={2400}>
-                            <AppButton
-                                text={t("game.goTo.again")}
-                                style={{ ...(hasWon && { backgroundColor: "transparent" }) }}
-                                textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
-                                onPress={playAgain}
-                            />
-                        </FadeIn>
+                                <FadeIn y={50} x={0} delay={2400}>
+                                    <AppButton
+                                        text={t("game.goTo.again")}
+                                        style={{ ...(hasWon && { backgroundColor: "transparent" }) }}
+                                        textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
+                                        onPress={playAgain}
+                                    />
+                                </FadeIn>
 
-                        <FadeIn y={50} x={0} delay={2600}>
-                            <AppButton
-                                text={t("game.goTo.levelSelection")}
-                                style={{ backgroundColor: "transparent", marginBottom: 36 }}
-                                textStyle={{ color: "gray" }}
-                                onPress={goToLevelSelection}
-                            />
-                        </FadeIn>
+                                <FadeIn y={50} x={0} delay={2600}>
+                                    <AppButton
+                                        text={t("game.goTo.levelSelection")}
+                                        style={{ backgroundColor: "transparent", marginBottom: 36 }}
+                                        textStyle={{ color: "gray" }}
+                                        onPress={goToLevelSelection}
+                                    />
+                                </FadeIn>
+                            </>
+                        )}
                     </AppView>
                 </AppView>
             </ScrollView>
@@ -135,7 +157,7 @@ const s = StyleSheet.create({
         alignItems: "center",
         // paddingBottom: 64,
         // paddingTop: 12,
-        // minHeight: Dimensions.get("screen").height,
+        minHeight: Dimensions.get("screen").height,
     },
     messageContainer: {
         paddingVertical: 64,

@@ -35,8 +35,7 @@ export default function Home() {
     }, [hasCompletedTour, path]);
 
     useEffect(() => {
-        router.dismissAll();
-        // router.dissmissAll();
+        if (router.canDismiss()) router.dismissAll();
     }, []);
 
     return (
