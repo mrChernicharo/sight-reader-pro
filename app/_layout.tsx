@@ -66,7 +66,7 @@ export default function RootLayout() {
         );
 
     return (
-        <SafeAreaProvider>
+        <SafeAreaProvider style={{ paddingTop: 24 }}>
             <GestureHandlerRootView>
                 <SoundContextProvider>
                     <StatusBar translucent style={theme == "light" ? "dark" : "light"} />

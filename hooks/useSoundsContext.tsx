@@ -4,6 +4,7 @@ import { Note } from "@/utils/types";
 import { Asset } from "expo-asset";
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 import { AudioBuffer, AudioBufferSourceNode, AudioContext, GainNode } from "react-native-audio-api";
+import * as SplashScreen from "expo-splash-screen";
 
 const requires = [
     require("../assets/sounds/piano-notes/Piano.mf.A1.mp3"),
@@ -204,6 +205,13 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
     }
 
     useEffect(() => {
+        if (ready) {
+            console.log("splash hide!");
+            SplashScreen.hideAsync();
+        }
+    }, [ready]);
+
+    useEffect(() => {
         const loadSounds = async () => {
             console.log(`<SoundContext> loading Sounds...`);
             audioContextRef.current = new AudioContext();
@@ -250,8 +258,8 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         loadSounds()
             .catch(console.error)
             .finally(() => {
-                console.log(`<SoundContext> Done loading Piano Sounds. Took ${Date.now() - timeStart}ms`);
                 setReady(true);
+                console.log(`<SoundContext> Done loading Piano Sounds. Took ${Date.now() - timeStart}ms`);
             });
 
         return () => {

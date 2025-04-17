@@ -80,6 +80,8 @@ const s = StyleSheet.create({
         top: 24,
         position: "absolute",
         alignItems: "center",
+        // borderWidth: 2,
+        // borderColor: "red",
     },
     btnContainer: {
         position: "absolute",

@@ -48,7 +48,7 @@ const knowledgeOptions = [
 
 export default function KnowledgeScreen() {
     const theme = useColorScheme() ?? "light";
-    const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
+    // const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
     const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
     const { knowledge, setKnowledge } = useAppStore();
@@ -63,33 +63,51 @@ export default function KnowledgeScreen() {
             </AppView>
 
             <AppView style={s.listContainer}>
-                <AppView>
-                    {knowledgeOptions.map((opt) => (
-                        <Pressable
-                            key={opt.key}
-                            android_ripple={{ radius: 240 }}
-                            onPress={() => setKnowledge(opt.key as Knowledge)}
-                            style={{ padding: 8 }}
-                        >
-                            <AppText>
-                                {opt.emoji} {t(opt.value)}
-                            </AppText>
-                        </Pressable>
-                    ))}
-                </AppView>
-
                 {knowledge && (
                     <AppView
                         style={{
-                            // borderWidth: 2,
-                            // borderColor: "red",
                             alignItems: "center",
+                            // borderWidth: 2,
+                            // justifyContent: "center",
+                            // borderColor: "red",
+                            // alignItems: "center",
                         }}
                     >
                         <AppText type="mdSemiBold">{t("routes.init.knowledge.you")}</AppText>
                         <AppText type="title">{t(`music.knowledge.${knowledge}.title`)}</AppText>
                     </AppView>
                 )}
+                <AppView>
+                    {knowledgeOptions.map((opt, idx) => {
+                        const first = idx == 0;
+                        const last = idx == knowledgeOptions.length - 1;
+                        const selected = opt.key === knowledge;
+
+                        return (
+                            <Pressable
+                                key={opt.key}
+                                onPress={() => setKnowledge(opt.key as Knowledge)}
+                                android_ripple={{ radius: 200, color: Colors[theme].ripple }}
+                                style={[
+                                    s.listItem,
+                                    {
+                                        borderColor: Colors[theme].text,
+                                        ...(first && { borderTopLeftRadius: 20, borderTopRightRadius: 20 }),
+                                        ...(last && { borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }),
+                                        ...(selected && {
+                                            backgroundColor: Colors[theme].bgSelected,
+                                            // backgroundOpacity: 0.5,
+                                        }),
+                                    },
+                                ]}
+                            >
+                                <AppText>
+                                    {opt.emoji} {t(opt.value)}
+                                </AppText>
+                            </Pressable>
+                        );
+                    })}
+                </AppView>
             </AppView>
 
             <AppView style={s.btnContainer}>
@@ -128,6 +146,10 @@ const s = StyleSheet.create({
         gap: 40,
         // borderWidth: 2,
         // borderColor: "red",
+    },
+    listItem: {
+        padding: 12,
+        borderWidth: 1,
     },
     input: {
         borderWidth: 1,

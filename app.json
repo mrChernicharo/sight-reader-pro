@@ -24,11 +24,6 @@
             "output": "static",
             "favicon": "./assets/images/favicon.png"
         },
-        "splash": {
-            "image": "./assets/images/app-splash.png",
-            "resizeMode": "cover",
-            "backgroundColor": "#000000"
-        },
         "experiments": {
             "typedRoutes": true
         },
@@ -40,14 +35,26 @@
         "plugins": [
             "expo-asset",
             "expo-router",
+            "expo-font",
+            "expo-navigation-bar",
             [
                 "expo-dev-launcher",
                 {
                     "launchMode": "most-recent"
                 }
             ],
-            "expo-font",
-            "expo-navigation-bar"
+            [
+                "expo-splash-screen",
+                {
+                    "backgroundColor": "#232323",
+                    "image": "./assets/images/sight-reader-art-1024.png",
+                    "dark": {
+                        "image": "./assets/images/sight-reader-art-1024.png",
+                        "backgroundColor": "#000000"
+                    },
+                    "resizeMode": "cover"
+                }
+            ]
         ]
     }
 }

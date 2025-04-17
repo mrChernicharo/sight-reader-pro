@@ -1,4 +1,10 @@
 import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+SplashScreen.preventAutoHideAsync();
+SplashScreen.setOptions({
+    fade: true,
+    duration: 1000,
+});
 
 /* new route not working? check if its component is DEFAULT EXPORTed */
 

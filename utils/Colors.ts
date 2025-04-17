@@ -10,7 +10,9 @@ export const Colors = {
     light: {
         text: "#151718",
         textMute: "#565656",
+        ripple: "#868686",
         bg: "#ECEDEE",
+        bgSelected: "#aeaeae",
         // bg: "rgb(242, 242, 242)",
         tint: tintColorLight,
         icon: "#687076",
@@ -24,7 +26,9 @@ export const Colors = {
     dark: {
         text: "#ECEDEE",
         textMute: "#787878",
+        ripple: "#9a9a9a",
         bg: "#151718",
+        bgSelected: "#353738",
         tint: tintColorDark,
         icon: "#9BA1A6",
         tabIconDefault: "#9BA1A6",

@@ -72,9 +72,17 @@ style walkthroughs
 translate pianoKeys ✅
 sync practice settings in store ✅
 globalVolume and volume settings https://www.npmjs.com/package/react-native-volume-manager
-scrollable level details
+scrollable level details ✅
 fix armor bemol note after bequadro note
 mo better levels
+
+====
+
+user feedback
+
+lagginess after switching pages a lot
+titles: top spacing + fontSize (maybe)
+tutorial for beginners
 
 ---
 
