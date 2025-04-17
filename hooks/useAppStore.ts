@@ -154,8 +154,7 @@ export const useAppStore = create<AppState & AppActions>()(
 
                 startNewGame: async (newGame: CurrentGame<GameType>) => {
                     // prettier-ignore
-                    console.log("START NEW GAME:::", newGame, "ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
-
+                    // console.log("START NEW GAME:::", newGame, "ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
                     set({ currentGame: newGame });
                 },
                 endGame: async (previousPage?: string) => {

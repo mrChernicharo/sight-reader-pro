@@ -36,7 +36,7 @@ export default function RootLayout() {
     }, [_hydrated]);
 
     useEffect(() => {
-        console.log({ path, ...(currentGame && { currentGame: currentGame }) });
+        console.log({ path, ...(currentGame && { currentGame: currentGame.id }) });
     }, [currentGame?.id, path]);
 
     useEffect(() => {
@@ -122,4 +122,4 @@ const TEST_LEVELS_B = makeLevelGroup({
 });
 
 // console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_A, null, 2));
-console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_B, null, 2));
+// console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_B, null, 2));
