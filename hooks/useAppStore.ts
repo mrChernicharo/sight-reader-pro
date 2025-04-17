@@ -7,7 +7,7 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 let DEV_RESET = false;
-// DEV_RESET = true;
+DEV_RESET = true;
 
 interface PracticeSettings {
     clef: Clef;

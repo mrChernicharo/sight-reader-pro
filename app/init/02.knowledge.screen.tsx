@@ -59,10 +59,10 @@ export default function KnowledgeScreen() {
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink to="/init/01.lang.screen" />
                 </AppView>
-                <AppText type="defaultSemiBold">{t("routes.init.knowledge.title")}</AppText>
-            </AppView>
+                <AppText type="defaultSemiBold">
+                    {knowledge ? t("routes.init.knowledge.you") : t("routes.init.knowledge.title")}
+                </AppText>
 
-            <AppView style={s.listContainer}>
                 {knowledge && (
                     <AppView
                         style={{
@@ -73,10 +73,13 @@ export default function KnowledgeScreen() {
                             // alignItems: "center",
                         }}
                     >
-                        <AppText type="mdSemiBold">{t("routes.init.knowledge.you")}</AppText>
+                        {/* <AppText type="mdSemiBold">{}</AppText> */}
                         <AppText type="title">{t(`music.knowledge.${knowledge}.title`)}</AppText>
                     </AppView>
                 )}
+            </AppView>
+
+            <AppView style={s.listContainer}>
                 <AppView>
                     {knowledgeOptions.map((opt, idx) => {
                         const first = idx == 0;
