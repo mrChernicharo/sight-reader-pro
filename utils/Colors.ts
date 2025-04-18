@@ -10,9 +10,9 @@ export const Colors = {
     light: {
         text: "#151718",
         textMute: "#565656",
-        ripple: "#868686",
+        ripple: "#b7b7b7",
         bg: "#ECEDEE",
-        bgSelected: "#aeaeae",
+        bgSelected: "#dadada",
         // bg: "rgb(242, 242, 242)",
         tint: tintColorLight,
         icon: "#687076",

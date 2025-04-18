@@ -153,7 +153,7 @@ export default function PracticeScreen() {
                     <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                         <BackLink onPress={() => endGame()} />
                     </AppView>
-                    <AppText type="defaultSemiBold">{t("practice.title")}</AppText>
+                    <AppText type="mdSemiBold">{t("practice.title")}</AppText>
                 </AppView>
 
                 <AppView style={s.controlsContainer}>

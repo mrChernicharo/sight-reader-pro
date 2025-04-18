@@ -155,9 +155,6 @@ const s = StyleSheet.create({
     container: {
         justifyContent: "center",
         alignItems: "center",
-        paddingBottom: 12,
-        // paddingTop: 12,
-        minHeight: Dimensions.get("screen").height,
     },
     messageContainer: {
         paddingVertical: 64,

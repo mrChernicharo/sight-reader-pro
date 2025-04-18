@@ -25,7 +25,7 @@ export default function NameScreen() {
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink to="/init/02.knowledge.screen" />
                 </AppView>
-                <AppText type="defaultSemiBold">{t("routes.init.name.title")}</AppText>
+                <AppText type="mdSemiBold">{t("routes.init.name.title")}</AppText>
             </AppView>
 
             <AppView style={s.inputContainer}>

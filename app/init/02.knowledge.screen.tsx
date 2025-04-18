@@ -60,7 +60,7 @@ export default function KnowledgeScreen() {
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink to="/init/01.lang.screen" />
                 </AppView>
-                <AppText type="defaultSemiBold">
+                <AppText type="mdSemiBold">
                     {knowledge ? t("routes.init.knowledge.you") : t("routes.init.knowledge.title")}
                 </AppText>
 
@@ -95,7 +95,7 @@ export default function KnowledgeScreen() {
                                 style={[
                                     s.listItem,
                                     {
-                                        borderColor: Colors[theme].text,
+                                        borderColor: Colors[theme].ripple,
                                         ...(first && { borderTopLeftRadius: 20, borderTopRightRadius: 20 }),
                                         ...(last && { borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }),
                                         ...(selected && {

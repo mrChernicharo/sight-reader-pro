@@ -32,7 +32,7 @@ export default function LangScreen() {
                 {/* <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink />
                 </AppView> */}
-                <AppText type="defaultSemiBold">{t("routes.init.lang.title")}</AppText>
+                <AppText type="mdSemiBold">{t("routes.init.lang.title")}</AppText>
             </AppView>
 
             <AppView style={{ paddingHorizontal: 12, paddingBottom: 120 }}>
