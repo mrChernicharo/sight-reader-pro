@@ -1,63 +1,63 @@
 {
-  "expo": {
-    "name": "sight-reader-pro",
-    "slug": "sight-reader-pro",
-    "version": "1.0.13",
-    "orientation": "portrait",
-    "icon": "./assets/images/sight-reader-art.png",
-    "scheme": "sight-reader-pro",
-    "userInterfaceStyle": "automatic",
-    "android": {
-      "versionCode": 13,
-      "package": "com.chernicharo.sightreaderpro",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/sight-reader-art.png",
-        "backgroundColor": "#808080"
-      }
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.chernicharo.sightreaderpro",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "experiments": {
-      "typedRoutes": true
-    },
-    "extra": {
-      "eas": {
-        "projectId": "2f9fca84-3023-4178-b59c-f9c2818a7c3b"
-      }
-    },
-    "plugins": [
-      "expo-asset",
-      "expo-router",
-      "expo-font",
-      "expo-navigation-bar",
-      [
-        "expo-dev-launcher",
-        {
-          "launchMode": "most-recent"
-        }
-      ],
-      [
-        "expo-splash-screen",
-        {
-          "backgroundColor": "#232323",
-          "image": "./assets/images/sight-reader-art-1024.png",
-          "dark": {
-            "image": "./assets/images/sight-reader-art-1024.png",
-            "backgroundColor": "#000000"
-          },
-          "resizeMode": "cover"
-        }
-      ]
-    ]
-  }
+    "expo": {
+        "name": "sight-reader-pro",
+        "slug": "sight-reader-pro",
+        "version": "1.0.14",
+        "orientation": "portrait",
+        "icon": "./assets/images/sight-reader-art.png",
+        "scheme": "sight-reader-pro",
+        "userInterfaceStyle": "automatic",
+        "android": {
+            "versionCode": 14,
+            "package": "com.chernicharo.sightreaderpro",
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/images/sight-reader-art.png",
+                "backgroundColor": "#808080"
+            }
+        },
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.chernicharo.sightreaderpro",
+            "infoPlist": {
+                "ITSAppUsesNonExemptEncryption": false
+            }
+        },
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./assets/images/favicon.png"
+        },
+        "experiments": {
+            "typedRoutes": true
+        },
+        "extra": {
+            "eas": {
+                "projectId": "2f9fca84-3023-4178-b59c-f9c2818a7c3b"
+            }
+        },
+        "plugins": [
+            "expo-asset",
+            "expo-router",
+            "expo-font",
+            "expo-navigation-bar",
+            [
+                "expo-dev-launcher",
+                {
+                    "launchMode": "most-recent"
+                }
+            ],
+            [
+                "expo-splash-screen",
+                {
+                    "backgroundColor": "#232323",
+                    "image": "./assets/images/sight-reader-art-1024.png",
+                    "dark": {
+                        "image": "./assets/images/sight-reader-art-1024.png",
+                        "backgroundColor": "#000000"
+                    },
+                    "resizeMode": "cover"
+                }
+            ]
+        ]
+    }
 }
