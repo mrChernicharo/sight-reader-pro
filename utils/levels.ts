@@ -14,6 +14,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "basics 01",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["g/4:::c/5"],
         durationInSeconds: 20,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -54,7 +55,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "G",
         gameType: GameType.Single,
-        // noteRanges: ["g/2:::e/7"],
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["d/4:::e/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -65,6 +66,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "D Major",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["d/4:::f#/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -75,6 +77,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "A Major",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c#/4:::a/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -85,6 +88,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "F Major",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/4:::a/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -105,6 +109,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "Eb Major",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["bb/3:::c/6"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -137,6 +142,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "major-keys 01",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/4:::a/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
@@ -146,6 +152,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "major-keys 02",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["b/3:::b/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
@@ -195,6 +202,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "major-keys 03",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["b/3:::b/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 24, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
@@ -204,6 +212,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "major-keys 04",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["a/3:::c/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 24, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
@@ -213,6 +222,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "minor-keys 01",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/4:::a/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
@@ -223,6 +233,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         name: "minor-keys 02",
         gameType: GameType.Single,
         noteRanges: ["b/3:::b/5"],
+        timeSignature: TimeSignature["4/4"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
         scaleType: ScaleType.Diatonic,
@@ -230,6 +241,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     },
     {
         name: "D#m",
+        timeSignature: TimeSignature["4/4"],
         gameType: GameType.Single,
         noteRanges: ["a/3:::c/6"],
         durationInSeconds: 30,
@@ -241,6 +253,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "A#m",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["a/3:::c/6"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -261,6 +274,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "minor-keys 03",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["b/3:::b/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 24, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
@@ -271,6 +285,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         name: "minor-keys 04",
         gameType: GameType.Single,
         noteRanges: ["a/3:::c/5"],
+        timeSignature: TimeSignature["4/4"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 24, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
         scaleType: ScaleType.Diatonic,
@@ -279,6 +294,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "Gb",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["gb/3:::bb/5"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -289,6 +305,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "Cb",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["a/3:::c/6"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -299,6 +316,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "Flute 01",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/4:::c/7"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -308,6 +326,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
     {
         name: "Flute 02",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/4:::c/7"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -328,6 +347,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         name: "Guitar 01",
         gameType: GameType.Single,
         noteRanges: ["e/3:::e/6"],
+        timeSignature: TimeSignature["4/4"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
         hasKey: false,
@@ -337,6 +357,7 @@ const TREBLE_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Treble, [
         name: "Guitar 02",
         gameType: GameType.Single,
         noteRanges: ["e/3:::e/6"],
+        timeSignature: TimeSignature["4/4"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
         hasKey: false,
@@ -358,6 +379,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "basics 01",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["g/2:::c/3"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -366,6 +388,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "chromatic keys",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/2:::g/2", "c/3:::g/3"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -376,6 +399,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
         name: "range test",
         gameType: GameType.Single,
         noteRanges: ["a/2:::e/4"],
+        timeSignature: TimeSignature["4/4"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
         keySignatures: [KeySignature.Ab],
@@ -384,6 +408,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "2 ranges",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/2:::g/2", "c/3:::g/3"],
         durationInSeconds: 30,
         winConditions: { [WinRank.Gold]: 20, [WinRank.Silver]: 16, [WinRank.Bronze]: 12 },
@@ -392,6 +417,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     },
     {
         name: "3 ranges!",
+        timeSignature: TimeSignature["4/4"],
         gameType: GameType.Single,
         noteRanges: ["c/2:::g/2", "c/3:::g/3", "c/4:::g/4"],
         durationInSeconds: 30,
@@ -401,6 +427,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "Simple Intervals",
         gameType: GameType.Melody,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/2:::g/3"],
         durationInSeconds: 45,
         winConditions: { [WinRank.Gold]: 25, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
@@ -410,6 +437,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
         name: "F Major",
         gameType: GameType.Single,
         noteRanges: ["f/2:::c/4"],
+        timeSignature: TimeSignature["4/4"],
         durationInSeconds: 40,
         winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
         keySignatures: [KeySignature.F],
@@ -426,6 +454,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "Sharp Keys",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["g/2:::d/4"],
         durationInSeconds: 40,
         winConditions: { [WinRank.Gold]: 22, [WinRank.Silver]: 18, [WinRank.Bronze]: 14 },
@@ -435,6 +464,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "Octave Practice",
         gameType: GameType.Melody,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/2:::c/4"],
         durationInSeconds: 50,
         winConditions: { [WinRank.Gold]: 28, [WinRank.Silver]: 23, [WinRank.Bronze]: 18 },
@@ -444,6 +474,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
         name: "Flat Keys",
         gameType: GameType.Single,
         noteRanges: ["b/2:::f/4"],
+        timeSignature: TimeSignature["4/4"],
         durationInSeconds: 45,
         winConditions: { [WinRank.Gold]: 25, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },
         keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab],
@@ -452,6 +483,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "Mixed Intervals",
         gameType: GameType.Melody,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["d/2:::a/3", "g/2:::e/3"],
         durationInSeconds: 50,
         winConditions: { [WinRank.Gold]: 28, [WinRank.Silver]: 23, [WinRank.Bronze]: 18 },
@@ -460,6 +492,7 @@ const BASS_LEVELS: Level<GameType>[] = assembleLevelInfo(Clef.Bass, [
     {
         name: "All accidentals",
         gameType: GameType.Single,
+        timeSignature: TimeSignature["4/4"],
         noteRanges: ["c/2:::c/4"],
         durationInSeconds: 45,
         winConditions: { [WinRank.Gold]: 25, [WinRank.Silver]: 20, [WinRank.Bronze]: 15 },

@@ -1,7 +1,7 @@
 {
     "name": "sight-reader-pro",
     "main": "expo-router/entry",
-    "version": "1.0.14",
+    "version": "1.0.15",
     "scripts": {
         "start": "expo start",
         "android": "expo run:android",
@@ -14,7 +14,7 @@
         "preset": "jest-expo"
     },
     "dependencies": {
-        "@expo/vector-icons": "^14.0.2",
+        "@expo/vector-icons": "^15.0.2",
         "@lottiefiles/dotlottie-react": "^0.6.5",
         "@lottiefiles/react-lottie-player": "^3.5.4",
         "@react-native-async-storage/async-storage": "1.23.1",

@@ -17,6 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ScrollView } from "react-native-gesture-handler";
+import { useAppStore } from "@/hooks/useAppStore";
 
 export default function LevelDetails() {
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
@@ -24,6 +25,7 @@ export default function LevelDetails() {
     const { id } = useLocalSearchParams() as { id: string };
     const { t } = useTranslation();
     const level = getLevel(id);
+    const { endGame } = useAppStore();
 
     if (!level) return null;
 
@@ -38,6 +40,7 @@ export default function LevelDetails() {
     };
 
     function handleNewGame() {
+        endGame();
         switch (level.gameType) {
             case GameType.Single:
             case GameType.Melody: {

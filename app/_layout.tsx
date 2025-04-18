@@ -7,7 +7,7 @@ import { Colors } from "@/utils/Colors";
 import { GameScreenParams } from "@/utils/types";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SystemUI from "expo-system-ui";
-import { router, useLocalSearchParams, usePathname } from "expo-router";
+import { router, useLocalSearchParams, usePathname, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { useTheme } from "@/hooks/useTheme";
@@ -36,11 +36,12 @@ export default function RootLayout() {
     }, [_hydrated]);
 
     useEffect(() => {
-        console.log({ path, ...(currentGame && { currentGame: currentGame.id }) });
+        console.log("path :::", { path, ...(currentGame && { currentGame: currentGame.id }) });
+        currentGame && console.log("currentGame :::", { currentGame: currentGame.name });
     }, [currentGame?.id, path]);
 
     useEffect(() => {
-        console.log({ id, keySignature, previousPage });
+        console.log("params :::", { id, keySignature, previousPage });
     }, [id, keySignature, previousPage]);
 
     useEffect(() => {

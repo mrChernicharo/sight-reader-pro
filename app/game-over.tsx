@@ -10,8 +10,8 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { getGameStats, pickKeySignature } from "@/utils/helperFns";
-import { ALL_LEVELS, getLevel } from "@/utils/levels";
-import { Link, router } from "expo-router";
+import { ALL_LEVELS, getLevel, getUnlockedLevels } from "@/utils/levels";
+import { Link, Redirect, router } from "expo-router";
 import { useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
@@ -40,20 +40,19 @@ export default function GameOverScreen() {
     const [btnsEnabled, setBtnsEnabled] = useState(false);
 
     function goToNextLevel() {
-        endGame();
         const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
         if (nextLevel) {
-            router.push({
+            router.replace({
                 pathname: "/level-details/[id]",
                 params: { id: nextLevel.id, clef: nextLevel.clef },
             });
         } else {
             console.log("NO MORE LEVELS. ZEROU O GAME!");
         }
+        return;
     }
     function playAgain() {
-        endGame();
-        router.push({
+        return router.replace({
             pathname: "/game-level/[id]",
             params: {
                 id: level.id,
@@ -63,15 +62,10 @@ export default function GameOverScreen() {
         });
     }
     function goToLevelSelection() {
-        endGame();
-        router.push({
+        return router.replace({
             pathname: "/level-selection",
         });
     }
-
-    // useEffect(() => {
-    //   console.log("<<< Game Over >>>", { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute });
-    // }, [attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -80,8 +74,10 @@ export default function GameOverScreen() {
         }, 3800);
     }, []);
 
-    if (!level || !lastGame) return null;
-    if (!currentGame || !currentGame?.rounds?.length) return null;
+    if (!level || !lastGame || !currentGame || !currentGame?.rounds?.length) {
+        console.log("HHHHHAAAAAAAAAAA!!!!!");
+        return null;
+    }
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor }]}>
