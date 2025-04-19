@@ -2,7 +2,7 @@
     "expo": {
         "name": "sight-reader-pro",
         "slug": "sight-reader-pro",
-        "version": "1.0.15",
+        "version": "1.0.16",
         "orientation": "portrait",
         "icon": "./assets/images/sight-reader-art.png",
         "scheme": "sight-reader-pro",
@@ -11,7 +11,7 @@
             "visible": "immersive"
         },
         "android": {
-            "versionCode": 15,
+            "versionCode": 16,
             "package": "com.chernicharo.sightreaderpro",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/sight-reader-art.png",
