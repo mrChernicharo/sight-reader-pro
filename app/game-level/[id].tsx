@@ -24,5 +24,5 @@ export default function GameLevel() {
             </>
         );
 
-    return <>{GameComponents[level.gameType]}</>;
+    return <>{GameComponents[level.type]}</>;
 }

@@ -1,6 +1,6 @@
 import { Clef, GameType, KeySignature, Knowledge, LevelAccidentType, ScaleType } from "@/utils/enums";
 import { ALL_LEVELS } from "@/utils/levels";
-import { CurrentGame, Game, Round } from "@/utils/types";
+import { CurrentGame, Game, Round, Scale } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 import { create } from "zustand";
@@ -11,11 +11,10 @@ DEV_RESET = true;
 
 interface PracticeSettings {
     clef: Clef;
-    hasKey: boolean;
     isMinorKey: boolean;
     accident: LevelAccidentType;
     keySignature: KeySignature;
-    scaleType: ScaleType;
+    scale: Scale;
     noteRangeIndices: { low: number; high: number };
     gameType: GameType;
 }
@@ -33,8 +32,8 @@ export interface AppState {
     knowledge: Knowledge | null;
     showPianoNoteNames: boolean;
     globalVolume: number;
-    games: Game<GameType>[];
-    currentGame: CurrentGame<GameType> | null;
+    games: Game[];
+    currentGame: CurrentGame | null;
     selectedLevelsClef: Clef;
     completedTours: CompletedTours;
     practiceSettings: PracticeSettings;
@@ -47,10 +46,9 @@ export const defaultNoteRangeIndices = { low: 13, high: 25 };
 const defaultPracticeSettings: PracticeSettings = {
     accident: LevelAccidentType.None,
     clef: Clef.Treble,
-    hasKey: false,
     isMinorKey: false,
     keySignature: KeySignature.C,
-    scaleType: ScaleType.Diatonic,
+    scale: Scale.Diatonic,
     noteRangeIndices: defaultNoteRangeIndices,
     gameType: GameType.Single,
 };
@@ -65,11 +63,11 @@ export interface AppActions {
 
     setTourCompleted: (tourName: keyof CompletedTours, completed: boolean) => Promise<void>;
 
-    saveGameRecord: (game: Game<GameType>) => Promise<void>;
-    startNewGame: (newGame: CurrentGame<GameType>) => Promise<void>;
+    saveGameRecord: (game: Game) => Promise<void>;
+    startNewGame: (newGame: CurrentGame) => Promise<void>;
     endGame: (previousPage?: string) => Promise<void>;
-    addNewRound: (round: Round<GameType>) => Promise<void>;
-    updateRound: (val: Partial<Round<GameType>>) => Promise<void>;
+    addNewRound: (round: Round) => Promise<void>;
+    updateRound: (val: Partial<Round>) => Promise<void>;
     updatePracticeSettings: (setting: keyof PracticeSettings, value: any) => Promise<void>;
 
     setHydrated: (hydrated: boolean) => Promise<void>;
@@ -150,9 +148,9 @@ export const useAppStore = create<AppState & AppActions>()(
                 setTourCompleted: async (tourName: keyof CompletedTours, completed: boolean) =>
                     set((state) => ({ ...state, completedTours: { ...state.completedTours, [tourName]: completed } })),
 
-                saveGameRecord: async (game: Game<GameType>) => set((state) => ({ games: [...state.games, game] })),
+                saveGameRecord: async (game: Game) => set((state) => ({ games: [...state.games, game] })),
 
-                startNewGame: async (newGame: CurrentGame<GameType>) => {
+                startNewGame: async (newGame: CurrentGame) => {
                     // prettier-ignore
                     // console.log("START NEW GAME:::", newGame, "ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
                     set({ currentGame: newGame });
@@ -170,7 +168,7 @@ export const useAppStore = create<AppState & AppActions>()(
                     }
                 },
 
-                addNewRound: async (round: Round<GameType>) =>
+                addNewRound: async (round: Round) =>
                     set((state) => {
                         if (!hasOngoingGame(state)) return state;
                         return {
@@ -178,7 +176,7 @@ export const useAppStore = create<AppState & AppActions>()(
                             currentGame: { ...state.currentGame!, rounds: [...state.currentGame!.rounds, round] },
                         };
                     }),
-                updateRound: async (val: Partial<Round<GameType>>) => {
+                updateRound: async (val: Partial<Round>) => {
                     set((state) => {
                         if (!hasOngoingGame(state)) return state;
                         const latestRound = state.currentGame!.rounds.slice(-1)[0];

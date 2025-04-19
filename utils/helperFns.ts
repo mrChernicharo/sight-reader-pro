@@ -1,5 +1,5 @@
 import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident } from "./enums";
-import { GameScore, Level, LevelScore, MelodyRound, Note, Round, SingleNoteRound, WinConditions } from "./types";
+import { GameScore, Level, LevelScore, Note, Round, WinConditions } from "./types";
 import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES } from "./keySignature";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
@@ -272,7 +272,7 @@ export function stemDown(note: Note, clef: Clef) {
     }
 }
 
-export function getGameStats<T>(level: Level<T>, rounds: Round<T>[], intl: Intl.NumberFormat) {
+export function getGameStats(level: Level, rounds: Round[], intl: Intl.NumberFormat) {
     const DEFAULT_STATS = {
         attempts: 0,
         successes: 0,
@@ -287,14 +287,14 @@ export function getGameStats<T>(level: Level<T>, rounds: Round<T>[], intl: Intl.
     if (!level || !rounds) return DEFAULT_STATS;
     // console.log("getGameStats:::", { level, rounds, gameType: level.gameType });
 
-    switch (level.gameType) {
+    switch (level.type) {
         case GameType.Single:
-            return (rounds as SingleNoteRound[]).reduce(
+            return (rounds as Round[]).reduce(
                 (acc, ro) => {
                     if (ro.attempt) {
                         acc.attempts++;
-                        const { noteName: attemptName } = explodeNote(ro.attempt);
-                        const { noteName: valName } = explodeNote(ro.value);
+                        const { noteName: attemptName } = explodeNote(ro.attempt[0]);
+                        const { noteName: valName } = explodeNote(ro.value[0]);
                         isNoteMatch(attemptName, valName) ? acc.successes++ : acc.mistakes++;
                     }
 
@@ -321,12 +321,12 @@ export function getGameStats<T>(level: Level<T>, rounds: Round<T>[], intl: Intl.
         case GameType.Melody:
             const baseInfo = { successes: 0, mistakes: 0, attempts: 0 };
             // console.log({ level, rounds });
-            (rounds as MelodyRound[]).forEach((round) => {
-                if (!round.attempts || !round.values) return;
+            (rounds as Round[]).forEach((round) => {
+                if (!round.attempt || !round.value) return;
 
-                (round.attempts || []).forEach((attempt, i) => {
+                (round.attempt || []).forEach((attempt, i) => {
                     const { noteName: attemptName } = explodeNote(attempt);
-                    const { noteName: valName } = explodeNote(round.values[i]);
+                    const { noteName: valName } = explodeNote(round.value[i]);
                     baseInfo.attempts++;
                     isNoteMatch(attemptName, valName) ? baseInfo.successes++ : baseInfo.mistakes++;
                 });
@@ -421,23 +421,23 @@ export function getAudioFilepath(note: Note) {
     return filepath;
 }
 
-export function pickKeySignature(level: Level<GameType>) {
-    switch (level.gameType) {
-        case GameType.Single:
-        case GameType.Chord:
-        case GameType.Melody: {
-            if (level.hasKey) {
-                const randomIndex = Math.floor(Math.random() * level.keySignatures.length);
-                return level.keySignatures[randomIndex];
-            } else {
-                return [LevelAccidentType.b].includes(level.accident) ? KeySignature.F : KeySignature.C;
-            }
-        }
+// export function pickKeySignature(level: Level) {
+//     switch (level.type) {
+//         case GameType.Single:
+//         case GameType.Chord:
+//         case GameType.Melody: {
+//             if (level.hasKey) {
+//                 const randomIndex = Math.floor(Math.random() * level.keySignatures.length);
+//                 return level.keySignatures[randomIndex];
+//             } else {
+//                 return [LevelAccidentType.b].includes(level.accident) ? KeySignature.F : KeySignature.C;
+//             }
+//         }
 
-        case GameType.Rhythm:
-            return KeySignature.C;
-    }
-}
+//         case GameType.Rhythm:
+//             return KeySignature.C;
+//     }
+// }
 
 export function shuffle<T>(array: T[]): T[] {
     const shuffledArray = [...array]; // Create a copy of the original array

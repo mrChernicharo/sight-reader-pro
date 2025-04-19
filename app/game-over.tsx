@@ -9,7 +9,7 @@ import { useIntl } from "@/hooks/useIntl";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { getGameStats, pickKeySignature } from "@/utils/helperFns";
+import { getGameStats } from "@/utils/helperFns";
 import { ALL_LEVELS, getLevel, getUnlockedLevels } from "@/utils/levels";
 import { Link, Redirect, router } from "expo-router";
 import { useEffect, useState } from "react";
@@ -56,7 +56,7 @@ export default function GameOverScreen() {
             pathname: "/game-level/[id]",
             params: {
                 id: level.id,
-                keySignature: pickKeySignature(level),
+                keySignature: level.keySignature,
                 previousPage: "/level-details",
             },
         });

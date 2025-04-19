@@ -14,7 +14,7 @@ import { explodeNote, isFlatKeySignature, wait } from "@/utils/helperFns";
 import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
 import { ALL_LEVELS } from "@/utils/levels";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
-import { Level, LevelId } from "@/utils/types";
+import { Level, LevelId, Scale } from "@/utils/types";
 import { router } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
@@ -38,17 +38,16 @@ export default function PracticeScreen() {
     const { practiceSettings, updatePracticeSettings, endGame } = useAppStore();
     const {
         clef,
-        hasKey,
         isMinorKey,
         accident,
-        scaleType,
+        scale,
         keySignature = KeySignature.C,
         noteRangeIndices,
         gameType,
     } = practiceSettings;
 
-    const SCALES = Object.values(ScaleType).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) }));
-    const DEFAULT_SCALE = SCALES.find((acc) => acc.key === scaleType);
+    const SCALES = Object.values(Scale).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) }));
+    const DEFAULT_SCALE = SCALES.find((acc) => acc.key === scale);
     const DEFAULT_ACCIDENT = ACCIDENTS.find((acc) => acc.key === accident);
 
     const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;
@@ -58,13 +57,7 @@ export default function PracticeScreen() {
     const CURR_KEY_SIGNATURES = keySigArray.map((v) => ({ label: v, value: v.toLowerCase() }));
 
     const allNotes = useMemo(() => {
-        const notes = hasKey
-            ? isFlatKeySignature(keySignature)
-                ? NOTES_FLAT_ALL_OCTAVES
-                : NOTES_SHARP_ALL_OCTAVES
-            : accident === LevelAccidentType.b
-            ? NOTES_FLAT_ALL_OCTAVES
-            : NOTES_SHARP_ALL_OCTAVES;
+        const notes = isFlatKeySignature(keySignature) ? NOTES_FLAT_ALL_OCTAVES : NOTES_SHARP_ALL_OCTAVES;
 
         return notes.filter((note) => {
             const { index } = explodeNote(note);
@@ -77,7 +70,7 @@ export default function PracticeScreen() {
                     return index >= 24 && index < 78;
             }
         });
-    }, [clef, hasKey, keySignature, accident]);
+    }, [clef, keySignature, accident]);
 
     // const rangeNotes = allNotes.filter((_, idx) => noteRangeIndices.low < idx && idx < noteRangeIndices.high);
 
@@ -89,7 +82,7 @@ export default function PracticeScreen() {
 
     // CREATE A LEVEL IN MEMORY, THEN REFERENCE IT WITHIN GAME COMPONENT
     const startPracticeGame = useCallback(async () => {
-        // console.log({ clef, hasKey, accident, keySignature });
+        // console.log({ clef, accident, keySignature });
         const levelId: LevelId = `${clef}-practice`;
         const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}`];
         // console.log("allNotes::::", allNotes, allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]);
@@ -98,26 +91,29 @@ export default function PracticeScreen() {
             id: levelId,
             name: "Practice",
             clef,
-            gameType: GameType.Single,
+            type: GameType.Single,
             durationInSeconds: 45,
             noteRanges,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
-            hasKey,
-            ...(hasKey ? { keySignatures: [keySignature], scaleType } : { accident }),
-        } as Level<GameType.Single>;
+            keySignature,
+            timeSignature: TimeSignature["4/4"],
+            index: 1000,
+            scale,
+        } as Level;
 
         const practiceLevelMelody = {
             id: levelId,
             name: "Practice",
             clef,
-            gameType: GameType.Melody,
+            type: GameType.Melody,
             timeSignature: TimeSignature["4/4"],
             noteRanges,
             durationInSeconds: 45,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
-            hasKey,
-            ...(hasKey ? { keySignatures: [keySignature], scaleType } : { accident }),
-        } as Level<GameType.Melody>;
+            keySignature,
+            index: 1000,
+            scale,
+        } as Level;
 
         // console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
         // !important! Practice games are pushed into levels before game begins, then they are popped out from levels
@@ -132,7 +128,6 @@ export default function PracticeScreen() {
         });
     }, [
         clef,
-        hasKey,
         accident,
         noteRangeIndices.low,
         noteRangeIndices.high,
@@ -143,8 +138,8 @@ export default function PracticeScreen() {
     ]);
 
     // useEffect(() => {
-    //     console.log("---", { hasKey, accident, keySignature });
-    // }, [hasKey, accident, keySignature]);
+    //     console.log("---", { accident, keySignature });
+    // }, [accident, keySignature]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
@@ -180,81 +175,37 @@ export default function PracticeScreen() {
                         </AppView>
                     </AppView>
 
-                    <AppView style={s.keyContainer}>
+                    <AppView>
                         <AppView style={s.box}>
-                            <AppText>{t("music.keySignature")}</AppText>
+                            <AppText>{t("music.scaleType.major")}</AppText>
                             <AppSwitch
-                                value={hasKey}
-                                setValue={async (val) => {
-                                    // console.log(val);
-                                    if (!val) {
-                                        updatePracticeSettings("keySignature", KeySignature.C);
-                                        updatePracticeSettings("isMinorKey", false);
-                                    }
-                                    updatePracticeSettings("hasKey", val);
+                                value={isMinorKey}
+                                setValue={(val) => {
+                                    const relativeKeySig = altKeySigArray[keySigIndex];
+                                    updatePracticeSettings("isMinorKey", val);
+                                    updatePracticeSettings("keySignature", relativeKeySig);
                                 }}
                             />
-                            {hasKey && <AppText style={{ fontSize: 20 }}>{keySignature}</AppText>}
+                            <AppText>{t("music.scaleType.minor")}</AppText>
                         </AppView>
-                    </AppView>
 
-                    <AppView>
-                        {hasKey ? (
-                            <AppView>
-                                <AppView style={s.box}>
-                                    <AppText>{t("music.scaleType.major")}</AppText>
-                                    <AppSwitch
-                                        value={isMinorKey}
-                                        setValue={(val) => {
-                                            const relativeKeySig = altKeySigArray[keySigIndex];
-                                            updatePracticeSettings("isMinorKey", val);
-                                            updatePracticeSettings("keySignature", relativeKeySig);
-                                        }}
-                                    />
-                                    <AppText>{t("music.scaleType.minor")}</AppText>
-                                </AppView>
-
-                                <AppView style={s.box}>
-                                    <KeySignatureSlider
-                                        keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
-                                        keySigIndex={keySigIndex}
-                                        setKeySigIndex={(n) => {
-                                            const keySig = keySigArray.find((_, i) => i == n);
-                                            updatePracticeSettings("keySignature", keySig);
-                                        }}
-                                    />
-                                </AppView>
-                            </AppView>
-                        ) : (
-                            <AppView>
-                                <AppText>{t("music.accidents")}</AppText>
-                                <SelectList
-                                    data={ACCIDENTS}
-                                    save="value"
-                                    setSelected={(val: LevelAccidentType) => updatePracticeSettings("accident", val)}
-                                    search={false}
-                                    defaultOption={DEFAULT_ACCIDENT}
-                                    inputStyles={{
-                                        color: Colors[theme].text,
-                                        backgroundColor: Colors[theme].bg,
-                                    }}
-                                    dropdownTextStyles={{
-                                        color: Colors[theme].text,
-                                    }}
-                                    disabledTextStyles={{
-                                        color: Colors[theme].textMute,
-                                    }}
-                                    boxStyles={{}}
-                                />
-                            </AppView>
-                        )}
+                        <AppView style={s.box}>
+                            <KeySignatureSlider
+                                keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
+                                keySigIndex={keySigIndex}
+                                setKeySigIndex={(n) => {
+                                    const keySig = keySigArray.find((_, i) => i == n);
+                                    updatePracticeSettings("keySignature", keySig);
+                                }}
+                            />
+                        </AppView>
 
                         <AppView>
                             <AppText>{t("music.scale")}</AppText>
                             <SelectList
                                 data={SCALES}
                                 save="key"
-                                setSelected={(val: ScaleType) => updatePracticeSettings("scaleType", val)}
+                                setSelected={(val: ScaleType) => updatePracticeSettings("scale", val)}
                                 search={false}
                                 defaultOption={DEFAULT_SCALE}
                                 inputStyles={{

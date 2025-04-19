@@ -12,7 +12,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 const intlDate = new Intl.DateTimeFormat("en-us", { dateStyle: "medium", timeStyle: "medium" });
 
-export function GameRecord({ game }: { game: Game<GameType> }) {
+export function GameRecord({ game }: { game: Game }) {
     const theme = useTheme();
     const level = getLevel(game.levelId);
     const { intl } = useIntl();

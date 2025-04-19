@@ -6,7 +6,7 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
 import { Colors } from "@/utils/Colors";
 import { LevelAccidentType, Clef, GameType, WinRank, KeySignature } from "@/utils/enums";
-import { isNoteHigher, pickKeySignature } from "@/utils/helperFns";
+import { isNoteHigher } from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
 import { Level, Note } from "@/utils/types";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -29,26 +29,25 @@ export default function LevelDetails() {
 
     if (!level) return null;
 
-    // console.log(":::LevelDetails", level);
+    console.log(":::LevelDetails", level);
 
     // if (level.gameType !== GameType.Single) return;
 
     const displayInfo = {
         rangeTitleOffset: getRangeTitleOffset(level),
-        accidentText: level.hasKey ? level.keySignatures.join(" | ") : getAccidentText(level.accident),
-        rangeKeys: (level as Level<GameType.Single>).noteRanges.map((range) => range.split(":::") as [Note, Note]),
+        accidentText: level.keySignature,
+        rangeKeys: (level as Level).noteRanges.map((range) => range.split(":::") as [Note, Note]),
     };
 
     function handleNewGame() {
         endGame();
-        switch (level.gameType) {
+        switch (level.type) {
             case GameType.Single:
             case GameType.Melody: {
-                const chosenKeySignature = pickKeySignature(level);
-                // console.log({ level, displayInfo, chosenKeySignature });
+                console.log({ level, displayInfo });
                 router.push({
                     pathname: "/game-level/[id]",
-                    params: { id: String(id), keySignature: chosenKeySignature, previousPage: "/level-details" },
+                    params: { id: String(id), keySignature: level.keySignature, previousPage: "/level-details" },
                 });
             }
         }
@@ -70,7 +69,7 @@ export default function LevelDetails() {
                 </FadeIn>
 
                 <FadeIn y={50} x={0} delay={200} style={s.midContainer}>
-                    <AppText>{t(`game.type.${level.gameType}`)}</AppText>
+                    <AppText>{t(`game.type.${level.type}`)}</AppText>
                     <AppText>{t(`game.config.${displayInfo.accidentText}`)}</AppText>
                     <AppText>
                         <Ionicons name="time-outline" /> {level.durationInSeconds} {t("time.seconds")}
@@ -89,7 +88,8 @@ export default function LevelDetails() {
                     <SheetMusic.RangeDisplay
                         clef={level.clef}
                         keys={displayInfo.rangeKeys}
-                        keySignature={level.hasKey ? level.keySignatures[0] : KeySignature["C"]}
+                        keySignature={level.keySignature || KeySignature["C"]}
+                        // keySignature={level.hasKey ? level.keySignatures[0] : KeySignature["C"]}
                     />
                 </FadeIn>
 
@@ -173,16 +173,16 @@ const s = StyleSheet.create({
     },
 });
 
-function getRangeTitleOffset(level: Level<GameType>) {
-    if (!(level as Level<GameType.Single>).noteRanges) {
+function getRangeTitleOffset(level: Level) {
+    if (!(level as Level).noteRanges) {
         throw Error("getRangeTitleOffset [ERROR] :: level.noteRanges is wonky");
     }
 
     const defaultOffset = -100;
-    if (level.gameType === GameType.Rhythm) return defaultOffset;
+    if (level.type === GameType.Rhythm) return defaultOffset;
 
     let highNote: Note = "a/1";
-    (level as Level<GameType.Single>).noteRanges.forEach((range) => {
+    (level as Level).noteRanges.forEach((range) => {
         const [, high] = range.split(":::") as [Note, Note];
         if (isNoteHigher(high, highNote)) {
             highNote = high;
