@@ -1,5 +1,5 @@
 import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident } from "./enums";
-import { GameScore, Level, LevelScore, Note, Round, WinConditions } from "./types";
+import { GameScore, Level, LevelScore, MelodyRound, Note, Round, SingleNoteRound, WinConditions } from "./types";
 import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES } from "./keySignature";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
@@ -272,7 +272,7 @@ export function stemDown(note: Note, clef: Clef) {
     }
 }
 
-export function getGameStats(level: Level, rounds: Round[], intl: Intl.NumberFormat) {
+export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl.NumberFormat) {
     const DEFAULT_STATS = {
         attempts: 0,
         successes: 0,
@@ -289,12 +289,12 @@ export function getGameStats(level: Level, rounds: Round[], intl: Intl.NumberFor
 
     switch (level.type) {
         case GameType.Single:
-            return (rounds as Round[]).reduce(
+            return (rounds as SingleNoteRound[]).reduce(
                 (acc, ro) => {
                     if (ro.attempt) {
                         acc.attempts++;
-                        const { noteName: attemptName } = explodeNote(ro.attempt[0]);
-                        const { noteName: valName } = explodeNote(ro.value[0]);
+                        const { noteName: attemptName } = explodeNote(ro.attempt);
+                        const { noteName: valName } = explodeNote(ro.value);
                         isNoteMatch(attemptName, valName) ? acc.successes++ : acc.mistakes++;
                     }
 
@@ -321,12 +321,12 @@ export function getGameStats(level: Level, rounds: Round[], intl: Intl.NumberFor
         case GameType.Melody:
             const baseInfo = { successes: 0, mistakes: 0, attempts: 0 };
             // console.log({ level, rounds });
-            (rounds as Round[]).forEach((round) => {
-                if (!round.attempt || !round.value) return;
+            (rounds as MelodyRound[]).forEach((round) => {
+                if (!round.attempts || !round.values) return;
 
-                (round.attempt || []).forEach((attempt, i) => {
+                (round.attempts || []).forEach((attempt, i) => {
                     const { noteName: attemptName } = explodeNote(attempt);
-                    const { noteName: valName } = explodeNote(round.value[i]);
+                    const { noteName: valName } = explodeNote(round.values[i]);
                     baseInfo.attempts++;
                     isNoteMatch(attemptName, valName) ? baseInfo.successes++ : baseInfo.mistakes++;
                 });

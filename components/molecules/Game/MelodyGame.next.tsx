@@ -29,7 +29,7 @@ export function MelodyGameComponent() {
     const keySignature = decodeURIComponent(ksig) as KeySignature;
 
     const level = getLevel(id);
-    const possibleNotes = getPossibleNotesInLevel(level, keySignature);
+    const possibleNotes = getPossibleNotesInLevel(level);
     const previousPage = getPreviousPage(String(prevPage), id);
 
     const [melodyIdx, setMelodyIdx] = useState(0);
@@ -96,15 +96,15 @@ export function MelodyGameComponent() {
 
     useEffect(() => {
         // if (!pianoReady) return;
-        const gameInfo: Partial<CurrentGame<GameType.Melody>> = {
+        const gameInfo: Partial<CurrentGame> = {
             levelId: id,
             timestamp: Date.now(),
             type: GameType.Melody,
-            rounds: [decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes)],
+            rounds: [decideNextRound<MelodyRound>(level, keySignature, possibleNotes)],
             state: GameState.Idle,
         };
         // console.log("START NEW MELODY GAME", { level, keySignature, possibleNotes });
-        startNewGame({ ...level, ...gameInfo } as CurrentGame<GameType.Melody>);
+        startNewGame({ ...level, ...gameInfo } as CurrentGame);
     }, [id]);
 
     return (
@@ -137,6 +137,7 @@ const s = StyleSheet.create({
     top: {
         position: "relative",
         height: 130,
+        paddingHorizontal: 24,
         // borderWidth: 1,
         // borderColor: "green",
     },

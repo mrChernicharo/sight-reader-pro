@@ -69,36 +69,36 @@ import {
 //     ? GameKeySettings & { timeSignature: TimeSignature }
 //     : never;
 
-// export type SingleNoteRound = {
-//     attempt: Note | null;
-//     value: Note;
-// };
+export type SingleNoteRound = {
+    attempt: Note | null;
+    value: Note;
+};
 
-// export type ChordRound = {
-//     attempt: Note[];
-//     value: Note[];
-// };
+export type ChordRound = {
+    attempt: Note[];
+    value: Note[];
+};
 
-// export type MelodyRound = {
-//     attempts: Note[];
-//     values: Note[];
-//     durations: NoteDuration[][];
-// };
+export type MelodyRound = {
+    attempts: Note[];
+    values: Note[];
+    durations: NoteDuration[][];
+};
 
-// export type RhythmRound = Array<{
-//     attempt: number | null;
-//     value: number;
-// }>;
+export type RhythmRound = Array<{
+    attempt: number | null;
+    value: number;
+}>;
 
-// export type Round<T> = T extends GameType.Single
-//     ? SingleNoteRound
-//     : T extends GameType.Chord
-//     ? ChordRound
-//     : T extends GameType.Melody
-//     ? MelodyRound
-//     : T extends GameType.Rhythm
-//     ? RhythmRound
-//     : never;
+export type Round<T> = T extends GameType.Single
+    ? SingleNoteRound
+    : T extends GameType.Chord
+    ? ChordRound
+    : T extends GameType.Melody
+    ? MelodyRound
+    : T extends GameType.Rhythm
+    ? RhythmRound
+    : never;
 
 // export type Game<T> = {
 //     id: string;
@@ -183,11 +183,11 @@ export type WinConditions = {
 };
 
 export enum Scale {
-    Pentatonic = "Pentatonic", // c - d - e - g - a
-    Diatonic = "Diatonic", // c - d - e - f - g - a - b
-    Chromatic = "Chromatic", // c - db - d - eb - e - f ...
-    Harmonic = "Harmonic", // c - d - eb - f - g - ab - b
-    Melodic = "Melodic", // c - d - eb - f - g - a - b
+    Diatonic = "diatonic", // c - d - e - f - g - a - b
+    Chromatic = "chromatic", // c - db - d - eb - e - f ...
+    // Pentatonic = "pentatonic", // c - d - e - g - a
+    // Harmonic = "harmonic", // c - d - eb - f - g - ab - b
+    // Melodic = "melodic", // c - d - eb - f - g - a - b
 }
 
 export type Level = {
@@ -198,7 +198,7 @@ export type Level = {
 
     clef: Clef;
     scale: Scale;
-    noteRanges: string[];
+    noteRanges: NoteRange[];
 
     timeSignature: TimeSignature;
     keySignature: KeySignature;
@@ -213,18 +213,18 @@ export type Game = {
     timestamp: number;
     durationInSeconds: number;
     type: GameType;
-    rounds: Round[];
+    rounds: Round<GameType>[];
 };
 
-export type Round = {
-    attempt: null | Note[];
-    value: Note[];
-};
+// export type Round = {
+//     attempt: null | Note[];
+//     value: Note[];
+// };
 
-export type ActiveGame = {
-    state: GameState;
-    rounds: Round[];
-};
+// export type ActiveGame = {
+//     state: GameState;
+//     rounds: Round[];
+// };
 
 export type CurrentGame = Game & Level & { state: GameState };
 
@@ -630,7 +630,7 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
             keySignature: keySignatures[keySignatureIdx],
             timeSignature: timeSignatures[timeSignatureIdx],
             scale: scales[scaleIdx],
-            noteRanges: [`${loNoteIdx}:::${hiNoteIdx}`],
+            noteRanges: [`${loNoteIdx}:::${hiNoteIdx}` as NoteRange],
             // noteRanges: [`${NOTE_INDICES[String(loNoteIdx)][0]}:::${NOTE_INDICES[String(hiNoteIdx)][0]}`],
         });
     }

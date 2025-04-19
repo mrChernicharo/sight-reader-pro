@@ -208,7 +208,7 @@ const TEST_LEVELS_A = makeLevelGroup({
     timeSignatures: [TimeSignature["4/4"]],
     levelCount: 12,
     noteRanges: { min: [20, 25], max: [30, 35] },
-    scales: [Scale.Diatonic, Scale.Pentatonic],
+    scales: [Scale.Diatonic /*, Scale.Pentatonic */],
     winConditions: {
         min: {
             bronze: 12,
@@ -231,7 +231,7 @@ const TEST_LEVELS_B = makeLevelGroup({
     timeSignatures: [TimeSignature["4/4"]],
     levelCount: 12,
     noteRanges: { min: [18, 24], max: [32, 38] },
-    scales: [Scale.Diatonic, Scale.Pentatonic, Scale.Melodic],
+    scales: [Scale.Diatonic /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
         min: {
             bronze: 16,

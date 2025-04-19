@@ -66,8 +66,8 @@ export interface AppActions {
     saveGameRecord: (game: Game) => Promise<void>;
     startNewGame: (newGame: CurrentGame) => Promise<void>;
     endGame: (previousPage?: string) => Promise<void>;
-    addNewRound: (round: Round) => Promise<void>;
-    updateRound: (val: Partial<Round>) => Promise<void>;
+    addNewRound: (round: Round<GameType>) => Promise<void>;
+    updateRound: (val: Partial<Round<GameType>>) => Promise<void>;
     updatePracticeSettings: (setting: keyof PracticeSettings, value: any) => Promise<void>;
 
     setHydrated: (hydrated: boolean) => Promise<void>;
@@ -168,7 +168,7 @@ export const useAppStore = create<AppState & AppActions>()(
                     }
                 },
 
-                addNewRound: async (round: Round) =>
+                addNewRound: async (round: Round<GameType>) =>
                     set((state) => {
                         if (!hasOngoingGame(state)) return state;
                         return {
@@ -176,7 +176,7 @@ export const useAppStore = create<AppState & AppActions>()(
                             currentGame: { ...state.currentGame!, rounds: [...state.currentGame!.rounds, round] },
                         };
                     }),
-                updateRound: async (val: Partial<Round>) => {
+                updateRound: async (val: Partial<Round<GameType>>) => {
                     set((state) => {
                         if (!hasOngoingGame(state)) return state;
                         const latestRound = state.currentGame!.rounds.slice(-1)[0];

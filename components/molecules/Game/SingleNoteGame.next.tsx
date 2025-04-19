@@ -7,7 +7,7 @@ import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "
 import { explodeNote, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
-import { CurrentGame, GameScreenParams, Note, Round } from "@/utils/types";
+import { CurrentGame, GameScreenParams, Note, Round, SingleNoteRound } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { StyleProp, StyleSheet, TextStyle } from "react-native";
@@ -42,12 +42,12 @@ export function SingleNoteGameComponent() {
     const rounds = currentGame?.rounds || [];
     const keySignature = decodeURIComponent(keySig) as KeySignature;
     const level = getLevel(id);
-    const possibleNotes = getPossibleNotesInLevel(level, keySignature);
+    const possibleNotes = getPossibleNotesInLevel(level);
     const previousPage = getPreviousPage(String(prevPage), id);
 
     const [gameState, setGameState] = useState<GameState>(GameState.Idle);
     const [currNote, setCurrNote] = useState<Note>(
-        decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3"
+        decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
 
     async function onPianoKeyPress(notename: NoteName) {
@@ -74,7 +74,7 @@ export function SingleNoteGameComponent() {
 
         addNewRound({ value: currNote, attempt: attemptedNote });
 
-        const { value: nextNote } = decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes, {
+        const { value: nextNote } = decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes, {
             value: currNote,
             attempt: attemptedNote,
         })!;
@@ -106,15 +106,15 @@ export function SingleNoteGameComponent() {
     // start game
     useEffect(() => {
         // if (!level || !currNote || currentGame?.type !== GameType.Single) return;
-        const firstRound = decideNextRound<Round<GameType.Single>>(level, keySignature, possibleNotes)?.value ?? "c/3";
-        const gameInfo: Partial<CurrentGame<GameType.Single>> = {
+        const firstRound = decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3";
+        const gameInfo: Partial<CurrentGame> = {
             levelId: id,
             timestamp: Date.now(),
             type: GameType.Single,
             rounds: [{ value: firstRound, attempt: null }],
             state: GameState.Idle,
         };
-        startNewGame({ ...level, ...gameInfo } as CurrentGame<GameType.Single>);
+        startNewGame({ ...level, ...gameInfo } as CurrentGame);
 
         return () => {
             console.log("SINGLE NOTE GAME UNMOUNT!!!");
