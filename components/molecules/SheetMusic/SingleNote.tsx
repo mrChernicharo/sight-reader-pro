@@ -1,6 +1,7 @@
 import { AppView } from "../../atoms/AppView";
+import { Defs, Path, Svg, SvgAst, Text as SvgText } from "react-native-svg";
 
-import React, { ReactNode } from "react";
+import React, { forwardRef, ReactNode, useRef } from "react";
 // @ts-ignore
 import { Accidental } from "vexflow/src/accidental";
 // @ts-ignore
@@ -14,7 +15,7 @@ import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { LayoutChangeEvent, StyleSheet, useWindowDimensions } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { GameScore, Level, Note } from "@/utils/types";
 import { Clef, GameState, KeySignature } from "@/utils/enums";
@@ -22,6 +23,7 @@ import { Colors } from "@/utils/Colors";
 import { getDrawNote } from "@/utils/noteFns";
 import { transform } from "@babel/core";
 import { testBorder } from "@/utils/styles";
+import { SharedValue, useSharedValue, withTiming } from "react-native-reanimated";
 
 export interface MusicNoteProps {
     keys: Note[];
@@ -74,12 +76,16 @@ export function SingleNoteComponent(props: MusicNoteProps) {
     const textColor = Colors[theme].text;
     const context = new ReactNativeSVGContext(NotoFontPack, { width });
     const { clef, keys, keySignature, noteColor } = props;
-    const svgResult = runVexFlowCode(context, clef, keys, keySignature, width, textColor, noteColor);
+    const SvgResult = () => runVexFlowCode(context, clef, keys, keySignature, width, textColor, noteColor);
+
+    // console.log("querySelector", SvgResult?.toLocaleString().split("width={1} />"));
 
     return (
         <AppView style={styles.container}>
             <AppView style={styles.sheetMusic}>
-                <AppView style={styles.innerView}>{svgResult}</AppView>
+                <AppView style={styles.innerView}>
+                    <SvgResult />
+                </AppView>
             </AppView>
         </AppView>
     );
@@ -111,13 +117,13 @@ function runVexFlowCode(
         return <></>;
     }
 
-    context.setFont("Arial", 20, "red").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
+    context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
 
     const stave = new Stave(0, 80, width);
     stave.setContext(context);
     stave.setClef(clef);
     stave.setKeySignature(keySignature);
-    //   stave.setTimeSignature("4/4");
+    // stave.setTimeSignature("4/4");
     // stave.setNoteStartX(90);
     stave.draw();
 
@@ -125,8 +131,13 @@ function runVexFlowCode(
     const note = keys[0];
     const { drawNote, drawAccident } = getDrawNote(note, keySignature, keys);
 
-    const staveNote = new StaveNote({ clef, keys: [drawNote], duration: "w", align_center: true });
-
+    const staveNote = new StaveNote({
+        clef,
+        keys: [drawNote],
+        duration: "w",
+        align_center: true,
+        glyph_font_scale: 38,
+    });
     if (drawAccident) {
         staveNote.addAccidental(0, new Accidental(drawAccident));
     }
@@ -140,7 +151,6 @@ function runVexFlowCode(
     voice.draw(context, stave);
 
     const renderResult = context.render() as ReactNode;
-    // console.log({ renderResult });
 
     return noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
 }
@@ -174,13 +184,15 @@ type SvgStrut = {
 function addColorToNoteOutput(svgStruct: any, color: string) {
     // console.log("svgStruct", svgStruct);
 
+    let elem: any;
+
     const result: SvgStrut = {
         ...svgStruct,
         props: {
             ...svgStruct.props,
             children: svgStruct.props.children.map((staveG: any) => {
                 if (staveG.props.className === "vf-stavenote") {
-                    return {
+                    const svg = {
                         ...staveG,
                         props: {
                             ...staveG.props,
@@ -202,13 +214,9 @@ function addColorToNoteOutput(svgStruct: any, color: string) {
                                                         ...notePath.props,
                                                         fill: color,
                                                         stroke: color,
-                                                        // scale: 1.4,
-                                                        // translateX: -66,
-                                                        // translateY: "-50%",
-                                                        // style: {
-                                                        // scale: 1.4,
-                                                        // transformOrigin: "center center",
-                                                        // },
+                                                        // scale,
+                                                        // onLayout: (ev: LayoutChangeEvent) => {},
+                                                        // style: {},
                                                     },
                                                 };
                                             }),
@@ -218,6 +226,8 @@ function addColorToNoteOutput(svgStruct: any, color: string) {
                             })),
                         },
                     };
+
+                    return svg;
                 } else {
                     return staveG;
                 }
@@ -235,7 +245,7 @@ const styles = StyleSheet.create({
         // borderStyle: "dashed",
         // backgroundColor: "#F5FCFF",
         backgroundColor: "transparent",
-        ...testBorder("green"),
+        // ...testBorder("green"),
     },
     sheetMusic: {
         flex: 1,
@@ -247,6 +257,6 @@ const styles = StyleSheet.create({
     innerView: {
         transform: [{ translateX: 2 }],
         backgroundColor: "transparent",
-        ...testBorder(),
+        // ...testBorder(),
     },
 });

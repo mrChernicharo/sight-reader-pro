@@ -89,36 +89,39 @@ export default function PracticeScreen() {
 
         const practiceLevelSingle = {
             id: levelId,
-            name: "Practice",
+            name: "single note practice",
             clef,
             type: GameType.Single,
-            durationInSeconds: 45,
+            durationInSeconds: 400,
+            // durationInSeconds: 45,
             noteRanges,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
             timeSignature: TimeSignature["4/4"],
-            index: 1000,
+            index: ALL_LEVELS.length - 1,
             scale,
         } as Level;
 
         const practiceLevelMelody = {
             id: levelId,
-            name: "Practice",
+            name: "melody practice",
             clef,
             type: GameType.Melody,
             timeSignature: TimeSignature["4/4"],
             noteRanges,
-            durationInSeconds: 45,
+            durationInSeconds: 400,
+            // durationInSeconds: 45,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
-            index: 1000,
+            index: ALL_LEVELS.length - 1,
             scale,
         } as Level;
 
         // console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
         // !important! Practice games are pushed into levels before game begins, then they are popped out from levels
-        const game = gameType == GameType.Single ? practiceLevelSingle : practiceLevelMelody;
-        ALL_LEVELS.push(game);
+        console.log("gameType: ", gameType);
+        const practiceGame = gameType == GameType.Single ? practiceLevelSingle : practiceLevelMelody;
+        ALL_LEVELS.push(practiceGame);
 
         await wait(200);
 

@@ -135,6 +135,7 @@ export default function LevelSelectionScreen() {
                 isVisible={tourStep == 1}
                 placement="top"
                 tooltipStyle={{ transform: [{ translateY: -100 }] }}
+                contentStyle={{ minHeight: 120 }}
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>

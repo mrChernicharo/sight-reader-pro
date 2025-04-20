@@ -162,7 +162,7 @@ export const useAppStore = create<AppState & AppActions>()(
                     if (previousPage === "/practice") {
                         setTimeout(() => {
                             // prettier-ignore
-                            console.log("END GAME:::ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
+                            // console.log("END GAME:::ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
                             ALL_LEVELS.pop();
                         }, 1000);
                     }
@@ -191,10 +191,14 @@ export const useAppStore = create<AppState & AppActions>()(
                 },
 
                 updatePracticeSettings: async (setting: keyof PracticeSettings, value: any) => {
-                    set((state) => ({
-                        ...state,
-                        practiceSettings: { ...state.practiceSettings, [setting]: value },
-                    }));
+                    set((state) => {
+                        console.log("updatePracticeSettings:::", { ...state.practiceSettings });
+
+                        return {
+                            ...state,
+                            practiceSettings: { ...state.practiceSettings, [setting]: value },
+                        };
+                    });
                 },
             }),
             {

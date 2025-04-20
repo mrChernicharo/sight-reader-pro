@@ -5,6 +5,7 @@ import { scaleTypeNoteSequences } from "./keySignature";
 import { ChordRound, Level, MelodyRound, Note, NoteRange, RhythmRound, Scale, SingleNoteRound } from "./types";
 
 export function getPossibleNotesInLevel({ keySignature, scale }: { keySignature: KeySignature; scale: Scale }) {
+    // console.log("::: getPossibleNotesInLevel", { keySignature, scale });
     const noteMap = scaleTypeNoteSequences[scale];
     const scaleNoteNames = noteMap[keySignature];
 

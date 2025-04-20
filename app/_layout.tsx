@@ -14,8 +14,6 @@ import { useTheme } from "@/hooks/useTheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
-import { Clef, KeySignature } from "@/utils/enums";
-import { makeLevelGroup, Scale } from "@/utils/types.v2";
 
 export default function RootLayout() {
     const path = usePathname();

@@ -492,24 +492,6 @@ export function getAudioFilepath(note: Note) {
     return filepath;
 }
 
-// export function pickKeySignature(level: Level) {
-//     switch (level.type) {
-//         case GameType.Single:
-//         case GameType.Chord:
-//         case GameType.Melody: {
-//             if (level.hasKey) {
-//                 const randomIndex = Math.floor(Math.random() * level.keySignatures.length);
-//                 return level.keySignatures[randomIndex];
-//             } else {
-//                 return [LevelAccidentType.b].includes(level.accident) ? KeySignature.F : KeySignature.C;
-//             }
-//         }
-
-//         case GameType.Rhythm:
-//             return KeySignature.C;
-//     }
-// }
-
 export function shuffle<T>(array: T[]): T[] {
     const shuffledArray = [...array]; // Create a copy of the original array
 

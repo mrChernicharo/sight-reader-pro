@@ -58,7 +58,7 @@ export default function LevelDetails() {
             <ScrollView contentContainerStyle={s.container}>
                 <FadeIn y={50} x={0} style={s.topContainer}>
                     <AppView style={s.backlinkContainer}>
-                        <BackLink to="/level-selection" />
+                        <BackLink to="/level-selection" onPress={() => endGame()} />
                     </AppView>
                     <AppText type="title" style={s.title}>
                         {level.name}
@@ -89,7 +89,6 @@ export default function LevelDetails() {
                         clef={level.clef}
                         keys={displayInfo.rangeKeys}
                         keySignature={level.keySignature || KeySignature["C"]}
-                        // keySignature={level.hasKey ? level.keySignatures[0] : KeySignature["C"]}
                     />
                 </FadeIn>
 

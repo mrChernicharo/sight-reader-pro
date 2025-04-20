@@ -160,7 +160,7 @@ const en = {
         levelSelection: {
             "0": "Welcome to the Level Selection screen",
             "1": "Toggle Clefs below.:::Each Clef contains many different challenges",
-            "2": "Beat the first level:::to unlock new, increasingly challenging Phases",
+            "2": "Beat level 01:::to unlock new, increasingly challenging levels",
         },
         game: {
             "0": "This is the main screen:::This is where the game happens",

@@ -3,7 +3,7 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
 import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
-import { explodeNote, getPreviousPage, isNoteMatch, randomUID } from "@/utils/helperFns";
+import { explodeNote, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
@@ -25,7 +25,7 @@ export function MelodyGameComponent() {
 
     const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
     const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound } = useAppStore();
-    const { ready, playPianoNote, playSoundEfx } = useSoundContext();
+    const { playPianoNote, playSoundEfx } = useSoundContext();
 
     const rounds = currentGame?.rounds || [];
     const currRound = rounds.at(-1) as MelodyRound;
@@ -36,6 +36,8 @@ export function MelodyGameComponent() {
     const previousPage = getPreviousPage(String(prevPage), id);
 
     const [melodyIdx, setMelodyIdx] = useState(0);
+
+    const currNote = currRound?.values?.[melodyIdx] || null;
 
     const noteProps = {
         keys: currRound?.values || [],
@@ -53,7 +55,7 @@ export function MelodyGameComponent() {
         }, []),
     };
 
-    function onPianoKeyPress(attempt: NoteName) {
+    async function onPianoKeyPress(attempt: NoteName) {
         // if (!currRound) return;
         const currNote = currRound.values[melodyIdx];
         const { noteName, octave } = explodeNote(currNote);
@@ -66,6 +68,7 @@ export function MelodyGameComponent() {
         updateRound({ attempts });
 
         if (isLastNote) {
+            await wait(120);
             setMelodyIdx(0);
             addNewRound(decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes));
         } else {
@@ -123,7 +126,12 @@ export function MelodyGameComponent() {
                 </AppView>
             ) : null}
 
-            <Piano keySignature={keySignature} onKeyPressed={onPianoKeyPress} onKeyReleased={(note) => {}} />
+            <Piano
+                currNote={currRound?.values?.[melodyIdx] || null}
+                keySignature={keySignature}
+                onKeyPressed={onPianoKeyPress}
+                onKeyReleased={(note) => {}}
+            />
         </SafeAreaView>
     );
 }

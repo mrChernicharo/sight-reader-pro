@@ -22,7 +22,7 @@ export function Piano({
     onKeyPressed,
     onKeyReleased,
 }: {
-    currNote: Note;
+    currNote: Note | null;
     keySignature: KeySignature;
     onKeyPressed: (note: NoteName) => void;
     onKeyReleased: (note: NoteName) => void;
@@ -37,7 +37,7 @@ export function Piano({
     const [blackNotesLeft, blackNotesRight] = [BLACK_NOTES.slice(0, 2), BLACK_NOTES.slice(3)];
     const keyboardMargin = 0;
     const keyWidth = (width - keyboardMargin * 2) / 7;
-    const currNoteName = explodeNote(currNote).noteName;
+    const currNoteName = currNote ? explodeNote(currNote).noteName : null;
     // console.log({ currNote, currNoteName });
 
     return (

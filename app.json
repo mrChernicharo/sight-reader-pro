@@ -12,7 +12,7 @@
             "package": "com.chernicharo.sightreaderpro",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/sight-reader-art.png",
-                "backgroundColor": "#808080"
+                "backgroundColor": "#000000"
             }
         },
         "ios": {
@@ -49,13 +49,13 @@
             [
                 "expo-splash-screen",
                 {
-                    "backgroundColor": "#232323",
                     "image": "./assets/images/sight-reader-art-1024.png",
+                    "backgroundColor": "#000000",
                     "dark": {
                         "image": "./assets/images/sight-reader-art-1024.png",
                         "backgroundColor": "#000000"
                     },
-                    "resizeMode": "cover"
+                    "imageWidth": 240
                 }
             ]
         ]

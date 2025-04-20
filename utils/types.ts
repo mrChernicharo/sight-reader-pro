@@ -24,59 +24,6 @@ import {
 } from "./enums";
 import { getNotesInRange, getPossibleNotesInLevel } from "./noteFns";
 
-// import { Href } from "expo-router";
-// import {
-//     WinRank,
-//     KeySignature,
-//     ScaleType,
-//     LevelAccidentType,
-//     GameType,
-//     Clef,
-//     NoteName,
-//     NoteNameBase,
-//     Accident,
-//     GameState,
-//     TimeSignature,
-//     NoteDuration,
-// } from "./enums";
-
-// // exceptions b0, c8
-// type NoteOctave = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-
-// type NoteNom = `${NoteNameBase}${Accident}/${NoteOctave}`;
-
-// export type Note = "b/0" | "ax/0" | "cb/0" | `${NoteName}/${NoteOctave}` | "c/8" | "b#/8" | "dbb/8";
-
-// export type NoteRange = `${Note}:::${Note}`;
-
-// export type MelodyNote = {
-//     note: Note;
-//     duration: NoteDuration;
-// };
-
-// /**
-//  * hits per minute
-//  *
-//  * ```// example: { gold: 40, silver: 37, bronze: 32 }```
-//  */
-// export type WinConditions = {
-//     [WinRank.Gold]: number;
-//     [WinRank.Silver]: number;
-//     [WinRank.Bronze]: number;
-// };
-
-// export type GameKeySettings =
-//     | { hasKey: true; keySignatures: Array<KeySignature>; scaleType: ScaleType }
-//     | { hasKey: false; accident: LevelAccidentType };
-
-// export type GameSettings<T> = T extends GameType.Single | GameType.Chord
-//     ? GameKeySettings & { noteRanges: Array<NoteRange> }
-//     : T extends GameType.Melody
-//     ? GameKeySettings & { noteRanges: Array<NoteRange>; timeSignature: TimeSignature }
-//     : T extends GameType.Rhythm
-//     ? GameKeySettings & { timeSignature: TimeSignature }
-//     : never;
-
 export type SingleNoteRound = {
     attempt: Note | null;
     value: Note;
@@ -345,7 +292,7 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
             minIdx = explodeNote(currNote).index;
         }
 
-        if (i == 0) console.log({ maxNotes, minNotes });
+        // if (i == 0) console.log({ maxNotes, minNotes });
 
         const loNoteIdx = mapRange(groupProgress, 0, minNotes.length - 1, 1);
         const hiNoteIdx = mapRange(groupProgress, 0, maxNotes.length - 1, 1);
@@ -354,7 +301,7 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
 
         levels.push({
             id: `${name}-${padZero(i)}`,
-            name: `${name} ${padZero(i)}`,
+            name: `${name} ${padZero(i + 1)}`,
             index: i,
             type: groupProgress < 0.7 ? GameType.Single : GameType.Melody,
             clef,
