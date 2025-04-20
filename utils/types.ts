@@ -310,18 +310,19 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
         const keySignature = keySignatures[keySignatureIdx];
         const scale = scales[scaleIdx];
 
-        const [minMinNote, maxMinNote] = [noteRanges.min[0], noteRanges.min[1]];
-        const [minMaxNote, maxMaxNote] = [noteRanges.max[0], noteRanges.max[1]];
+        let [minMinNote, maxMinNote] = [noteRanges.min[0], noteRanges.min[1]];
+        let [minMaxNote, maxMaxNote] = [noteRanges.max[0], noteRanges.max[1]];
 
-        let currNote = fixNoteUntilItFitsScale(maxMinNote, scale, keySignature, "DESC");
+        maxMinNote = fixNoteUntilItFitsScale(maxMinNote, scale, keySignature, "DESC");
+        minMinNote = fixNoteUntilItFitsScale(minMinNote, scale, keySignature, "ASC");
+        let currNote = maxMinNote;
 
         let minIdx = explodeNote(minMinNote).index;
         let maxIdx = explodeNote(maxMinNote).index;
 
         const minNotes: Note[] = [];
-
         const nextNote = getNextScaleNote(currNote, -2, keySignature, scale);
-        console.log({ minIdx, maxIdx, minMinNote, maxMinNote, currNote, nextNote });
+        // console.log({ minIdx, maxIdx, minMinNote, maxMinNote, currNote, nextNote });
         while (maxIdx >= minIdx) {
             minNotes.push(currNote);
             currNote = getNextScaleNote(currNote, -2, keySignature, scale);
@@ -330,7 +331,9 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
 
         /////
 
-        currNote = fixNoteUntilItFitsScale(minMaxNote, scale, keySignature, "ASC");
+        minMaxNote = fixNoteUntilItFitsScale(minMaxNote, scale, keySignature, "ASC");
+        maxMaxNote = fixNoteUntilItFitsScale(maxMaxNote, scale, keySignature, "DESC");
+        currNote = minMaxNote;
 
         minIdx = explodeNote(minMaxNote).index;
         maxIdx = explodeNote(maxMaxNote).index;
@@ -342,31 +345,31 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
             minIdx = explodeNote(currNote).index;
         }
 
-        console.log({ maxNotes, minNotes });
+        if (i == 0) console.log({ maxNotes, minNotes });
 
-        // const loNoteIdx = mapRange(groupProgress, 0, minNotes.length - 1, 1);
-        // const hiNoteIdx = mapRange(groupProgress, 0, maxNotes.length, 1);
-        // const loNote = minNotes[loNoteIdx];
-        // const hiNote = maxNotes[hiNoteIdx];
+        const loNoteIdx = mapRange(groupProgress, 0, minNotes.length - 1, 1);
+        const hiNoteIdx = mapRange(groupProgress, 0, maxNotes.length - 1, 1);
+        const loNote = minNotes[loNoteIdx];
+        const hiNote = maxNotes[hiNoteIdx];
 
-        // levels.push({
-        //     id: `${name}-${padZero(i)}`,
-        //     index: i,
-        //     name: "",
-        //     type: groupProgress < 0.7 ? GameType.Single : GameType.Melody,
-        //     clef,
-        //     durationInSeconds: mapRange(groupProgress, durations.min, durations.max, 5),
-        //     winConditions: {
-        //         bronze: mapRange(groupProgress, winConditions.min.bronze, winConditions.max.bronze, 1),
-        //         silver: mapRange(groupProgress, winConditions.min.silver, winConditions.max.silver, 1),
-        //         gold: mapRange(groupProgress, winConditions.min.gold, winConditions.max.gold, 1),
-        //     },
-        //     keySignature,
-        //     timeSignature: timeSignatures[timeSignatureIdx],
-        //     scale,
-        //     noteRanges: [`${loNote}:::${hiNote}` as NoteRange],
-        //     // noteRanges: [`${NOTE_INDICES[String(loNoteIdx)][0]}:::${NOTE_INDICES[String(hiNoteIdx)][0]}`],
-        // });
+        levels.push({
+            id: `${name}-${padZero(i)}`,
+            name: `${name} ${padZero(i)}`,
+            index: i,
+            type: groupProgress < 0.7 ? GameType.Single : GameType.Melody,
+            clef,
+            durationInSeconds: mapRange(groupProgress, durations.min, durations.max, 5),
+            winConditions: {
+                bronze: mapRange(groupProgress, winConditions.min.bronze, winConditions.max.bronze, 1),
+                silver: mapRange(groupProgress, winConditions.min.silver, winConditions.max.silver, 1),
+                gold: mapRange(groupProgress, winConditions.min.gold, winConditions.max.gold, 1),
+            },
+            keySignature,
+            timeSignature: timeSignatures[timeSignatureIdx],
+            scale,
+            noteRanges: [`${loNote}:::${hiNote}` as NoteRange],
+            // noteRanges: [`${NOTE_INDICES[String(loNoteIdx)][0]}:::${NOTE_INDICES[String(hiNoteIdx)][0]}`],
+        });
     }
 
     return levels;

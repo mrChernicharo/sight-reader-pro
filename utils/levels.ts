@@ -200,51 +200,75 @@ export function getUnlockedLevels(games: Game[], intl: Intl.NumberFormat) {
 // ******************************************************
 // ******************************************************
 
-const TEST_LEVELS_A = makeLevelGroup({
-    name: "basics",
-    clef: Clef.Treble,
-    durations: { min: 20, max: 40 },
-    keySignatures: [KeySignature.C],
-    timeSignatures: [TimeSignature["4/4"]],
-    levelCount: 12,
-    noteRanges: { min: ["c/3", "c/3"], max: ["d/3", "c/4"] },
-    scales: [Scale.Diatonic /*, Scale.Pentatonic */],
-    winConditions: {
-        min: {
-            bronze: 12,
-            silver: 18,
-            gold: 24,
-        },
-        max: {
-            bronze: 16,
-            silver: 22,
-            gold: 28,
-        },
-    },
-});
-
-// const TEST_LEVELS_B = makeLevelGroup({
-//     name: "mid",
+// const TEST_LEVELS_A = makeLevelGroup({
+//     name: "basics",
 //     clef: Clef.Treble,
-//     durations: { min: 30, max: 60 },
-//     keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab, KeySignature.Db],
+//     durations: { min: 20, max: 40 },
+//     keySignatures: [KeySignature.C],
 //     timeSignatures: [TimeSignature["4/4"]],
 //     levelCount: 12,
-//     noteRanges: { min: ["g/2", "c/3"], max: ["g/3", "e/4"] },
-//     scales: [Scale.Diatonic /* , Scale.Pentatonic, Scale.Melodic */],
+//     noteRanges: { min: ["c/3", "c/3"], max: ["d/3", "c/4"] },
+//     scales: [Scale.Diatonic /*, Scale.Pentatonic */],
 //     winConditions: {
 //         min: {
+//             bronze: 12,
+//             silver: 18,
+//             gold: 24,
+//         },
+//         max: {
 //             bronze: 16,
 //             silver: 22,
 //             gold: 28,
 //         },
-//         max: {
-//             bronze: 22,
-//             silver: 28,
-//             gold: 34,
-//         },
 //     },
 // });
 
+const TEST_LEVELS_B = makeLevelGroup({
+    name: "flat",
+    clef: Clef.Treble,
+    durations: { min: 30, max: 60 },
+    keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab, KeySignature.Db],
+    timeSignatures: [TimeSignature["4/4"]],
+    levelCount: 12,
+    noteRanges: { min: ["g/2", "c/3"], max: ["g/3", "e/4"] },
+    scales: [Scale.Diatonic /* , Scale.Pentatonic, Scale.Melodic */],
+    winConditions: {
+        min: {
+            bronze: 16,
+            silver: 22,
+            gold: 28,
+        },
+        max: {
+            bronze: 22,
+            silver: 28,
+            gold: 34,
+        },
+    },
+});
+
+const TEST_LEVELS_C = makeLevelGroup({
+    name: "sharp",
+    clef: Clef.Treble,
+    durations: { min: 30, max: 60 },
+    keySignatures: [KeySignature.G, KeySignature.D, KeySignature.A, KeySignature.E],
+    timeSignatures: [TimeSignature["4/4"]],
+    levelCount: 12,
+    noteRanges: { min: ["g/2", "d/3"], max: ["b/3", "g/4"] },
+    scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
+    winConditions: {
+        min: {
+            bronze: 16,
+            silver: 22,
+            gold: 28,
+        },
+        max: {
+            bronze: 22,
+            silver: 28,
+            gold: 34,
+        },
+    },
+});
+
 // console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_A, null, 2));
 // console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_B, null, 2));
+console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_C, null, 2));
