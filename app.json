@@ -7,9 +7,6 @@
         "icon": "./assets/images/sight-reader-art.png",
         "scheme": "sight-reader-pro",
         "userInterfaceStyle": "automatic",
-        "androidNavigationBar": {
-            "visible": "immersive"
-        },
         "android": {
             "versionCode": 16,
             "package": "com.chernicharo.sightreaderpro",

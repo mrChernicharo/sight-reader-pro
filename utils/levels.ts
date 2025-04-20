@@ -207,7 +207,7 @@ const TEST_LEVELS_A = makeLevelGroup({
     keySignatures: [KeySignature.C],
     timeSignatures: [TimeSignature["4/4"]],
     levelCount: 12,
-    noteRanges: { min: [20, 25], max: [30, 35] },
+    noteRanges: { min: ["c/3", "c/3"], max: ["d/3", "c/4"] },
     scales: [Scale.Diatonic /*, Scale.Pentatonic */],
     winConditions: {
         min: {
@@ -230,7 +230,7 @@ const TEST_LEVELS_B = makeLevelGroup({
     keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab, KeySignature.Db],
     timeSignatures: [TimeSignature["4/4"]],
     levelCount: 12,
-    noteRanges: { min: [18, 24], max: [32, 38] },
+    noteRanges: { min: ["g/2", "c/3"], max: ["g/3", "e/4"] },
     scales: [Scale.Diatonic /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
         min: {

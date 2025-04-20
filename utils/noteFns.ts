@@ -1,53 +1,14 @@
 import { drawAccidents } from "./constants";
-import {
-    LevelAccidentType,
-    GameType,
-    KeySignature,
-    ScaleType,
-    NoteNameBase,
-    Accident,
-    NoteName,
-    NoteDuration,
-} from "./enums";
-import {
-    NOTE_INDICES,
-    addHalfSteps,
-    explodeNote,
-    getNoteIdx,
-    getRandInRange,
-    groupArrayElements,
-    isNoteMatch,
-    shuffle,
-} from "./helperFns";
-import { accidentNoteSequences, scaleTypeNoteSequences } from "./keySignature";
-import {
-    Note,
-    ChordRound,
-    Level,
-    MelodyRound,
-    NoteRange,
-    RhythmRound,
-    SingleNoteRound,
-    MelodyNote,
-    Scale,
-} from "./types";
+import { Accident, GameType, KeySignature, NoteDuration, NoteName, ScaleType } from "./enums";
+import { addHalfSteps, explodeNote, getNoteIdx, getRandInRange, NOTE_INDICES } from "./helperFns";
+import { scaleTypeNoteSequences } from "./keySignature";
+import { ChordRound, Level, MelodyRound, Note, NoteRange, RhythmRound, Scale, SingleNoteRound } from "./types";
 
-export function getGamePitchesInAllOctaves(options: { keySignature: KeySignature; scale: Scale }): Note[] {
-    // console.log("::: getGamePitchesInAllOctaves :::", { options, accidentNoteSequences });
-    let result: Note[];
-    // if ((options as any)?.accident) {
-    //     const safeOpts = options as { accident: LevelAccidentType };
-    //     result = accidentNoteSequences[safeOpts.accident];
-    // }
-    // //
-    // else if ((options as any)?.keySignature) {
-
-    const noteMap = scaleTypeNoteSequences[options.scale];
-    console.log("::: getGamePitchesInAllOctaves", { options, noteMap });
-    const scaleNoteNames = noteMap[options.keySignature];
+export function getPossibleNotesInLevel({ keySignature, scale }: { keySignature: KeySignature; scale: Scale }) {
+    const noteMap = scaleTypeNoteSequences[scale];
+    const scaleNoteNames = noteMap[keySignature];
 
     const availableNotes: Note[] = [];
-
     const allNotes = Array.from(NOTE_INDICES);
     allNotes.forEach(([idx, notes]) => {
         notes.forEach((note) => {
@@ -57,25 +18,8 @@ export function getGamePitchesInAllOctaves(options: { keySignature: KeySignature
             }
         });
     });
-
-    result = availableNotes;
-    // } else {
-    // result = [];
-    // }
-    // console.log("getGamePitchesInAllOctaves:::", { result });
-    return result as Note[];
-}
-
-export function getPossibleNotesInLevel(level: Level) {
-    let possibleNotes: Note[];
-    if (!level) {
-        console.warn("getPossibleNotesInLevel :::", { level });
-        return [];
-    }
-    console.log("getPossibleNotesInLevel :::", { level });
-    possibleNotes = getGamePitchesInAllOctaves({ keySignature: level.keySignature, scale: level.scale });
-    console.log("getPossibleNotesInLevel :::", { possibleNotes });
-    return possibleNotes;
+    // console.log("::: getPossibleNotesInLevel", { keySignature, scale, availableNotes });
+    return availableNotes;
 }
 
 function generateRandomNote(
@@ -178,7 +122,7 @@ function generateRandomRhythm(level: Level, previousRound: RhythmRound) {
     if (level.type !== GameType.Rhythm) throw Error("gameType incompatible");
 }
 
-function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: Note[], keySignature: KeySignature) {
+export function getNotesInRange(ranges: NoteRange[], keyNotesInAllOctaves: Note[], keySignature: KeySignature) {
     // console.log(":::getNotesInRange", { keyNotesInAllOctaves, ranges });
     // const isFlatKSig = isFlatKeySignature(keySignature);
     const noteSet = new Set<Note>();

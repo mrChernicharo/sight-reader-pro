@@ -1,9 +1,10 @@
 import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident } from "./enums";
-import { GameScore, Level, LevelScore, MelodyRound, Note, Round, SingleNoteRound, WinConditions } from "./types";
+import { GameScore, Level, LevelScore, MelodyRound, Note, Round, Scale, SingleNoteRound, WinConditions } from "./types";
 import { noteMathTable } from "./notes";
-import { FLAT_KEY_SIGNATURES } from "./keySignature";
+import { FLAT_KEY_SIGNATURES, scaleTypeNoteSequences } from "./keySignature";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
 import { RelativePathString } from "expo-router";
+import { getPossibleNotesInLevel } from "./noteFns";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 export const randomUID = (length = 12) =>
@@ -90,46 +91,6 @@ export function isFlatKeySignature(keySignature: KeySignature) {
     return FLAT_KEY_SIGNATURES.includes(keySignature);
 }
 
-// @TODO: update getNoteFromIdx -> getNoteFromIdx(noteIdx, keySignature, scaleType)
-export function getNoteFromIdx(noteIdx: number, keySignature: KeySignature, forceAltered = false) {
-    const isFlatKeySig = isFlatKeySignature(keySignature);
-
-    const allOpts = NOTE_INDICES.get(noteIdx)!;
-
-    const filteredOpts = allOpts.filter((n) => {
-        if (isFlatKeySig) {
-            return isNatural(n) || isFlat(n) || isDoubleFlat(n);
-        } else {
-            return isNatural(n) || isSharp(n) || isDoubleSharp(n);
-        }
-    });
-
-    const resultNote = filteredOpts[0];
-    // console.log("getNoteFromIdx 2:::", { allOpts, filteredOpts, resultNote });
-    if (!resultNote) {
-        console.error(`getNoteFromIdx [ERROR]:: Could not find note for index ${noteIdx}`);
-    }
-    return resultNote;
-}
-
-export function getEquivalentNotes(note: Note) {
-    const noteIdx = getNoteIdx(note);
-    return NOTE_INDICES.get(noteIdx);
-}
-
-export function addHalfSteps(note: Note, incr: number, keySignature: KeySignature) {
-    let noteIdx = getNoteIdx(note);
-
-    let steps = Math.abs(incr);
-    while (steps > 0) {
-        noteIdx += incr;
-        steps--;
-    }
-
-    const resultNote = getNoteFromIdx(noteIdx, keySignature);
-    return resultNote ?? note;
-}
-
 export function buildPitchIndexDicts() {
     const PITCH_INDICES = new Map<Note, number>();
     let oct = 1;
@@ -175,6 +136,93 @@ export function buildPitchIndexDicts() {
 }
 
 export const { PITCH_INDICES, NOTE_INDICES } = buildPitchIndexDicts();
+
+// @TODO: update getNoteFromIdx -> getNoteFromIdx(noteIdx, keySignature, scaleType)
+export function getNoteFromIdx(noteIdx: number, keySignature: KeySignature) {
+    const isFlatKeySig = isFlatKeySignature(keySignature);
+
+    // console.log("getNoteFromIdx 1:::", { noteIdx, keySignature, isFlatKeySig });
+
+    const allOpts = NOTE_INDICES.get(noteIdx)!;
+
+    if (!allOpts) {
+        console.error(`getNoteFromIdx [ERROR]:: Could not find note for index ${noteIdx}`);
+        return null;
+    }
+
+    const filteredOpts = allOpts.filter((n) => {
+        if (isFlatKeySig) {
+            return isNatural(n) || isFlat(n) || isDoubleFlat(n);
+        } else {
+            return isNatural(n) || isSharp(n) || isDoubleSharp(n);
+        }
+    });
+
+    const resultNote = filteredOpts[0];
+    // console.log("getNoteFromIdx 2:::", { allOpts, filteredOpts, resultNote });
+    if (!resultNote) {
+        console.error(`getNoteFromIdx [ERROR]:: Could not find note for index ${noteIdx}`);
+        return null;
+    }
+    return resultNote;
+}
+
+export function getEquivalentNotes(note: Note) {
+    const noteIdx = getNoteIdx(note);
+    return NOTE_INDICES.get(noteIdx);
+}
+
+export function addHalfSteps(note: Note, incr: number, keySignature: KeySignature) {
+    let noteIdx = getNoteIdx(note);
+
+    let steps = Math.abs(incr);
+    while (steps > 0) {
+        noteIdx += incr;
+        steps--;
+    }
+
+    const resultNote = getNoteFromIdx(noteIdx, keySignature);
+    return resultNote ?? note;
+}
+
+export function getNextScaleNote(note: Note, interval: number, keySignature: KeySignature, scale: Scale) {
+    if ([-1, 0, 1].includes(interval)) return note;
+
+    const noteMap = scaleTypeNoteSequences[scale];
+    const scaleNoteNames = noteMap[keySignature];
+    const possibleNotes = getPossibleNotesInLevel({ keySignature, scale });
+
+    const noteIdx = possibleNotes.findIndex((n) => n == note);
+
+    let nextNoteIdx = -1;
+
+    if (interval > 0) {
+        nextNoteIdx = noteIdx + interval - 1;
+    } else {
+        nextNoteIdx = noteIdx + interval + 1;
+    }
+    const nextNote = possibleNotes[nextNoteIdx];
+
+    console.log(
+        "getNextScaleNote :::",
+        JSON.stringify(
+            {
+                note,
+                keySignature,
+                scale,
+                interval,
+                nextNoteIdx,
+                noteIdx,
+                nextNote,
+                // scaleNoteNames,
+                // possibleNotes,
+            },
+            null,
+            2
+        )
+    );
+    return nextNote;
+}
 
 export function padZero(n: number) {
     return n > 9 ? String(n) : `0${n}`;
