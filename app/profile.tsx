@@ -25,7 +25,7 @@ export default function SettingsScreen() {
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink />
                 </AppView>
-                <AppText type="mdSemiBold">{t("profile.title")}</AppText>
+                <AppText type="subtitle">{t("profile.title")}</AppText>
 
                 <AppView>
                     <AppText type="md">{username}</AppText>

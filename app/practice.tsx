@@ -23,6 +23,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RangeSlider from "../components/atoms/RangeSlider";
+import { testBorder } from "@/utils/styles";
 
 // const KEY_SIGNATURES = Object.values(KeySignature).map((v) => ({ label: v, value: v.toLowerCase() }));
 
@@ -48,7 +49,7 @@ export default function PracticeScreen() {
 
     const SCALES = Object.values(Scale).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) }));
     const DEFAULT_SCALE = SCALES.find((acc) => acc.key === scale);
-    const DEFAULT_ACCIDENT = ACCIDENTS.find((acc) => acc.key === accident);
+    // const DEFAULT_ACCIDENT = ACCIDENTS.find((acc) => acc.key === accident);
 
     const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;
     const altKeySigArray = isMinorKey ? MAJOR_KEY_SIGNATURES : MINOR_KEY_SIGNATURES;
@@ -137,6 +138,16 @@ export default function PracticeScreen() {
         ALL_LEVELS,
     ]);
 
+    const loNote =
+        t(`music.notes.${allNotes[noteRangeIndices.low].split("/")[0]}`) +
+        "/" +
+        allNotes[noteRangeIndices.low].split("/")[1];
+
+    const hiNote =
+        t(`music.notes.${allNotes[noteRangeIndices.high].split("/")[0]}`) +
+        "/" +
+        allNotes[noteRangeIndices.high].split("/")[1];
+
     // useEffect(() => {
     //     console.log("---", { accident, keySignature });
     // }, [accident, keySignature]);
@@ -145,37 +156,42 @@ export default function PracticeScreen() {
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
             <ScrollView contentContainerStyle={s.container}>
                 <AppView style={s.top}>
-                    <AppView style={{ position: "absolute", left: 0, top: 1 }}>
+                    <AppView style={{ position: "absolute", left: 0, top: 6 }}>
                         <BackLink onPress={() => endGame()} />
                     </AppView>
-                    <AppText type="mdSemiBold">{t("practice.title")}</AppText>
+                    <AppText type="subtitle">{t("practice.title")}</AppText>
                 </AppView>
 
                 <AppView style={s.controlsContainer}>
-                    <AppView style={s.clefSwitchContainer}>
-                        <AppView style={s.clefSwitch}>
-                            <AppText>{t("music.clef")}</AppText>
-                            <AppText style={{ fontSize: 34, lineHeight: 80 }}>{glyphs.trebleClef}</AppText>
-                            <AppSwitch
-                                value={clef == Clef.Bass}
-                                setValue={(val) => {
-                                    updatePracticeSettings("clef", val ? Clef.Bass : Clef.Treble);
-                                }}
-                            />
-                            <AppText
-                                style={{
-                                    fontSize: 48,
-                                    marginTop: 6,
-                                    marginLeft: -8,
-                                    lineHeight: 80,
-                                }}
-                            >
-                                {glyphs.bassClef}
-                            </AppText>
-                        </AppView>
+                    <AppView style={s.clefSwitch}>
+                        <AppText>{t("music.clef")}</AppText>
+                        <AppText style={{ fontSize: 34, lineHeight: 80 }}>{glyphs.trebleClef}</AppText>
+                        <AppSwitch
+                            value={clef == Clef.Bass}
+                            setValue={(val) => {
+                                updatePracticeSettings("clef", val ? Clef.Bass : Clef.Treble);
+                            }}
+                        />
+                        <AppText
+                            style={{
+                                fontSize: 48,
+                                marginTop: 6,
+                                marginLeft: -8,
+                                lineHeight: 80,
+                            }}
+                        >
+                            {glyphs.bassClef}
+                        </AppText>
                     </AppView>
 
                     <AppView>
+                        <AppView>
+                            <AppView style={s.box}>
+                                <AppText>{t("music.keySignature")}</AppText>
+                                <AppText type="mdSemiBold">{keySignature}</AppText>
+                            </AppView>
+                        </AppView>
+
                         <AppView style={s.box}>
                             <AppText>{t("music.scaleType.major")}</AppText>
                             <AppSwitch
@@ -226,19 +242,20 @@ export default function PracticeScreen() {
                         </AppView>
                     </AppView>
 
+                    <AppView style={s.sheetMusicContainer}>
+                        <SheetMusic.RangeDisplay
+                            clef={clef}
+                            keySignature={keySignature}
+                            keys={[[allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]]]}
+                        />
+                    </AppView>
+
                     <AppView style={s.rangeSliderContainer}>
-                        <AppText>{t("music.noteRange")}</AppText>
-                        <AppView style={s.rangeDisplay}>
-                            <AppView>
-                                <AppText style={[{ fontWeight: "bold" }, { fontSize: 18 }]}>
-                                    {allNotes[noteRangeIndices.low]}
-                                </AppText>
-                            </AppView>
-                            <AppView>
-                                <AppText style={[{ fontWeight: "bold" }, { fontSize: 18 }]}>
-                                    {allNotes[noteRangeIndices.high]}
-                                </AppText>
-                            </AppView>
+                        <AppView style={s.noteRangeDisplay}>
+                            <AppText>{t("music.noteRange")}</AppText>
+                            <AppText type="mdSemiBold">
+                                {loNote} - {hiNote}
+                            </AppText>
                         </AppView>
 
                         <RangeSlider
@@ -250,37 +267,27 @@ export default function PracticeScreen() {
                             low={noteRangeIndices.low}
                         />
                     </AppView>
-
-                    <AppView style={s.sheetMusicContainer}>
-                        <SheetMusic.RangeDisplay
-                            clef={clef}
-                            keySignature={keySignature}
-                            keys={[[allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]]]}
-                        />
-                    </AppView>
                 </AppView>
 
                 <AppView>
-                    <AppView style={{ borderWidth: 0, paddingBottom: 16 }}>
-                        <AppView style={s.clefSwitch}>
-                            {/* <AppText>{t("music.clef")}</AppText> */}
-                            <AppText>{t("game.type.single")}</AppText>
-                            <AppSwitch
-                                value={gameType == GameType.Melody}
-                                setValue={(val) => {
-                                    const type = val ? GameType.Melody : GameType.Single;
-                                    // console.log({ val, type });
-                                    updatePracticeSettings("gameType", type);
-                                }}
-                            />
-                            <AppText>{t("game.type.melody")}</AppText>
-                        </AppView>
+                    <AppView style={s.box}>
+                        {/* <AppText>{t("music.clef")}</AppText> */}
+                        <AppText>{t("game.type.single")}</AppText>
+                        <AppSwitch
+                            value={gameType == GameType.Melody}
+                            setValue={(val) => {
+                                const type = val ? GameType.Melody : GameType.Single;
+                                // console.log({ val, type });
+                                updatePracticeSettings("gameType", type);
+                            }}
+                        />
+                        <AppText>{t("game.type.melody")}</AppText>
                     </AppView>
 
                     <AppButton
                         text={t("practice.start")}
                         onPress={startPracticeGame}
-                        style={{ width: 300, height: 56 }}
+                        style={s.cta}
                         textStyle={{ color: "white", fontSize: 24 }}
                         activeOpacity={0.7}
                     />
@@ -311,46 +318,44 @@ const s = StyleSheet.create({
     controlsContainer: {
         width: "100%",
         paddingHorizontal: 16,
-        gap: 16,
+        // gap: 16,
     },
-    clefSwitchContainer: {},
     clefSwitch: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        gap: 16,
+        gap: 8,
+        height: 72,
+        // ...testBorder("green"),
     },
     box: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        gap: 16,
-    },
-    keyContainer: {},
-    inputContainer: {
-        width: "100%",
-        gap: 12,
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 4,
-        paddingVertical: 4,
-        paddingHorizontal: 8,
+        gap: 8,
+        minHeight: 42,
+        // ...testBorder("blue"),
     },
     rangeSliderContainer: {
-        borderColor: "#fff",
         width: "100%",
         alignItems: "center",
+        paddingBottom: 16,
+        // ...testBorder("green"),
     },
-    rangeDisplay: {
+    noteRangeDisplay: {
         marginBottom: 8,
         flexDirection: "row",
+        justifyContent: "space-between",
         gap: 12,
+        width: 160,
+        // ...testBorder(),
     },
     sheetMusicContainer: {
-        // borderWidth: 1,
-        // borderStyle: "dashed",
-        // borderColor: "red",
-        marginBottom: 24,
+        // ...testBorder(),
+    },
+    cta: {
+        width: 300,
+        height: 56,
+        marginTop: 16,
     },
 });

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 
 export const STYLES = {
     game: StyleSheet.create({
@@ -64,3 +64,9 @@ export const STYLES = {
         btn: { width: "100%" },
     }),
 };
+
+export const testBorder = (borderColor = "red"): ViewStyle => ({
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor,
+});
