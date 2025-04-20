@@ -242,7 +242,12 @@ export function SingleNoteGameComponent() {
                     </AppView>
                 }
             >
-                <Piano keySignature={keySignature} onKeyPressed={onPianoKeyPress} onKeyReleased={onPianoKeyReleased} />
+                <Piano
+                    currNote={currNote}
+                    keySignature={keySignature}
+                    onKeyPressed={onPianoKeyPress}
+                    onKeyReleased={onPianoKeyReleased}
+                />
             </Tooltip>
         </SafeAreaView>
     );

@@ -368,7 +368,6 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
             timeSignature: timeSignatures[timeSignatureIdx],
             scale,
             noteRanges: [`${loNote}:::${hiNote}` as NoteRange],
-            // noteRanges: [`${NOTE_INDICES[String(loNoteIdx)][0]}:::${NOTE_INDICES[String(hiNoteIdx)][0]}`],
         });
     }
 
