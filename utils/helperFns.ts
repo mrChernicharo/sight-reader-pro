@@ -91,6 +91,29 @@ export function isFlatKeySignature(keySignature: KeySignature) {
     return FLAT_KEY_SIGNATURES.includes(keySignature);
 }
 
+export function isScaleNote(note: Note, scale: Scale, keySignature: KeySignature) {
+    const noteMap = scaleTypeNoteSequences[scale];
+    const scaleNoteNames = noteMap[keySignature];
+    const notename = explodeNote(note).noteName;
+
+    if (!scaleNoteNames.includes(notename)) {
+        return false;
+    }
+    return true;
+}
+
+export function fixNoteUntilItFitsScale(
+    note: Note,
+    scale: Scale,
+    keySignature: KeySignature,
+    direction: "ASC" | "DESC"
+) {
+    while (!isScaleNote(note, scale, keySignature)) {
+        note = addHalfSteps(note, direction === "ASC" ? 1 : -1, keySignature);
+    }
+    return note;
+}
+
 export function buildPitchIndexDicts() {
     const PITCH_INDICES = new Map<Note, number>();
     let oct = 1;
@@ -175,9 +198,11 @@ export function getEquivalentNotes(note: Note) {
 export function addHalfSteps(note: Note, incr: number, keySignature: KeySignature) {
     let noteIdx = getNoteIdx(note);
 
+    const positive = incr >= 0;
     let steps = Math.abs(incr);
     while (steps > 0) {
-        noteIdx += incr;
+        if (positive) noteIdx++;
+        else noteIdx--;
         steps--;
     }
 
@@ -188,8 +213,6 @@ export function addHalfSteps(note: Note, incr: number, keySignature: KeySignatur
 export function getNextScaleNote(note: Note, interval: number, keySignature: KeySignature, scale: Scale) {
     if ([-1, 0, 1].includes(interval)) return note;
 
-    const noteMap = scaleTypeNoteSequences[scale];
-    const scaleNoteNames = noteMap[keySignature];
     const possibleNotes = getPossibleNotesInLevel({ keySignature, scale });
 
     const noteIdx = possibleNotes.findIndex((n) => n == note);
@@ -203,24 +226,24 @@ export function getNextScaleNote(note: Note, interval: number, keySignature: Key
     }
     const nextNote = possibleNotes[nextNoteIdx];
 
-    console.log(
-        "getNextScaleNote :::",
-        JSON.stringify(
-            {
-                note,
-                keySignature,
-                scale,
-                interval,
-                nextNoteIdx,
-                noteIdx,
-                nextNote,
-                // scaleNoteNames,
-                // possibleNotes,
-            },
-            null,
-            2
-        )
-    );
+    // console.log(
+    //     "getNextScaleNote :::",
+    //     JSON.stringify(
+    //         {
+    //             note,
+    //             keySignature,
+    //             scale,
+    //             interval,
+    //             nextNoteIdx,
+    //             noteIdx,
+    //             nextNote,
+    //             // scaleNoteNames,
+    //             // possibleNotes,
+    //         },
+    //         null,
+    //         2
+    //     )
+    // );
     return nextNote;
 }
 

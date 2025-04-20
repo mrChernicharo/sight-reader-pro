@@ -4,7 +4,7 @@ import renderer from "react-test-renderer";
 import { AppText } from "../atoms/AppText";
 
 it(`renders correctly`, () => {
-  const tree = renderer.create(<AppText>Snapshot test!</AppText>).toJSON();
+    const tree = renderer.create(<AppText>Snapshot test!</AppText>).toJSON();
 
-  expect(tree).toMatchSnapshot();
+    expect(tree).toMatchSnapshot();
 });

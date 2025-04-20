@@ -223,28 +223,28 @@ const TEST_LEVELS_A = makeLevelGroup({
     },
 });
 
-const TEST_LEVELS_B = makeLevelGroup({
-    name: "mid",
-    clef: Clef.Treble,
-    durations: { min: 30, max: 60 },
-    keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab, KeySignature.Db],
-    timeSignatures: [TimeSignature["4/4"]],
-    levelCount: 12,
-    noteRanges: { min: ["g/2", "c/3"], max: ["g/3", "e/4"] },
-    scales: [Scale.Diatonic /* , Scale.Pentatonic, Scale.Melodic */],
-    winConditions: {
-        min: {
-            bronze: 16,
-            silver: 22,
-            gold: 28,
-        },
-        max: {
-            bronze: 22,
-            silver: 28,
-            gold: 34,
-        },
-    },
-});
+// const TEST_LEVELS_B = makeLevelGroup({
+//     name: "mid",
+//     clef: Clef.Treble,
+//     durations: { min: 30, max: 60 },
+//     keySignatures: [KeySignature.Bb, KeySignature.Eb, KeySignature.Ab, KeySignature.Db],
+//     timeSignatures: [TimeSignature["4/4"]],
+//     levelCount: 12,
+//     noteRanges: { min: ["g/2", "c/3"], max: ["g/3", "e/4"] },
+//     scales: [Scale.Diatonic /* , Scale.Pentatonic, Scale.Melodic */],
+//     winConditions: {
+//         min: {
+//             bronze: 16,
+//             silver: 22,
+//             gold: 28,
+//         },
+//         max: {
+//             bronze: 22,
+//             silver: 28,
+//             gold: 34,
+//         },
+//     },
+// });
 
 // console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_A, null, 2));
 // console.log("TEST_LEVELS ::::", JSON.stringify(TEST_LEVELS_B, null, 2));
