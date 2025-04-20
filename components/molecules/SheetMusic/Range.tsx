@@ -32,9 +32,10 @@ import { Clef, GameState, KeySignature } from "@/utils/enums";
 import { stemDown } from "@/utils/helperFns";
 import { Colors } from "@/utils/Colors";
 import { getDrawNote } from "@/utils/noteFns";
+import { testBorder } from "@/utils/styles";
 
-const height = 176;
-const yPos = 30;
+const height = 182;
+const yPos = 34;
 
 export interface MusicNoteRangeProps {
     keys: [Note, Note][];
@@ -211,19 +212,13 @@ function runVexFlowRangeCode(
 }
 
 const styles = StyleSheet.create({
-    container: {
-        // borderWidth: 1,
-        // borderStyle: "dashed",
-        // backgroundColor: "#F5FCFF",
-    },
+    container: {},
     sheetMusic: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
     innerView: {
-        // marginHorizontal: "auto",
-        // transform: [{ translateX: 25 }],
-        // transform: "translateX(80px)",
+        // ...testBorder(),
     },
 });

@@ -38,7 +38,7 @@ export function Piano({
     const keyboardMargin = 0;
     const keyWidth = (width - keyboardMargin * 2) / 7;
     const currNoteName = explodeNote(currNote).noteName;
-    console.log({ currNote, currNoteName });
+    // console.log({ currNote, currNoteName });
 
     return (
         <AppView style={[s.piano]}>
@@ -123,8 +123,8 @@ export function Piano({
 const s = StyleSheet.create({
     piano: {
         position: "relative",
-        paddingBottom: 80,
-        marginTop: -20,
+        paddingBottom: 20,
+        // marginTop: -20,
     },
     whiteNotes: {
         flexDirection: "row",

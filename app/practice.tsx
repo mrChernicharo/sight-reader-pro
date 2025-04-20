@@ -63,19 +63,18 @@ export default function PracticeScreen() {
         return notes.filter((note) => {
             const { index } = explodeNote(note);
             // console.log({ note, index });
-
             switch (clef) {
                 case Clef.Bass:
                     return index < 50;
                 case Clef.Treble:
                     return index >= 24 && index < 78;
+                default:
+                    return [];
             }
         });
     }, [clef, keySignature, accident]);
 
     // const rangeNotes = allNotes.filter((_, idx) => noteRangeIndices.low < idx && idx < noteRangeIndices.high);
-
-    // const [gameType, setGameType] = useState(GameType.Single);
 
     const onNoteRangeSliderChange = useCallback((low: number, high: number) => {
         updatePracticeSettings("noteRangeIndices", { low, high });
@@ -138,19 +137,31 @@ export default function PracticeScreen() {
         ALL_LEVELS,
     ]);
 
-    const loNote =
-        t(`music.notes.${allNotes[noteRangeIndices.low].split("/")[0]}`) +
-        "/" +
-        allNotes[noteRangeIndices.low].split("/")[1];
+    // const loNote = "c/4";
+    // const hiNote = "c/5";
+    // const loNote = t(`music.notes.${allNotes?.[noteRangeIndices.low]}`);
+    // const hiNote = t(`music.notes.${allNotes?.[noteRangeIndices.high]}`);
 
-    const hiNote =
-        t(`music.notes.${allNotes[noteRangeIndices.high].split("/")[0]}`) +
-        "/" +
-        allNotes[noteRangeIndices.high].split("/")[1];
+    const loNote = allNotes?.[noteRangeIndices.low] || "c/4";
+    const hiNote = allNotes?.[noteRangeIndices.high] || "c/5";
 
-    // useEffect(() => {
-    //     console.log("---", { accident, keySignature });
-    // }, [accident, keySignature]);
+    //     t(`music.notes.${(allNotes?.[noteRangeIndices.low] || "c/4").split("/")[0]}`) +
+    //     "/" +
+    //     allNotes[noteRangeIndices.low].split("/")[1];
+
+    // const hiNote =
+    //     t(`music.notes.${(allNotes?.[noteRangeIndices.high] || "c/5").split("/")[0]}`) +
+    //     "/" +
+    //     allNotes[noteRangeIndices.high].split("/")[1];
+
+    useEffect(() => {
+        console.log({
+            noteRangeIndices,
+            // allNotes,
+            lo: allNotes?.[noteRangeIndices.low],
+            hi: allNotes?.[noteRangeIndices.high],
+        });
+    }, [noteRangeIndices, allNotes]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>

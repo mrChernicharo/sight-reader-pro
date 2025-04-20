@@ -20,6 +20,8 @@ import { GameScore, Level, Note } from "@/utils/types";
 import { Clef, GameState, KeySignature } from "@/utils/enums";
 import { Colors } from "@/utils/Colors";
 import { getDrawNote } from "@/utils/noteFns";
+import { transform } from "@babel/core";
+import { testBorder } from "@/utils/styles";
 
 export interface MusicNoteProps {
     keys: Note[];
@@ -62,12 +64,15 @@ const widthPerKeySig = {
     [KeySignature["A#m"]]: 70,
 };
 
+const height = 220;
+
 export function SingleNoteComponent(props: MusicNoteProps) {
+    // const width = 210 + widthPerKeySig[props.keySignature];
     const width = 180 + widthPerKeySig[props.keySignature];
     // const { height, width, scale, fontScale } = useWindowDimensions();
     const theme = useTheme();
     const textColor = Colors[theme].text;
-    const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
+    const context = new ReactNativeSVGContext(NotoFontPack, { width });
     const { clef, keys, keySignature, noteColor } = props;
     const svgResult = runVexFlowCode(context, clef, keys, keySignature, width, textColor, noteColor);
 
@@ -135,6 +140,8 @@ function runVexFlowCode(
     voice.draw(context, stave);
 
     const renderResult = context.render() as ReactNode;
+    // console.log({ renderResult });
+
     return noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
 }
 
@@ -171,27 +178,38 @@ function addColorToNoteOutput(svgStruct: any, color: string) {
         ...svgStruct,
         props: {
             ...svgStruct.props,
-            children: svgStruct.props.children.map((ch: any) => {
-                if (ch.props.className === "vf-stavenote") {
+            children: svgStruct.props.children.map((staveG: any) => {
+                if (staveG.props.className === "vf-stavenote") {
                     return {
-                        ...ch,
+                        ...staveG,
                         props: {
-                            ...ch.props,
-                            children: ch.props.children.map((ich: any) => ({
-                                ...ich,
+                            ...staveG.props,
+                            children: staveG.props.children.map((noteG: any) => ({
+                                ...noteG,
                                 props: {
-                                    ...ich.props,
-                                    children: ich.props.children.map((iich: any) => ({
-                                        ...iich,
+                                    ...noteG.props,
+                                    children: noteG.props.children.map((noteHeadG: any) => ({
+                                        ...noteHeadG,
                                         props: {
-                                            ...iich.props,
+                                            ...noteHeadG.props,
                                             fill: color,
                                             stroke: color,
-                                            children: iich.props.children.map((iiich: any, i: number) => {
-                                                // console.log({ i, ch, ich, iich, iiich });
+                                            children: noteHeadG.props.children.map((notePath: any, i: number) => {
+                                                // console.log('::::addColorToNoteOutput',{ i, staveG, noteG, noteHeadG, notePath });
                                                 return {
-                                                    ...iiich,
-                                                    props: { ...iiich.props, fill: color, stroke: color },
+                                                    ...notePath,
+                                                    props: {
+                                                        ...notePath.props,
+                                                        fill: color,
+                                                        stroke: color,
+                                                        // scale: 1.4,
+                                                        // translateX: -66,
+                                                        // translateY: "-50%",
+                                                        // style: {
+                                                        // scale: 1.4,
+                                                        // transformOrigin: "center center",
+                                                        // },
+                                                    },
                                                 };
                                             }),
                                         },
@@ -201,7 +219,7 @@ function addColorToNoteOutput(svgStruct: any, color: string) {
                         },
                     };
                 } else {
-                    return ch;
+                    return staveG;
                 }
             }),
         },
@@ -212,17 +230,23 @@ function addColorToNoteOutput(svgStruct: any, color: string) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 280,
+        height,
         // borderWidth: 2,
         // borderStyle: "dashed",
         // backgroundColor: "#F5FCFF",
+        backgroundColor: "transparent",
+        ...testBorder("green"),
     },
     sheetMusic: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "transparent",
+        transform: [{ scaleX: 1.4 }, { scaleY: 1.2 }],
     },
     innerView: {
-        transform: [{ translateX: 8 }],
+        transform: [{ translateX: 2 }],
+        backgroundColor: "transparent",
+        ...testBorder(),
     },
 });
