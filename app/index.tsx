@@ -25,7 +25,7 @@ export default function Home() {
 
     const [tourStep, setTourStep] = useState(-1);
 
-    const greetingMessage = t("welcome") + (username ? `, ${username}` : "!");
+    const greetingMessage = t("app.welcome") + (username ? `, ${username}` : "!");
     const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
     useLayoutEffect(() => {

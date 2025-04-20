@@ -23,7 +23,7 @@ const en = {
                 title: "What should we call you?",
             },
             knowledge: {
-                title: "Do you know how to read sheet music?",
+                title: "Can you read sheet music?",
                 you: "Your level is",
             },
         },

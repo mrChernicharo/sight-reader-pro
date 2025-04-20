@@ -11,6 +11,23 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import AppButton from "@/components/atoms/AppButton";
 import { Link, router } from "expo-router";
+import { STYLES } from "@/utils/styles";
+
+const s = {
+    ...STYLES.init,
+    ...StyleSheet.create({
+        inputContainer: {
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            paddingHorizontal: 12,
+            paddingBottom: 120,
+            // borderWidth: 2,
+            // borderColor: "red",
+        },
+    }),
+};
 
 export default function NameScreen() {
     const theme = useTheme();
@@ -22,10 +39,10 @@ export default function NameScreen() {
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 1 }}>
+                <AppView style={{ position: "absolute", left: 0, top: 6 }}>
                     <BackLink to="/init/02.knowledge.screen" />
                 </AppView>
-                <AppText type="mdSemiBold">{t("routes.init.name.title")}</AppText>
+                <AppText type="subtitle">{t("routes.init.name.title")}</AppText>
             </AppView>
 
             <AppView style={s.inputContainer}>
@@ -66,49 +83,3 @@ export default function NameScreen() {
         </SafeAreaView>
     );
 }
-
-const s = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: 36,
-        paddingVertical: 24,
-        height: "100%",
-        position: "relative",
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    top: {
-        width: "100%",
-        top: 24,
-        position: "absolute",
-        alignItems: "center",
-    },
-    inputContainer: {
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        paddingHorizontal: 12,
-        paddingBottom: 120,
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: "#999",
-        width: "100%",
-        borderRadius: 8,
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-    },
-    btnContainer: {
-        position: "absolute",
-        width: "100%",
-        bottom: 50,
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    btn: { width: "100%" },
-});

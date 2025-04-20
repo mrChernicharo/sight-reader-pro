@@ -16,6 +16,9 @@ import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { useSoundContext } from "@/hooks/useSoundsContext";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { STYLES } from "@/utils/styles";
+
+const s = STYLES.game;
 
 export function MelodyGameComponent() {
     const theme = useTheme();
@@ -124,29 +127,3 @@ export function MelodyGameComponent() {
         </SafeAreaView>
     );
 }
-
-const s = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "space-between",
-        position: "relative",
-        paddingTop: 8,
-        // borderWidth: 1,
-        // borderColor: "blue",
-    },
-    top: {
-        position: "relative",
-        height: 130,
-        paddingHorizontal: 24,
-        // borderWidth: 1,
-        // borderColor: "green",
-    },
-    backLink: {
-        position: "absolute",
-        top: -118,
-        left: 0,
-        zIndex: 20,
-        // borderWidth: 1,
-        // borderColor: "red",
-    },
-});

@@ -13,6 +13,24 @@ import AppButton from "@/components/atoms/AppButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Link } from "expo-router";
 import { Knowledge } from "@/utils/enums";
+import { STYLES } from "@/utils/styles";
+
+const s = {
+    ...STYLES.init,
+    ...StyleSheet.create({
+        listContainer: {
+            width: "100%",
+            display: "flex",
+            gap: 40,
+            // borderWidth: 2,
+            // borderColor: "red",
+        },
+        listItem: {
+            padding: 12,
+            borderWidth: 1,
+        },
+    }),
+};
 
 const knowledgeOptions = [
     {
@@ -57,10 +75,10 @@ export default function KnowledgeScreen() {
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 1 }}>
+                <AppView style={{ position: "absolute", left: 0, top: 6 }}>
                     <BackLink to="/init/01.lang.screen" />
                 </AppView>
-                <AppText type="mdSemiBold">
+                <AppText type="subtitle">
                     {knowledge ? t("routes.init.knowledge.you") : t("routes.init.knowledge.title")}
                 </AppText>
 
@@ -126,49 +144,3 @@ export default function KnowledgeScreen() {
         </SafeAreaView>
     );
 }
-
-const s = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: 36,
-        paddingVertical: 24,
-        position: "relative",
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    top: {
-        width: "100%",
-        top: 24,
-        position: "absolute",
-        alignItems: "center",
-    },
-    listContainer: {
-        width: "100%",
-        display: "flex",
-        gap: 40,
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    listItem: {
-        padding: 12,
-        borderWidth: 1,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: "#999",
-        width: "100%",
-        borderRadius: 8,
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-    },
-    btnContainer: {
-        position: "absolute",
-        width: "100%",
-        bottom: 50,
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    btn: { width: "100%" },
-});

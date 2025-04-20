@@ -14,6 +14,9 @@ import { Link, router } from "expo-router";
 import AppButton from "@/components/atoms/AppButton";
 import { DEFAULT_LANGUAGE } from "@/translations";
 import { useTheme } from "@/hooks/useTheme";
+import { STYLES } from "@/utils/styles";
+
+const s = STYLES.init;
 
 export default function LangScreen() {
     const theme = useTheme();
@@ -29,10 +32,7 @@ export default function LangScreen() {
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
-                {/* <AppView style={{ position: "absolute", left: 0, top: 1 }}>
-                    <BackLink />
-                </AppView> */}
-                <AppText type="mdSemiBold">{t("routes.init.lang.title")}</AppText>
+                <AppText type="subtitle">{t("routes.init.lang.title")}</AppText>
             </AppView>
 
             <AppView style={{ paddingHorizontal: 12, paddingBottom: 120 }}>
@@ -63,33 +63,3 @@ export default function LangScreen() {
         </SafeAreaView>
     );
 }
-
-const s = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: 36,
-        paddingVertical: 24,
-        height: "100%",
-        position: "relative",
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    top: {
-        width: "100%",
-        top: 24,
-        position: "absolute",
-        alignItems: "center",
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    btnContainer: {
-        position: "absolute",
-        width: "100%",
-        bottom: 50,
-        // borderWidth: 2,
-        // borderColor: "red",
-    },
-    btn: { width: "100%" },
-});

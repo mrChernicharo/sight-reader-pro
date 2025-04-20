@@ -22,8 +22,11 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { STYLES } from "@/utils/styles";
 
 const DELAY = 60;
+
+const s = STYLES.game;
 
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
@@ -271,29 +274,3 @@ function SingleNoteGameStage({
         </>
     );
 }
-
-const s = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "space-between",
-        position: "relative",
-        paddingTop: 8,
-        // borderWidth: 1,
-        // borderColor: "blue",
-    },
-    top: {
-        position: "relative",
-        height: 130,
-        paddingHorizontal: 24,
-        // borderWidth: 1,
-        // borderColor: "green",
-    },
-    backLink: {
-        position: "absolute",
-        top: -118,
-        left: 0,
-        zIndex: 20,
-        // borderWidth: 1,
-        // borderColor: "red",
-    },
-});
