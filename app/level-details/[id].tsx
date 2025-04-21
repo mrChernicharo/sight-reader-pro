@@ -29,8 +29,7 @@ export default function LevelDetails() {
 
     if (!level) return null;
 
-    console.log(":::LevelDetails", level);
-
+    // console.log(":::LevelDetails", level);
     // if (level.gameType !== GameType.Single) return;
 
     const displayInfo = {
@@ -44,7 +43,7 @@ export default function LevelDetails() {
         switch (level.type) {
             case GameType.Single:
             case GameType.Melody: {
-                console.log({ level, displayInfo });
+                // console.log({ level, displayInfo });
                 router.push({
                     pathname: "/game-level/[id]",
                     params: { id: String(id), keySignature: level.keySignature, previousPage: "/level-details" },

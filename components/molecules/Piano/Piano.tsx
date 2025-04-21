@@ -9,6 +9,7 @@ import { capitalizeStr, explodeNote } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
 import { Note } from "@/utils/types";
+import { useEffect } from "react";
 import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
 
 const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
@@ -30,6 +31,7 @@ export function Piano({
     const { t } = useTranslation();
     const { width } = useWindowDimensions();
     const showPianoNoteNames = useAppStore((state) => state.showPianoNoteNames);
+    const playedNotes = useAppStore((state) => state.playedNotes);
     const theme = useTheme();
 
     const pianoBlackKeySpec = FLAT_KEY_SIGNATURES.includes(keySignature) ? "Flat" : "Sharp";
@@ -39,6 +41,17 @@ export function Piano({
     const keyWidth = (width - keyboardMargin * 2) / 7;
     const currNoteName = currNote ? explodeNote(currNote).noteName : null;
     // console.log({ currNote, currNoteName });
+
+    const hintPianoKey = (note: NoteName) => {
+        if (!currNote) return;
+        const notePlayedTimes = playedNotes[currNote] ?? 0;
+        // console.log({ note, currNoteName, currNote, notePlayedTimes });
+        return note === currNoteName && notePlayedTimes == 0;
+    };
+
+    // useEffect(() => {
+    //     console.log("playedNotes::::", playedNotes);
+    // }, [playedNotes]);
 
     return (
         <AppView style={[s.piano]}>
@@ -54,7 +67,7 @@ export function Piano({
                         <Pressable
                             style={[
                                 s.blackNoteInner,
-                                { ...(note === currNoteName && { backgroundColor: Colors[theme].green }) },
+                                { ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }) },
                             ]}
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => onKeyPressed(note)}
@@ -79,7 +92,7 @@ export function Piano({
                         <Pressable
                             style={[
                                 s.blackNoteInner,
-                                { ...(note === currNoteName && { backgroundColor: Colors[theme].green }) },
+                                { ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }) },
                             ]}
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => onKeyPressed(note)}
@@ -99,13 +112,13 @@ export function Piano({
                         <Pressable
                             key={note}
                             android_ripple={{ radius: 90, color: "#000000066" }}
-                            onPressIn={() => onKeyPressed(note as NoteName)}
-                            onPressOut={() => onKeyReleased(note as NoteName)}
+                            onPressIn={() => onKeyPressed(note)}
+                            onPressOut={() => onKeyReleased(note)}
                             style={[
                                 s.whiteNote,
                                 {
                                     width: keyWidth,
-                                    ...(note === currNoteName && { backgroundColor: Colors[theme].green }),
+                                    ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }),
                                 },
                             ]}
                         >

@@ -10,7 +10,7 @@ import { Colors } from "@/utils/Colors";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { Link, router, usePathname } from "expo-router";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { StyleProp, StyleSheet, TextStyle, useWindowDimensions } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 
 import Tooltip from "react-native-walkthrough-tooltip";
@@ -22,6 +22,7 @@ export default function Home() {
     const username = useAppStore((state) => state.username);
     const hasCompletedTour = useAppStore((state) => state.completedTours.home);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
+    const { width } = useWindowDimensions();
 
     const [tourStep, setTourStep] = useState(-1);
 
@@ -40,28 +41,17 @@ export default function Home() {
 
     return (
         <AppView style={s.container}>
-            <Tooltip
-                isVisible={tourStep == 0}
-                placement="center"
-                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                onClose={() => setTourStep(1)}
-                content={
-                    <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText {...tourTextProps} type="subtitle">
-                            {greetingMessage}
-                        </AppText>
-                        <TooltipTextLines keypath="tour.home.0" />
-                        <AppButton
-                            style={{ marginVertical: 6 }}
-                            text={t("tour.home.0_ok")}
-                            onPress={() => {
-                                setTourStep(-1);
-                                setTourCompleted("home", true);
-                            }}
-                        />
-                    </AppView>
-                }
-            />
+            {/* <RenderHTML source={source} contentWidth={width} defaultViewProps={{}} /> */}
+            {/* <RenderHTML
+                contentWidth={300}
+                source={{ html: htmlContent }}
+                renderers={renderers}
+                renderersProps={{
+                    svg: {
+                        data: `<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="blue" /></svg>`,
+                    },
+                }}
+            /> */}
 
             <FadeIn y={50} x={0} delay={0}>
                 <AppTextLogo subtitles={t("app.slogan")} />
@@ -105,6 +95,29 @@ export default function Home() {
                     />
                 </Link>
             </FadeIn>
+
+            <Tooltip
+                isVisible={tourStep == 0}
+                placement="center"
+                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
+                onClose={() => setTourStep(1)}
+                content={
+                    <AppView transparentBG style={{ alignItems: "center" }}>
+                        <AppText {...tourTextProps} type="subtitle">
+                            {greetingMessage}
+                        </AppText>
+                        <TooltipTextLines keypath="tour.home.0" />
+                        <AppButton
+                            style={{ marginVertical: 6 }}
+                            text={t("tour.home.0_ok")}
+                            onPress={() => {
+                                setTourStep(-1);
+                                setTourCompleted("home", true);
+                            }}
+                        />
+                    </AppView>
+                }
+            />
         </AppView>
     );
 }

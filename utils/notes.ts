@@ -3,7 +3,7 @@
 import { LevelAccidentType, KeySignature, NoteName, ScaleType } from "./enums";
 import { Note } from "./types";
 
-export const WHITE_NOTES = ["c", "d", "e", "f", "g", "a", "b"];
+export const WHITE_NOTES = ["c", "d", "e", "f", "g", "a", "b"] as NoteName[];
 export const ALL_NOTES_SHARP = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"];
 export const ALL_NOTES_FLAT = ["c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b"];
 

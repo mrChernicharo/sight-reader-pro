@@ -87,8 +87,8 @@ export function getUnlockedLevels(games: Game[], intl: Intl.NumberFormat) {
 const TREBLE_NOVICE_LEVELS = makeLevelGroup({
     name: "basics",
     clef: Clef.Treble,
-    // durations: { min: 20, max: 40 },
-    durations: { min: 300, max: 400 },
+    durations: { min: 20, max: 40 },
+    // durations: { min: 300, max: 400 },
     keySignatures: [KeySignature.C],
     timeSignatures: [TimeSignature["4/4"]],
     levelCount: 6,

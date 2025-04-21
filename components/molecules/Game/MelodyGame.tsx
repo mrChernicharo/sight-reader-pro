@@ -25,7 +25,7 @@ export function MelodyGameComponent() {
 
     const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
     const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound } = useAppStore();
-    const { playPianoNote, playSoundEfx } = useSoundContext();
+    const { playPianoNote, releasePianoNote, playSoundEfx } = useSoundContext();
 
     const rounds = currentGame?.rounds || [];
     const currRound = rounds.at(-1) as MelodyRound;
@@ -130,7 +130,8 @@ export function MelodyGameComponent() {
                 currNote={currRound?.values?.[melodyIdx] || null}
                 keySignature={keySignature}
                 onKeyPressed={onPianoKeyPress}
-                onKeyReleased={(note) => {}}
+                onKeyReleased={() => {}}
+                // onKeyReleased={() => releasePianoNote(currRound?.values?.[melodyIdx] || null)}
             />
         </SafeAreaView>
     );

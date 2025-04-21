@@ -1,6 +1,6 @@
 import { Clef, GameType, KeySignature, Knowledge, LevelAccidentType, ScaleType } from "@/utils/enums";
 import { ALL_LEVELS } from "@/utils/levels";
-import { CurrentGame, Game, Round, Scale } from "@/utils/types";
+import { CurrentGame, Game, Note, Round, Scale } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 import { create } from "zustand";
@@ -8,6 +8,8 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 let DEV_RESET = false;
 DEV_RESET = true;
+
+type PlayedNotes = Partial<Record<Note, number>>;
 
 interface PracticeSettings {
     clef: Clef;
@@ -37,6 +39,7 @@ export interface AppState {
     selectedLevelsClef: Clef;
     completedTours: CompletedTours;
     practiceSettings: PracticeSettings;
+    playedNotes: PlayedNotes;
     // difficulty: Difficulty;
     _hydrated: boolean;
 }
@@ -68,6 +71,7 @@ export interface AppActions {
     endGame: (previousPage?: string) => Promise<void>;
     addNewRound: (round: Round<GameType>) => Promise<void>;
     updateRound: (val: Partial<Round<GameType>>) => Promise<void>;
+    updatePlayedNotes: (note: Note) => Promise<void>;
     updatePracticeSettings: (setting: keyof PracticeSettings, value: any) => Promise<void>;
 
     setHydrated: (hydrated: boolean) => Promise<void>;
@@ -89,6 +93,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 currentGame: null,
                 selectedLevelsClef: Clef.Treble,
                 practiceSettings: defaultPracticeSettings,
+                playedNotes: {},
                 completedTours: {
                     init: false,
                     home: false,
@@ -110,6 +115,7 @@ export const useAppStore = create<AppState & AppActions>()(
                                   globalVolume: 1,
                                   games: [],
                                   currentGame: null,
+                                  playedNotes: {},
                                   completedTours: {
                                       init: false,
                                       home: false,
@@ -126,6 +132,7 @@ export const useAppStore = create<AppState & AppActions>()(
                                   globalVolume: 1,
                                   games: [],
                                   currentGame: null,
+                                  playedNotes: {},
                                   completedTours: {
                                       init: true,
                                       home: true,
@@ -157,7 +164,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 },
                 endGame: async (previousPage?: string) => {
                     // console.log("END GAME", previousPage);
-                    set({ currentGame: null });
+                    set({ currentGame: null, playedNotes: {} });
                     // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
                     if (previousPage === "/practice") {
                         setTimeout(() => {
@@ -189,7 +196,15 @@ export const useAppStore = create<AppState & AppActions>()(
                         };
                     });
                 },
-
+                updatePlayedNotes: async (note: Note) => {
+                    set((state) => ({
+                        ...state,
+                        playedNotes: {
+                            ...state.playedNotes,
+                            [note]: state.playedNotes[note] ? state.playedNotes[note] + 1 : 1,
+                        },
+                    }));
+                },
                 updatePracticeSettings: async (setting: keyof PracticeSettings, value: any) => {
                     set((state) => {
                         console.log("updatePracticeSettings:::", { ...state.practiceSettings });

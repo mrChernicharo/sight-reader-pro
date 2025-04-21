@@ -34,7 +34,7 @@ export function SingleNoteGameComponent() {
     const backgroundColor = Colors[theme].bg;
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
-    const { currentGame, saveGameRecord, startNewGame, endGame, addNewRound } = useAppStore();
+    const { currentGame, saveGameRecord, startNewGame, endGame, addNewRound, updatePlayedNotes } = useAppStore();
     const { playPianoNote, playSoundEfx } = useSoundContext();
 
     const hasCompletedTour = useAppStore((state) => state.completedTours.game);
@@ -62,6 +62,7 @@ export function SingleNoteGameComponent() {
         // console.log({ notename, currNote, attemptedNote, success });
 
         if (success) {
+            updatePlayedNotes(attemptedNote);
             playPianoNote(attemptedNote);
             setGameState(GameState.Success);
         } else {
