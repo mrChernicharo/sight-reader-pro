@@ -1,5 +1,17 @@
 import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident } from "./enums";
-import { GameScore, Level, LevelScore, MelodyRound, Note, Round, Scale, SingleNoteRound, WinConditions } from "./types";
+import {
+    GameScore,
+    Level,
+    LevelGroupSpec,
+    LevelScore,
+    MelodyRound,
+    Note,
+    NoteRange,
+    Round,
+    Scale,
+    SingleNoteRound,
+    WinConditions,
+} from "./types";
 import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES, scaleTypeNoteSequences } from "./keySignature";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
@@ -535,4 +547,94 @@ export function groupArrayElements<T>(arr: T[]): T[] {
     // groupedArray.push(...Array(count).fill(currentElement));
 
     return groupedArray;
+}
+
+function mapRange(input = 0, min = 0, max = 1, step = 0.5) {
+    if (input < 0 || input > 1) {
+        throw new Error("Input must be between 0 and 1.");
+    }
+
+    const mappedValue = min + (max - min) * input;
+    return Math.round(mappedValue / step) * step;
+}
+
+// MAJOR_KEY_SIGNATURES
+export function makeLevelGroup(spec: LevelGroupSpec) {
+    const { name, clef, levelCount, durations, winConditions, keySignatures, timeSignatures, scales, noteRanges } =
+        spec;
+
+    const levels: Level[] = [];
+
+    for (let i = 0; i < levelCount; i++) {
+        const groupProgress = i / levelCount;
+
+        const scaleIdx = mapRange(groupProgress, 0, scales.length - 1, 1);
+        const keySignatureIdx = mapRange(groupProgress, 0, keySignatures.length - 1, 1);
+        const timeSignatureIdx = mapRange(groupProgress, 0, timeSignatures.length - 1, 1);
+
+        const keySignature = keySignatures[keySignatureIdx];
+        const scale = scales[scaleIdx];
+
+        let [minMinNote, maxMinNote] = [noteRanges.min[0], noteRanges.min[1]];
+        let [minMaxNote, maxMaxNote] = [noteRanges.max[0], noteRanges.max[1]];
+
+        maxMinNote = fixNoteUntilItFitsScale(maxMinNote, scale, keySignature, "DESC");
+        minMinNote = fixNoteUntilItFitsScale(minMinNote, scale, keySignature, "ASC");
+        let currNote = maxMinNote;
+
+        let minIdx = explodeNote(minMinNote).index;
+        let maxIdx = explodeNote(maxMinNote).index;
+
+        const minNotes: Note[] = [];
+        const nextNote = getNextScaleNote(currNote, -2, keySignature, scale);
+        // console.log({ minIdx, maxIdx, minMinNote, maxMinNote, currNote, nextNote });
+        while (maxIdx >= minIdx) {
+            minNotes.push(currNote);
+            currNote = getNextScaleNote(currNote, -2, keySignature, scale);
+            maxIdx = explodeNote(currNote).index;
+        }
+
+        /////
+
+        minMaxNote = fixNoteUntilItFitsScale(minMaxNote, scale, keySignature, "ASC");
+        maxMaxNote = fixNoteUntilItFitsScale(maxMaxNote, scale, keySignature, "DESC");
+        currNote = minMaxNote;
+
+        minIdx = explodeNote(minMaxNote).index;
+        maxIdx = explodeNote(maxMaxNote).index;
+
+        const maxNotes: Note[] = [];
+        while (minIdx <= maxIdx) {
+            maxNotes.push(currNote);
+            currNote = getNextScaleNote(currNote, 2, keySignature, scale);
+            minIdx = explodeNote(currNote).index;
+        }
+
+        // if (i == 0) console.log({ maxNotes, minNotes });
+
+        const loNoteIdx = mapRange(groupProgress, 0, minNotes.length - 1, 1);
+        const hiNoteIdx = mapRange(groupProgress, 0, maxNotes.length - 1, 1);
+        const loNote = minNotes[loNoteIdx];
+        const hiNote = maxNotes[hiNoteIdx];
+
+        levels.push({
+            id: `${name}-${padZero(i)}`,
+            name: `${name} ${padZero(i + 1)}`,
+            index: i,
+            type: groupProgress < 0.7 ? GameType.Single : GameType.Melody,
+            clef,
+            durationInSeconds: mapRange(groupProgress, durations.min, durations.max, 5),
+            winConditions: {
+                bronze: mapRange(groupProgress, winConditions.min.bronze, winConditions.max.bronze, 1),
+                silver: mapRange(groupProgress, winConditions.min.silver, winConditions.max.silver, 1),
+                gold: mapRange(groupProgress, winConditions.min.gold, winConditions.max.gold, 1),
+            },
+            keySignature,
+            timeSignature: timeSignatures[timeSignatureIdx],
+            scale,
+            noteRanges: [`${loNote}:::${hiNote}` as NoteRange],
+        });
+    }
+
+    return levels;
 }
