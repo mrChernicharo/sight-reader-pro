@@ -4,7 +4,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useSoundContext } from "@/hooks/useSoundsContext";
 import { Colors } from "@/utils/Colors";
 import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
-import { explodeNote, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
+import { explodeNote, getLevelHintCount, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, Note, Round, SingleNoteRound } from "@/utils/types";
@@ -32,7 +32,9 @@ export function SingleNoteGameComponent() {
     const { t } = useTranslation();
     const theme = useTheme();
     const backgroundColor = Colors[theme].bg;
+
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
+    const previousPage = getPreviousPage(String(prevPage), id);
 
     const { currentGame, saveGameRecord, startNewGame, endGame, addNewRound, updatePlayedNotes } = useAppStore();
     const { playPianoNote, playSoundEfx } = useSoundContext();
@@ -46,7 +48,7 @@ export function SingleNoteGameComponent() {
     const keySignature = decodeURIComponent(keySig) as KeySignature;
     const level = getLevel(id);
     const possibleNotes = getPossibleNotesInLevel(level);
-    const previousPage = getPreviousPage(String(prevPage), id);
+    const hintCount = getLevelHintCount(level.skillLevel);
 
     const [gameState, setGameState] = useState<GameState>(GameState.Idle);
     const [currNote, setCurrNote] = useState<Note>(
@@ -244,6 +246,7 @@ export function SingleNoteGameComponent() {
                 }
             >
                 <Piano
+                    hintCount={hintCount}
                     currNote={currNote}
                     keySignature={keySignature}
                     onKeyPressed={onPianoKeyPress}

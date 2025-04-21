@@ -151,6 +151,7 @@ export type Level = {
     index: number;
     name: string;
     type: GameType;
+    skillLevel: Knowledge;
 
     clef: Clef;
     scale: Scale;

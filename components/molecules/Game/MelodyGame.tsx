@@ -3,7 +3,7 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
 import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
-import { explodeNote, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
+import { explodeNote, getLevelHintCount, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
 import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
 import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
@@ -34,6 +34,7 @@ export function MelodyGameComponent() {
     const level = getLevel(id);
     const possibleNotes = getPossibleNotesInLevel(level);
     const previousPage = getPreviousPage(String(prevPage), id);
+    const hintCount = getLevelHintCount(level.skillLevel);
 
     const [melodyIdx, setMelodyIdx] = useState(0);
 
@@ -127,6 +128,7 @@ export function MelodyGameComponent() {
             ) : null}
 
             <Piano
+                hintCount={hintCount}
                 currNote={currRound?.values?.[melodyIdx] || null}
                 keySignature={keySignature}
                 onKeyPressed={onPianoKeyPress}

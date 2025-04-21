@@ -4,7 +4,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { KeySignature, NoteName } from "@/utils/enums";
+import { KeySignature, Knowledge, NoteName } from "@/utils/enums";
 import { capitalizeStr, explodeNote } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
@@ -20,11 +20,13 @@ const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
 export function Piano({
     currNote,
     keySignature,
+    hintCount,
     onKeyPressed,
     onKeyReleased,
 }: {
     currNote: Note | null;
     keySignature: KeySignature;
+    hintCount: number;
     onKeyPressed: (note: NoteName) => void;
     onKeyReleased: (note: NoteName) => void;
 }) {
@@ -46,12 +48,17 @@ export function Piano({
         if (!currNote) return;
         const notePlayedTimes = playedNotes[currNote] ?? 0;
         // console.log({ note, currNoteName, currNote, notePlayedTimes });
-        return note === currNoteName && notePlayedTimes == 0;
+        return note === currNoteName && notePlayedTimes < hintCount;
+        // return note === currNoteName && notePlayedTimes < 0;
     };
 
     // useEffect(() => {
     //     console.log("playedNotes::::", playedNotes);
     // }, [playedNotes]);
+
+    useEffect(() => {
+        console.log("hintCount::::", hintCount);
+    }, [hintCount]);
 
     return (
         <AppView style={[s.piano]}>

@@ -1,4 +1,4 @@
-import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident } from "./enums";
+import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident, Knowledge } from "./enums";
 import {
     GameScore,
     Level,
@@ -560,8 +560,18 @@ function mapRange(input = 0, min = 0, max = 1, step = 0.5) {
 
 // MAJOR_KEY_SIGNATURES
 export function makeLevelGroup(spec: LevelGroupSpec) {
-    const { name, clef, levelCount, durations, winConditions, keySignatures, timeSignatures, scales, noteRanges } =
-        spec;
+    const {
+        name,
+        clef,
+        levelCount,
+        durations,
+        winConditions,
+        keySignatures,
+        timeSignatures,
+        scales,
+        noteRanges,
+        skillLevel,
+    } = spec;
 
     const levels: Level[] = [];
 
@@ -622,6 +632,7 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
             name: `${name} ${padZero(i + 1)}`,
             index: i,
             type: groupProgress < 0.7 ? GameType.Single : GameType.Melody,
+            skillLevel,
             clef,
             durationInSeconds: mapRange(groupProgress, durations.min, durations.max, 5),
             winConditions: {
@@ -637,4 +648,17 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
     }
 
     return levels;
+}
+
+export function getLevelHintCount(skillLevel: Knowledge) {
+    switch (skillLevel) {
+        case Knowledge.novice:
+            return 3;
+        case Knowledge.beginner:
+            return 2;
+        case Knowledge.intermediary:
+            return 1;
+        default:
+            return 0;
+    }
 }
