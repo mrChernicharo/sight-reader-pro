@@ -31,6 +31,7 @@ import Tooltip from "react-native-walkthrough-tooltip";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import { FadeOut } from "@/components/atoms/FadeOut";
 
 const DELAY = 60;
 
@@ -62,7 +63,7 @@ export function SingleNoteGameComponent() {
     const [currNote, setCurrNote] = useState<Note>(
         decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
-    const [attemptedNotes, setAttemptedNotes] = useState<{ you: Note; correct: Note } | null>(null);
+    const [attemptedNotes, setAttemptedNotes] = useState<{ id: string; you: Note; correct: Note }[]>([]);
 
     async function onPianoKeyPress(notename: NoteName) {
         if (gameState !== GameState.Idle) return;
@@ -82,7 +83,11 @@ export function SingleNoteGameComponent() {
             playPianoNote(currNote);
             setGameState(GameState.Mistake);
         }
-        setAttemptedNotes({ you: playedNote, correct: currNote });
+        setAttemptedNotes((prev) => {
+            const copy = prev.slice();
+            copy.push({ id: randomUID(), you: playedNote, correct: currNote });
+            return copy;
+        });
 
         await wait(DELAY);
 
@@ -151,6 +156,17 @@ export function SingleNoteGameComponent() {
     useEffect(() => {
         console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });
     }, [hasCompletedTour, tourStep]);
+
+    useEffect(() => {
+        (async () => {
+            await wait(2000);
+            setAttemptedNotes((prev) => {
+                const copy = prev.slice();
+                copy.shift();
+                return copy;
+            });
+        })();
+    }, [rounds]);
 
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 
@@ -252,14 +268,14 @@ export function SingleNoteGameComponent() {
                 </Tooltip>
             )}
 
-            <AppView style={{ height: 36, flexDirection: "row", ...testBorder() }}>
-                {attemptedNotes && (
-                    <AppView style={{ width: "100%", ...testBorder("orange") }}>
-                        <AppText>
-                            {attemptedNotes.you} X {attemptedNotes.correct}
+            <AppView style={[s.attemptedNotes, { ...testBorder() }]}>
+                {attemptedNotes.map((attempt) => (
+                    <FadeOut y={-50} duration={2000} style={{ position: "absolute" }} key={attempt.id}>
+                        <AppText type="mdSemiBold">
+                            {attempt.you} X {attempt.correct}
                         </AppText>
-                    </AppView>
-                )}
+                    </FadeOut>
+                ))}
             </AppView>
 
             <Tooltip

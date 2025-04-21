@@ -19,12 +19,13 @@ import { decideNextRound } from "@/utils/noteFns";
 import { STYLES, testBorder } from "@/utils/styles";
 import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { AppText } from "@/components/atoms/AppText";
+import { FadeOut } from "@/components/atoms/FadeOut";
 
 const s = STYLES.game;
 
@@ -46,7 +47,7 @@ export function MelodyGameComponent() {
     const hintCount = getLevelHintCount(level.skillLevel);
 
     const [melodyIdx, setMelodyIdx] = useState(0);
-    const [attemptedNotes, setAttemptedNotes] = useState<{ you: Note; correct: Note } | null>(null);
+    const [attemptedNotes, setAttemptedNotes] = useState<{ id: string; you: Note; correct: Note }[]>([]);
 
     const currNote = currRound?.values?.[melodyIdx] || null;
 
@@ -86,7 +87,11 @@ export function MelodyGameComponent() {
             playPianoNote(playedNote);
             playPianoNote(currNote);
         }
-        setAttemptedNotes({ you: playedNote, correct: currNote });
+        setAttemptedNotes((prev) => {
+            const copy = prev.slice();
+            copy.push({ id: randomUID(), you: playedNote, correct: currNote });
+            return copy;
+        });
 
         if (isLastNote) {
             await wait(60);
@@ -126,12 +131,16 @@ export function MelodyGameComponent() {
         startNewGame({ ...level, ...gameInfo } as CurrentGame);
     }, [id]);
 
-    // useEffect(() => {
-    //             (async() => {
-    //                 await wait(2000);
-    //     setAttemptedNotes(null);
-    //             })()
-    // }, [rounds])
+    useEffect(() => {
+        (async () => {
+            await wait(2000);
+            setAttemptedNotes((prev) => {
+                const copy = prev.slice();
+                copy.shift();
+                return copy;
+            });
+        })();
+    }, [rounds]);
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
@@ -146,14 +155,14 @@ export function MelodyGameComponent() {
                 </AppView>
             ) : null}
 
-            <AppView style={{ flexDirection: "row", height: 36, ...testBorder() }}>
-                {attemptedNotes && (
-                    <>
-                        <AppText>{attemptedNotes.you}</AppText>
-                        <AppText> X </AppText>
-                        <AppText>{attemptedNotes.correct}</AppText>
-                    </>
-                )}
+            <AppView style={[s.attemptedNotes, { ...testBorder() }]}>
+                {attemptedNotes.map((attempt) => (
+                    <FadeOut y={-50} duration={2000} style={{ position: "absolute" }} key={attempt.id}>
+                        <AppText>
+                            {attempt.you} X {attempt.correct}
+                        </AppText>
+                    </FadeOut>
+                ))}
             </AppView>
 
             <Piano

@@ -12,27 +12,27 @@ interface FadeInReanimatedProps {
     style?: ViewStyle;
 }
 
-export function FadeIn({ children, x = 0, y = 0, duration = 500, delay = 0, style, ...rest }: FadeInReanimatedProps) {
-    const delayTimeout = useRef(0);
-    const opacity = useSharedValue(0);
-    const X = useSharedValue(x);
-    const Y = useSharedValue(y);
+export function FadeOut({ children, x = 0, y = 0, duration = 500, delay = 0, style, ...rest }: FadeInReanimatedProps) {
+    const delayTimeout = useRef(1);
+    const opacity = useSharedValue(1);
+    const X = useSharedValue(0);
+    const Y = useSharedValue(0);
     const pathname = usePathname();
 
     useFocusEffect(
         React.useCallback(() => {
             // console.log("Component focused:", pathname);
             delayTimeout.current = window.setTimeout(() => {
-                opacity.value = withTiming(1, { duration });
-                X.value = withTiming(1, { duration });
-                Y.value = withTiming(1, { duration });
+                opacity.value = withTiming(0, { duration });
+                X.value = withTiming(x, { duration });
+                Y.value = withTiming(y, { duration });
             }, delay);
 
             return () => {
                 // console.log("Component blurred:", pathname);
-                opacity.value = 0;
-                X.value = x;
-                Y.value = y;
+                opacity.value = 1;
+                X.value = 0;
+                Y.value = 0;
 
                 window.clearTimeout(delayTimeout.current);
             };

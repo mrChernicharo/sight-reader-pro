@@ -25,6 +25,13 @@ export const STYLES = {
             // borderWidth: 1,
             // borderColor: "red",
         },
+        attemptedNotes: {
+            position: "relative",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            height: 36,
+        },
     }),
     init: StyleSheet.create({
         container: {
