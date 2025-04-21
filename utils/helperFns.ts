@@ -16,7 +16,6 @@ import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES, scaleTypeNoteSequences } from "./keySignature";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
 import { RelativePathString } from "expo-router";
-import { getPossibleNotesInLevel } from "./noteFns";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 export const randomUID = (length = 12) =>
@@ -200,6 +199,25 @@ export function getNoteFromIdx(noteIdx: number, keySignature: KeySignature) {
         return null;
     }
     return resultNote;
+}
+
+export function getPossibleNotesInLevel({ keySignature, scale }: { keySignature: KeySignature; scale: Scale }) {
+    // console.log("::: getPossibleNotesInLevel", { keySignature, scale });
+    const noteMap = scaleTypeNoteSequences[scale];
+    const scaleNoteNames = noteMap[keySignature];
+
+    const availableNotes: Note[] = [];
+    const allNotes = Array.from(NOTE_INDICES);
+    allNotes.forEach(([idx, notes]) => {
+        notes.forEach((note) => {
+            const [nn, oct] = note.split("/");
+            if (scaleNoteNames.includes(nn as NoteName)) {
+                availableNotes.push(note);
+            }
+        });
+    });
+    // console.log("::: getPossibleNotesInLevel", { keySignature, scale, availableNotes });
+    return availableNotes;
 }
 
 export function getEquivalentNotes(note: Note) {

@@ -1,29 +1,17 @@
 import { Href } from "expo-router";
 import {
-    addHalfSteps,
-    explodeNote,
-    fixNoteUntilItFitsScale,
-    getNextScaleNote,
-    isScaleNote,
-    padZero,
-} from "./helperFns";
-import { MAJOR_KEY_SIGNATURES } from "./keySignature";
-import {
-    WinRank,
-    KeySignature,
-    ScaleType,
-    LevelAccidentType,
-    GameType,
+    Accident,
     Clef,
+    GameState,
+    GameType,
+    KeySignature,
+    Knowledge,
+    NoteDuration,
     NoteName,
     NoteNameBase,
-    Accident,
-    GameState,
     TimeSignature,
-    NoteDuration,
-    Knowledge,
+    WinRank,
 } from "./enums";
-import { getNotesInRange, getPossibleNotesInLevel } from "./noteFns";
 
 export type SingleNoteRound = {
     attempt: Note | null;

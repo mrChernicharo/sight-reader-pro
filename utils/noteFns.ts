@@ -4,25 +4,6 @@ import { addHalfSteps, explodeNote, getNoteIdx, getRandInRange, NOTE_INDICES } f
 import { scaleTypeNoteSequences } from "./keySignature";
 import { ChordRound, Level, MelodyRound, Note, NoteRange, RhythmRound, Scale, SingleNoteRound } from "./types";
 
-export function getPossibleNotesInLevel({ keySignature, scale }: { keySignature: KeySignature; scale: Scale }) {
-    // console.log("::: getPossibleNotesInLevel", { keySignature, scale });
-    const noteMap = scaleTypeNoteSequences[scale];
-    const scaleNoteNames = noteMap[keySignature];
-
-    const availableNotes: Note[] = [];
-    const allNotes = Array.from(NOTE_INDICES);
-    allNotes.forEach(([idx, notes]) => {
-        notes.forEach((note) => {
-            const [nn, oct] = note.split("/");
-            if (scaleNoteNames.includes(nn as NoteName)) {
-                availableNotes.push(note);
-            }
-        });
-    });
-    // console.log("::: getPossibleNotesInLevel", { keySignature, scale, availableNotes });
-    return availableNotes;
-}
-
 function generateRandomNote(
     level: Level,
     keySignature: KeySignature,

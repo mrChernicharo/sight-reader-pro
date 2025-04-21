@@ -9,7 +9,7 @@ import { capitalizeStr, explodeNote } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
 import { Note } from "@/utils/types";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
 
 const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
@@ -44,13 +44,18 @@ export function Piano({
     const currNoteName = currNote ? explodeNote(currNote).noteName : null;
     // console.log({ currNote, currNoteName });
 
-    const hintPianoKey = (note: NoteName) => {
-        if (!currNote) return;
-        const notePlayedTimes = playedNotes[currNote] ?? 0;
-        // console.log({ note, currNoteName, currNote, notePlayedTimes });
-        return note === currNoteName && notePlayedTimes < hintCount;
-        // return note === currNoteName && notePlayedTimes < 0;
-    };
+    const notePlayedTimes = useMemo(() => {
+        if (!currNote) return 0;
+        return playedNotes[currNote] ?? 0;
+    }, [currNote, playedNotes]);
+
+    const hintPianoKey = useCallback(
+        (note: NoteName) => {
+            // console.log({ note, currNoteName, currNote, notePlayedTimes, hintCount });
+            return note === currNoteName && notePlayedTimes < hintCount;
+        },
+        [hintCount, notePlayedTimes, currNoteName]
+    );
 
     // useEffect(() => {
     //     console.log("playedNotes::::", playedNotes);

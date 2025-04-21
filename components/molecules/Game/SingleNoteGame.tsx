@@ -1,28 +1,36 @@
+import AppButton from "@/components/atoms/AppButton";
+import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
+import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useSoundContext } from "@/hooks/useSoundsContext";
+import { useTheme } from "@/hooks/useTheme";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
+import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
-import { explodeNote, getLevelHintCount, getPreviousPage, isNoteMatch, randomUID, wait } from "@/utils/helperFns";
+import {
+    explodeNote,
+    getLevelHintCount,
+    getPossibleNotesInLevel,
+    getPreviousPage,
+    isNoteMatch,
+    randomUID,
+    wait,
+} from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
-import { decideNextRound, getPossibleNotesInLevel } from "@/utils/noteFns";
-import { CurrentGame, GameScreenParams, Note, Round, SingleNoteRound } from "@/utils/types";
+import { decideNextRound } from "@/utils/noteFns";
+import { STYLES, testBorder } from "@/utils/styles";
+import { CurrentGame, GameScreenParams, Note, SingleNoteRound } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { StyleProp, StyleSheet, TextStyle } from "react-native";
-import { useTheme } from "@/hooks/useTheme";
+import { StyleProp, TextStyle } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Tooltip from "react-native-walkthrough-tooltip";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import Tooltip from "react-native-walkthrough-tooltip";
-import { AppText } from "@/components/atoms/AppText";
-import AppButton from "@/components/atoms/AppButton";
-import { useTranslation } from "@/hooks/useTranslation";
-import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
-import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { STYLES } from "@/utils/styles";
 
 const DELAY = 60;
 
@@ -54,41 +62,50 @@ export function SingleNoteGameComponent() {
     const [currNote, setCurrNote] = useState<Note>(
         decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
+    const [attemptedNotes, setAttemptedNotes] = useState<{ you: Note; correct: Note } | null>(null);
 
     async function onPianoKeyPress(notename: NoteName) {
         if (gameState !== GameState.Idle) return;
         const { noteName, octave } = explodeNote(currNote);
-        const attemptedNote = `${notename}/${+octave}` as Note;
+        const playedNote = `${notename}/${+octave}` as Note;
         const success = isNoteMatch(notename, noteName);
 
-        // console.log({ notename, currNote, attemptedNote, success });
+        // console.log({ currNote, attemptedNote: playedNote, success });
 
         if (success) {
-            updatePlayedNotes(attemptedNote);
-            playPianoNote(attemptedNote);
+            updatePlayedNotes(playedNote);
+            playPianoNote(playedNote);
             setGameState(GameState.Success);
         } else {
             playSoundEfx(SoundEffect.WrongAnswer);
-            playPianoNote(attemptedNote);
+            playPianoNote(playedNote);
             playPianoNote(currNote);
             setGameState(GameState.Mistake);
         }
+        setAttemptedNotes({ you: playedNote, correct: currNote });
 
         await wait(DELAY);
 
         if (!currentGame || currentGame.type !== GameType.Single) return;
 
-        addNewRound({ value: currNote, attempt: attemptedNote });
+        addNewRound({ value: currNote, attempt: playedNote });
 
         const { value: nextNote } = decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes, {
             value: currNote,
-            attempt: attemptedNote,
+            attempt: playedNote,
         })!;
 
         if (nextNote) setCurrNote(nextNote);
 
         setGameState(GameState.Idle);
+
+        // await wait(2000);
+        // setAttemptedNotes(null);
     }
+
+    // useEffect(() => {
+    //     (async() => {})()
+    // }, [currNote]);
 
     function onPianoKeyReleased(notename: NoteName) {}
 
@@ -167,6 +184,7 @@ export function SingleNoteGameComponent() {
                         levelId={id}
                     />
                 </Tooltip>
+
                 <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />
             </AppView>
 
@@ -210,6 +228,7 @@ export function SingleNoteGameComponent() {
                 }
             />
 
+            {/* GAME STAGE TOUR */}
             {currNote && (
                 <Tooltip
                     isVisible={!hasCompletedTour && tourStep == 1}
@@ -228,9 +247,20 @@ export function SingleNoteGameComponent() {
                         </AppView>
                     }
                 >
+                    {/* GAME STAGE */}
                     <SingleNoteGameStage gameState={gameState} noteProps={noteProps} />
                 </Tooltip>
             )}
+
+            <AppView style={{ height: 36, flexDirection: "row", ...testBorder() }}>
+                {attemptedNotes && (
+                    <AppView style={{ width: "100%", ...testBorder("orange") }}>
+                        <AppText>
+                            {attemptedNotes.you} X {attemptedNotes.correct}
+                        </AppText>
+                    </AppView>
+                )}
+            </AppView>
 
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 2}

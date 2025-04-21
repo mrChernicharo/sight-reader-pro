@@ -9,12 +9,21 @@ import { defaultNoteRangeIndices, useAppStore } from "@/hooks/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
-import { Clef, GameType, KeySignature, LevelAccidentType, ScaleType, TimeSignature, WinRank } from "@/utils/enums";
+import {
+    Clef,
+    GameType,
+    KeySignature,
+    Knowledge,
+    LevelAccidentType,
+    ScaleType,
+    TimeSignature,
+    WinRank,
+} from "@/utils/enums";
 import { explodeNote, isFlatKeySignature, wait } from "@/utils/helperFns";
 import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
 import { ALL_LEVELS } from "@/utils/levels";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
-import { Level, LevelId, Scale } from "@/utils/types";
+import { Level, LevelId, NoteRange, Scale } from "@/utils/types";
 import { router } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
@@ -82,14 +91,15 @@ export default function PracticeScreen() {
 
     // CREATE A LEVEL IN MEMORY, THEN REFERENCE IT WITHIN GAME COMPONENT
     const startPracticeGame = useCallback(async () => {
-        // console.log({ clef, accident, keySignature });
         const levelId: LevelId = `${clef}-practice`;
-        const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}`];
+        const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}` as NoteRange];
+        // console.log({ clef, accident, keySignature });
         // console.log("allNotes::::", allNotes, allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]);
 
-        const practiceLevelSingle = {
+        const practiceLevelSingle: Level = {
             id: levelId,
             name: "single note practice",
+            skillLevel: Knowledge.intermediary,
             clef,
             type: GameType.Single,
             // durationInSeconds: 400,
@@ -100,11 +110,12 @@ export default function PracticeScreen() {
             timeSignature: TimeSignature["4/4"],
             index: ALL_LEVELS.length - 1,
             scale,
-        } as Level;
+        };
 
-        const practiceLevelMelody = {
+        const practiceLevelMelody: Level = {
             id: levelId,
             name: "melody practice",
+            skillLevel: Knowledge.intermediary,
             clef,
             type: GameType.Melody,
             timeSignature: TimeSignature["4/4"],
@@ -115,9 +126,10 @@ export default function PracticeScreen() {
             keySignature,
             index: ALL_LEVELS.length - 1,
             scale,
-        } as Level;
+        };
 
         // console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
+
         // !important! Practice games are pushed into levels before game begins, then they are popped out from levels
         console.log("gameType: ", gameType);
         const practiceGame = gameType == GameType.Single ? practiceLevelSingle : practiceLevelMelody;
@@ -140,31 +152,17 @@ export default function PracticeScreen() {
         ALL_LEVELS,
     ]);
 
-    // const loNote = "c/4";
-    // const hiNote = "c/5";
-    // const loNote = t(`music.notes.${allNotes?.[noteRangeIndices.low]}`);
-    // const hiNote = t(`music.notes.${allNotes?.[noteRangeIndices.high]}`);
-
     const loNote = allNotes?.[noteRangeIndices.low] || "c/4";
     const hiNote = allNotes?.[noteRangeIndices.high] || "c/5";
 
-    //     t(`music.notes.${(allNotes?.[noteRangeIndices.low] || "c/4").split("/")[0]}`) +
-    //     "/" +
-    //     allNotes[noteRangeIndices.low].split("/")[1];
-
-    // const hiNote =
-    //     t(`music.notes.${(allNotes?.[noteRangeIndices.high] || "c/5").split("/")[0]}`) +
-    //     "/" +
-    //     allNotes[noteRangeIndices.high].split("/")[1];
-
-    useEffect(() => {
-        console.log({
-            noteRangeIndices,
-            // allNotes,
-            lo: allNotes?.[noteRangeIndices.low],
-            hi: allNotes?.[noteRangeIndices.high],
-        });
-    }, [noteRangeIndices, allNotes]);
+    // useEffect(() => {
+    //     console.log({
+    //         noteRangeIndices,
+    //         // allNotes,
+    //         lo: allNotes?.[noteRangeIndices.low],
+    //         hi: allNotes?.[noteRangeIndices.high],
+    //     });
+    // }, [noteRangeIndices, allNotes]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
@@ -305,13 +303,6 @@ export default function PracticeScreen() {
                         textStyle={{ color: "white", fontSize: 24 }}
                         activeOpacity={0.7}
                     />
-                    {/* <Button
-                        title={t("practice.start")}
-                        onPress={startPracticeGame}
-                        // ={{ width: 300, height: 56 }}
-                        // textStyle={{ color: "white", fontSize: 24 }}
-                        // activeOpacity={0.7}
-                    /> */}
                 </AppView>
             </ScrollView>
         </SafeAreaView>
