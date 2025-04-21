@@ -2,28 +2,26 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
 import { SoundContextProvider } from "@/hooks/useSoundsContext";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { Colors } from "@/utils/Colors";
-import { GameScreenParams } from "@/utils/types";
-import * as NavigationBar from "expo-navigation-bar";
-import * as SystemUI from "expo-system-ui";
-import { router, useLocalSearchParams, usePathname, useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import { useTheme } from "@/hooks/useTheme";
+import { Colors } from "@/utils/Colors";
+import * as NavigationBar from "expo-navigation-bar";
+import { router, usePathname } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import * as SystemUI from "expo-system-ui";
+import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
 
 export default function RootLayout() {
     const path = usePathname();
-    const { id, keySignature, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
+    // const { id, keySignature, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
     const _hydrated = useAppStore((state) => state._hydrated);
     const currentGame = useAppStore((state) => state.currentGame);
     const initTourCompleted = useAppStore((state) => state.completedTours.init);
     const theme = useTheme();
-    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
+    // const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
 
     const endGame = useAppStore((state) => state.endGame);
 
@@ -35,12 +33,12 @@ export default function RootLayout() {
 
     useEffect(() => {
         console.log("path :::", { path, ...(currentGame && { currentGame: currentGame.id }) });
-        currentGame && console.log("currentGame :::", { currentGame: currentGame.name });
+        // currentGame && console.log("currentGame :::", { currentGame: currentGame.name });
     }, [currentGame?.id, path]);
 
-    useEffect(() => {
-        console.log("params :::", { id, keySignature, previousPage });
-    }, [id, keySignature, previousPage]);
+    // useEffect(() => {
+    //     console.log("params :::", { id, keySignature, previousPage });
+    // }, [id, keySignature, previousPage]);
 
     useEffect(() => {
         if (!initTourCompleted) {

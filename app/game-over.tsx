@@ -68,14 +68,17 @@ export default function GameOverScreen() {
     }
 
     useEffect(() => {
-        setTimeout(() => {
-            setBtnsEnabled(true);
-            console.log("setBtnsEnabled:::::");
-        }, 3800);
+        setTimeout(
+            () => {
+                setBtnsEnabled(true);
+                console.log("setBtnsEnabled:::::");
+            },
+            isPracticeLevel ? 2000 : 3800
+        );
     }, []);
 
     if (!level || !lastGame || !currentGame || !currentGame?.rounds?.length) {
-        console.log("HHHHHAAAAAAAAAAA!!!!!");
+        // console.log("HHHHHAAAAAAAAAAA!!!!!");
         return null;
     }
 
