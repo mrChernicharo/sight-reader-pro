@@ -11,7 +11,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { GameType } from "@/utils/enums";
-import { getGameStats } from "@/utils/helperFns";
+import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { Game, Level, Round } from "@/utils/types";
 import { Link, router, useLocalSearchParams } from "expo-router";
@@ -45,7 +45,7 @@ export default function GameOverScreen() {
     const lastGame = games.at(-1);
 
     const level = getLevel(lastGame?.levelId ?? "basics 01");
-    const isPracticeLevel = level?.id && ["treble-practice", "bass-practice"].includes(level.id);
+    const isPracticeLevel = getIsPracticeLevel(level?.id);
 
     const { hasWon, hitsPerMinute } = getGameStats(level, lastGame?.rounds ?? [], intl);
     const emoji = hasWon ? " 🎉 " : " 😩 ";

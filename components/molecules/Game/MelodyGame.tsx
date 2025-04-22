@@ -8,6 +8,7 @@ import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/util
 import {
     explodeNote,
     getAttemptedNoteDuration,
+    getIsPracticeLevel,
     getLevelHintCount,
     getPossibleNotesInLevel,
     getPreviousPage,
@@ -17,7 +18,7 @@ import {
 } from "@/utils/helperFns";
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
-import { STYLES, testBorder } from "@/utils/styles";
+import { STYLES } from "@/utils/styles";
 import {
     CurrentGame,
     GameScreenParams,
@@ -27,13 +28,11 @@ import {
     AttemptedNote as AttemptedNoteType,
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { AppText } from "@/components/atoms/AppText";
-import { FadeOut } from "@/components/atoms/FadeOut";
 import { AttemptedNote } from "@/components/atoms/AttemptedNote";
 
 const s = STYLES.game;
@@ -46,19 +45,20 @@ export function MelodyGameComponent() {
         useAppStore();
     const { playPianoNote, releasePianoNote, playSoundEfx } = useSoundContext();
 
-    const rounds = currentGame?.rounds.slice() || [];
+    const rounds = currentGame?.rounds || [];
     const currRound = rounds.at(-1) as MelodyRound;
     const keySignature = decodeURIComponent(ksig) as KeySignature;
 
     const level = getLevel(id);
     const possibleNotes = getPossibleNotesInLevel(level);
-    const previousPage = getPreviousPage(String(prevPage), id);
     const hintCount = getLevelHintCount(level.skillLevel);
+    const isPracticeLevel = getIsPracticeLevel(level?.id);
+    const backLinkTo = isPracticeLevel ? "/practice" : "/level-selection";
 
     const [melodyIdx, setMelodyIdx] = useState(0);
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
 
-    const currNote = currRound?.values?.[melodyIdx] || null;
+    // const currNote = currRound?.values?.[melodyIdx] || null;
 
     const noteProps = {
         keys: currRound?.values || [],
@@ -97,9 +97,8 @@ export function MelodyGameComponent() {
             playPianoNote(currNote);
         }
         setAttemptedNotes((prev) => {
-            const copy = prev.slice();
-            copy.push({ id: randomUID(), you: playedNote, correct: currNote });
-            return copy;
+            prev.push({ id: randomUID(), you: playedNote, correct: currNote });
+            return prev;
         });
 
         if (isLastNote) {
@@ -150,25 +149,24 @@ export function MelodyGameComponent() {
             await wait(duration);
 
             setAttemptedNotes((prev) => {
-                const copy = prev.slice();
-                copy.shift();
-                return copy;
+                prev.shift();
+                return prev;
             });
         })();
     }, [rounds]);
 
-    // useEffect(() => {
-    //     return () => {
-    //         console.log("MELODY GAME UNMOUNT!!!");
-    //         // setTimeout(() => endGame(), 1000);
-    //     };
-    // }, []);
+    useEffect(() => {
+        return () => {
+            console.log("MELODY GAME UNMOUNT!!!");
+            // setTimeout(() => endGame(), 1000);
+        };
+    }, []);
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
                 <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
-                <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />
+                <BackLink to={backLinkTo} style={s.backLink} onPress={onBackLinkPress} />
             </AppView>
 
             {currRound?.values ? (

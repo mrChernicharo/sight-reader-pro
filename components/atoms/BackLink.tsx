@@ -17,13 +17,9 @@ export function BackLink(props: BacklinkProps) {
     const { to, style, onPress, ...rest } = props;
     const href = (to || "/") as Href;
 
-    // useEffect(() => {
-    //     console.log("Backlink ::: href", href, "to", to);
-    // }, [href]);
-
     return (
         <AppView style={{ width: 28 }}>
-            <Link asChild replace {...rest} href={href}>
+            <Link {...rest} href={href} asChild replace>
                 <TouchableOpacity style={style} onPress={onPress}>
                     <Ionicons name="chevron-back" size={24} />
                 </TouchableOpacity>

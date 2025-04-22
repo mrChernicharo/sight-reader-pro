@@ -13,6 +13,7 @@ import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "
 import {
     explodeNote,
     getAttemptedNoteDuration,
+    getIsPracticeLevel,
     getLevelHintCount,
     getPossibleNotesInLevel,
     getPreviousPage,
@@ -45,6 +46,8 @@ const DELAY = 60;
 
 const s = STYLES.game;
 
+const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
+
 const getNoteColor = (gameState: GameState, theme: "light" | "dark") => {
     switch (gameState) {
         case GameState.Idle:
@@ -62,18 +65,9 @@ export function SingleNoteGameComponent() {
     const backgroundColor = Colors[theme].bg;
 
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
-    const previousPage = getPreviousPage(String(prevPage), id);
 
-    const {
-        currentGame,
-        games,
-        saveGameRecord,
-        startNewGame,
-        endGame,
-        addNewRound,
-        updatePlayedNotes,
-        setTourCompleted,
-    } = useAppStore();
+    const { currentGame, saveGameRecord, startNewGame, addNewRound, updatePlayedNotes, setTourCompleted } =
+        useAppStore();
 
     const { playPianoNote, playSoundEfx } = useSoundContext();
     const hasCompletedTour = useAppStore((state) => state.completedTours.game);
@@ -86,7 +80,9 @@ export function SingleNoteGameComponent() {
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
 
-    const rounds = currentGame?.rounds.slice() || [];
+    const rounds = currentGame?.rounds || [];
+    const isPracticeLevel = getIsPracticeLevel(level?.id);
+    const backLinkTo = isPracticeLevel ? "/practice" : "/level-selection";
 
     const [gameState, setGameState] = useState<GameState>(GameState.Idle);
     const [currNote, setCurrNote] = useState<Note>(
@@ -113,9 +109,8 @@ export function SingleNoteGameComponent() {
             setGameState(GameState.Mistake);
         }
         setAttemptedNotes((prev) => {
-            const copy = prev.slice();
-            copy.push({ id: randomUID(), you: playedNote, correct: currNote });
-            return copy;
+            prev.push({ id: randomUID(), you: playedNote, correct: currNote });
+            return prev;
         });
 
         await wait(DELAY);
@@ -194,6 +189,13 @@ export function SingleNoteGameComponent() {
     // }, [currentGame]);
 
     useEffect(() => {
+        return () => {
+            console.log("SINGLE NOTE GAME UNMOUNT!!!");
+            // setTimeout(() => endGame(), 1000);
+        };
+    }, []);
+
+    useEffect(() => {
         console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });
     }, [hasCompletedTour, tourStep]);
 
@@ -203,9 +205,8 @@ export function SingleNoteGameComponent() {
             await wait(duration);
 
             setAttemptedNotes((prev) => {
-                const copy = prev.slice();
-                copy.shift();
-                return copy;
+                prev.shift();
+                return prev;
             });
         })();
     }, [rounds]);
@@ -214,7 +215,6 @@ export function SingleNoteGameComponent() {
 
     const noteColor = getNoteColor(gameState, theme);
     const noteProps = { keys: [currNote], clef: level.clef, keySignature, noteColor };
-    const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor }]}>
@@ -244,7 +244,7 @@ export function SingleNoteGameComponent() {
                     />
                 </Tooltip>
 
-                <BackLink to={previousPage} style={s.backLink} onPress={onBackLinkPress} />
+                <BackLink to={backLinkTo} style={s.backLink} onPress={onBackLinkPress} />
             </AppView>
 
             <Tooltip

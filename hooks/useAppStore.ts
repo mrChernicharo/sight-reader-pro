@@ -14,7 +14,6 @@ type PlayedNotes = Partial<Record<Note, number>>;
 interface PracticeSettings {
     clef: Clef;
     isMinorKey: boolean;
-    accident: LevelAccidentType;
     keySignature: KeySignature;
     scale: Scale;
     noteRangeIndices: { low: number; high: number };
@@ -47,7 +46,6 @@ export interface AppState {
 export const defaultNoteRangeIndices = { low: 13, high: 25 };
 
 const defaultPracticeSettings: PracticeSettings = {
-    accident: LevelAccidentType.None,
     clef: Clef.Treble,
     isMinorKey: false,
     keySignature: KeySignature.C,

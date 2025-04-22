@@ -47,15 +47,7 @@ export default function PracticeScreen() {
     const { t } = useTranslation();
 
     const { practiceSettings, updatePracticeSettings, endGame } = useAppStore();
-    const {
-        clef,
-        isMinorKey,
-        accident,
-        scale,
-        keySignature = KeySignature.C,
-        noteRangeIndices,
-        gameType,
-    } = practiceSettings;
+    const { clef, isMinorKey, scale, keySignature = KeySignature.C, noteRangeIndices, gameType } = practiceSettings;
 
     const SCALES = Object.values(Scale).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) }));
     const DEFAULT_SCALE = SCALES.find((acc) => acc.key === scale);
@@ -82,7 +74,7 @@ export default function PracticeScreen() {
                     return [];
             }
         });
-    }, [clef, keySignature, accident]);
+    }, [clef, keySignature]);
 
     // const rangeNotes = allNotes.filter((_, idx) => noteRangeIndices.low < idx && idx < noteRangeIndices.high);
 
@@ -103,8 +95,8 @@ export default function PracticeScreen() {
             skillLevel: Knowledge.intermediary,
             clef,
             type: GameType.Single,
-            durationInSeconds: 400,
-            // durationInSeconds: 60,
+            // durationInSeconds: 400,
+            durationInSeconds: 60,
             noteRanges,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
@@ -121,8 +113,8 @@ export default function PracticeScreen() {
             type: GameType.Melody,
             timeSignature: TimeSignature["4/4"],
             noteRanges,
-            durationInSeconds: 400,
-            // durationInSeconds: 60,
+            // durationInSeconds: 400,
+            durationInSeconds: 60,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
             index: ALL_LEVELS.length - 1,
@@ -137,33 +129,15 @@ export default function PracticeScreen() {
         ALL_LEVELS.push(practiceGame);
 
         // await wait(200);
-
+        endGame();
         router.push({
             pathname: "/game-level/[id]",
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
-    }, [
-        clef,
-        accident,
-        noteRangeIndices.low,
-        noteRangeIndices.high,
-        CURR_KEY_SIGNATURES,
-        keySignature,
-        allNotes,
-        ALL_LEVELS,
-    ]);
+    }, [clef, noteRangeIndices.low, noteRangeIndices.high, CURR_KEY_SIGNATURES, keySignature, allNotes, ALL_LEVELS]);
 
     const loNote = allNotes?.[noteRangeIndices.low] || "c/4";
     const hiNote = allNotes?.[noteRangeIndices.high] || "c/5";
-
-    // useEffect(() => {
-    //     console.log({
-    //         noteRangeIndices,
-    //         // allNotes,
-    //         lo: allNotes?.[noteRangeIndices.low],
-    //         hi: allNotes?.[noteRangeIndices.high],
-    //     });
-    // }, [noteRangeIndices, allNotes]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
