@@ -236,22 +236,20 @@ export function getDrawNote(
 
             if (sameNoteBefore) {
                 const { noteName: beforeNoteName, accident: beforeAccident } = explodeNote(sameNoteBefore);
+                // console.log({ sameNoteBefore, beforeNoteName, beforeAccident, keyNote, accident });
 
-                console.log({ sameNoteBefore, beforeNoteName, beforeAccident, keyNote, accident });
-
-                if (beforeAccident === accident) {
-                    drawNoteAccident = "";
-                }
-                if (beforeAccident && !accident) {
-                    // console.log("!!! BEFORE !ACCIDENT!!!", { beforeAccident, accident });
-                    drawNoteAccident = "[]";
-                }
-                if (beforeAccident == "[]" && accident) {
-                    console.log("!!! BEFORE ACCIDENT!!!", { beforeAccident, accident });
+                if (accident && !beforeAccident && sameNoteBefore !== currentNote) {
                     drawNoteAccident = accident;
-                }
-                if (accident === "b" && !beforeAccident && sameNoteBefore !== currentNote) {
-                    drawNoteAccident = accident;
+                } else {
+                    if (beforeAccident === accident) {
+                        drawNoteAccident = "";
+                    }
+                    if (beforeAccident && !accident) {
+                        drawNoteAccident = "[]";
+                    }
+                    if (beforeAccident == "[]" && accident) {
+                        drawNoteAccident = accident;
+                    }
                 }
             }
 
@@ -264,8 +262,7 @@ export function getDrawNote(
         }
         // console.log({ result, drawNoteName, sameNoteBefore, noBeQuadroAccident });
     }
-
-    console.log(":::: getDrawNote ::::", { note, result });
+    // console.log(":::: getDrawNote ::::", { note, result });
     return result;
 }
 

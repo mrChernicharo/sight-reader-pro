@@ -4,12 +4,12 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { KeySignature, Knowledge, NoteName } from "@/utils/enums";
+import { KeySignature, NoteName } from "@/utils/enums";
 import { capitalizeStr, explodeNote } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
 import { Note } from "@/utils/types";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
 
 const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
@@ -45,11 +45,6 @@ export function Piano({
 
     const hints = useRef(hintCount);
 
-    // const notePlayedTimes = useMemo(() => {
-    //     if (!currNote) return 0;
-    //     return playedNotes[currNote] ?? 0;
-    // }, [currNote, playedNotes]);
-
     const hintPianoKey = useCallback(
         (note: NoteName) => {
             // console.log({ note, currNoteName, currNote, notePlayedTimes, hintCount });
@@ -57,10 +52,6 @@ export function Piano({
         },
         [hintCount, currNoteName]
     );
-
-    // useEffect(() => {
-    //     console.log("playedNotes::::", playedNotes);
-    // }, [playedNotes]);
 
     useEffect(() => {
         console.log("hintCount::::", hintCount);

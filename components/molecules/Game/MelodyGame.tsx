@@ -15,7 +15,7 @@ import {
     randomUID,
     wait,
 } from "@/utils/helperFns";
-import { getLevel } from "@/utils/levels";
+import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES, testBorder } from "@/utils/styles";
 import {
@@ -111,6 +111,14 @@ export function MelodyGameComponent() {
         }
     }
 
+    const onBackLinkPress = () => {
+        if (prevPage == "/practice") {
+            console.log("leaving practice game");
+            // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
+            ALL_LEVELS.pop();
+        }
+    };
+
     const onCountdownFinish = useCallback(async () => {
         saveGameRecord({
             id: randomUID(),
@@ -123,12 +131,8 @@ export function MelodyGameComponent() {
         router.replace({ pathname: "/game-over" });
     }, [level, id, rounds]);
 
-    const onBackLinkPress = () => {
-        endGame(String(prevPage));
-    };
-
+    // start new game
     useEffect(() => {
-        // if (!pianoReady) return;
         const gameInfo: Partial<CurrentGame> = {
             levelId: id,
             timestamp: Date.now(),

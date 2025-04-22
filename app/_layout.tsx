@@ -32,9 +32,17 @@ export default function RootLayout() {
     }, [_hydrated]);
 
     useEffect(() => {
-        console.log("path :::", { path, ...(currentGame && { currentGame: currentGame.id }) });
-        // currentGame && console.log("currentGame :::", { currentGame: currentGame.name });
-    }, [currentGame?.id, path]);
+        console.log("path :::", path);
+        // return () => {
+        //     if (path.includes("/game-level/")) {
+        //         console.log("GAME SCREEN :::::");
+        //     }
+        // };
+    }, [path]);
+
+    useEffect(() => {
+        currentGame && console.log("currentGame :::", { currentGame: currentGame.name });
+    }, [currentGame]);
 
     // useEffect(() => {
     //     console.log("params :::", { id, keySignature, previousPage });

@@ -162,17 +162,9 @@ export const useAppStore = create<AppState & AppActions>()(
                     // console.log("START NEW GAME:::", newGame, "ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
                     set({ currentGame: newGame });
                 },
-                endGame: async (previousPage?: string) => {
-                    // console.log("END GAME", previousPage);
+                endGame: async () => {
+                    console.log("END GAME");
                     set({ currentGame: null, playedNotes: {} });
-                    // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
-                    if (previousPage === "/practice") {
-                        setTimeout(() => {
-                            // prettier-ignore
-                            // console.log("END GAME:::ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
-                            ALL_LEVELS.pop();
-                        }, 1000);
-                    }
                 },
 
                 addNewRound: async (round: Round<GameType>) =>
@@ -207,8 +199,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 },
                 updatePracticeSettings: async (setting: keyof PracticeSettings, value: any) => {
                     set((state) => {
-                        console.log("updatePracticeSettings:::", { ...state.practiceSettings });
-
+                        // console.log("updatePracticeSettings:::", { ...state.practiceSettings });
                         return {
                             ...state,
                             practiceSettings: { ...state.practiceSettings, [setting]: value },

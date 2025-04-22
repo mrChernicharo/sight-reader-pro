@@ -130,13 +130,13 @@ export default function PracticeScreen() {
         };
 
         // console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
+        // console.log("gameType: ", gameType);
 
         // !important! Practice games are pushed into levels before game begins, then they are popped out from levels
-        console.log("gameType: ", gameType);
         const practiceGame = gameType == GameType.Single ? practiceLevelSingle : practiceLevelMelody;
         ALL_LEVELS.push(practiceGame);
 
-        await wait(200);
+        // await wait(200);
 
         router.push({
             pathname: "/game-level/[id]",
@@ -170,7 +170,7 @@ export default function PracticeScreen() {
             <ScrollView contentContainerStyle={s.container}>
                 <AppView style={s.top}>
                     <AppView style={{ position: "absolute", left: 0, top: 6 }}>
-                        <BackLink onPress={() => endGame()} />
+                        <BackLink />
                     </AppView>
                     <AppText type="subtitle">{t("practice.title")}</AppText>
                 </AppView>

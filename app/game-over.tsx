@@ -18,6 +18,8 @@ import { useTheme } from "@/hooks/useTheme";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// lastGame
+
 export default function GameOverScreen() {
     const { intl } = useIntl();
     const { t } = useTranslation();
@@ -29,11 +31,7 @@ export default function GameOverScreen() {
     const isPracticeLevel = level?.id && ["treble-practice", "bass-practice"].includes(level.id);
     const lastGame = games.at(-1);
 
-    const { attempts, successes, mistakes, accuracy, score, hasWon, hitsPerMinute } = getGameStats(
-        level,
-        currentGame?.rounds ?? [],
-        intl
-    );
+    const { hasWon, hitsPerMinute } = getGameStats(level, currentGame?.rounds ?? [], intl);
     const emoji = hasWon ? " 🎉 " : " 😩 ";
     const msg = t(hasWon ? "game.state.win" : "game.state.lose");
 
@@ -68,13 +66,11 @@ export default function GameOverScreen() {
     }
 
     useEffect(() => {
-        setTimeout(
-            () => {
-                setBtnsEnabled(true);
-                console.log("setBtnsEnabled:::::");
-            },
-            isPracticeLevel ? 2000 : 3800
-        );
+        const timeToEnabled = isPracticeLevel ? 2000 : 3200;
+        setTimeout(() => {
+            setBtnsEnabled(true);
+            // console.log("setBtnsEnabled:::::");
+        }, timeToEnabled);
     }, []);
 
     if (!level || !lastGame || !currentGame || !currentGame?.rounds?.length) {

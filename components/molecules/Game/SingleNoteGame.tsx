@@ -20,7 +20,7 @@ import {
     randomUID,
     wait,
 } from "@/utils/helperFns";
-import { getLevel } from "@/utils/levels";
+import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES, testBorder } from "@/utils/styles";
 import {
@@ -122,14 +122,7 @@ export function SingleNoteGameComponent() {
         if (nextNote) setCurrNote(nextNote);
 
         setGameState(GameState.Idle);
-
-        // await wait(2000);
-        // setAttemptedNotes(null);
     }
-
-    // useEffect(() => {
-    //     (async() => {})()
-    // }, [currNote]);
 
     function onPianoKeyReleased(notename: NoteName) {}
 
@@ -143,16 +136,29 @@ export function SingleNoteGameComponent() {
             type: GameType.Single,
             durationInSeconds: level.durationInSeconds,
         });
-        router.replace({ pathname: "/game-over" });
+        router.push({
+            pathname: "/game-over",
+            params: {
+                rounds: JSON.stringify(rounds),
+                level: JSON.stringify(level),
+            },
+        });
     }, [level, id, rounds]);
 
     const onBackLinkPress = () => {
-        endGame(String(prevPage));
+        if (prevPage == "/practice") {
+            console.log("leaving practice game");
+            // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
+            ALL_LEVELS.pop();
+        }
     };
+
+    // useEffect(() => {
+    //     (async() => {})()
+    // }, [currNote]);
 
     // start game
     useEffect(() => {
-        // if (!level || !currNote || currentGame?.type !== GameType.Single) return;
         const firstRound = decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3";
         const gameInfo: Partial<CurrentGame> = {
             levelId: id,

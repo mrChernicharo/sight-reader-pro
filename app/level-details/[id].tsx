@@ -39,7 +39,7 @@ export default function LevelDetails() {
     };
 
     function handleNewGame() {
-        endGame();
+        // endGame();
         switch (level.type) {
             case GameType.Single:
             case GameType.Melody: {
@@ -57,7 +57,7 @@ export default function LevelDetails() {
             <ScrollView contentContainerStyle={s.container}>
                 <FadeIn y={50} x={0} style={s.topContainer}>
                     <AppView style={s.backlinkContainer}>
-                        <BackLink to="/level-selection" onPress={() => endGame()} />
+                        <BackLink to="/level-selection" />
                     </AppView>
                     <AppText type="title" style={s.title}>
                         {level.name}
