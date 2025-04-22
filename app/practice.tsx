@@ -86,6 +86,7 @@ export default function PracticeScreen() {
     const startPracticeGame = useCallback(async () => {
         const levelId: LevelId = `${clef}-practice`;
         const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}` as NoteRange];
+        const durationInSeconds = 60;
         // console.log({ clef, accident, keySignature });
         // console.log("allNotes::::", allNotes, allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]);
 
@@ -95,8 +96,7 @@ export default function PracticeScreen() {
             skillLevel: Knowledge.intermediary,
             clef,
             type: GameType.Single,
-            // durationInSeconds: 400,
-            durationInSeconds: 6,
+            durationInSeconds,
             noteRanges,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
@@ -113,8 +113,7 @@ export default function PracticeScreen() {
             type: GameType.Melody,
             timeSignature: TimeSignature["4/4"],
             noteRanges,
-            // durationInSeconds: 400,
-            durationInSeconds: 6,
+            durationInSeconds,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
             index: ALL_LEVELS.length - 1,

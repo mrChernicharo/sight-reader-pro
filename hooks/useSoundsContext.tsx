@@ -221,7 +221,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
                 assetsPromises.push(Asset.loadAsync(moduleId).then(([asset]) => asset));
             }
             const assets = await Promise.all(assetsPromises);
-            console.log("AudioAssets loaded! Asset count:", assets.length);
+            console.log("<Sound Context> AudioAssets loaded! Asset count:", assets.length);
 
             const bufferPromises: Promise<AudioBuffer>[] = [];
             for (const asset of assets) {
@@ -241,7 +241,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
             }
             await Promise.all(bufferPromises);
             const bufferCount = Object.keys(bufferMapRef.current).length;
-            console.log("AudioAssets converted to AudioBuffers! Buffer entry count", bufferCount);
+            console.log("<Sound Context> AudioAssets converted to AudioBuffers! Buffer entry count", bufferCount);
         };
 
         const unloadSounds = async () => {
