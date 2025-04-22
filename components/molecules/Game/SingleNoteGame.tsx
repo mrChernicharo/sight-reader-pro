@@ -81,8 +81,6 @@ export function SingleNoteGameComponent() {
     const hintCount = getLevelHintCount(level.skillLevel);
 
     const rounds = currentGame?.rounds || [];
-    const isPracticeLevel = getIsPracticeLevel(level?.id);
-    const backLinkTo = isPracticeLevel ? "/practice" : "/level-selection";
 
     const [gameState, setGameState] = useState<GameState>(GameState.Idle);
     const [currNote, setCurrNote] = useState<Note>(
@@ -131,14 +129,6 @@ export function SingleNoteGameComponent() {
 
     function onPianoKeyReleased(notename: NoteName) {}
 
-    const onBackLinkPress = () => {
-        if (prevPage == "/practice") {
-            console.log("leaving practice game");
-            // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
-            ALL_LEVELS.pop();
-        }
-    };
-
     const onCountdownFinish = useCallback(async () => {
         setGameState(GameState.Idle);
         const gameRecord = {
@@ -154,10 +144,6 @@ export function SingleNoteGameComponent() {
         await saveGameRecord(gameRecord);
         router.replace({ pathname: "/game-over" });
     }, [level, id, rounds]);
-
-    // useEffect(() => {
-    //     (async() => {})()
-    // }, [currNote]);
 
     // start game
     useEffect(() => {
@@ -177,21 +163,15 @@ export function SingleNoteGameComponent() {
         setTimeout(() => setTourStep(0), 200);
     }, []);
 
-    // useEffect(() => {
-    //     return () => {
-    //         console.log("SINGLE NOTE GAME UNMOUNT!!!");
-    //         // setTimeout(() => endGame(), 1000);
-    //     };
-    // }, []);
-
-    // useEffect(() => {
-    //     console.log({ currentGame });
-    // }, [currentGame]);
-
     useEffect(() => {
         return () => {
             console.log("SINGLE NOTE GAME UNMOUNT!!!");
             // setTimeout(() => endGame(), 1000);
+            if (prevPage == "/practice") {
+                console.log("leaving practice game");
+                // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
+                ALL_LEVELS.pop();
+            }
         };
     }, []);
 
@@ -243,8 +223,6 @@ export function SingleNoteGameComponent() {
                         levelId={id}
                     />
                 </Tooltip>
-
-                <BackLink to={backLinkTo} style={s.backLink} onPress={onBackLinkPress} />
             </AppView>
 
             <Tooltip

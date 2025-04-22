@@ -52,8 +52,6 @@ export function MelodyGameComponent() {
     const level = getLevel(id);
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
-    const isPracticeLevel = getIsPracticeLevel(level?.id);
-    const backLinkTo = isPracticeLevel ? "/practice" : "/level-selection";
 
     const [melodyIdx, setMelodyIdx] = useState(0);
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
@@ -158,7 +156,11 @@ export function MelodyGameComponent() {
     useEffect(() => {
         return () => {
             console.log("MELODY GAME UNMOUNT!!!");
-            // setTimeout(() => endGame(), 1000);
+            if (prevPage == "/practice") {
+                console.log("leaving practice game");
+                // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
+                ALL_LEVELS.pop();
+            }
         };
     }, []);
 
@@ -166,7 +168,6 @@ export function MelodyGameComponent() {
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
                 <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
-                <BackLink to={backLinkTo} style={s.backLink} onPress={onBackLinkPress} />
             </AppView>
 
             {currRound?.values ? (

@@ -19,9 +19,9 @@ export const STYLES = {
         },
         backLink: {
             position: "absolute",
-            top: -118,
-            left: 0,
             zIndex: 20,
+            // top: -118,
+            // left: 0,
             // borderWidth: 1,
             // borderColor: "red",
         },
