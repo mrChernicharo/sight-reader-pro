@@ -567,12 +567,12 @@ export function groupArrayElements<T>(arr: T[]): T[] {
     return groupedArray;
 }
 
-function mapRange(input = 0, min = 0, max = 1, step = 0.5) {
-    if (input < 0 || input > 1) {
+export function mapRange(zeroToOneInput = 0, min = 0, max = 1, step = 0.5) {
+    if (zeroToOneInput < 0 || zeroToOneInput > 1) {
         throw new Error("Input must be between 0 and 1.");
     }
 
-    const mappedValue = min + (max - min) * input;
+    const mappedValue = min + (max - min) * zeroToOneInput;
     return Math.round(mappedValue / step) * step;
 }
 

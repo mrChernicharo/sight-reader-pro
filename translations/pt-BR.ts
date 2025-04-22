@@ -65,6 +65,7 @@ const ptBR = {
             start: "Começar",
             win: "Vitória",
             lose: "Derrota",
+            practiceEnd: "Exercício Concluído",
         },
     },
     practice: {

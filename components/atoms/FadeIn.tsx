@@ -15,6 +15,7 @@ interface FadeInReanimatedProps {
 export function FadeIn({ children, x = 0, y = 0, duration = 500, delay = 0, style, ...rest }: FadeInReanimatedProps) {
     const delayTimeout = useRef(0);
     const opacity = useSharedValue(0);
+    const pointerEvents = useSharedValue("none");
     const X = useSharedValue(x);
     const Y = useSharedValue(y);
     const pathname = usePathname();
@@ -26,10 +27,12 @@ export function FadeIn({ children, x = 0, y = 0, duration = 500, delay = 0, styl
                 opacity.value = withTiming(1, { duration });
                 X.value = withTiming(1, { duration });
                 Y.value = withTiming(1, { duration });
+                pointerEvents.value = "auto";
             }, delay);
 
             return () => {
                 // console.log("Component blurred:", pathname);
+                pointerEvents.value = "none";
                 opacity.value = 0;
                 X.value = x;
                 Y.value = y;
@@ -41,6 +44,7 @@ export function FadeIn({ children, x = 0, y = 0, duration = 500, delay = 0, styl
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
+            pointerEvents: pointerEvents.value,
             opacity: opacity.value,
             transform: [{ translateY: Y.value }, { translateX: X.value }],
         };

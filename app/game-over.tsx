@@ -10,29 +10,13 @@ import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { GameType } from "@/utils/enums";
 import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
 import { ALL_LEVELS, getLevel } from "@/utils/levels";
-import { Game, Level, Round } from "@/utils/types";
-import { Link, router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { Link, router } from "expo-router";
+import { useEffect } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-interface GameOverScreenParams {
-    currentGame: string;
-    lastGame: string;
-    level: string;
-    rounds: string;
-}
-
-// interface GameOverScreenParams {
-//     currentGame: Game;
-//     games: Game[];
-//     level: Level;
-//     rounds: Round<GameType>[];
-// }
 
 export default function GameOverScreen() {
     const { intl } = useIntl();
@@ -45,13 +29,11 @@ export default function GameOverScreen() {
     const lastGame = games.at(-1);
 
     const level = getLevel(lastGame?.levelId ?? "basics 01");
-    const isPracticeLevel = getIsPracticeLevel(level?.id);
+    const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
 
     const { hasWon, hitsPerMinute } = getGameStats(level, lastGame?.rounds ?? [], intl);
-    const emoji = hasWon ? " 🎉 " : " 😩 ";
-    const msg = t(hasWon ? "game.state.win" : "game.state.lose");
-
-    const [btnsEnabled, setBtnsEnabled] = useState(false);
+    const emoji = isPracticeLevel ? " ✅ " : hasWon ? " 🎉 " : " 😩 ";
+    const msg = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
 
     function goToNextLevel() {
         const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
@@ -82,26 +64,11 @@ export default function GameOverScreen() {
     }
 
     useEffect(() => {
-        const timeToEnabled = isPracticeLevel ? 2000 : 3200;
-        setTimeout(() => {
-            setBtnsEnabled(true);
-            // console.log("setBtnsEnabled:::::");
-        }, timeToEnabled);
-
         return () => {
             console.log("GAME OVER UNMOUNT!!!!");
             endGame();
         };
     }, []);
-
-    // useEffect(() => {
-    //     console.log({ currentGame, hasWon });
-    // }, [currentGame, hasWon]);
-
-    if (!level || !lastGame) {
-        // console.log("HHHHHAAAAAAAAAAA!!!!!");
-        return null;
-    }
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor }]}>
@@ -128,7 +95,7 @@ export default function GameOverScreen() {
                         {hasWon ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
                     </AppView>
 
-                    <AppView style={[s.btnsContainer, { pointerEvents: btnsEnabled ? "auto" : "none" }]}>
+                    <AppView style={[s.btnsContainer]}>
                         {isPracticeLevel ? (
                             <>
                                 <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>

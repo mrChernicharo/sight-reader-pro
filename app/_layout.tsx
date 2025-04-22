@@ -12,13 +12,22 @@ import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
+import { useFonts } from "expo-font";
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function RootLayout() {
     const path = usePathname();
     // const { id, keySignature, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
+    const [fontsLoaded, fontsError] = useFonts({
+        SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+        Grotesque: require("../assets/fonts/BowlbyOneSC-Regular.ttf"),
+        ...FontAwesome.font,
+    });
+
     const _hydrated = useAppStore((state) => state._hydrated);
-    const currentGame = useAppStore((state) => state.currentGame);
+    // const currentGame = useAppStore((state) => state.currentGame);
+    const games = useAppStore((state) => state.games);
     const initTourCompleted = useAppStore((state) => state.completedTours.init);
     const theme = useTheme();
     // const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
@@ -35,13 +44,13 @@ export default function RootLayout() {
         console.log("path :::", path);
     }, [path]);
 
-    useEffect(() => {
-        currentGame && console.log("currentGame :::", { currentGame: currentGame.name });
-    }, [currentGame]);
-
     // useEffect(() => {
-    //     console.log("params :::", { id, keySignature, previousPage });
-    // }, [id, keySignature, previousPage]);
+    //     console.log("currentGame :::", { currentGame: currentGame?.name });
+    // }, [currentGame]);
+
+    useEffect(() => {
+        console.log("games :::", { games: games.length, lastGame: games.at(-1) });
+    }, [games]);
 
     useEffect(() => {
         if (!initTourCompleted) {

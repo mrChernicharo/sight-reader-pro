@@ -79,6 +79,7 @@ export function SingleNoteGameComponent() {
     const level = getLevel(id);
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
+    const isPracticeLevel = getIsPracticeLevel(currentGame?.levelId);
 
     const rounds = currentGame?.rounds || [];
 
@@ -139,10 +140,10 @@ export function SingleNoteGameComponent() {
             type: GameType.Single,
             durationInSeconds: level.durationInSeconds,
         };
-        console.log("OK", { gameRecord });
-
+        // console.log("OK", { gameRecord });
         await saveGameRecord(gameRecord);
         router.replace({ pathname: "/game-over" });
+        // router.replace({ pathname: isPracticeLevel ? "/practice" : "/game-over" });
     }, [level, id, rounds]);
 
     // start game
@@ -166,7 +167,6 @@ export function SingleNoteGameComponent() {
     useEffect(() => {
         return () => {
             console.log("SINGLE NOTE GAME UNMOUNT!!!");
-            // setTimeout(() => endGame(), 1000);
             if (prevPage == "/practice") {
                 console.log("leaving practice game");
                 // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
@@ -289,7 +289,7 @@ export function SingleNoteGameComponent() {
                 </Tooltip>
             )}
 
-            <AppView style={[s.attemptedNotes]}>
+            <AppView style={[s.attemptedNotes, { transform: [{ translateY: 20 }] }]}>
                 {attemptedNotes.map((attempt) => (
                     <AttemptedNote key={attempt.id} attempt={attempt} />
                 ))}
@@ -300,7 +300,7 @@ export function SingleNoteGameComponent() {
                 placement="top"
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 tooltipStyle={{ transform: [{ translateY: -60 }] }}
-                contentStyle={{}}
+                contentStyle={{ minHeight: 128 }}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.2" />

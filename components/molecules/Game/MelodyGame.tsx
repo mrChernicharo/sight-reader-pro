@@ -52,6 +52,7 @@ export function MelodyGameComponent() {
     const level = getLevel(id);
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
+    const isPracticeLevel = getIsPracticeLevel(level.id);
 
     const [melodyIdx, setMelodyIdx] = useState(0);
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
@@ -125,7 +126,8 @@ export function MelodyGameComponent() {
             type: GameType.Melody,
             durationInSeconds: level.durationInSeconds,
         });
-        return router.replace({ pathname: "/game-over" });
+        router.replace({ pathname: "/game-over" });
+        // router.replace({ pathname: isPracticeLevel ? "/practice" : "/game-over" });
     }, [level, id, rounds, games, currentGame]);
 
     // start new game

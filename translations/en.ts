@@ -65,6 +65,7 @@ const en = {
             start: "Start Level",
             win: "You Win",
             lose: "You Lose",
+            practiceEnd: "Exercise Concluded",
         },
     },
     practice: {

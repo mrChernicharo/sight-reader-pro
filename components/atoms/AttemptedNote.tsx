@@ -1,7 +1,7 @@
 import { AppText } from "./AppText";
 import { AttemptedNote as AttemptedNoteType } from "@/utils/types";
 import { FadeOut } from "./FadeOut";
-import { explodeNote, getAttemptedNoteDuration, getNoteIdx } from "@/utils/helperFns";
+import { explodeNote, getAttemptedNoteDuration, getNoteIdx, mapRange } from "@/utils/helperFns";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
@@ -10,50 +10,55 @@ import { testBorder } from "@/utils/styles";
 import { AntDesign } from "@expo/vector-icons";
 import { AppView } from "./AppView";
 import { NoteName } from "@/utils/enums";
+import { Dimensions } from "react-native";
+
+const calcOffset = (zeroToOnePerc: number) => {
+    return mapRange(zeroToOnePerc, 0, Dimensions.get("window").width, 1);
+};
 
 const noteStyles: Record<NoteName, any> = {
-    c: { left: 20 },
-    "b#": { left: 20 },
-    dbb: { left: 20 },
+    c: { left: calcOffset(0) },
+    "b#": { left: calcOffset(0) },
+    dbb: { left: calcOffset(0) },
 
-    "c#": { left: 40 },
-    db: { left: 40 },
+    "c#": { left: calcOffset(0.065) },
+    db: { left: calcOffset(0.065) },
 
-    d: { left: 60 },
-    cx: { left: 60 },
-    ebb: { left: 60 },
+    d: { left: calcOffset(0.125) },
+    cx: { left: calcOffset(0.125) },
+    ebb: { left: calcOffset(0.125) },
 
-    "d#": { left: 90 },
-    eb: { left: 90 },
+    "d#": { left: calcOffset(0.2) },
+    eb: { left: calcOffset(0.2) },
 
-    e: { left: 120 },
-    dx: { left: 120 },
-    fb: { left: 120 },
+    e: { left: calcOffset(0.265) },
+    dx: { left: calcOffset(0.265) },
+    fb: { left: calcOffset(0.265) },
 
-    f: { right: 180 },
-    "e#": { right: 180 },
+    f: { right: calcOffset(0.4) },
+    "e#": { right: calcOffset(0.4) },
 
-    gbb: { right: 150 },
-    "f#": { right: 150 },
-    gb: { right: 150 },
+    gbb: { right: calcOffset(0.325) },
+    "f#": { right: calcOffset(0.325) },
+    gb: { right: calcOffset(0.325) },
 
-    g: { right: 120 },
-    fx: { right: 120 },
-    abb: { right: 120 },
+    g: { right: calcOffset(0.265) },
+    fx: { right: calcOffset(0.265) },
+    abb: { right: calcOffset(0.265) },
 
-    "g#": { right: 90 },
-    ab: { right: 90 },
+    "g#": { right: calcOffset(0.2) },
+    ab: { right: calcOffset(0.2) },
 
-    a: { right: 60 },
-    gx: { right: 60 },
-    bbb: { right: 60 },
+    a: { right: calcOffset(0.125) },
+    gx: { right: calcOffset(0.125) },
+    bbb: { right: calcOffset(0.125) },
 
-    "a#": { right: 40 },
-    bb: { right: 40 },
+    "a#": { right: calcOffset(0.065) },
+    bb: { right: calcOffset(0.065) },
 
-    b: { right: 20 },
-    ax: { right: 20 },
-    cb: { right: 20 },
+    b: { right: calcOffset(0) },
+    ax: { right: calcOffset(0) },
+    cb: { right: calcOffset(0) },
 };
 
 export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
@@ -75,7 +80,7 @@ export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
                 position: "absolute",
                 alignItems: "center",
                 backdropFilter: "blur(1.2)",
-                bottom: 40,
+                bottom: 12,
                 ...notePositionStyles,
             }}
         >
@@ -83,18 +88,18 @@ export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
             <AppView transparentBG style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
                 <AntDesign
                     name={success ? "checkcircle" : "closecircle"}
-                    style={{ fontWeight: "900", marginBottom: 2 }}
+                    style={{ fontWeight: 900, marginBottom: 2 }}
                     size={14}
                     color={color}
                 />
 
-                <AppText style={{ color, fontWeight: "900", fontSize: 24, lineHeight: 24 }}>
+                <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>
                     {t(`music.notes.${noteName}`)}
                 </AppText>
             </AppView>
 
             {/* BOTTOM LINE */}
-            <AppText style={{ color, lineHeight: 16 }}>
+            <AppText style={{ fontFamily: "Grotesque", lineHeight: 16 }}>
                 {success ? "800 pts" : `( ${t(`game.was`)} ${t(`music.notes.${correct}`)} )`}
             </AppText>
         </FadeOut>

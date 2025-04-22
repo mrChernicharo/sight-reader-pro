@@ -33,8 +33,6 @@ export default function LevelSelectionScreen() {
     const clef = useAppStore((state) => state.selectedLevelsClef);
     const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
-    // const currentGame = useAppStore((state) => state.currentGame);
-    // const endGame = useAppStore((state) => state.endGame);
 
     const [tourStep, setTourStep] = useState(-1);
 

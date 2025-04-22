@@ -155,7 +155,7 @@ export const useAppStore = create<AppState & AppActions>()(
 
                 saveGameRecord: async (game: Game) =>
                     set((state) => {
-                        console.log("saveGameRecord:::", { game });
+                        // console.log("saveGameRecord:::", { game });
                         return { ...state, games: [...state.games, game] };
                     }),
 
@@ -165,7 +165,7 @@ export const useAppStore = create<AppState & AppActions>()(
                     set({ currentGame: newGame });
                 },
                 endGame: async () => {
-                    console.log("END GAME");
+                    console.log("<<< END GAME >>>");
                     set({ currentGame: null, playedNotes: {} });
                 },
 

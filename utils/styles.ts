@@ -31,6 +31,8 @@ export const STYLES = {
             justifyContent: "center",
             alignItems: "center",
             height: 36,
+            // borderWidth: 2,
+            // borderColor: "red",
         },
     }),
     init: StyleSheet.create({

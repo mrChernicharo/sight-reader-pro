@@ -27,10 +27,6 @@ import RangeSlider from "../components/atoms/RangeSlider";
 
 // const KEY_SIGNATURES = Object.values(KeySignature).map((v) => ({ label: v, value: v.toLowerCase() }));
 
-const ACCIDENTS = Object.values(LevelAccidentType).map((v) => ({
-    key: v,
-    value: v.toLowerCase(),
-}));
 export default function PracticeScreen() {
     const theme = useTheme();
     const { t } = useTranslation();
@@ -80,7 +76,7 @@ export default function PracticeScreen() {
     const startPracticeGame = useCallback(async () => {
         const levelId: LevelId = `${clef}-practice`;
         const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}` as NoteRange];
-        const durationInSeconds = 60;
+        const durationInSeconds = 6;
         // console.log({ clef, accident, keySignature });
         // console.log("allNotes::::", allNotes, allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]);
 

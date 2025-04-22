@@ -44,61 +44,6 @@ export type Round<T> = T extends GameType.Single
     ? RhythmRound
     : never;
 
-// export type Game<T> = {
-//     id: string;
-//     levelId: string;
-//     timestamp: number;
-//     durationInSeconds: number;
-//     type: T;
-//     rounds: Round<T>[];
-// };
-
-// export type Level<T> = GameSettings<T> & {
-//     id: LevelId;
-//     clef: Clef;
-//     index: number;
-//     name: string;
-//     durationInSeconds: number;
-//     winConditions: WinConditions;
-//     gameType: T;
-//     // description: string;
-// };
-
-// export type CurrentGame<T> = Game<T> & Level<T> & { state: GameState };
-
-// export type PianoKeySpec = "Flat" | "Sharp"; /* | 'Both' */
-
-// export interface GameScore {
-//     successes: number;
-//     mistakes: number;
-// }
-
-// export type SectionedLevel = {
-//     title: string;
-//     data: Level<GameType>[];
-// };
-
-// export interface LevelScore {
-//     value: number;
-//     multiplier: number;
-//     hits: number;
-//     hitScore: number;
-//     winConditions: WinConditions;
-//     accuracy: number;
-//     formula: string;
-// }
-
-// export interface GameScreenParams {
-//     id: string;
-//     keySignature: KeySignature;
-//     previousPage: Href;
-// }
-
-// export type GameStatsDisplayProps = {
-//     level: Level<GameType>;
-//     hitsPerMinute: number;
-// };
-
 // exceptions b0, c8
 type NoteOctave = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
