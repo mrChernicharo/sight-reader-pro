@@ -7,7 +7,6 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
-import { getUnlockedLevels } from "@/utils/levels";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -25,10 +24,9 @@ import { useAllLevels } from "@/hooks/useAllLevels";
 const cols = 3;
 
 export default function LevelSelectionScreen() {
-    const { intl } = useIntl();
     const { t } = useTranslation();
     // const theme = useTheme();
-    const { sectionedLevels } = useAllLevels();
+    const { sectionedLevels, unlockedLevels } = useAllLevels();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     // const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "accent");
     const games = useAppStore((state) => state.games);
@@ -38,7 +36,7 @@ export default function LevelSelectionScreen() {
 
     const [tourStep, setTourStep] = useState(-1);
 
-    const unlockedLevels = getUnlockedLevels(games, intl);
+    // const unlockedLevels = getUnlockedLevels(games, intl);
     const clefLevels = sectionedLevels.find((lvls) => lvls.title == clef)!;
     const grid = makeGrid(clefLevels.data, cols);
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };

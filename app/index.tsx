@@ -59,9 +59,9 @@ export default function Home() {
 
             <FadeIn y={50} x={0} delay={250}>
                 <AppView style={{ alignItems: "center", rowGap: 12, width: 200 }}>
-                    <Link asChild href="/settings">
+                    <Link asChild href="/practice">
                         <AppButton
-                            text={t("routes.settings")}
+                            text={t("routes.practice")}
                             style={{ ...s.btn, borderColor: Colors[theme].text }}
                             textStyle={{ color: Colors[theme].text }}
                         />
@@ -73,9 +73,9 @@ export default function Home() {
                             textStyle={{ color: Colors[theme].text }}
                         />
                     </Link>
-                    <Link asChild href="/practice">
+                    <Link asChild href="/settings">
                         <AppButton
-                            text={t("routes.practice")}
+                            text={t("routes.settings")}
                             style={{ ...s.btn, borderColor: Colors[theme].text }}
                             textStyle={{ color: Colors[theme].text }}
                         />

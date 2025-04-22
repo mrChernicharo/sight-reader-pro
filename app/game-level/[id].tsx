@@ -1,4 +1,5 @@
 import { AppText } from "@/components/atoms/AppText";
+import { AppView } from "@/components/atoms/AppView";
 import { GameComponent } from "@/components/molecules/Game";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { GameType } from "@/utils/enums";
@@ -16,13 +17,13 @@ export default function GameLevel() {
     const { getLevel } = useAllLevels();
 
     const level = getLevel(id);
-    // console.log("gameLevel ::: ", { level });
+    // console.log("gameLevel ::: ", { id, levelId: level?.id, levelIdx: level?.index });
 
     if (!level || !id)
         return (
-            <>
+            <AppView style={{ flex: 1 }}>
                 <AppText>Loading...</AppText>
-            </>
+            </AppView>
         );
 
     return <>{GameComponents[level.type]}</>;

@@ -1,5 +1,5 @@
-import { Clef, GameType, KeySignature, Knowledge, LevelAccidentType, ScaleType } from "@/utils/enums";
-import { CurrentGame, Game, Note, Round, Scale } from "@/utils/types";
+import { Clef, GameType, KeySignature, Knowledge } from "@/utils/enums";
+import { CurrentGame, Game, Level, Note, Round, Scale } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 import { create } from "zustand";
@@ -38,6 +38,7 @@ export interface AppState {
     completedTours: CompletedTours;
     practiceSettings: PracticeSettings;
     playedNotes: PlayedNotes;
+    practiceLevel: Level | null;
     // difficulty: Difficulty;
     _hydrated: boolean;
 }
@@ -62,6 +63,7 @@ export interface AppActions {
     setSelectedLevelsClef: (clef: Clef) => Promise<void>;
 
     setTourCompleted: (tourName: keyof CompletedTours, completed: boolean) => Promise<void>;
+    setPracticeLevel: (level: Level | null) => Promise<void>;
 
     saveGameRecord: (game: Game) => Promise<void>;
     startNewGame: (newGame: CurrentGame) => Promise<void>;
@@ -91,6 +93,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 selectedLevelsClef: Clef.Treble,
                 practiceSettings: defaultPracticeSettings,
                 playedNotes: {},
+                practiceLevel: null,
                 completedTours: {
                     init: false,
                     home: false,
@@ -113,6 +116,7 @@ export const useAppStore = create<AppState & AppActions>()(
                                   games: [],
                                   currentGame: null,
                                   playedNotes: {},
+                                  practiceLevel: null,
                                   completedTours: {
                                       init: false,
                                       home: false,
@@ -130,6 +134,7 @@ export const useAppStore = create<AppState & AppActions>()(
                                   games: [],
                                   currentGame: null,
                                   playedNotes: {},
+                                  practiceLevel: null,
                                   completedTours: {
                                       init: true,
                                       home: true,
@@ -204,6 +209,9 @@ export const useAppStore = create<AppState & AppActions>()(
                             practiceSettings: { ...state.practiceSettings, [setting]: value },
                         };
                     });
+                },
+                setPracticeLevel: async (level: Level | null) => {
+                    set({ practiceLevel: level });
                 },
             }),
             {

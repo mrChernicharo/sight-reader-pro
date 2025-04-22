@@ -16,7 +16,6 @@ import {
     randomUID,
     wait,
 } from "@/utils/helperFns";
-import { ALL_LEVELS } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES } from "@/utils/styles";
 import {
@@ -40,17 +39,18 @@ const s = STYLES.game;
 
 export function MelodyGameComponent() {
     const theme = useTheme();
-    const { getLevel } = useAllLevels();
     const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
+
+    const { playPianoNote, releasePianoNote, playSoundEfx } = useSoundContext();
+    const { getLevel, unloadPracticeLevel } = useAllLevels();
     const { currentGame, saveGameRecord, startNewGame, endGame, games, updateRound, addNewRound, updatePlayedNotes } =
         useAppStore();
-    const { playPianoNote, releasePianoNote, playSoundEfx } = useSoundContext();
 
     const rounds = currentGame?.rounds || [];
     const currRound = rounds.at(-1) as MelodyRound;
     const keySignature = decodeURIComponent(ksig) as KeySignature;
 
-    const level = getLevel(id);
+    const level = getLevel(id)!;
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
     const isPracticeLevel = getIsPracticeLevel(level.id);
@@ -110,14 +110,6 @@ export function MelodyGameComponent() {
         }
     }
 
-    const onBackLinkPress = () => {
-        if (prevPage == "/practice") {
-            console.log("leaving practice game");
-            // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
-            ALL_LEVELS.pop();
-        }
-    };
-
     const onCountdownFinish = useCallback(async () => {
         await saveGameRecord({
             id: randomUID(),
@@ -159,11 +151,6 @@ export function MelodyGameComponent() {
     useEffect(() => {
         return () => {
             console.log("MELODY GAME UNMOUNT!!!");
-            if (prevPage == "/practice") {
-                console.log("leaving practice game");
-                // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
-                ALL_LEVELS.pop();
-            }
         };
     }, []);
 

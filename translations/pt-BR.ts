@@ -6,7 +6,7 @@ const ptBR = {
         welcome: "Boas vindas",
     },
     routes: {
-        practice: "Praticar",
+        practice: "Prática Personalizada",
         profile: "Perfil",
         settings: "Configurações",
         levelSelection: "Selecionar Nível",
@@ -205,7 +205,7 @@ const ptBR = {
             "2": "O seu trabalho é tocar no Piano as notas que forem aparecerendo na Pauta",
             "3": "As estatísticas e informações da partida vão estar aqui em cima",
             "3_ok": "Entendi",
-            "4": "Toque o máximo de notas que puder:::Antes que o tempo acabe!:::Acumule pontos e avance pelas fases",
+            "4": "Toque o máximo de notas que puder:::antes que o tempo acabe!:::Acumule pontos e avance pelas fases",
             "4_ready": "Bora começar?",
             "4_ok": "Vamos nessa!",
         },

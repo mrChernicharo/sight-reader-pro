@@ -3,8 +3,8 @@ import { Colors } from "@/utils/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Href, Link } from "expo-router";
 import { LinkProps } from "expo-router/build/link/Link";
-import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { GestureResponderEvent, StyleProp, ViewStyle, TouchableOpacity } from "react-native";
+import {} from "react-native-gesture-handler";
 import { AppView } from "./AppView";
 import { testBorder } from "@/utils/styles";
 

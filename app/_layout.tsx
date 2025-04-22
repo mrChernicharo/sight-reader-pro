@@ -40,17 +40,17 @@ export default function RootLayout() {
         if (!_hydrated) endGame();
     }, [_hydrated]);
 
-    useEffect(() => {
-        console.log("path :::", path);
-    }, [path]);
+    // useEffect(() => {
+    //     console.log("path :::", path);
+    // }, [path]);
 
     // useEffect(() => {
     //     console.log("currentGame :::", { currentGame: currentGame?.name });
     // }, [currentGame]);
 
-    useEffect(() => {
-        console.log("games :::", { games: games.length, lastGame: games.at(-1) });
-    }, [games]);
+    // useEffect(() => {
+    //     console.log("games :::", { games: games.length, lastGame: games.at(-1) });
+    // }, [games]);
 
     useEffect(() => {
         if (!initTourCompleted) {

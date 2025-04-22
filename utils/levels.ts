@@ -21,49 +21,6 @@ export function assembleLevelInfo(clef: Clef, levelInfo: Partial<Level>[]): Leve
     });
 }
 
-export function getUnlockedLevels(games: Game[], intl: Intl.NumberFormat) {
-    let highestTrebleIdx = -1;
-    let highestBassIdx = -1;
-    const nonPracticeGames = games.filter((g) => !g.levelId.includes("practice"));
-    // console.log("getUnlockedLevels:::", JSON.stringify(games, null, 2), "game count:::", games.length);
-    for (const game of nonPracticeGames) {
-        const level = getLevelPrivate(game.levelId);
-        // console.log("level:::", JSON.stringify(level, null, 2));
-        if (!game || !level) continue;
-
-        const { hasWon } = getGameStats(level, game.rounds, intl);
-
-        // console.log("getUnlockedLevels", { level, game, hasWon });
-        switch (level.type) {
-            case GameType.Melody:
-            case GameType.Single: {
-                switch (level.clef) {
-                    case Clef.Treble:
-                        if (hasWon && level.index > highestTrebleIdx) {
-                            highestTrebleIdx = level.index;
-                        }
-                        break;
-                    case Clef.Bass:
-                        if (hasWon && level.index > highestBassIdx) {
-                            highestBassIdx = level.index;
-                        }
-                        break;
-                }
-            }
-            case GameType.Chord:
-            case GameType.Rhythm:
-            // @TODO
-        }
-    }
-
-    const response: Record<Clef, number> = {
-        treble: highestTrebleIdx,
-        bass: highestBassIdx,
-    };
-    return response;
-    // return { treble: 100, bass: 10 };
-}
-
 // ******************************************************
 // ******************************************************
 // ******************************************************
@@ -447,7 +404,7 @@ const BASS_PRO_LEVELS = makeLevelGroup({
 });
 
 const TROMBONE_LEVELS = makeLevelGroup({
-    name: "guitar",
+    name: "trombone",
     skillLevel: Knowledge.pro,
     clef: Clef.Bass,
     durations: { min: 45, max: 75 },

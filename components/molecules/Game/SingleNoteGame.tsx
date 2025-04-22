@@ -21,7 +21,6 @@ import {
     randomUID,
     wait,
 } from "@/utils/helperFns";
-import { ALL_LEVELS } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES } from "@/utils/styles";
 import {
@@ -59,23 +58,22 @@ const getNoteColor = (gameState: GameState, theme: "light" | "dark") => {
 
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
-    const { getLevel } = useAllLevels();
     const theme = useTheme();
     const backgroundColor = Colors[theme].bg;
 
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
+    const { playPianoNote, playSoundEfx } = useSoundContext();
+    const { getLevel, unloadPracticeLevel } = useAllLevels();
     const { currentGame, saveGameRecord, startNewGame, addNewRound, updatePlayedNotes, setTourCompleted } =
         useAppStore();
 
-    const { playPianoNote, playSoundEfx } = useSoundContext();
     const hasCompletedTour = useAppStore((state) => state.completedTours.game);
-    // const setTourCompleted = useAppStore((state) => state.setTourCompleted);
 
     const [tourStep, setTourStep] = useState(-1);
 
     const keySignature = decodeURIComponent(keySig) as KeySignature;
-    const level = getLevel(id);
+    const level = getLevel(id)!;
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
     const isPracticeLevel = getIsPracticeLevel(currentGame?.levelId);
@@ -166,11 +164,6 @@ export function SingleNoteGameComponent() {
     useEffect(() => {
         return () => {
             console.log("SINGLE NOTE GAME UNMOUNT!!!");
-            if (prevPage == "/practice") {
-                console.log("leaving practice game");
-                // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
-                ALL_LEVELS.pop();
-            }
         };
     }, []);
 

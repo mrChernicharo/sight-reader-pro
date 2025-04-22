@@ -12,7 +12,8 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
-import { Link, router } from "expo-router";
+import { GameScreenParams } from "@/utils/types";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -21,14 +22,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function GameOverScreen() {
     const { intl } = useIntl();
     const { t } = useTranslation();
-    const { allLevels, getLevel } = useAllLevels();
+    const { allLevels, getLevel, unloadPracticeLevel } = useAllLevels();
     const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const { endGame, games } = useAppStore();
+    const { previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
     const lastGame = games.at(-1);
 
-    const level = getLevel(lastGame?.levelId ?? "basics 01");
+    const level = getLevel(lastGame?.levelId || "");
     const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
 
     const { hasWon, hitsPerMinute } = getGameStats(level, lastGame?.rounds ?? [], intl);
@@ -66,6 +68,11 @@ export default function GameOverScreen() {
     useEffect(() => {
         return () => {
             console.log("GAME OVER UNMOUNT!!!!");
+            if (previousPage == "/practice") {
+                console.log("leaving practice game");
+                // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
+                unloadPracticeLevel();
+            }
             endGame();
         };
     }, []);

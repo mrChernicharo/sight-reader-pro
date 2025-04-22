@@ -11,7 +11,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
 import { Clef, GameType, KeySignature, Knowledge, LevelAccidentType, TimeSignature, WinRank } from "@/utils/enums";
-import { explodeNote, isFlatKeySignature } from "@/utils/helperFns";
+import { explodeNote, isFlatKeySignature, wait } from "@/utils/helperFns";
 import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
 
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
@@ -32,7 +32,7 @@ import { ALL_LEVELS } from "@/utils/levels";
 export default function PracticeScreen() {
     const theme = useTheme();
     const { t } = useTranslation();
-    const { allLevels, getLevel } = useAllLevels();
+    const { allLevels, loadPracticeLevel } = useAllLevels();
 
     const { practiceSettings, updatePracticeSettings, endGame } = useAppStore();
     const { clef, isMinorKey, scale, keySignature = KeySignature.C, noteRangeIndices, gameType } = practiceSettings;
@@ -79,6 +79,7 @@ export default function PracticeScreen() {
     const startPracticeGame = useCallback(async () => {
         const levelId: LevelId = `${clef}-practice`;
         const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}` as NoteRange];
+        // const durationInSeconds = 6;
         const durationInSeconds = 60;
         // console.log({ clef, accident, keySignature });
         // console.log("allNotes::::", allNotes, allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]);
@@ -94,7 +95,7 @@ export default function PracticeScreen() {
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
             timeSignature: TimeSignature["4/4"],
-            index: allLevels.length - 1,
+            index: -1,
             scale,
         };
 
@@ -109,28 +110,18 @@ export default function PracticeScreen() {
             durationInSeconds,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
-            index: allLevels.length - 1,
+            index: -1,
             scale,
         };
 
-        // console.log({ practiceLevelSingle, practiceLevelMelody, noteRanges });
-        // console.log("gameType: ", gameType);
-
-        // !important! Practice games are pushed into levels before game begins, then they are popped out from levels
         const practiceGame = gameType == GameType.Single ? practiceLevelSingle : practiceLevelMelody;
-        ALL_LEVELS.push(practiceGame);
+        await loadPracticeLevel(practiceGame);
 
-        // await wait(200);
-        endGame();
         router.push({
             pathname: "/game-level/[id]",
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
     }, [clef, noteRangeIndices.low, noteRangeIndices.high, CURR_KEY_SIGNATURES, keySignature, allNotes, ALL_LEVELS]);
-
-    // const onScaleChange = useCallback((val: ScaleType) => {
-    //     updatePracticeSettings("scale", val);
-    // }, []);
 
     useEffect(() => {
         updatePracticeSettings("scale", selectedScale);

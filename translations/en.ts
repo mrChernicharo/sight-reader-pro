@@ -6,7 +6,7 @@ const en = {
         welcome: "Welcome",
     },
     routes: {
-        practice: "Practice",
+        practice: "Custom Practice",
         profile: "Profile",
         settings: "Settings",
         levelSelection: "Level Selection",

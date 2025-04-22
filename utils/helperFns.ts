@@ -646,9 +646,13 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
         const hiNote = maxNotes[hiNoteIdx];
 
         levels.push({
-            id: `${name}-${padZero(i)}`,
-            name: `${name} ${padZero(i + 1)}`,
-            index: i,
+            // id: `${name}-${padZero(i)}`,
+            // name: `${name} ${padZero(i + 1)}`,
+            // these will be set later, in useAllLevels
+            id: name,
+            name,
+            index: 0,
+
             type: groupProgress < 0.7 ? GameType.Single : GameType.Melody,
             skillLevel,
             clef,
