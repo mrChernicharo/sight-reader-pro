@@ -163,29 +163,29 @@ function pickNextRoundNote(rangeNotes: Note[]): Note {
     return chosenNote;
 }
 
-export function getDrawNote2(
-    note: Note,
-    keySignature: KeySignature,
-    keys: Note[][], // [[lo, hi], [lo, hi]]
-    noteIdx?: number
-): { drawNote: string; drawAccident: string } {
-    // const result = {
-    //     drawNote: `${drawNoteName}${noBeQuadroAccident}/${octave}` as Note,
-    //     drawAccident: drawAccidents[drawNoteAccident as Accident],
-    // };
+// export function getDrawNote2(
+//     note: Note,
+//     keySignature: KeySignature,
+//     keys: Note[][], // [[lo, hi], [lo, hi]]
+//     noteIdx?: number
+// ): { drawNote: string; drawAccident: string } {
+//     // const result = {
+//     //     drawNote: `${drawNoteName}${noBeQuadroAccident}/${octave}` as Note,
+//     //     drawAccident: drawAccidents[drawNoteAccident as Accident],
+//     // };
 
-    console.log({
-        note,
-        keySignature,
-        keys,
-        noteIdx,
-    });
+//     console.log({
+//         note,
+//         keySignature,
+//         keys,
+//         noteIdx,
+//     });
 
-    return {
-        drawNote: `c/3` as Note,
-        drawAccident: "#",
-    };
-}
+//     return {
+//         drawNote: `c/3` as Note,
+//         drawAccident: "#",
+//     };
+// }
 
 export function getDrawNote(
     note: Note,
@@ -206,7 +206,8 @@ export function getDrawNote(
     let sameNoteBefore: Note | undefined;
     // @TODO: consider past notes when assigning drawAccidents
     for (const keyNote of keyNotes) {
-        const { baseName: keyNoteBaseName, accident: keyAccident } = explodeNote(`${keyNote}/${octave}` as Note);
+        const currentNote = `${keyNote}/${octave}` as Note;
+        const { baseName: keyNoteBaseName, accident: keyAccident } = explodeNote(currentNote as Note);
 
         if (baseName == keyNoteBaseName) {
             if (isMelodyGame) {
@@ -236,26 +237,35 @@ export function getDrawNote(
             if (sameNoteBefore) {
                 const { noteName: beforeNoteName, accident: beforeAccident } = explodeNote(sameNoteBefore);
 
+                console.log({ sameNoteBefore, beforeNoteName, beforeAccident, keyNote, accident });
+
                 if (beforeAccident === accident) {
                     drawNoteAccident = "";
                 }
                 if (beforeAccident && !accident) {
+                    // console.log("!!! BEFORE !ACCIDENT!!!", { beforeAccident, accident });
                     drawNoteAccident = "[]";
                 }
                 if (beforeAccident == "[]" && accident) {
+                    console.log("!!! BEFORE ACCIDENT!!!", { beforeAccident, accident });
+                    drawNoteAccident = accident;
+                }
+                if (accident === "b" && !beforeAccident && sameNoteBefore !== currentNote) {
                     drawNoteAccident = accident;
                 }
             }
 
             const noBeQuadroAccident = drawNoteAccident === Accident["[]"] ? "" : drawNoteAccident;
+
             result = {
                 drawNote: `${drawNoteName}${noBeQuadroAccident}/${octave}` as Note,
                 drawAccident: drawAccidents[drawNoteAccident as Accident],
             };
         }
+        // console.log({ result, drawNoteName, sameNoteBefore, noBeQuadroAccident });
     }
 
-    // console.log("getDrawNote:::", { note, result });
+    console.log(":::: getDrawNote ::::", { note, result });
     return result;
 }
 

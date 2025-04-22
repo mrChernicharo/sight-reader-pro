@@ -682,5 +682,5 @@ export function getLevelHintCount(skillLevel: Knowledge) {
 }
 
 export function getAttemptedNoteDuration(success: boolean) {
-    return success ? 1400 : 2000;
+    return success ? 1000 : 1500;
 }

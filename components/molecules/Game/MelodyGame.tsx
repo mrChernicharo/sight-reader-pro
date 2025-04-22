@@ -166,7 +166,7 @@ export function MelodyGameComponent() {
                 </AppView>
             ) : null}
 
-            <AppView style={[s.attemptedNotes, { ...testBorder() }]}>
+            <AppView style={[s.attemptedNotes, {}]}>
                 {attemptedNotes.map((attempt) => (
                     <AttemptedNote key={attempt.id} attempt={attempt} />
                 ))}
