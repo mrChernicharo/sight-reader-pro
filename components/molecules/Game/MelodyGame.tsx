@@ -7,6 +7,7 @@ import { Colors } from "@/utils/Colors";
 import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import {
     explodeNote,
+    getAttemptedNoteDuration,
     getLevelHintCount,
     getPossibleNotesInLevel,
     getPreviousPage,
@@ -17,7 +18,14 @@ import {
 import { getLevel } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES, testBorder } from "@/utils/styles";
-import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
+import {
+    CurrentGame,
+    GameScreenParams,
+    MelodyRound,
+    Note,
+    Round,
+    AttemptedNote as AttemptedNoteType,
+} from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,6 +34,7 @@ import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { AppText } from "@/components/atoms/AppText";
 import { FadeOut } from "@/components/atoms/FadeOut";
+import { AttemptedNote } from "@/components/atoms/AttemptedNote";
 
 const s = STYLES.game;
 
@@ -47,7 +56,7 @@ export function MelodyGameComponent() {
     const hintCount = getLevelHintCount(level.skillLevel);
 
     const [melodyIdx, setMelodyIdx] = useState(0);
-    const [attemptedNotes, setAttemptedNotes] = useState<{ id: string; you: Note; correct: Note }[]>([]);
+    const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
 
     const currNote = currRound?.values?.[melodyIdx] || null;
 
@@ -133,7 +142,9 @@ export function MelodyGameComponent() {
 
     useEffect(() => {
         (async () => {
-            await wait(2000);
+            const duration = getAttemptedNoteDuration(true);
+            await wait(duration);
+
             setAttemptedNotes((prev) => {
                 const copy = prev.slice();
                 copy.shift();
@@ -157,11 +168,7 @@ export function MelodyGameComponent() {
 
             <AppView style={[s.attemptedNotes, { ...testBorder() }]}>
                 {attemptedNotes.map((attempt) => (
-                    <FadeOut y={-50} duration={2000} style={{ position: "absolute" }} key={attempt.id}>
-                        <AppText>
-                            {attempt.you} X {attempt.correct}
-                        </AppText>
-                    </FadeOut>
+                    <AttemptedNote key={attempt.id} attempt={attempt} />
                 ))}
             </AppView>
 

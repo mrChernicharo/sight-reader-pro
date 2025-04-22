@@ -45,6 +45,7 @@ const ptBR = {
         hits: "notas",
         successes: "Acertos",
         mistakes: "Erros",
+        was: "era",
         config: {
             "no accidents": "Só notas brancas",
             "♯ sharp accidents": "♯ sustenidos",

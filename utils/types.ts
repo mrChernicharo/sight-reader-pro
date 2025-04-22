@@ -221,3 +221,5 @@ export interface LevelGroupSpec {
     noteRanges: MinMax<[Note, Note]>; // { min:  [20, 10], max: [30, 40] }
     // noteRanges: MinMax<[number, number]>; // { min:  [20, 10], max: [30, 40] }
 }
+
+export type AttemptedNote = { id: string; you: Note; correct: Note };

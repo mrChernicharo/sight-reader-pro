@@ -21,7 +21,8 @@ export const Colors = {
         primary: "#4598ee",
         accent: "#ee4598",
         red: "#ff0000",
-        green: "#01df76",
+        // green: "#01df76",
+        green: "#02ba5e",
     },
     dark: {
         text: "#ECEDEE",

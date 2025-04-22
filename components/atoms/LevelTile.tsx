@@ -29,7 +29,7 @@ import { router } from "expo-router";
 import AppButton from "@/components/atoms/AppButton";
 
 interface LevelTileProps {
-    level: Level<GameType>;
+    level: Level;
     isLocked: boolean;
 }
 export function LevelTile({ level, isLocked }: LevelTileProps) {
@@ -57,7 +57,7 @@ export function LevelTile({ level, isLocked }: LevelTileProps) {
         </Pressable>
     );
 }
-function getLevelName(item: Level<GameType>) {
+function getLevelName(item: Level) {
     const splitLevelName = item.name.split(" ");
     const levelIdx = splitLevelName.pop();
     const levelName = splitLevelName.join(" ");

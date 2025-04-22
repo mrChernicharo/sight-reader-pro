@@ -45,6 +45,7 @@ const en = {
         hits: "hits",
         successes: "Successes",
         mistakes: "Mistakes",
+        was: "was",
         config: {
             "no accidents": "No accidents",
             "♯ sharp accidents": "♯ sharp accidents",

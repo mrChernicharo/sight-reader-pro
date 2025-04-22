@@ -12,6 +12,7 @@ import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import {
     explodeNote,
+    getAttemptedNoteDuration,
     getLevelHintCount,
     getPossibleNotesInLevel,
     getPreviousPage,
@@ -22,7 +23,13 @@ import {
 import { getLevel } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES, testBorder } from "@/utils/styles";
-import { CurrentGame, GameScreenParams, Note, SingleNoteRound } from "@/utils/types";
+import {
+    AttemptedNote as AttemptedNoteType,
+    CurrentGame,
+    GameScreenParams,
+    Note,
+    SingleNoteRound,
+} from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { StyleProp, TextStyle } from "react-native";
@@ -32,6 +39,7 @@ import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { FadeOut } from "@/components/atoms/FadeOut";
+import { AttemptedNote } from "@/components/atoms/AttemptedNote";
 
 const DELAY = 60;
 
@@ -63,7 +71,7 @@ export function SingleNoteGameComponent() {
     const [currNote, setCurrNote] = useState<Note>(
         decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
-    const [attemptedNotes, setAttemptedNotes] = useState<{ id: string; you: Note; correct: Note }[]>([]);
+    const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
 
     async function onPianoKeyPress(notename: NoteName) {
         if (gameState !== GameState.Idle) return;
@@ -159,7 +167,9 @@ export function SingleNoteGameComponent() {
 
     useEffect(() => {
         (async () => {
-            await wait(2000);
+            const duration = getAttemptedNoteDuration(true);
+            await wait(duration);
+
             setAttemptedNotes((prev) => {
                 const copy = prev.slice();
                 copy.shift();
@@ -270,11 +280,7 @@ export function SingleNoteGameComponent() {
 
             <AppView style={[s.attemptedNotes, { ...testBorder() }]}>
                 {attemptedNotes.map((attempt) => (
-                    <FadeOut y={-50} duration={2000} style={{ position: "absolute" }} key={attempt.id}>
-                        <AppText type="mdSemiBold">
-                            {attempt.you} X {attempt.correct}
-                        </AppText>
-                    </FadeOut>
+                    <AttemptedNote key={attempt.id} attempt={attempt} />
                 ))}
             </AppView>
 

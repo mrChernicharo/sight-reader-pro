@@ -1,7 +1,7 @@
 import { useFocusEffect, usePathname } from "expo-router";
 import React, { useRef } from "react";
 import { ViewStyle } from "react-native";
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 interface FadeInReanimatedProps {
     children: React.ReactNode;
@@ -24,25 +24,28 @@ export function FadeOut({ children, x = 0, y = 0, duration = 500, delay = 0, sty
             // console.log("Component focused:", pathname);
             delayTimeout.current = window.setTimeout(() => {
                 opacity.value = withTiming(0, { duration });
-                X.value = withTiming(x, { duration });
-                Y.value = withTiming(y, { duration });
+                X.value = withTiming(x, { duration, easing: Easing.linear });
+                Y.value = withTiming(y, { duration, easing: Easing.linear });
             }, delay);
 
             return () => {
-                // console.log("Component blurred:", pathname);
                 opacity.value = 1;
                 X.value = 0;
                 Y.value = 0;
 
                 window.clearTimeout(delayTimeout.current);
             };
-        }, [pathname, opacity, X, Y, x, y, duration])
+        }, [pathname, opacity, X, Y, x, y, duration, delay])
     );
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
             opacity: opacity.value,
-            transform: [{ translateY: Y.value }, { translateX: X.value }],
+            transform: [
+                { translateY: Y.value },
+                { translateX: X.value },
+                /*, { scale: scale.value } */
+            ],
         };
     });
 
