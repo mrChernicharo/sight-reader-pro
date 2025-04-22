@@ -42,7 +42,7 @@ export function MelodyGameComponent() {
     const theme = useTheme();
 
     const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
-    const { currentGame, saveGameRecord, startNewGame, endGame, updateRound, addNewRound, updatePlayedNotes } =
+    const { currentGame, saveGameRecord, startNewGame, endGame, games, updateRound, addNewRound, updatePlayedNotes } =
         useAppStore();
     const { playPianoNote, releasePianoNote, playSoundEfx } = useSoundContext();
 
@@ -128,8 +128,16 @@ export function MelodyGameComponent() {
             type: GameType.Melody,
             durationInSeconds: level.durationInSeconds,
         });
-        router.replace({ pathname: "/game-over" });
-    }, [level, id, rounds]);
+        return router.replace({
+            pathname: "/game-over",
+            params: {
+                rounds: JSON.stringify(rounds),
+                level: JSON.stringify(level),
+                lastGame: JSON.stringify(games.at(-1)),
+                currentGame: JSON.stringify(currentGame),
+            },
+        });
+    }, [level, id, rounds, games, currentGame]);
 
     // start new game
     useEffect(() => {
@@ -142,7 +150,7 @@ export function MelodyGameComponent() {
         };
         // console.log("START NEW MELODY GAME", { level, keySignature, possibleNotes });
         startNewGame({ ...level, ...gameInfo } as CurrentGame);
-    }, [id]);
+    }, [id, level]);
 
     useEffect(() => {
         (async () => {
@@ -156,6 +164,13 @@ export function MelodyGameComponent() {
             });
         })();
     }, [rounds]);
+
+    useEffect(() => {
+        return () => {
+            console.log("MELODY GAME UNMOUNT!!!");
+            endGame();
+        };
+    }, []);
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>

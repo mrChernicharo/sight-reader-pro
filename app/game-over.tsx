@@ -4,32 +4,52 @@ import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { Confetti } from "@/components/molecules/Game/Confetti";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
-import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
+import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
+import { GameType } from "@/utils/enums";
 import { getGameStats } from "@/utils/helperFns";
-import { ALL_LEVELS, getLevel, getUnlockedLevels } from "@/utils/levels";
-import { Link, Redirect, router } from "expo-router";
+import { ALL_LEVELS } from "@/utils/levels";
+import { Game, Level, Round } from "@/utils/types";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import { useTheme } from "@/hooks/useTheme";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// lastGame
+interface GameOverScreenParams {
+    currentGame: string;
+    lastGame: string;
+    level: string;
+    rounds: string;
+}
+
+// interface GameOverScreenParams {
+//     currentGame: Game;
+//     games: Game[];
+//     level: Level;
+//     rounds: Round<GameType>[];
+// }
 
 export default function GameOverScreen() {
     const { intl } = useIntl();
     const { t } = useTranslation();
     const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
-    const { games, currentGame, endGame } = useAppStore();
+    const params = useLocalSearchParams() as unknown as GameOverScreenParams;
 
-    const level = getLevel(currentGame?.levelId ?? "basics 01");
+    const currentGame = JSON.parse(params.currentGame) as Game;
+    const lastGame = JSON.parse(params.lastGame) as Game;
+    const level = JSON.parse(params.level) as Level;
+    const rounds = JSON.parse(params.rounds) as Round<GameType>;
+
+    console.log({ currentGame });
+
+    // const level = getLevel(currentGame?.levelId ?? "basics 01");
     const isPracticeLevel = level?.id && ["treble-practice", "bass-practice"].includes(level.id);
-    const lastGame = games.at(-1);
+    // const lastGame = games.at(-1);
 
     const { hasWon, hitsPerMinute } = getGameStats(level, currentGame?.rounds ?? [], intl);
     const emoji = hasWon ? " 🎉 " : " 😩 ";
@@ -74,7 +94,7 @@ export default function GameOverScreen() {
     }, []);
 
     if (!level || !lastGame || !currentGame || !currentGame?.rounds?.length) {
-        // console.log("HHHHHAAAAAAAAAAA!!!!!");
+        console.log("HHHHHAAAAAAAAAAA!!!!!");
         return null;
     }
 

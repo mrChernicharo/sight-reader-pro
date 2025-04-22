@@ -64,11 +64,20 @@ export function SingleNoteGameComponent() {
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
     const previousPage = getPreviousPage(String(prevPage), id);
 
-    const { currentGame, saveGameRecord, startNewGame, endGame, addNewRound, updatePlayedNotes } = useAppStore();
-    const { playPianoNote, playSoundEfx } = useSoundContext();
+    const {
+        currentGame,
+        games,
+        saveGameRecord,
+        startNewGame,
+        endGame,
+        addNewRound,
+        updatePlayedNotes,
+        setTourCompleted,
+    } = useAppStore();
 
+    const { playPianoNote, playSoundEfx } = useSoundContext();
     const hasCompletedTour = useAppStore((state) => state.completedTours.game);
-    const setTourCompleted = useAppStore((state) => state.setTourCompleted);
+    // const setTourCompleted = useAppStore((state) => state.setTourCompleted);
 
     const [tourStep, setTourStep] = useState(-1);
 
@@ -136,14 +145,16 @@ export function SingleNoteGameComponent() {
             type: GameType.Single,
             durationInSeconds: level.durationInSeconds,
         });
-        router.push({
+        return router.replace({
             pathname: "/game-over",
             params: {
                 rounds: JSON.stringify(rounds),
                 level: JSON.stringify(level),
+                lastGame: JSON.stringify(games.at(-1)),
+                currentGame: JSON.stringify(currentGame),
             },
         });
-    }, [level, id, rounds]);
+    }, [level, id, rounds, games, currentGame]);
 
     const onBackLinkPress = () => {
         if (prevPage == "/practice") {
@@ -168,14 +179,17 @@ export function SingleNoteGameComponent() {
             state: GameState.Idle,
         };
         startNewGame({ ...level, ...gameInfo } as CurrentGame);
-
-        return () => {
-            console.log("SINGLE NOTE GAME UNMOUNT!!!");
-        };
-    }, []);
+    }, [id, level]);
 
     useEffect(() => {
         setTimeout(() => setTourStep(0), 200);
+
+        return () => {
+            setTimeout(() => {
+                console.log("SINGLE NOTE GAME UNMOUNT!!!");
+                endGame();
+            }, 3000);
+        };
     }, []);
 
     useEffect(() => {
