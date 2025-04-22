@@ -16,7 +16,7 @@ import {
     randomUID,
     wait,
 } from "@/utils/helperFns";
-import { ALL_LEVELS, getLevel } from "@/utils/levels";
+import { ALL_LEVELS } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES } from "@/utils/styles";
 import {
@@ -34,12 +34,13 @@ import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { AttemptedNote } from "@/components/atoms/AttemptedNote";
+import { useAllLevels } from "@/hooks/useAllLevels";
 
 const s = STYLES.game;
 
 export function MelodyGameComponent() {
     const theme = useTheme();
-
+    const { getLevel } = useAllLevels();
     const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
     const { currentGame, saveGameRecord, startNewGame, endGame, games, updateRound, addNewRound, updatePlayedNotes } =
         useAppStore();

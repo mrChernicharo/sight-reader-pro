@@ -7,7 +7,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
-import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
+import { getUnlockedLevels } from "@/utils/levels";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -20,15 +20,17 @@ import { BottomTabs } from "@/components/molecules/BottomTabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { testBorder } from "@/utils/styles";
 import { useTheme } from "@/hooks/useTheme";
+import { useAllLevels } from "@/hooks/useAllLevels";
 
 const cols = 3;
 
 export default function LevelSelectionScreen() {
     const { intl } = useIntl();
     const { t } = useTranslation();
-    const theme = useTheme();
+    // const theme = useTheme();
+    const { sectionedLevels } = useAllLevels();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
-    const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "accent");
+    // const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "accent");
     const games = useAppStore((state) => state.games);
     const clef = useAppStore((state) => state.selectedLevelsClef);
     const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
@@ -37,7 +39,7 @@ export default function LevelSelectionScreen() {
     const [tourStep, setTourStep] = useState(-1);
 
     const unlockedLevels = getUnlockedLevels(games, intl);
-    const clefLevels = SECTIONED_LEVELS.find((lvls) => lvls.title == clef)!;
+    const clefLevels = sectionedLevels.find((lvls) => lvls.title == clef)!;
     const grid = makeGrid(clefLevels.data, cols);
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
 

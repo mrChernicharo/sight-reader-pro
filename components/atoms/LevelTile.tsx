@@ -1,32 +1,12 @@
 import { AppText } from "@/components/atoms/AppText";
-import { AppView } from "@/components/atoms/AppView";
-import { BackLink } from "@/components/atoms/BackLink";
-import { useAppStore } from "@/hooks/useAppStore";
-import { useIntl } from "@/hooks/useIntl";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { useTranslation } from "@/hooks/useTranslation";
-import { Colors } from "@/utils/Colors";
-import { glyphs } from "@/utils/constants";
-import { Clef, GameType } from "@/utils/enums";
-import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
-import { Level } from "@/utils/types";
-import { useLayoutEffect, useState } from "react";
-import {
-    Dimensions,
-    Platform,
-    SafeAreaView,
-    StatusBar,
-    StyleProp,
-    StyleSheet,
-    TextStyle,
-    useColorScheme,
-} from "react-native";
-import { Pressable, ScrollView } from "react-native-gesture-handler";
-import Tooltip, { TooltipChildrenContext } from "react-native-walkthrough-tooltip";
 import { useTheme } from "@/hooks/useTheme";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { Colors } from "@/utils/Colors";
+import { Level } from "@/utils/types";
+import { StyleSheet } from "react-native";
+import { Pressable } from "react-native-gesture-handler";
 
 import { router } from "expo-router";
-import AppButton from "@/components/atoms/AppButton";
 
 interface LevelTileProps {
     level: Level;

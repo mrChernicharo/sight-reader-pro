@@ -1,8 +1,9 @@
 import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { BackLink } from "@/components/atoms/BackLink";
+import { AttemptedNote } from "@/components/atoms/AttemptedNote";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
+import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useSoundContext } from "@/hooks/useSoundsContext";
 import { useTheme } from "@/hooks/useTheme";
@@ -16,14 +17,13 @@ import {
     getIsPracticeLevel,
     getLevelHintCount,
     getPossibleNotesInLevel,
-    getPreviousPage,
     isNoteMatch,
     randomUID,
     wait,
 } from "@/utils/helperFns";
-import { ALL_LEVELS, getLevel } from "@/utils/levels";
+import { ALL_LEVELS } from "@/utils/levels";
 import { decideNextRound } from "@/utils/noteFns";
-import { STYLES, testBorder } from "@/utils/styles";
+import { STYLES } from "@/utils/styles";
 import {
     AttemptedNote as AttemptedNoteType,
     CurrentGame,
@@ -32,15 +32,13 @@ import {
     SingleNoteRound,
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleProp, TextStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tooltip from "react-native-walkthrough-tooltip";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { FadeOut } from "@/components/atoms/FadeOut";
-import { AttemptedNote } from "@/components/atoms/AttemptedNote";
 
 const DELAY = 60;
 
@@ -61,6 +59,7 @@ const getNoteColor = (gameState: GameState, theme: "light" | "dark") => {
 
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
+    const { getLevel } = useAllLevels();
     const theme = useTheme();
     const backgroundColor = Colors[theme].bg;
 

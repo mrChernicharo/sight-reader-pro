@@ -1,5 +1,4 @@
 import { Clef, GameType, KeySignature, Knowledge, LevelAccidentType, ScaleType } from "@/utils/enums";
-import { ALL_LEVELS } from "@/utils/levels";
 import { CurrentGame, Game, Note, Round, Scale } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
@@ -160,8 +159,6 @@ export const useAppStore = create<AppState & AppActions>()(
                     }),
 
                 startNewGame: async (newGame: CurrentGame) => {
-                    // prettier-ignore
-                    // console.log("START NEW GAME:::", newGame, "ALL LEVELS::::", ALL_LEVELS.map((lvl) => lvl.name));
                     set({ currentGame: newGame });
                 },
                 endGame: async () => {

@@ -4,6 +4,7 @@ import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { Confetti } from "@/components/molecules/Game/Confetti";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
+import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
@@ -11,7 +12,6 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
-import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { Link, router } from "expo-router";
 import { useEffect } from "react";
 import { Dimensions, StyleSheet } from "react-native";
@@ -21,9 +21,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function GameOverScreen() {
     const { intl } = useIntl();
     const { t } = useTranslation();
+    const { allLevels, getLevel } = useAllLevels();
     const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
-
     const { endGame, games } = useAppStore();
 
     const lastGame = games.at(-1);
@@ -32,11 +32,11 @@ export default function GameOverScreen() {
     const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
 
     const { hasWon, hitsPerMinute } = getGameStats(level, lastGame?.rounds ?? [], intl);
-    const emoji = isPracticeLevel ? " ✅ " : hasWon ? " 🎉 " : " 😩 ";
-    const msg = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
+    const emoji = isPracticeLevel ? "" : hasWon ? " 🎉 " : " 😩 ";
+    const headingText = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
 
     function goToNextLevel() {
-        const nextLevel = ALL_LEVELS.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
+        const nextLevel = allLevels.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
         if (nextLevel) {
             router.replace({
                 pathname: "/level-details/[id]",
@@ -88,8 +88,8 @@ export default function GameOverScreen() {
                     ) : null}
 
                     <AppView transparentBG style={[s.messageContainer]}>
-                        <AppText style={{ fontFamily: "Grotesque", fontSize: 28, lineHeight: 32 }}>
-                            {msg + emoji}
+                        <AppText style={{ fontFamily: "Grotesque", fontSize: 28, lineHeight: 40 }}>
+                            {headingText + emoji}
                         </AppText>
 
                         <GameStatsDisplay level={level} hitsPerMinute={hitsPerMinute} />

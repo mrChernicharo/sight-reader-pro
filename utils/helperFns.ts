@@ -688,3 +688,18 @@ export function getAttemptedNoteDuration(success: boolean) {
 export function getIsPracticeLevel(levelId = "") {
     return Boolean(levelId && ["treble-practice", "bass-practice"].includes(levelId));
 }
+
+export const skillFilter = (lvl: Level, knowledge: Knowledge) => {
+    switch (knowledge) {
+        case Knowledge.pro:
+            return lvl.skillLevel === Knowledge.pro;
+        case Knowledge.advanced:
+            return [Knowledge.pro, Knowledge.advanced].includes(lvl.skillLevel);
+        case Knowledge.intermediary:
+            return [Knowledge.novice, Knowledge.beginner].includes(lvl.skillLevel);
+        case Knowledge.beginner:
+            return lvl.skillLevel !== Knowledge.novice;
+        default:
+            true;
+    }
+};

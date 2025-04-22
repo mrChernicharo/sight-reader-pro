@@ -1,4 +1,3 @@
-import { getLevel } from "@/utils/levels";
 import { AppView } from "../atoms/AppView";
 import { CountdownTimer } from "./Timer";
 import { StyleSheet } from "react-native";
@@ -7,6 +6,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { getGameStats } from "@/utils/helperFns";
 import { GameStatsDisplaySimple } from "./GameStatsDisplay/GameStatsDisplaySimple";
 import { useIntl } from "@/hooks/useIntl";
+import { useAllLevels } from "@/hooks/useAllLevels";
 
 export function TimerAndStatsDisplay({
     levelId,
@@ -18,7 +18,7 @@ export function TimerAndStatsDisplay({
     onCountdownFinish: () => void;
 }) {
     const { intl } = useIntl();
-
+    const { getLevel } = useAllLevels();
     const level = getLevel(levelId);
     const [hitsPerMinute, setHitsPerMinute] = useState(0);
     const { currentGame } = useAppStore();

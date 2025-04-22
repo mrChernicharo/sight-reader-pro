@@ -7,7 +7,6 @@ import { SheetMusic } from "@/components/molecules/SheetMusic";
 import { Colors } from "@/utils/Colors";
 import { LevelAccidentType, Clef, GameType, WinRank, KeySignature } from "@/utils/enums";
 import { isNoteHigher } from "@/utils/helperFns";
-import { getLevel } from "@/utils/levels";
 import { Level, Note } from "@/utils/types";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -21,8 +20,10 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useEffect } from "react";
 import { glyphs } from "@/utils/constants";
 import { testBorder } from "@/utils/styles";
+import { useAllLevels } from "@/hooks/useAllLevels";
 
 export default function LevelDetails() {
+    const { getLevel } = useAllLevels();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const muteColor = useThemeColor({ light: Colors.light.textMute, dark: Colors.dark.textMute }, "textMute");
     const { id } = useLocalSearchParams() as { id: string };

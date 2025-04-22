@@ -3,7 +3,7 @@ import { getGameStats, makeLevelGroup, padZero } from "./helperFns";
 
 import { Game, Level, Scale, SectionedLevel } from "./types";
 
-export function getLevel(levelId: string) {
+function getLevelPrivate(levelId: string) {
     // console.log("<getLevel>", { level, levelId });
     const level = ALL_LEVELS.find((lvl) => lvl.id === levelId)!;
     return level;
@@ -27,7 +27,7 @@ export function getUnlockedLevels(games: Game[], intl: Intl.NumberFormat) {
     const nonPracticeGames = games.filter((g) => !g.levelId.includes("practice"));
     // console.log("getUnlockedLevels:::", JSON.stringify(games, null, 2), "game count:::", games.length);
     for (const game of nonPracticeGames) {
-        const level = getLevel(game.levelId);
+        const level = getLevelPrivate(game.levelId);
         // console.log("level:::", JSON.stringify(level, null, 2));
         if (!game || !level) continue;
 
@@ -558,15 +558,3 @@ const BASS_LEVELS: Level[] = assembleLevelInfo(Clef.Bass, [
 ]);
 
 export let ALL_LEVELS = [...TREBLE_LEVELS, ...BASS_LEVELS];
-// console.log("ALL_LEVELS:::", ALL_LEVELS, TREBLE_LEVELS.length);
-
-export const SECTIONED_LEVELS: SectionedLevel[] = [
-    {
-        title: Clef.Treble,
-        data: TREBLE_LEVELS,
-    },
-    {
-        title: Clef.Bass,
-        data: BASS_LEVELS,
-    },
-];

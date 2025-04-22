@@ -1,21 +1,7 @@
-import AppButton from "@/components/atoms/AppButton";
-import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
-import { Colors } from "@/utils/Colors";
-import { Clef, GameType, KeySignature } from "@/utils/enums";
-import { getGameStats, isNoteMatch, pickKeySignature } from "@/utils/helperFns";
-import { ALL_LEVELS, getLevel } from "@/utils/levels";
-import { SingleNoteRound } from "@/utils/types";
-import { useAppStore } from "@/hooks/useAppStore";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { router, useLocalSearchParams } from "expo-router";
-import { Animated, Dimensions, Easing, StyleSheet } from "react-native";
-import { useTheme } from "@/hooks/useTheme";
-import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
 import { useEffect, useRef } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { Animated, Dimensions, Easing, StyleSheet } from "react-native";
 
 export interface ConfettiProps {
     height?: number;

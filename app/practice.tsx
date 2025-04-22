@@ -13,7 +13,7 @@ import { glyphs } from "@/utils/constants";
 import { Clef, GameType, KeySignature, Knowledge, LevelAccidentType, TimeSignature, WinRank } from "@/utils/enums";
 import { explodeNote, isFlatKeySignature } from "@/utils/helperFns";
 import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
-import { ALL_LEVELS } from "@/utils/levels";
+
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { Level, LevelId, NoteRange, Scale } from "@/utils/types";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -24,12 +24,15 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RangeSlider from "../components/atoms/RangeSlider";
+import { useAllLevels } from "@/hooks/useAllLevels";
+import { ALL_LEVELS } from "@/utils/levels";
 
 // const KEY_SIGNATURES = Object.values(KeySignature).map((v) => ({ label: v, value: v.toLowerCase() }));
 
 export default function PracticeScreen() {
     const theme = useTheme();
     const { t } = useTranslation();
+    const { allLevels, getLevel } = useAllLevels();
 
     const { practiceSettings, updatePracticeSettings, endGame } = useAppStore();
     const { clef, isMinorKey, scale, keySignature = KeySignature.C, noteRangeIndices, gameType } = practiceSettings;
@@ -91,7 +94,7 @@ export default function PracticeScreen() {
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
             timeSignature: TimeSignature["4/4"],
-            index: ALL_LEVELS.length - 1,
+            index: allLevels.length - 1,
             scale,
         };
 
@@ -106,7 +109,7 @@ export default function PracticeScreen() {
             durationInSeconds,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20 },
             keySignature,
-            index: ALL_LEVELS.length - 1,
+            index: allLevels.length - 1,
             scale,
         };
 

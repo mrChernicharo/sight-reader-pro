@@ -1,6 +1,5 @@
 import { Colors } from "@/utils/Colors";
 import { getGameStats, isNoteMatch } from "@/utils/helperFns";
-import { getLevel } from "@/utils/levels";
 import { Game, Note } from "@/utils/types";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
@@ -9,11 +8,14 @@ import { AppView } from "./AppView";
 import { GameType } from "@/utils/enums";
 import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
+import { useAllLevels } from "@/hooks/useAllLevels";
 
 const intlDate = new Intl.DateTimeFormat("en-us", { dateStyle: "medium", timeStyle: "medium" });
 
 export function GameRecord({ game }: { game: Game }) {
     const theme = useTheme();
+    const { getLevel } = useAllLevels();
+
     const level = getLevel(game.levelId);
     const { intl } = useIntl();
     const { successes, mistakes, accuracy } = getGameStats(level, game.rounds, intl);

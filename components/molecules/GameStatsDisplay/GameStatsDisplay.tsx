@@ -139,10 +139,10 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
                 <AppView transparentBG style={{ alignItems: "center" }}>
                     <FadeIn delay={1500} x={-50} y={0}>
-                        <AppText type="title">{t("game.TOTAL_SCORE")}</AppText>
+                        <AppText type="default">{t("game.TOTAL_SCORE")}</AppText>
                     </FadeIn>
                     <FadeIn delay={1600} x={-50} y={0}>
-                        <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 32 }}>
+                        <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>
                             {intl.format(score.value)}
                         </AppText>
                     </FadeIn>
