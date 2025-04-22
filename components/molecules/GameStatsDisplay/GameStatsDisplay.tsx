@@ -119,7 +119,9 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                         </AppText>
                     </FadeIn>
                     <FadeIn delay={600} x={50} duration={250} y={0}>
-                        <AppText style={{ color: Colors[theme].textMute }}>{score.multiplier} mult</AppText>
+                        <AppText style={{ color: Colors[theme].textMute }}>
+                            {intl.format(score.multiplier)} mult
+                        </AppText>
                         <AppText style={{ position: "absolute", left: -20, top: 0, color: Colors[theme].textMute }}>
                             X
                         </AppText>

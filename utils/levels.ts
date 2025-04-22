@@ -1,23 +1,7 @@
-import {
-    Clef,
-    GameType,
-    WinRank,
-    LevelAccidentType,
-    KeySignature,
-    ScaleType,
-    Accident,
-    TimeSignature,
-    Knowledge,
-} from "./enums";
-import { getGameStats, padZero, makeLevelGroup } from "./helperFns";
-import {
-    MAJOR_KEY_SIGNATURES_FLAT,
-    MAJOR_KEY_SIGNATURES_SHARP,
-    MINOR_KEY_SIGNATURES_FLAT,
-    MINOR_KEY_SIGNATURES_SHARP,
-} from "./keySignature";
+import { Clef, GameType, KeySignature, Knowledge, TimeSignature } from "./enums";
+import { getGameStats, makeLevelGroup, padZero } from "./helperFns";
 
-import { SectionedLevel, Level, Game, Scale } from "./types";
+import { Game, Level, Scale, SectionedLevel } from "./types";
 
 export function getLevel(levelId: string) {
     // console.log("<getLevel>", { level, levelId });
@@ -98,8 +82,8 @@ const TREBLE_NOVICE_LEVELS = makeLevelGroup({
     name: "basics",
     skillLevel: Knowledge.novice,
     clef: Clef.Treble,
-    durations: { min: 20, max: 40 },
-    // durations: { min: 4, max: 4 },
+    // durations: { min: 20, max: 40 },
+    durations: { min: 4, max: 4 },
     // durations: { min: 300, max: 400 },
     keySignatures: [KeySignature.C],
     timeSignatures: [TimeSignature["4/4"]],

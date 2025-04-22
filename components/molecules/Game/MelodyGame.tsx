@@ -46,7 +46,7 @@ export function MelodyGameComponent() {
         useAppStore();
     const { playPianoNote, releasePianoNote, playSoundEfx } = useSoundContext();
 
-    const rounds = currentGame?.rounds || [];
+    const rounds = currentGame?.rounds.slice() || [];
     const currRound = rounds.at(-1) as MelodyRound;
     const keySignature = decodeURIComponent(ksig) as KeySignature;
 
@@ -120,7 +120,7 @@ export function MelodyGameComponent() {
     };
 
     const onCountdownFinish = useCallback(async () => {
-        saveGameRecord({
+        await saveGameRecord({
             id: randomUID(),
             levelId: id,
             rounds,
@@ -128,15 +128,7 @@ export function MelodyGameComponent() {
             type: GameType.Melody,
             durationInSeconds: level.durationInSeconds,
         });
-        return router.replace({
-            pathname: "/game-over",
-            // params: {
-            //     rounds: JSON.stringify(rounds),
-            //     level: JSON.stringify(level),
-            //     lastGame: JSON.stringify(games.at(-1)),
-            //     currentGame: JSON.stringify(currentGame),
-            // },
-        });
+        return router.replace({ pathname: "/game-over" });
     }, [level, id, rounds, games, currentGame]);
 
     // start new game
@@ -168,7 +160,7 @@ export function MelodyGameComponent() {
     // useEffect(() => {
     //     return () => {
     //         console.log("MELODY GAME UNMOUNT!!!");
-    //         endGame();
+    //         // setTimeout(() => endGame(), 1000);
     //     };
     // }, []);
 

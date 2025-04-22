@@ -40,13 +40,14 @@ export default function GameOverScreen() {
     const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
 
-    const { endGame, games, currentGame } = useAppStore();
+    const { endGame, games } = useAppStore();
 
-    const level = getLevel(currentGame?.levelId ?? "basics 01");
-    const isPracticeLevel = level?.id && ["treble-practice", "bass-practice"].includes(level.id);
     const lastGame = games.at(-1);
 
-    const { hasWon, hitsPerMinute } = getGameStats(level, currentGame?.rounds ?? [], intl);
+    const level = getLevel(lastGame?.levelId ?? "basics 01");
+    const isPracticeLevel = level?.id && ["treble-practice", "bass-practice"].includes(level.id);
+
+    const { hasWon, hitsPerMinute } = getGameStats(level, lastGame?.rounds ?? [], intl);
     const emoji = hasWon ? " 🎉 " : " 😩 ";
     const msg = t(hasWon ? "game.state.win" : "game.state.lose");
 
@@ -97,8 +98,8 @@ export default function GameOverScreen() {
     //     console.log({ currentGame, hasWon });
     // }, [currentGame, hasWon]);
 
-    if (!level || !lastGame || !currentGame || !currentGame?.rounds?.length) {
-        console.log("HHHHHAAAAAAAAAAA!!!!!");
+    if (!level || !lastGame) {
+        // console.log("HHHHHAAAAAAAAAAA!!!!!");
         return null;
     }
 

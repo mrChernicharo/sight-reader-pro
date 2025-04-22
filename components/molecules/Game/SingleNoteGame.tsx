@@ -81,11 +81,12 @@ export function SingleNoteGameComponent() {
 
     const [tourStep, setTourStep] = useState(-1);
 
-    const rounds = currentGame?.rounds || [];
     const keySignature = decodeURIComponent(keySig) as KeySignature;
     const level = getLevel(id);
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
+
+    const rounds = currentGame?.rounds.slice() || [];
 
     const [gameState, setGameState] = useState<GameState>(GameState.Idle);
     const [currNote, setCurrNote] = useState<Note>(
@@ -135,28 +136,6 @@ export function SingleNoteGameComponent() {
 
     function onPianoKeyReleased(notename: NoteName) {}
 
-    const onCountdownFinish = useCallback(async () => {
-        setGameState(GameState.Idle);
-        saveGameRecord({
-            id: randomUID(),
-            levelId: id,
-            rounds,
-            timestamp: Date.now(),
-            type: GameType.Single,
-            durationInSeconds: level.durationInSeconds,
-        });
-
-        router.replace({
-            pathname: "/game-over",
-            // params: {
-            //     rounds: JSON.stringify(rounds),
-            //     level: JSON.stringify(level),
-            //     lastGame: JSON.stringify(games.at(-1)),
-            //     currentGame: JSON.stringify({ ...currentGame }),
-            // },
-        });
-    }, [level, id]);
-
     const onBackLinkPress = () => {
         if (prevPage == "/practice") {
             console.log("leaving practice game");
@@ -164,6 +143,22 @@ export function SingleNoteGameComponent() {
             ALL_LEVELS.pop();
         }
     };
+
+    const onCountdownFinish = useCallback(async () => {
+        setGameState(GameState.Idle);
+        const gameRecord = {
+            id: randomUID(),
+            levelId: id,
+            rounds,
+            timestamp: Date.now(),
+            type: GameType.Single,
+            durationInSeconds: level.durationInSeconds,
+        };
+        console.log("OK", { gameRecord });
+
+        await saveGameRecord(gameRecord);
+        router.replace({ pathname: "/game-over" });
+    }, [level, id, rounds]);
 
     // useEffect(() => {
     //     (async() => {})()
@@ -183,14 +178,16 @@ export function SingleNoteGameComponent() {
     }, [id, level]);
 
     useEffect(() => {
-        console.log("SINGLE NOTE GAME MOUNTED!!!");
+        // console.log("SINGLE NOTE GAME MOUNTED!!!");
         setTimeout(() => setTourStep(0), 200);
-
-        // return () => {
-        //     console.log("SINGLE NOTE GAME UNMOUNT!!!");
-        //     endGame();
-        // };
     }, []);
+
+    // useEffect(() => {
+    //     return () => {
+    //         console.log("SINGLE NOTE GAME UNMOUNT!!!");
+    //         // setTimeout(() => endGame(), 1000);
+    //     };
+    // }, []);
 
     // useEffect(() => {
     //     console.log({ currentGame });

@@ -155,7 +155,11 @@ export const useAppStore = create<AppState & AppActions>()(
                 setTourCompleted: async (tourName: keyof CompletedTours, completed: boolean) =>
                     set((state) => ({ ...state, completedTours: { ...state.completedTours, [tourName]: completed } })),
 
-                saveGameRecord: async (game: Game) => set((state) => ({ games: [...state.games, game] })),
+                saveGameRecord: async (game: Game) =>
+                    set((state) => {
+                        console.log("saveGameRecord:::", { game });
+                        return { ...state, games: [...state.games, game] };
+                    }),
 
                 startNewGame: async (newGame: CurrentGame) => {
                     // prettier-ignore
