@@ -2,7 +2,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Href, Link, router } from "expo-router";
 import { LinkProps } from "expo-router/build/link/Link";
 import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable, TouchableOpacity } from "react-native-gesture-handler";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
 import { useEffect } from "react";
@@ -23,9 +23,10 @@ export function BackLink(props: BacklinkProps) {
 
     return (
         <AppView style={{ width: 28 }}>
-            <Link asChild replace {...rest} href={href}>
-                <TouchableOpacity
+            <Link {...rest} href={href} replace asChild>
+                <Pressable
                     style={style}
+                    onPress={onPress}
                     // onPress={() => {
                     //     console.log("pressed!");
                     //     if (onPress) {
@@ -35,12 +36,11 @@ export function BackLink(props: BacklinkProps) {
                     //         router.navigate("/");
                     //     }
                     // }}
-                    onPress={onPress}
                 >
                     <AppText>
                         <Ionicons name="chevron-back" size={24} />
                     </AppText>
-                </TouchableOpacity>
+                </Pressable>
             </Link>
         </AppView>
     );

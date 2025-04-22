@@ -31,7 +31,7 @@ import {
     SingleNoteRound,
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleProp, TextStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tooltip from "react-native-walkthrough-tooltip";
@@ -44,6 +44,17 @@ import { AttemptedNote } from "@/components/atoms/AttemptedNote";
 const DELAY = 60;
 
 const s = STYLES.game;
+
+const getNoteColor = (gameState: GameState, theme: "light" | "dark") => {
+    switch (gameState) {
+        case GameState.Idle:
+            return undefined;
+        case GameState.Success:
+            return Colors[theme].green;
+        case GameState.Mistake:
+            return Colors[theme].red;
+    }
+};
 
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
@@ -180,7 +191,8 @@ export function SingleNoteGameComponent() {
 
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 
-    const noteProps = { keys: [currNote], clef: level.clef, keySignature };
+    const noteColor = getNoteColor(gameState, theme);
+    const noteProps = { keys: [currNote], clef: level.clef, keySignature, noteColor };
     const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
     return (
@@ -274,11 +286,11 @@ export function SingleNoteGameComponent() {
                     }
                 >
                     {/* GAME STAGE */}
-                    <SingleNoteGameStage gameState={gameState} noteProps={noteProps} />
+                    <SingleNoteGameStage noteProps={noteProps} />
                 </Tooltip>
             )}
 
-            <AppView style={[s.attemptedNotes, { ...testBorder() }]}>
+            <AppView style={[s.attemptedNotes]}>
                 {attemptedNotes.map((attempt) => (
                     <AttemptedNote key={attempt.id} attempt={attempt} />
                 ))}
@@ -310,28 +322,13 @@ export function SingleNoteGameComponent() {
 }
 
 function SingleNoteGameStage({
-    gameState,
     noteProps,
 }: {
-    gameState: GameState;
     noteProps: {
         keys: Note[];
         clef: Clef;
         keySignature: KeySignature;
     };
 }) {
-    const theme = useTheme();
-    //   const backgroundColor = Colors[theme].bg;
-    return (
-        <>
-            {gameState === GameState.Idle ? <SheetMusic.SingleNote {...noteProps} /> : null}
-
-            {gameState === GameState.Success ? (
-                <SheetMusic.SingleNote {...noteProps} noteColor={Colors[theme].green} />
-            ) : null}
-            {gameState === GameState.Mistake ? (
-                <SheetMusic.SingleNote {...noteProps} noteColor={Colors[theme].red} />
-            ) : null}
-        </>
-    );
+    return <SheetMusic.SingleNote {...noteProps} />;
 }

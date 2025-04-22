@@ -671,13 +671,13 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
 export function getLevelHintCount(skillLevel: Knowledge) {
     switch (skillLevel) {
         case Knowledge.novice:
-            return 3;
+            return 4;
         case Knowledge.beginner:
-            return 2;
+            return 3;
         case Knowledge.intermediary:
-            return 1;
+            return 2;
         default:
-            return 0;
+            return 1;
     }
 }
 

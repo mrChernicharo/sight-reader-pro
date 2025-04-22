@@ -18,15 +18,17 @@ import { LevelTile } from "@/components/atoms/LevelTile";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { BottomTabs } from "@/components/molecules/BottomTabs";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { testBorder } from "@/utils/styles";
+import { useTheme } from "@/hooks/useTheme";
 
 const cols = 3;
 
 export default function LevelSelectionScreen() {
     const { intl } = useIntl();
     const { t } = useTranslation();
+    const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "accent");
-
     const games = useAppStore((state) => state.games);
     const clef = useAppStore((state) => state.selectedLevelsClef);
     const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
@@ -48,10 +50,10 @@ export default function LevelSelectionScreen() {
             <ScrollView contentContainerStyle={{ backgroundColor }}>
                 <AppView style={s.container}>
                     <AppView style={s.top}>
-                        <AppView style={{ position: "absolute", left: 0, top: 1 }}>
+                        <AppView style={{ position: "absolute", left: 0, top: 6 }}>
                             <BackLink />
                         </AppView>
-                        <AppText type="defaultSemiBold">{t("routes.levelSelection")}</AppText>
+                        <AppText type="subtitle">{t("routes.levelSelection")}</AppText>
                     </AppView>
 
                     <AppView key={clefLevels.title}>
@@ -166,9 +168,11 @@ export const s = StyleSheet.create({
         position: "relative",
     },
     top: {
-        width: "100%",
+        width: Dimensions.get("window").width - 64,
         position: "relative",
         alignItems: "center",
+        marginHorizontal: "auto",
+        // ...testBorder(),
     },
     sectionTitle: {
         paddingBottom: 16,

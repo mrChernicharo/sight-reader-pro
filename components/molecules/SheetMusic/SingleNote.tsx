@@ -183,9 +183,6 @@ type SvgStrut = {
 
 function addColorToNoteOutput(svgStruct: any, color: string) {
     // console.log("svgStruct", svgStruct);
-
-    let elem: any;
-
     const result: SvgStrut = {
         ...svgStruct,
         props: {
@@ -245,7 +242,7 @@ const styles = StyleSheet.create({
         // borderStyle: "dashed",
         // backgroundColor: "#F5FCFF",
         backgroundColor: "transparent",
-        // ...testBorder("green"),
+        // ...testBorder("blue"),
     },
     sheetMusic: {
         flex: 1,

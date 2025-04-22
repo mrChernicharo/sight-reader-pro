@@ -18,7 +18,7 @@ export function KeySignatureSlider({
     const theme = useTheme();
 
     return (
-        <AppView style={s.keySlider}>
+        <AppView transparentBG style={s.keySlider}>
             <AppText style={{ fontSize: 32 }}> {glyphs.flat}</AppText>
             <Slider
                 style={{ width: 200, height: 40 }}

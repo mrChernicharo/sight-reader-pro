@@ -40,6 +40,7 @@ export function FadeOut({ children, x = 0, y = 0, duration = 500, delay = 0, sty
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
+            backgroundColor: "transparent",
             opacity: opacity.value,
             transform: [
                 { translateY: Y.value },

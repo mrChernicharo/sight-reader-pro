@@ -7,7 +7,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 import { useTheme } from "@/hooks/useTheme";
 import { testBorder } from "@/utils/styles";
-import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { AppView } from "./AppView";
 
 export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
@@ -20,19 +20,28 @@ export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
     const color = success ? Colors[theme].green : Colors[theme].red;
 
     return (
-        <FadeOut y={-60} duration={duration} style={{ position: "absolute", bottom: 40, alignItems: "center" }}>
+        <FadeOut
+            y={-60}
+            duration={duration}
+            style={{ position: "absolute", bottom: 40, alignItems: "center", backdropFilter: "blur(1.2)" }}
+        >
             {/* TOP LINE */}
-            <AppView style={{ flexDirection: "row", alignItems: "baseline" }}>
+            <AppView transparentBG style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
+                <AntDesign
+                    name={success ? "checkcircle" : "closecircle"}
+                    style={{ fontWeight: "900", marginBottom: 2 }}
+                    size={14}
+                    color={color}
+                />
+
                 <AppText style={{ color, fontWeight: "900", fontSize: 24, lineHeight: 24 }}>
                     {t(`music.notes.${noteName}`)}
                 </AppText>
-
-                <FontAwesome name={success ? "check" : "close"} style={{ fontWeight: "900" }} size={24} color={color} />
             </AppView>
 
             {/* BOTTOM LINE */}
             <AppText style={{ color, lineHeight: 16 }}>
-                {success ? "800 pts" : `${t(`game.was`)} ${t(`music.notes.${correct}`)}`}
+                {success ? "800 pts" : `( ${t(`game.was`)} ${t(`music.notes.${correct}`)} )`}
             </AppText>
         </FadeOut>
     );
