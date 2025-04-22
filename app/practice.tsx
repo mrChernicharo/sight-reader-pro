@@ -5,35 +5,25 @@ import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { KeySignatureSlider } from "@/components/molecules/KeySlider";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
-import { defaultNoteRangeIndices, useAppStore } from "@/hooks/useAppStore";
+import { useAppStore } from "@/hooks/useAppStore";
+import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
-import {
-    Clef,
-    GameType,
-    KeySignature,
-    Knowledge,
-    LevelAccidentType,
-    ScaleType,
-    TimeSignature,
-    WinRank,
-} from "@/utils/enums";
-import { explodeNote, isFlatKeySignature, wait } from "@/utils/helperFns";
+import { Clef, GameType, KeySignature, Knowledge, LevelAccidentType, TimeSignature, WinRank } from "@/utils/enums";
+import { explodeNote, isFlatKeySignature } from "@/utils/helperFns";
 import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature";
 import { ALL_LEVELS } from "@/utils/levels";
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { Level, LevelId, NoteRange, Scale } from "@/utils/types";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { StyleSheet, useWindowDimensions } from "react-native";
-import { useTheme } from "@/hooks/useTheme";
+import { StyleSheet } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RangeSlider from "../components/atoms/RangeSlider";
-import { testBorder } from "@/utils/styles";
-import { FontAwesome5 } from "@expo/vector-icons";
 
 // const KEY_SIGNATURES = Object.values(KeySignature).map((v) => ({ label: v, value: v.toLowerCase() }));
 
@@ -42,7 +32,6 @@ const ACCIDENTS = Object.values(LevelAccidentType).map((v) => ({
     value: v.toLowerCase(),
 }));
 export default function PracticeScreen() {
-    // const { width } = useWindowDimensions();
     const theme = useTheme();
     const { t } = useTranslation();
 
@@ -56,6 +45,8 @@ export default function PracticeScreen() {
     const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;
     const altKeySigArray = isMinorKey ? MAJOR_KEY_SIGNATURES : MINOR_KEY_SIGNATURES;
     const keySigIndex = keySigArray.findIndex((key) => key === keySignature);
+
+    const [selectedScale, setScale] = useState(scale);
 
     const CURR_KEY_SIGNATURES = keySigArray.map((v) => ({ label: v, value: v.toLowerCase() }));
 
@@ -78,9 +69,12 @@ export default function PracticeScreen() {
 
     // const rangeNotes = allNotes.filter((_, idx) => noteRangeIndices.low < idx && idx < noteRangeIndices.high);
 
-    const onNoteRangeSliderChange = useCallback((low: number, high: number) => {
-        updatePracticeSettings("noteRangeIndices", { low, high });
-    }, []);
+    const onNoteRangeSliderChange = useCallback(
+        (low: number, high: number) => {
+            updatePracticeSettings("noteRangeIndices", { low, high });
+        },
+        [updatePracticeSettings]
+    );
 
     // CREATE A LEVEL IN MEMORY, THEN REFERENCE IT WITHIN GAME COMPONENT
     const startPracticeGame = useCallback(async () => {
@@ -134,6 +128,14 @@ export default function PracticeScreen() {
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
     }, [clef, noteRangeIndices.low, noteRangeIndices.high, CURR_KEY_SIGNATURES, keySignature, allNotes, ALL_LEVELS]);
+
+    // const onScaleChange = useCallback((val: ScaleType) => {
+    //     updatePracticeSettings("scale", val);
+    // }, []);
+
+    useEffect(() => {
+        updatePracticeSettings("scale", selectedScale);
+    }, [selectedScale]);
 
     const loNote = allNotes?.[noteRangeIndices.low] || "c/4";
     const hiNote = allNotes?.[noteRangeIndices.high] || "c/5";
@@ -209,7 +211,7 @@ export default function PracticeScreen() {
                             <SelectList
                                 data={SCALES}
                                 save="key"
-                                setSelected={(val: ScaleType) => updatePracticeSettings("scale", val)}
+                                setSelected={setScale} // setScale is dangerous and can cause infinite loops
                                 search={false}
                                 defaultOption={DEFAULT_SCALE}
                                 inputStyles={{
@@ -264,13 +266,11 @@ export default function PracticeScreen() {
 
                     <AppView style={[s.keySignatureContainer, { backgroundColor: Colors[theme].bgSelected }]}>
                         <AppView transparentBG style={s.box}>
-                            {/* <AppText>{t("music.clef")}</AppText> */}
                             <AppText>{t("game.type.single")}</AppText>
                             <AppSwitch
                                 value={gameType == GameType.Melody}
                                 setValue={(val) => {
                                     const type = val ? GameType.Melody : GameType.Single;
-                                    // console.log({ val, type });
                                     updatePracticeSettings("gameType", type);
                                 }}
                             />
