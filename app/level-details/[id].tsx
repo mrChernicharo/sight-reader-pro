@@ -18,6 +18,7 @@ import { FadeIn } from "@/components/atoms/FadeIn";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useAppStore } from "@/hooks/useAppStore";
+import { useEffect } from "react";
 
 export default function LevelDetails() {
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
@@ -25,9 +26,7 @@ export default function LevelDetails() {
     const { id } = useLocalSearchParams() as { id: string };
     const { t } = useTranslation();
     const level = getLevel(id);
-    const { endGame } = useAppStore();
-
-    if (!level) return null;
+    const { currentGame, endGame } = useAppStore();
 
     // console.log(":::LevelDetails", level);
     // if (level.gameType !== GameType.Single) return;
@@ -39,7 +38,7 @@ export default function LevelDetails() {
     };
 
     function handleNewGame() {
-        // endGame();
+        if (currentGame) endGame();
         switch (level.type) {
             case GameType.Single:
             case GameType.Melody: {
@@ -51,6 +50,8 @@ export default function LevelDetails() {
             }
         }
     }
+
+    if (!level) return null;
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor }}>

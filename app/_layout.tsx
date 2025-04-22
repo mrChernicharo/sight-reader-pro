@@ -33,11 +33,6 @@ export default function RootLayout() {
 
     useEffect(() => {
         console.log("path :::", path);
-        // return () => {
-        //     if (path.includes("/game-level/")) {
-        //         console.log("GAME SCREEN :::::");
-        //     }
-        // };
     }, [path]);
 
     useEffect(() => {
@@ -65,7 +60,7 @@ export default function RootLayout() {
 
     if (!_hydrated)
         return (
-            <AppView>
+            <AppView style={{ flex: 1 }}>
                 <AppText>Loading...</AppText>
             </AppView>
         );

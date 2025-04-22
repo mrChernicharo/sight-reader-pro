@@ -4,6 +4,7 @@ import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { Confetti } from "@/components/molecules/Game/Confetti";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -11,7 +12,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { GameType } from "@/utils/enums";
 import { getGameStats } from "@/utils/helperFns";
-import { ALL_LEVELS } from "@/utils/levels";
+import { ALL_LEVELS, getLevel } from "@/utils/levels";
 import { Game, Level, Round } from "@/utils/types";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
@@ -38,18 +39,12 @@ export default function GameOverScreen() {
     const { t } = useTranslation();
     const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
-    const params = useLocalSearchParams() as unknown as GameOverScreenParams;
 
-    const currentGame = JSON.parse(params.currentGame) as Game;
-    const lastGame = JSON.parse(params.lastGame) as Game;
-    const level = JSON.parse(params.level) as Level;
-    const rounds = JSON.parse(params.rounds) as Round<GameType>;
+    const { endGame, games, currentGame } = useAppStore();
 
-    console.log({ currentGame });
-
-    // const level = getLevel(currentGame?.levelId ?? "basics 01");
+    const level = getLevel(currentGame?.levelId ?? "basics 01");
     const isPracticeLevel = level?.id && ["treble-practice", "bass-practice"].includes(level.id);
-    // const lastGame = games.at(-1);
+    const lastGame = games.at(-1);
 
     const { hasWon, hitsPerMinute } = getGameStats(level, currentGame?.rounds ?? [], intl);
     const emoji = hasWon ? " 🎉 " : " 😩 ";
@@ -91,7 +86,16 @@ export default function GameOverScreen() {
             setBtnsEnabled(true);
             // console.log("setBtnsEnabled:::::");
         }, timeToEnabled);
+
+        return () => {
+            console.log("GAME OVER UNMOUNT!!!!");
+            endGame();
+        };
     }, []);
+
+    // useEffect(() => {
+    //     console.log({ currentGame, hasWon });
+    // }, [currentGame, hasWon]);
 
     if (!level || !lastGame || !currentGame || !currentGame?.rounds?.length) {
         console.log("HHHHHAAAAAAAAAAA!!!!!");

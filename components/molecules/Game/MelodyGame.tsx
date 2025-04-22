@@ -130,12 +130,12 @@ export function MelodyGameComponent() {
         });
         return router.replace({
             pathname: "/game-over",
-            params: {
-                rounds: JSON.stringify(rounds),
-                level: JSON.stringify(level),
-                lastGame: JSON.stringify(games.at(-1)),
-                currentGame: JSON.stringify(currentGame),
-            },
+            // params: {
+            //     rounds: JSON.stringify(rounds),
+            //     level: JSON.stringify(level),
+            //     lastGame: JSON.stringify(games.at(-1)),
+            //     currentGame: JSON.stringify(currentGame),
+            // },
         });
     }, [level, id, rounds, games, currentGame]);
 
@@ -165,12 +165,12 @@ export function MelodyGameComponent() {
         })();
     }, [rounds]);
 
-    useEffect(() => {
-        return () => {
-            console.log("MELODY GAME UNMOUNT!!!");
-            endGame();
-        };
-    }, []);
+    // useEffect(() => {
+    //     return () => {
+    //         console.log("MELODY GAME UNMOUNT!!!");
+    //         endGame();
+    //     };
+    // }, []);
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>

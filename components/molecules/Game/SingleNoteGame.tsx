@@ -145,16 +145,17 @@ export function SingleNoteGameComponent() {
             type: GameType.Single,
             durationInSeconds: level.durationInSeconds,
         });
-        return router.replace({
+
+        router.replace({
             pathname: "/game-over",
-            params: {
-                rounds: JSON.stringify(rounds),
-                level: JSON.stringify(level),
-                lastGame: JSON.stringify(games.at(-1)),
-                currentGame: JSON.stringify(currentGame),
-            },
+            // params: {
+            //     rounds: JSON.stringify(rounds),
+            //     level: JSON.stringify(level),
+            //     lastGame: JSON.stringify(games.at(-1)),
+            //     currentGame: JSON.stringify({ ...currentGame }),
+            // },
         });
-    }, [level, id, rounds, games, currentGame]);
+    }, [level, id]);
 
     const onBackLinkPress = () => {
         if (prevPage == "/practice") {
@@ -182,15 +183,18 @@ export function SingleNoteGameComponent() {
     }, [id, level]);
 
     useEffect(() => {
+        console.log("SINGLE NOTE GAME MOUNTED!!!");
         setTimeout(() => setTourStep(0), 200);
 
-        return () => {
-            setTimeout(() => {
-                console.log("SINGLE NOTE GAME UNMOUNT!!!");
-                endGame();
-            }, 3000);
-        };
+        // return () => {
+        //     console.log("SINGLE NOTE GAME UNMOUNT!!!");
+        //     endGame();
+        // };
     }, []);
+
+    // useEffect(() => {
+    //     console.log({ currentGame });
+    // }, [currentGame]);
 
     useEffect(() => {
         console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });

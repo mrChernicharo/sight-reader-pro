@@ -8,7 +8,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { getUnlockedLevels, SECTIONED_LEVELS } from "@/utils/levels";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Tooltip from "react-native-walkthrough-tooltip";
@@ -33,6 +33,8 @@ export default function LevelSelectionScreen() {
     const clef = useAppStore((state) => state.selectedLevelsClef);
     const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
+    // const currentGame = useAppStore((state) => state.currentGame);
+    // const endGame = useAppStore((state) => state.endGame);
 
     const [tourStep, setTourStep] = useState(-1);
 
