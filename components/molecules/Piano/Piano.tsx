@@ -42,15 +42,16 @@ export function Piano({
     const keyboardMargin = 0;
     const keyWidth = (width - keyboardMargin * 2) / 7;
     const currNoteName = currNote ? explodeNote(currNote).noteName : null;
+    const hasCompletedTour = useAppStore((state) => state.completedTours.game);
 
     const hints = useRef(hintCount);
 
     const hintPianoKey = useCallback(
         (note: NoteName) => {
             // console.log({ note, currNoteName, currNote, notePlayedTimes, hintCount });
-            return note === currNoteName && hints.current > 0;
+            return hasCompletedTour && note === currNoteName && hints.current > 0;
         },
-        [hintCount, currNoteName]
+        [hintCount, currNoteName, hasCompletedTour]
     );
 
     useEffect(() => {

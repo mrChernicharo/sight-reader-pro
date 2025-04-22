@@ -148,7 +148,11 @@ export const useAppStore = create<AppState & AppActions>()(
 
                 setUsername: async (name: string) => set(() => ({ username: name })),
                 setLanguage: async (lang: "en" | "pt-BR") => set({ language: lang }),
-                setKnowledge: async (knowledge: Knowledge) => set(() => ({ knowledge: knowledge })),
+                setKnowledge: async (knowledge: Knowledge) =>
+                    set(() => ({
+                        knowledge,
+                        showPianoNoteNames: [Knowledge.advanced, Knowledge.pro].includes(knowledge) ? false : true,
+                    })),
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
                 toggleShowPianoNoteNames: async (show: boolean) => set(() => ({ showPianoNoteNames: show })),
                 setSelectedLevelsClef: async (clef: Clef) => set(() => ({ selectedLevelsClef: clef })),
