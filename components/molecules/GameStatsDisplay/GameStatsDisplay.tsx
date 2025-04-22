@@ -47,7 +47,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                             &nbsp;{t("game.NotesPerMin")}
                         </AppText>
                         <AppView>
-                            <AppText>{notesPerMinute}</AppText>
+                            <AppText type="mdSemiBold">{notesPerMinute}</AppText>
                         </AppView>
                     </AppView>
                 </FadeIn>
@@ -59,7 +59,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                             &nbsp;{t("game.accuracy")}
                         </AppText>
                         <AppView>
-                            <AppText>{accuracy}</AppText>
+                            <AppText type="mdSemiBold">{accuracy}</AppText>
                         </AppView>
                     </AppView>
                 </FadeIn>
@@ -73,7 +73,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                             &nbsp;{t("game.attempts")}
                         </AppText>
                         <AppView>
-                            <AppText>{attempts}</AppText>
+                            <AppText type="mdSemiBold">{attempts}</AppText>
                         </AppView>
                     </AppView>
                 </FadeIn>
@@ -86,7 +86,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                         </AppText>
 
                         <AppView>
-                            <AppText>{successes}</AppText>
+                            <AppText type="mdSemiBold">{successes}</AppText>
                         </AppView>
                     </AppView>
                 </FadeIn>
@@ -99,7 +99,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                         </AppText>
 
                         <AppView>
-                            <AppText>{mistakes}</AppText>
+                            <AppText type="mdSemiBold">{mistakes}</AppText>
                         </AppView>
                     </AppView>
                 </FadeIn>
@@ -109,18 +109,23 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                 <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
                     <FadeIn delay={0} x={50} duration={250} y={0}>
                         <AppText style={{ color: Colors[theme].textMute }}>
-                            {score.hits} {t(score.hits == 1 ? "game.hit" : "game.hits")}
+                            <AppText style={{ fontWeight: 900 }}>{score.hits} </AppText>
+                            <AppText>{t(score.hits == 1 ? "game.hit" : "game.hits")}</AppText>
                         </AppText>
                     </FadeIn>
                     <FadeIn delay={300} x={50} duration={250} y={0}>
-                        <AppText style={{ color: Colors[theme].textMute }}>{intl.format(score.hitScore)} pts</AppText>
+                        <AppText style={{ color: Colors[theme].textMute }}>
+                            <AppText style={{ fontWeight: 900 }}>{intl.format(score.hitScore)} </AppText>
+                            <AppText>pts</AppText>
+                        </AppText>
                         <AppText style={{ position: "absolute", left: -20, top: 0, color: Colors[theme].textMute }}>
                             X
                         </AppText>
                     </FadeIn>
                     <FadeIn delay={600} x={50} duration={250} y={0}>
                         <AppText style={{ color: Colors[theme].textMute }}>
-                            {intl.format(score.multiplier)} mult
+                            <AppText style={{ fontWeight: 900 }}>{intl.format(score.multiplier)} </AppText>
+                            <AppText>mult</AppText>
                         </AppText>
                         <AppText style={{ position: "absolute", left: -20, top: 0, color: Colors[theme].textMute }}>
                             X
@@ -134,10 +139,12 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
                 <AppView transparentBG style={{ alignItems: "center" }}>
                     <FadeIn delay={1500} x={-50} y={0}>
-                        <AppText type="subtitle">{t("game.TOTAL_SCORE")}</AppText>
+                        <AppText type="title">{t("game.TOTAL_SCORE")}</AppText>
                     </FadeIn>
                     <FadeIn delay={1600} x={-50} y={0}>
-                        <AppText type="title">{intl.format(score.value)}</AppText>
+                        <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 32 }}>
+                            {intl.format(score.value)}
+                        </AppText>
                     </FadeIn>
                 </AppView>
             </AppView>

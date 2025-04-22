@@ -88,7 +88,9 @@ export default function GameOverScreen() {
                     ) : null}
 
                     <AppView transparentBG style={[s.messageContainer]}>
-                        <AppText type="title">{msg + emoji}</AppText>
+                        <AppText style={{ fontFamily: "Grotesque", fontSize: 28, lineHeight: 32 }}>
+                            {msg + emoji}
+                        </AppText>
 
                         <GameStatsDisplay level={level} hitsPerMinute={hitsPerMinute} />
 

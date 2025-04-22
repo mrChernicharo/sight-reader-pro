@@ -76,7 +76,7 @@ export default function PracticeScreen() {
     const startPracticeGame = useCallback(async () => {
         const levelId: LevelId = `${clef}-practice`;
         const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}` as NoteRange];
-        const durationInSeconds = 6;
+        const durationInSeconds = 60;
         // console.log({ clef, accident, keySignature });
         // console.log("allNotes::::", allNotes, allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]);
 

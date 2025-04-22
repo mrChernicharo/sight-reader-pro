@@ -37,7 +37,7 @@ export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDispla
             <BackLink to={backLinkTo} wrapperStyle={{ top: 6 }} />
 
             <AppView style={[s.row, s.score, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
-                <AppText type="subtitle">
+                <AppText style={{ fontFamily: "Grotesque", fontSize: 20 }}>
                     {t("game.score")} {intl.format(score.value)}
                 </AppText>
             </AppView>

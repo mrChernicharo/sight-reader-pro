@@ -59,8 +59,12 @@ export default function RootLayout() {
     }, [initTourCompleted]);
 
     useEffect(() => {
+        NavigationBar.setVisibilityAsync("hidden");
+        NavigationBar.setBehaviorAsync("overlay-swipe");
+
         NavigationBar.setBackgroundColorAsync(theme == "light" ? Colors.light.bg : Colors.dark.bg);
         NavigationBar.setButtonStyleAsync(theme == "light" ? "dark" : "light");
+
         SystemUI.setBackgroundColorAsync(theme == "light" ? Colors.light.bg : Colors.dark.bg);
         // @TODO: REMOVE THIS BEFORE BUILD
         // router.navigate("/level-selection");

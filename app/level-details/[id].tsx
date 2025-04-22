@@ -10,7 +10,7 @@ import { isNoteHigher } from "@/utils/helperFns";
 import { getLevel } from "@/utils/levels";
 import { Level, Note } from "@/utils/types";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { Dimensions, StatusBar, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,6 +19,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { ScrollView } from "react-native-gesture-handler";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useEffect } from "react";
+import { glyphs } from "@/utils/constants";
+import { testBorder } from "@/utils/styles";
 
 export default function LevelDetails() {
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
@@ -63,14 +65,41 @@ export default function LevelDetails() {
                     <AppText type="title" style={s.title}>
                         {level.name}
                     </AppText>
-                    <AppText type="subtitle" style={s.subtitle}>
+                    {/* <AppText type="subtitle" style={s.subtitle}>
                         {level.id}
-                    </AppText>
+                    </AppText> */}
+
+                    <AppView
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: 4,
+                            marginTop: 32,
+                            // ...testBorder(),
+                        }}
+                    >
+                        <AppText
+                            style={{ color: muteColor, lineHeight: 46, fontSize: level.clef == Clef.Bass ? 28 : 24 }}
+                        >
+                            {glyphs[`${level.clef}Clef`]}
+                        </AppText>
+                        <AppText
+                            style={{
+                                color: muteColor,
+                                fontWeight: 700,
+                                fontSize: 18,
+                                marginBottom: level.clef == Clef.Bass ? 10 : 2,
+                            }}
+                        >
+                            {t(`music.keys.${level.keySignature}`)}
+                        </AppText>
+                    </AppView>
                 </FadeIn>
 
                 <FadeIn y={50} x={0} delay={200} style={s.midContainer}>
                     <AppText>{t(`game.type.${level.type}`)}</AppText>
-                    <AppText>{t(`game.config.${displayInfo.accidentText}`)}</AppText>
+                    {/* <AppText>{t(`game.config.${displayInfo.accidentText}`)}</AppText> */}
                     <AppText>
                         <Ionicons name="time-outline" /> {level.durationInSeconds} {t("time.seconds")}
                     </AppText>

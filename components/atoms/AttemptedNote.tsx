@@ -12,14 +12,14 @@ import { AppView } from "./AppView";
 import { NoteName } from "@/utils/enums";
 import { Dimensions } from "react-native";
 
-const calcOffset = (zeroToOnePerc: number) => {
-    return mapRange(zeroToOnePerc, 0, Dimensions.get("window").width, 1);
+const calcOffset = (zeroToOneValue: number) => {
+    return mapRange(zeroToOneValue, 0, Dimensions.get("window").width, 1);
 };
 
 const noteStyles: Record<NoteName, any> = {
-    c: { left: calcOffset(0) },
-    "b#": { left: calcOffset(0) },
-    dbb: { left: calcOffset(0) },
+    c: { left: calcOffset(0.0125) },
+    "b#": { left: calcOffset(0.0125) },
+    dbb: { left: calcOffset(0.0125) },
 
     "c#": { left: calcOffset(0.065) },
     db: { left: calcOffset(0.065) },
@@ -56,9 +56,9 @@ const noteStyles: Record<NoteName, any> = {
     "a#": { right: calcOffset(0.065) },
     bb: { right: calcOffset(0.065) },
 
-    b: { right: calcOffset(0) },
-    ax: { right: calcOffset(0) },
-    cb: { right: calcOffset(0) },
+    b: { right: calcOffset(0.0125) },
+    ax: { right: calcOffset(0.0125) },
+    cb: { right: calcOffset(0.0125) },
 };
 
 export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {

@@ -44,10 +44,12 @@ export function LevelTile({ level, isLocked }: LevelTileProps) {
             style={[s.item, { backgroundColor }]}
             android_ripple={{ radius: 90, color: Colors[theme].text }}
             onPress={() => {
-                router.push({
+                router.dismissTo({
                     pathname: "/level-details/[id]",
                     params: { id: level.id },
                 });
+                // router.push({
+                // });
             }}
         >
             {/* <AppView style={[s.item, { backgroundColor }]}> */}

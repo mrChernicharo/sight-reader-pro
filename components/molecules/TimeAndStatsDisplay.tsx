@@ -1,5 +1,4 @@
 import { getLevel } from "@/utils/levels";
-import { GameScore } from "@/utils/types";
 import { AppView } from "../atoms/AppView";
 import { CountdownTimer } from "./Timer";
 import { StyleSheet } from "react-native";
