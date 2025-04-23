@@ -222,6 +222,7 @@ export const useAppStore = create<AppState & AppActions>()(
                             username: typedState.username || defaultStore.username,
                             language: typedState.language || defaultStore.language,
                             knowledge: typedState.knowledge || defaultStore.knowledge,
+                            games: typedState.games || defaultStore.games,
                         } as NewAppState;
                     }
 

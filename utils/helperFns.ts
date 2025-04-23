@@ -710,6 +710,7 @@ export const skillFilter = (lvl: Level, knowledge: Knowledge) => {
 };
 
 export function pluckNoteFromMp3Filename(filename: string) {
+    // console.log("pluckNoteFromMp3Filename :::", filename);
     if (filename.startsWith("Piano")) {
         const [piano, mf, note] = filename.split(".");
         const oct = note.at(-1);

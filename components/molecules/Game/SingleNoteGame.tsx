@@ -39,7 +39,7 @@ import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 
-const DELAY = 60;
+const DELAY = 20;
 
 const s = STYLES.game;
 
@@ -99,7 +99,7 @@ export function SingleNoteGameComponent() {
             playPianoNote(playedNote);
             setGameState(GameState.Success);
         } else {
-            playSoundEfx(SoundEffect.WrongAnswer);
+            playSoundEfx(SoundEffect.WrongAnswer2);
             playPianoNote(playedNote);
             playPianoNote(currNote);
             setGameState(GameState.Mistake);

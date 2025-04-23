@@ -70,6 +70,7 @@ export enum Clef {
 
 export enum SoundEffect {
     WrongAnswer = "wrong-answer",
+    WrongAnswer2 = "wrong-answer-2",
 }
 
 export enum GameType {

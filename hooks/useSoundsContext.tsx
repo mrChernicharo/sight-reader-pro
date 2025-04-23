@@ -4,10 +4,14 @@ import { Note } from "@/utils/types";
 import { Asset } from "expo-asset";
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 import { AudioBuffer, AudioBufferSourceNode, AudioContext, GainNode } from "react-native-audio-api";
-import * as SplashScreen from "expo-splash-screen";
 import { useAppStore } from "./useAppStore";
 
+const PIANO_VOLUME = 6;
+const EFX_VOLUME = 0.2;
+
 const requires = [
+    require("../assets/sounds/efx/wrong-answer.mp3"),
+    require("../assets/sounds/efx/wrong-answer-2.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.A1.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.A2.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.A3.mp3"),
@@ -92,7 +96,6 @@ const requires = [
     require("../assets/sounds/piano-notes/Piano.mf.Gb5.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.Gb6.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.Gb7.mp3"),
-    require("../assets/sounds/efx/wrong-answer.mp3"),
 ];
 
 type PR<V> = Partial<Record<string, V>>;
@@ -117,40 +120,58 @@ const initialValues: SoundContext = {
 const SoundContext = createContext<SoundContext>(initialValues);
 
 const SoundContextProvider = (props: { children: ReactNode }) => {
+    const setSoundsLoaded = useAppStore((state) => state.setSoundsLoaded);
+    const globalVolume = useAppStore((state) => state.globalVolume);
+
     const audioContextRef = useRef<AudioContext | null>(null);
     const playingSoundsRef = useRef<PR<PlayingSound>>({});
     const bufferMapRef = useRef<PR<AudioBuffer>>({});
 
-    const setSoundsLoaded = useAppStore((state) => state.setSoundsLoaded);
-
     async function playPianoNote(originalNote: Note) {
         releasePianoNote(originalNote);
 
-        // console.log("<SoundContext> playPianoNote", originalNote);
         const audioContext = audioContextRef.current;
         let buffer = bufferMapRef.current[originalNote];
         const tNow = audioContext?.currentTime;
-        // console.log("onKeyPressIn :::", { audioContext, buffer, tNow, playingNotes: playingSoundsRef.current });
-        if (!audioContext || !buffer || !tNow) {
-            return;
-        }
+
+        if (!audioContext || !buffer || !tNow) return;
 
         const source = audioContext.createBufferSource();
         source.buffer = buffer;
 
         const envelope = audioContext.createGain();
-        // console.log("gain", envelope.gain);
-        source.connect(envelope);
-        envelope.connect(audioContext.destination);
 
         envelope.gain.setValueAtTime(0.001, tNow);
+        envelope.gain.exponentialRampToValueAtTime(PIANO_VOLUME * globalVolume, tNow + 0.02);
 
-        // envelope.gain.exponentialRampToValueAtTime(9, tNow + 0.02);
-        // envelope.gain.exponentialRampToValueAtTime(12, tNow + 0.01);
-        envelope.gain.exponentialRampToValueAtTime(6, tNow + 0.02);
+        source.connect(envelope);
+        envelope.connect(audioContext.destination);
         source.start(tNow);
 
         playingSoundsRef.current[originalNote] = { source, envelope, startedAt: tNow };
+    }
+
+    async function playSoundEfx(efx: SoundEffect) {
+        releaseSoundEfx(efx);
+
+        const audioContext = audioContextRef.current;
+        const buffer = bufferMapRef.current[efx];
+        const tNow = audioContext?.currentTime;
+
+        if (!audioContext || !buffer || !tNow) return;
+
+        const source = audioContext.createBufferSource();
+        source.buffer = buffer;
+
+        const envelope = audioContext.createGain();
+        envelope.gain.setValueAtTime(0.0001, tNow);
+        envelope.gain.exponentialRampToValueAtTime(EFX_VOLUME * globalVolume, tNow + 0.02);
+
+        envelope.connect(audioContext.destination);
+        source.connect(envelope);
+        source.start(tNow);
+
+        playingSoundsRef.current[efx] = { source, envelope, startedAt: tNow };
     }
 
     function releasePianoNote(originalNote: Note) {
@@ -169,37 +190,13 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         playingSoundsRef.current[originalNote] = undefined;
     }
 
-    async function playSoundEfx(efx: SoundEffect) {
-        // console.log("<SoundContext> playSoundEfx", efx);
-        await releaseSoundEfx(efx);
-
-        const audioContext = audioContextRef.current;
-        const buffer = bufferMapRef.current[efx];
-        const tNow = audioContext?.currentTime;
-
-        if (!audioContext || !buffer) return;
-
-        const envelope = audioContext.createGain();
-        const source = audioContext.createBufferSource();
-        source.buffer = buffer;
-
-        envelope.connect(audioContext.destination);
-        source.connect(envelope);
-        source.start(tNow);
-    }
-
-    async function releaseSoundEfx(efx: SoundEffect) {
+    function releaseSoundEfx(efx: SoundEffect) {
         const audioContext = audioContextRef.current!;
         const sound = playingSoundsRef.current[efx];
 
         if (!sound || !audioContext) return;
 
-        const tStop = Math.max(audioContext.currentTime, sound.startedAt + 5);
-
-        sound.envelope.gain.exponentialRampToValueAtTime(0.0001, tStop + 0.08);
-        sound.envelope.gain.setValueAtTime(0, tStop + 0.09);
-
-        sound.source.stop(tStop + 0.1);
+        sound.source.stop(audioContext.currentTime + 0.1);
         playingSoundsRef.current[efx] = undefined;
     }
 
@@ -225,13 +222,18 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
                     const file = asset.localUri;
                     bufferPromises.push(
                         audioContextRef.current!.decodeAudioDataSource(file!).then((audioBuffer) => {
-                            // f#/4 and gb/4 are the same sound, but there's only one Piano.mf.Gb4.mp3 asset
-                            // ensure there's a buffer entry for each possible note name
-                            const equivalentNotes = getEquivalentNotes(key as Note);
-                            equivalentNotes?.forEach((note) => {
-                                bufferMapRef.current[note] = audioBuffer;
-                            });
-                            return audioBuffer;
+                            if (key.includes("Piano")) {
+                                // f#/4 and gb/4 are the same sound, but there's only one Piano.mf.Gb4.mp3 asset
+                                // ensure there's a buffer entry for each possible note name
+                                const equivalentNotes = getEquivalentNotes(key as Note);
+                                equivalentNotes?.forEach((note) => {
+                                    bufferMapRef.current[note] = audioBuffer;
+                                });
+                                return audioBuffer;
+                            } else {
+                                bufferMapRef.current[key] = audioBuffer;
+                                return audioBuffer;
+                            }
                         })
                     );
                 }

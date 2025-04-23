@@ -73,7 +73,6 @@ export default function RootLayout() {
 
     useEffect(() => {
         if (soundsLoaded && fontsLoaded) {
-            console.log("splash hide!", allState);
             SplashScreen.hideAsync();
         }
     }, [soundsLoaded, fontsLoaded]);
