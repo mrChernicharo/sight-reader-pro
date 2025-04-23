@@ -1,14 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
+import { StyleSheet } from "react-native";
 import RangeSliderRN from "rn-range-slider";
-import { View, Text, StyleSheet } from "react-native";
 
 import Label from "./Label";
 import Notch from "./Notch";
 import Rail from "./Rail";
 import RailSelected from "./RailSelected";
 import Thumb from "./Thumb";
-import { AppView } from "../AppView";
-import { AppText } from "../AppText";
 
 const RangeSlider = ({
     low,

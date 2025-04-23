@@ -1,6 +1,5 @@
-import { LevelAccidentType, Clef, GameType, KeySignature, NoteName, WinRank, Accident, Knowledge } from "./enums";
+import { Clef, GameType, KeySignature, NoteName, WinRank, Accident, Knowledge } from "./enums";
 import {
-    GameScore,
     Level,
     LevelGroupSpec,
     LevelScore,
@@ -160,7 +159,6 @@ export function buildPitchIndexDicts() {
     Array.from(PITCH_INDICES.entries()).forEach(([note, idx]) => {
         NOTE_INDICES.has(idx) ? NOTE_INDICES.get(idx)?.push(note) : NOTE_INDICES.set(idx, [note]);
     });
-
     // console.log({ oct, idx });
     // console.log({ noteMathTable });
     // console.log({ NOTE_INDICES });
@@ -255,7 +253,6 @@ export function getNextScaleNote(note: Note, interval: number, keySignature: Key
         nextNoteIdx = noteIdx + interval + 1;
     }
     const nextNote = possibleNotes[nextNoteIdx];
-
     // console.log(
     //     "getNextScaleNote :::",
     //     JSON.stringify(

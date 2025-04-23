@@ -1,7 +1,6 @@
 import { AppView } from "../../atoms/AppView";
-import { Defs, Path, Svg, SvgAst, Text as SvgText } from "react-native-svg";
 
-import React, { forwardRef, ReactNode, useRef } from "react";
+import React, { ReactNode } from "react";
 // @ts-ignore
 import { Accidental } from "vexflow/src/accidental";
 // @ts-ignore
@@ -15,15 +14,12 @@ import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
-import { LayoutChangeEvent, StyleSheet, useWindowDimensions } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { GameScore, Level, Note } from "@/utils/types";
-import { Clef, GameState, KeySignature } from "@/utils/enums";
 import { Colors } from "@/utils/Colors";
+import { Clef, KeySignature } from "@/utils/enums";
 import { getDrawNote } from "@/utils/noteFns";
-import { transform } from "@babel/core";
-import { testBorder } from "@/utils/styles";
-import { SharedValue, useSharedValue, withTiming } from "react-native-reanimated";
+import { Note } from "@/utils/types";
+import { StyleSheet } from "react-native";
 
 export interface MusicNoteProps {
     keys: Note[];

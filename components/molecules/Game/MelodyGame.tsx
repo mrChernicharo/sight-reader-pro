@@ -1,5 +1,6 @@
 import { AppView } from "@/components/atoms/AppView";
-import { BackLink } from "@/components/atoms/BackLink";
+import { AttemptedNote } from "@/components/atoms/AttemptedNote";
+import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useSoundContext } from "@/hooks/useSoundsContext";
 import { useTheme } from "@/hooks/useTheme";
@@ -11,7 +12,6 @@ import {
     getIsPracticeLevel,
     getLevelHintCount,
     getPossibleNotesInLevel,
-    getPreviousPage,
     isNoteMatch,
     randomUID,
     wait,
@@ -19,12 +19,12 @@ import {
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES } from "@/utils/styles";
 import {
+    AttemptedNote as AttemptedNoteType,
     CurrentGame,
     GameScreenParams,
     MelodyRound,
     Note,
     Round,
-    AttemptedNote as AttemptedNoteType,
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
@@ -32,8 +32,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { AttemptedNote } from "@/components/atoms/AttemptedNote";
-import { useAllLevels } from "@/hooks/useAllLevels";
 
 const s = STYLES.game;
 
@@ -41,8 +39,8 @@ export function MelodyGameComponent() {
     const theme = useTheme();
     const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
-    const { playPianoNote, releasePianoNote, playSoundEfx } = useSoundContext();
-    const { getLevel, unloadPracticeLevel } = useAllLevels();
+    const { playPianoNote, playSoundEfx } = useSoundContext();
+    const { getLevel } = useAllLevels();
     const { currentGame, saveGameRecord, startNewGame, endGame, games, updateRound, addNewRound, updatePlayedNotes } =
         useAppStore();
 
@@ -92,9 +90,9 @@ export function MelodyGameComponent() {
             updatePlayedNotes(playedNote);
             playPianoNote(playedNote);
         } else {
-            playSoundEfx(SoundEffect.WrongAnswer);
             playPianoNote(playedNote);
             playPianoNote(currNote);
+            playSoundEfx(SoundEffect.WrongAnswer2);
         }
         setAttemptedNotes((prev) => {
             prev.push({ id: randomUID(), you: playedNote, correct: currNote });

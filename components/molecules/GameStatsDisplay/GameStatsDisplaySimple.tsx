@@ -7,11 +7,9 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { useTransition } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIntl } from "@/hooks/useIntl";
 import { BackLink } from "@/components/atoms/BackLink";
-import { testBorder } from "@/utils/styles";
 
 export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDisplayProps) {
     const theme = useTheme();

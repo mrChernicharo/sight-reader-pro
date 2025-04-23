@@ -1,17 +1,15 @@
-import { Colors } from "@/utils/Colors";
-import { getGameStats } from "@/utils/helperFns";
-import { GameScore, GameStatsDisplayProps, Level, LevelScore } from "@/utils/types";
-import { Ionicons } from "@expo/vector-icons";
-import { useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { useTheme } from "@/hooks/useTheme";
-import { AppText } from "../../atoms/AppText";
-import { AppView } from "../../atoms/AppView";
-import { GameType } from "@/utils/enums";
+import { FadeIn } from "@/components/atoms/FadeIn";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
-import { FadeIn } from "@/components/atoms/FadeIn";
+import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/utils/Colors";
+import { getGameStats } from "@/utils/helperFns";
+import { GameStatsDisplayProps, LevelScore } from "@/utils/types";
+import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
+import { AppText } from "../../atoms/AppText";
+import { AppView } from "../../atoms/AppView";
 
 export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps) {
     const theme = useTheme();

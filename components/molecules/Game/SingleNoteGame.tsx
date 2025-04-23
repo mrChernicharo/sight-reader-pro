@@ -95,14 +95,14 @@ export function SingleNoteGameComponent() {
         // console.log({ currNote, attemptedNote: playedNote, success });
 
         if (success) {
+            setGameState(GameState.Success);
             updatePlayedNotes(playedNote);
             playPianoNote(playedNote);
-            setGameState(GameState.Success);
         } else {
-            playSoundEfx(SoundEffect.WrongAnswer2);
+            setGameState(GameState.Mistake);
             playPianoNote(playedNote);
             playPianoNote(currNote);
-            setGameState(GameState.Mistake);
+            playSoundEfx(SoundEffect.WrongAnswer2);
         }
         setAttemptedNotes((prev) => {
             prev.push({ id: randomUID(), you: playedNote, correct: currNote });
@@ -195,9 +195,9 @@ export function SingleNoteGameComponent() {
                     isVisible={!hasCompletedTour && tourStep == 3}
                     placement="bottom"
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                    // contentStyle={{ borderRadius: 16 }}
                     contentStyle={{ transform: [{ translateY: 32 }] }}
                     arrowStyle={{ transform: [{ translateY: -32 }] }}
+                    // contentStyle={{ borderRadius: 16 }}
                     // childrenWrapperStyle={{ borderRadius: 16 }}
                     // parentWrapperStyle={{ borderRadius: 16 }}
                     content={

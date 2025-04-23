@@ -1,39 +1,35 @@
 import { AppView } from "../../atoms/AppView";
 
-import React, { Component, ReactNode } from "react";
+import React, { ReactNode } from "react";
+// @ts-ignore
+// import { StaveTie } from "vexflow/src/stavetie";
+// import { Dot } from "vexflow/src/dot";
+// import { Stem } from "vexflow/src/stem";
+// import { StaveLine } from "vexflow/src/staveline";
+// import { Modifier } from "vexflow/src/modifier";
+
 // @ts-ignore
 import { Accidental } from "vexflow/src/accidental";
 // @ts-ignore
 import { Stave } from "vexflow/src/stave";
 // @ts-ignore
-import { Stem } from "vexflow/src/stem";
-// @ts-ignore
 import { StaveNote } from "vexflow/src/stavenote";
-// @ts-ignore
-import { StaveTie } from "vexflow/src/stavetie";
-// @ts-ignore
-import { Dot } from "vexflow/src/dot";
 // @ts-ignore
 import { Voice } from "vexflow/src/voice";
 // @ts-ignore
 import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
-import { StaveLine } from "vexflow/src/staveline";
-// @ts-ignore
-import { Modifier } from "vexflow/src/modifier";
-// @ts-ignore
 import { Beam } from "vexflow/src/beam";
 // @ts-ignore
-import { ReactNativeSVGContext, NotoFontPack } from "standalone-vexflow-context";
+import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
-import { AppRegistry, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { AppText } from "../../atoms/AppText";
-import { Note } from "@/utils/types";
-import { Clef, GameState, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
-import { stemDown } from "@/utils/helperFns";
 import { Colors } from "@/utils/Colors";
+import { Clef, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
+import { stemDown } from "@/utils/helperFns";
 import { getDrawNote, noteDurationDict } from "@/utils/noteFns";
+import { Note } from "@/utils/types";
+import { StyleSheet, useWindowDimensions } from "react-native";
 
 export interface MusicNoteRangeProps {
     keys: Note[];

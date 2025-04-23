@@ -1,5 +1,3 @@
-import { glyphs } from "./constants";
-
 export enum NoteNameBase {
     "c" = "c",
     "d" = "d",
