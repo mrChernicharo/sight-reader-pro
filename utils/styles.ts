@@ -70,7 +70,7 @@ export const STYLES = {
             // borderWidth: 2,
             // borderColor: "red",
         },
-        btn: { width: "100%" },
+        btn: { width: "100%", height: 48 },
     }),
 };
 

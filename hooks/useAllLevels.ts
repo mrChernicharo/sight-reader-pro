@@ -1,9 +1,9 @@
+import { Clef, GameType, Knowledge } from "@/utils/enums";
+import { getGameStats, padZero } from "@/utils/helperFns";
 import { ALL_LEVELS } from "@/utils/levels";
 import { Level, SectionedLevel } from "@/utils/types";
+import { useCallback, useMemo } from "react";
 import { useAppStore } from "./useAppStore";
-import { Clef, GameType, Knowledge } from "@/utils/enums";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { getGameStats, padZero } from "@/utils/helperFns";
 import { useIntl } from "./useIntl";
 
 export function useAllLevels() {

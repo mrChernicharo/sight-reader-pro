@@ -3,12 +3,6 @@ import { getGameStats, makeLevelGroup, padZero } from "./helperFns";
 
 import { Game, Level, Scale, SectionedLevel } from "./types";
 
-function getLevelPrivate(levelId: string) {
-    // console.log("<getLevel>", { level, levelId });
-    const level = ALL_LEVELS.find((lvl) => lvl.id === levelId)!;
-    return level;
-}
-
 export function assembleLevelInfo(clef: Clef, levelInfo: Partial<Level>[]): Level[] {
     return levelInfo.map((partialLevel, i) => {
         const lvl = partialLevel as any;
@@ -514,4 +508,4 @@ const BASS_LEVELS: Level[] = assembleLevelInfo(Clef.Bass, [
     ...BASS_HIGH_LEVELS,
 ]);
 
-export let ALL_LEVELS = [...TREBLE_LEVELS, ...BASS_LEVELS];
+export const ALL_LEVELS = [...TREBLE_LEVELS, ...BASS_LEVELS];

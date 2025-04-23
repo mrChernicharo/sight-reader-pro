@@ -79,7 +79,6 @@ export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
             style={{
                 position: "absolute",
                 alignItems: "center",
-                backdropFilter: "blur(1.2)",
                 bottom: 12,
                 ...notePositionStyles,
             }}
@@ -99,7 +98,7 @@ export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
             </AppView>
 
             {/* BOTTOM LINE */}
-            <AppText style={{ fontFamily: "Grotesque", lineHeight: 16 }}>
+            <AppText style={{ fontFamily: "Grotesque", lineHeight: 18 }}>
                 {success ? "800 pts" : `( ${t(`game.was`)} ${t(`music.notes.${correct}`)} )`}
             </AppText>
         </FadeOut>

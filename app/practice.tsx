@@ -18,36 +18,40 @@ import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { Level, LevelId, NoteRange, Scale } from "@/utils/types";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RangeSlider from "../components/atoms/RangeSlider";
 import { useAllLevels } from "@/hooks/useAllLevels";
-import { ALL_LEVELS } from "@/utils/levels";
 
 // const KEY_SIGNATURES = Object.values(KeySignature).map((v) => ({ label: v, value: v.toLowerCase() }));
 
 export default function PracticeScreen() {
     const theme = useTheme();
     const { t } = useTranslation();
-    const { allLevels, loadPracticeLevel } = useAllLevels();
+    const { loadPracticeLevel } = useAllLevels();
 
     const { practiceSettings, updatePracticeSettings, endGame } = useAppStore();
     const { clef, isMinorKey, scale, keySignature = KeySignature.C, noteRangeIndices, gameType } = practiceSettings;
 
-    const SCALES = Object.values(Scale).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) }));
-    const DEFAULT_SCALE = SCALES.find((acc) => acc.key === scale);
-    // const DEFAULT_ACCIDENT = ACCIDENTS.find((acc) => acc.key === accident);
-
-    const keySigArray = isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES;
-    const altKeySigArray = isMinorKey ? MAJOR_KEY_SIGNATURES : MINOR_KEY_SIGNATURES;
-    const keySigIndex = keySigArray.findIndex((key) => key === keySignature);
-
     const [selectedScale, setScale] = useState(scale);
 
-    const CURR_KEY_SIGNATURES = keySigArray.map((v) => ({ label: v, value: v.toLowerCase() }));
+    const SCALES = useMemo(() => Object.values(Scale).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) })), [t]);
+    const DEFAULT_SCALE = useMemo(() => SCALES.find((acc) => acc.key === scale), []);
+    // const DEFAULT_ACCIDENT = ACCIDENTS.find((acc) => acc.key === accident);
+
+    const keySigArray = useMemo(() => (isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES), [isMinorKey]);
+    const altKeySigArray = useMemo(() => (isMinorKey ? MAJOR_KEY_SIGNATURES : MINOR_KEY_SIGNATURES), [isMinorKey]);
+    const keySigIndex = useMemo(
+        () => keySigArray.findIndex((key) => key === keySignature),
+        [keySigArray, keySignature]
+    );
+    const CURR_KEY_SIGNATURES = useMemo(
+        () => keySigArray.map((v) => ({ label: v, value: v.toLowerCase() })),
+        [keySigArray]
+    );
 
     const allNotes = useMemo(() => {
         const notes = isFlatKeySignature(keySignature) ? NOTES_FLAT_ALL_OCTAVES : NOTES_SHARP_ALL_OCTAVES;
@@ -66,7 +70,8 @@ export default function PracticeScreen() {
         });
     }, [clef, keySignature]);
 
-    // const rangeNotes = allNotes.filter((_, idx) => noteRangeIndices.low < idx && idx < noteRangeIndices.high);
+    const rangeLow = allNotes[noteRangeIndices.low];
+    const rangeHigh = allNotes[noteRangeIndices.high];
 
     const onNoteRangeSliderChange = useCallback(
         (low: number, high: number) => {
@@ -78,11 +83,11 @@ export default function PracticeScreen() {
     // CREATE A LEVEL IN MEMORY, THEN REFERENCE IT WITHIN GAME COMPONENT
     const startPracticeGame = useCallback(async () => {
         const levelId: LevelId = `${clef}-practice`;
-        const noteRanges = [`${allNotes[noteRangeIndices.low]}:::${allNotes[noteRangeIndices.high]}` as NoteRange];
+        const noteRanges = [`${rangeLow}:::${rangeHigh}` as NoteRange];
         // const durationInSeconds = 6;
         const durationInSeconds = 60;
         // console.log({ clef, accident, keySignature });
-        // console.log("allNotes::::", allNotes, allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]);
+        // console.log("allNotes::::", allNotes, rangeLow, rangeLHigh);
 
         const practiceLevelSingle: Level = {
             id: levelId,
@@ -121,7 +126,7 @@ export default function PracticeScreen() {
             pathname: "/game-level/[id]",
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
-    }, [clef, noteRangeIndices.low, noteRangeIndices.high, CURR_KEY_SIGNATURES, keySignature, allNotes, ALL_LEVELS]);
+    }, [clef, rangeLow, rangeHigh, CURR_KEY_SIGNATURES, keySignature, allNotes]);
 
     useEffect(() => {
         updatePracticeSettings("scale", selectedScale);
@@ -226,7 +231,7 @@ export default function PracticeScreen() {
                         <SheetMusic.RangeDisplay
                             clef={clef}
                             keySignature={keySignature}
-                            keys={[[allNotes[noteRangeIndices.low], allNotes[noteRangeIndices.high]]]}
+                            keys={[[rangeLow, rangeHigh]]}
                         />
                     </AppView>
 
@@ -284,7 +289,7 @@ export default function PracticeScreen() {
 const s = StyleSheet.create({
     container: {
         alignItems: "center",
-        paddingHorizontal: 36,
+        paddingHorizontal: 24,
         paddingVertical: 24,
     },
     box: {

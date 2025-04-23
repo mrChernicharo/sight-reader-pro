@@ -70,7 +70,6 @@ export default function GameOverScreen() {
             console.log("GAME OVER UNMOUNT!!!!");
             if (previousPage == "/practice") {
                 console.log("leaving practice game");
-                // practice screen pushes the practice level onto ALL_LEVELS...we'd better clean it up here
                 unloadPracticeLevel();
             }
             endGame();
@@ -151,6 +150,7 @@ const s = StyleSheet.create({
     container: {
         justifyContent: "center",
         alignItems: "center",
+        minHeight: "100%",
     },
     messageContainer: {
         paddingVertical: 64,

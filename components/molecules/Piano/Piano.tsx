@@ -86,7 +86,9 @@ export function Piano({
                             onPressOut={() => onKeyReleased(note)}
                         >
                             {showPianoNoteNames && (
-                                <AppText style={{ color: "white" }}>{capitalizeStr(t(`music.notes.${note}`))}</AppText>
+                                <AppText style={{ color: "white", userSelect: "none" }}>
+                                    {capitalizeStr(t(`music.notes.${note}`))}
+                                </AppText>
                             )}
                         </Pressable>
                     </AppView>
@@ -118,7 +120,9 @@ export function Piano({
                             onPressOut={() => onKeyReleased(note)}
                         >
                             {showPianoNoteNames && (
-                                <AppText style={{ color: "white" }}>{capitalizeStr(t(`music.notes.${note}`))}</AppText>
+                                <AppText style={{ color: "white", userSelect: "none" }}>
+                                    {capitalizeStr(t(`music.notes.${note}`))}
+                                </AppText>
                             )}
                         </Pressable>
                     </AppView>
@@ -143,7 +147,9 @@ export function Piano({
                             }}
                         >
                             {showPianoNoteNames && (
-                                <AppText style={{ color: "black" }}>{capitalizeStr(t(`music.notes.${note}`))}</AppText>
+                                <AppText style={{ color: "black", userSelect: "none" }}>
+                                    {capitalizeStr(t(`music.notes.${note}`))}
+                                </AppText>
                             )}
                         </Pressable>
                     );

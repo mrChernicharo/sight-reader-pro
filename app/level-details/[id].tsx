@@ -21,15 +21,17 @@ import { useEffect } from "react";
 import { glyphs } from "@/utils/constants";
 import { testBorder } from "@/utils/styles";
 import { useAllLevels } from "@/hooks/useAllLevels";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function LevelDetails() {
     const { getLevel } = useAllLevels();
-    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
+    // const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const muteColor = useThemeColor({ light: Colors.light.textMute, dark: Colors.dark.textMute }, "textMute");
     const { id } = useLocalSearchParams() as { id: string };
     const { t } = useTranslation();
     const level = getLevel(id);
     const { currentGame, endGame } = useAppStore();
+    const theme = useTheme();
 
     // console.log(":::LevelDetails", level);
     // if (level.gameType !== GameType.Single) return;
@@ -57,29 +59,19 @@ export default function LevelDetails() {
     if (!level) return null;
 
     return (
-        <SafeAreaView style={{ minHeight: "100%", backgroundColor }}>
+        <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
             <ScrollView contentContainerStyle={s.container}>
-                <FadeIn y={50} x={0} style={s.topContainer}>
-                    <AppView style={s.backlinkContainer}>
-                        <BackLink to="/level-selection" />
-                    </AppView>
-                    <AppText type="title" style={s.title}>
-                        {level.name}
-                    </AppText>
-                    {/* <AppText type="subtitle" style={s.subtitle}>
+                <FadeIn y={50} x={0}>
+                    <AppView style={s.top}>
+                        <BackLink to="/level-selection" wrapperStyle={{ left: 24, top: 6, position: "absolute" }} />
+                        <AppText type="title" style={s.title}>
+                            {level.name}
+                        </AppText>
+                        {/* <AppText type="subtitle" style={s.subtitle}>
                         {level.id}
                     </AppText> */}
-
-                    <AppView
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: 4,
-                            marginTop: 32,
-                            // ...testBorder(),
-                        }}
-                    >
+                    </AppView>
+                    <AppView style={s.topInfo}>
                         <AppText
                             style={{ color: muteColor, lineHeight: 46, fontSize: level.clef == Clef.Bass ? 28 : 24 }}
                         >
@@ -140,19 +132,13 @@ const s = StyleSheet.create({
     container: {
         alignItems: "center",
         paddingHorizontal: 36,
-        minHeight: Dimensions.get("window").height,
-        // borderWidth: 1,
-        // borderColor: "red",
+        // minHeight: "100%",
     },
-    topContainer: {
-        width: "100%",
-        // borderWidth: 1,
-        // borderColor: "green",
-    },
-    backlinkContainer: {
-        position: "absolute",
-        top: 5,
-        zIndex: 1000,
+    top: {
+        width: Dimensions.get("window").width,
+        position: "relative",
+        alignItems: "center",
+        // ...testBorder(),
     },
     title: {
         textAlign: "center",
@@ -166,6 +152,14 @@ const s = StyleSheet.create({
         width: "100%",
         // borderWidth: 1,
         // borderColor: "red",
+    },
+    topInfo: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 4,
+        marginTop: 32,
+        // ...testBorder(),
     },
     midContainer: {
         alignItems: "center",
@@ -184,16 +178,13 @@ const s = StyleSheet.create({
         // borderColor: "green",
     },
     ctaContainer: {
-        flex: 1,
         position: "relative",
-        width: "100%",
-        alignItems: "center",
+        width: Dimensions.get("window").width,
         // borderWidth: 1,
         // borderColor: "orange",
     },
     cta: {
         height: 56,
-        position: "absolute",
         bottom: 56,
         width: 300,
     },

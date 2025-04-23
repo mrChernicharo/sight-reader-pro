@@ -79,6 +79,27 @@ export interface AppActions {
 
 type StoreState = AppState & AppActions;
 
+const defaultStore: Omit<AppState, "_hydrated"> = {
+    username: "",
+    language: null,
+    knowledge: null,
+    showPianoNoteNames: true,
+    globalVolume: 1,
+    games: [],
+    selectedLevelsClef: Clef.Treble,
+    practiceSettings: defaultPracticeSettings,
+    currentGame: null,
+    playedNotes: {},
+    practiceLevel: null,
+    completedTours: {
+        init: false,
+        home: false,
+        levelSelection: false,
+        game: false,
+        practice: false,
+    },
+};
+
 export const useAppStore = create<AppState & AppActions>()(
     devtools(
         persist(
@@ -103,47 +124,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 },
                 _hydrated: false,
 
-                _resetStore: async () =>
-                    set(
-                        DEV_RESET
-                            ? {
-                                  username: "",
-                                  language: null,
-                                  knowledge: null, // don't override knowledge
-                                  selectedLevelsClef: Clef.Treble,
-                                  showPianoNoteNames: true,
-                                  globalVolume: 1,
-                                  games: [],
-                                  currentGame: null,
-                                  playedNotes: {},
-                                  practiceLevel: null,
-                                  completedTours: {
-                                      init: false,
-                                      home: false,
-                                      levelSelection: false,
-                                      game: false,
-                                      practice: false,
-                                  },
-                              }
-                            : {
-                                  username: "",
-                                  language: null,
-                                  selectedLevelsClef: Clef.Treble,
-                                  showPianoNoteNames: true,
-                                  globalVolume: 1,
-                                  games: [],
-                                  currentGame: null,
-                                  playedNotes: {},
-                                  practiceLevel: null,
-                                  completedTours: {
-                                      init: true,
-                                      home: true,
-                                      levelSelection: false,
-                                      game: false,
-                                      practice: false,
-                                  },
-                              }
-                    ),
+                _resetStore: async () => set(defaultStore),
                 setHydrated: async (hydrated: boolean) => set({ _hydrated: hydrated }),
 
                 setUsername: async (name: string) => set(() => ({ username: name })),
