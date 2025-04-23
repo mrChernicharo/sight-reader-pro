@@ -39,7 +39,7 @@ export interface AppState {
     practiceSettings: PracticeSettings;
     playedNotes: PlayedNotes;
     practiceLevel: Level | null;
-    // difficulty: Difficulty;
+    soundsLoaded: boolean;
     _hydrated: boolean;
 }
 
@@ -73,6 +73,7 @@ export interface AppActions {
     updatePlayedNotes: (note: Note) => Promise<void>;
     updatePracticeSettings: (setting: keyof PracticeSettings, value: any) => Promise<void>;
 
+    setSoundsLoaded: (soundsLoaded: boolean) => Promise<void>;
     setHydrated: (hydrated: boolean) => Promise<void>;
     _resetStore: () => Promise<void>;
 }
@@ -91,6 +92,7 @@ const defaultStore: Omit<AppState, "_hydrated"> = {
     currentGame: null,
     playedNotes: {},
     practiceLevel: null,
+    soundsLoaded: false,
     completedTours: {
         init: false,
         home: false,
@@ -98,7 +100,10 @@ const defaultStore: Omit<AppState, "_hydrated"> = {
         game: false,
         practice: false,
     },
-};
+} as const;
+
+type OldAppState = Partial<typeof defaultStore>;
+type NewAppState = typeof defaultStore;
 
 export const useAppStore = create<AppState & AppActions>()(
     devtools(
@@ -115,6 +120,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 practiceSettings: defaultPracticeSettings,
                 playedNotes: {},
                 practiceLevel: null,
+                soundsLoaded: false,
                 completedTours: {
                     init: false,
                     home: false,
@@ -198,6 +204,9 @@ export const useAppStore = create<AppState & AppActions>()(
                 setPracticeLevel: async (level: Level | null) => {
                     set({ practiceLevel: level });
                 },
+                setSoundsLoaded: async (soundsLoaded: boolean) => {
+                    set({ soundsLoaded });
+                },
             }),
             {
                 name: "sight-reader-pro",
@@ -205,6 +214,22 @@ export const useAppStore = create<AppState & AppActions>()(
                 onRehydrateStorage: (state) => {
                     return () => state.setHydrated(true);
                 },
+                migrate: (persistedState: unknown, version) => {
+                    if (version < 2) {
+                        const typedState = persistedState as OldAppState;
+                        return {
+                            ...defaultStore,
+                            username: typedState.username || defaultStore.username,
+                            language: typedState.language || defaultStore.language,
+                            knowledge: typedState.knowledge || defaultStore.knowledge,
+                        } as NewAppState;
+                    }
+
+                    // If the version is already the latest (or higher for future migrations),
+                    // just return the persisted state.
+                    return persistedState as NewAppState;
+                },
+                version: 2,
             }
         )
     )

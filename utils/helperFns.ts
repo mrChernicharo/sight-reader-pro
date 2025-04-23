@@ -708,3 +708,14 @@ export const skillFilter = (lvl: Level, knowledge: Knowledge) => {
             true;
     }
 };
+
+export function pluckNoteFromMp3Filename(filename: string) {
+    if (filename.startsWith("Piano")) {
+        const [piano, mf, note] = filename.split(".");
+        const oct = note.at(-1);
+        let nn = note.substring(0, note.length - 1).toLowerCase();
+
+        return `${nn}/${oct}`;
+    }
+    return filename;
+}

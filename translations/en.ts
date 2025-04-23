@@ -125,7 +125,7 @@ const en = {
         knowledge: {
             novice: { title: "novice", description: "no, I have no idea" },
             beginner: { title: "beginner", description: "no, but I have a general understanding" },
-            intermediary: { title: "intermediary", description: "kind of, I read poorly but I know how" },
+            intermediary: { title: "intermediary", description: "kind of, I read poorly but I can get by" },
             advanced: { title: "advanced", description: "yes, I read reasonably well" },
             pro: { title: "pro", description: "yes, I read professionally" },
         },
