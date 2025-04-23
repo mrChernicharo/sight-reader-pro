@@ -220,20 +220,20 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
                 for (const asset of assets) {
                     const key = pluckNoteFromMp3Filename(asset.name);
                     const file = asset.localUri;
+
                     bufferPromises.push(
                         audioContextRef.current!.decodeAudioDataSource(file!).then((audioBuffer) => {
-                            if (key.includes("Piano")) {
-                                // f#/4 and gb/4 are the same sound, but there's only one Piano.mf.Gb4.mp3 asset
-                                // ensure there's a buffer entry for each possible note name
+                            if (asset.name.includes("Piano")) {
                                 const equivalentNotes = getEquivalentNotes(key as Note);
+                                // f#/4 and gb/4 are the same sound, but there's only ONE Piano.mf.Gb4.mp3 asset
+                                // ensure there's a buffer entry for each possible note name
                                 equivalentNotes?.forEach((note) => {
                                     bufferMapRef.current[note] = audioBuffer;
                                 });
-                                return audioBuffer;
                             } else {
                                 bufferMapRef.current[key] = audioBuffer;
-                                return audioBuffer;
                             }
+                            return audioBuffer;
                         })
                     );
                 }
