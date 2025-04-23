@@ -61,7 +61,7 @@ export function CountdownTimer({
         <AppView style={s.container}>
             <AppText>{intlMinutes.format(count * 1000)}</AppText>
             <AppView style={s.bar}>
-                <AppView style={[s.innerBar, { backgroundColor: Colors.light.tint, width: barWidth }]} />
+                <AppView style={{ ...s.innerBar, backgroundColor: Colors.light.tint, width: barWidth }} />
             </AppView>
         </AppView>
     );

@@ -31,7 +31,7 @@ export function Confetti(props: ConfettiProps) {
     return (
         <AppView style={s.lottieContainer}>
             <AnimatedLottieView
-                style={[s.lottieConfetti, { height, transform: [{ translateX: x }, { translateY: y }] }]}
+                style={{ ...s.lottieConfetti, height, transform: [{ translateX: x }, { translateY: y }] }}
                 source={require("@/assets/lottie/confettie-explosion-animation.lottie.json")}
                 progress={animationProgress.current}
             />

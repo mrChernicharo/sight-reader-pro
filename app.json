@@ -1,7 +1,7 @@
 {
     "expo": {
-        "name": "sight-reader-pro",
-        "slug": "sight-reader-pro",
+        "name": "Sight Reader Pro",
+        "slug": "Sight Reader Pro",
         "version": "1.0.18",
         "orientation": "portrait",
         "icon": "./assets/images/sight-reader-art.png",

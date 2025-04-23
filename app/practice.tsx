@@ -163,7 +163,7 @@ export default function PracticeScreen() {
                     </AppView>
 
                     <AppView>
-                        <AppView style={[s.keySignatureContainer, { backgroundColor: Colors[theme].bgSelected }]}>
+                        <AppView style={{ ...s.keySignatureContainer, backgroundColor: Colors[theme].bgSelected }}>
                             <AppView transparentBG>
                                 <AppView transparentBG style={s.box}>
                                     <AppText>{t("music.keySignature")}</AppText>
@@ -254,7 +254,7 @@ export default function PracticeScreen() {
                         />
                     </AppView>
 
-                    <AppView style={[s.keySignatureContainer, { backgroundColor: Colors[theme].bgSelected }]}>
+                    <AppView style={{ ...s.keySignatureContainer, backgroundColor: Colors[theme].bgSelected }}>
                         <AppView transparentBG style={s.box}>
                             <AppText>{t("game.type.single")}</AppText>
                             <AppSwitch

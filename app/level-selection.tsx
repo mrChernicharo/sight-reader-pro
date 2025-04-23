@@ -58,7 +58,7 @@ export default function LevelSelectionScreen() {
 
                     <AppView key={clefLevels.title}>
                         <AppView style={{ flexDirection: "row", justifyContent: "center", gap: 4 }}>
-                            <AppText type="title" style={[s.sectionTitle]}>
+                            <AppText type="title" style={s.sectionTitle}>
                                 {clefInfo.glyph}
                             </AppText>
                             <AppView style={{ justifyContent: "center" }}>

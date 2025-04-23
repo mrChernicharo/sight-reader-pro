@@ -36,10 +36,10 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
     // }, [attempts, hitsPerMinute, elapsed, theme]);
 
     return (
-        <AppView transparentBG style={[s.container]}>
-            <AppView transparentBG style={[s.separator]} />
+        <AppView transparentBG style={s.container}>
+            <AppView transparentBG style={s.separator} />
 
-            <AppView transparentBG style={[s.row]}>
+            <AppView transparentBG style={s.row}>
                 <FadeIn y={50} x={0}>
                     <AppView transparentBG style={s.rowItem}>
                         <AppText>
@@ -65,9 +65,9 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                 </FadeIn>
             </AppView>
 
-            <AppView transparentBG style={[s.row]}>
+            <AppView transparentBG style={s.row}>
                 <FadeIn y={50} x={0}>
-                    <AppView transparentBG style={[s.rowItem]}>
+                    <AppView transparentBG style={s.rowItem}>
                         <AppText>
                             <Ionicons name="musical-notes-outline" />
                             &nbsp;{t("game.attempts")}
@@ -105,7 +105,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                 </FadeIn>
             </AppView>
 
-            <AppView transparentBG style={[s.score]}>
+            <AppView transparentBG style={s.score}>
                 <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
                     <FadeIn delay={0} x={50} duration={250} y={0}>
                         <AppText style={{ color: Colors[theme].textMute }}>
@@ -134,7 +134,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
                 </AppView>
 
                 <FadeIn delay={1000} x={50} duration={250} y={0}>
-                    <AppView transparentBG style={[s.line, { backgroundColor: Colors[theme].text }]} />
+                    <AppView transparentBG style={{ ...s.line, backgroundColor: Colors[theme].text }} />
                 </FadeIn>
 
                 <AppView transparentBG style={{ alignItems: "center" }}>

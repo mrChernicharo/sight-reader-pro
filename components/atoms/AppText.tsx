@@ -22,7 +22,7 @@ export function AppText({ style, lightColor, darkColor, forceBlackText, type, ..
 
     const textStyle = s[type!] ? s[type!] : s.default;
 
-    return <Text style={[{ color }, textStyle, style]} {...rest} />;
+    return <Text style={{ color, ...textStyle, ...(style as any) }} {...rest} />;
 }
 
 const s = StyleSheet.create({

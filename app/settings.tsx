@@ -77,7 +77,7 @@ export default function SettingsScreen() {
                 <AppView style={s.inputContainer}>
                     <AppText>{t("settings.username")}</AppText>
                     <TextInput
-                        style={[s.input, { color: textColor }]}
+                        style={{ ...s.input, color: textColor }}
                         placeholderTextColor={textColor}
                         ref={inputRef}
                         // onChangeText={setLocalUsername}

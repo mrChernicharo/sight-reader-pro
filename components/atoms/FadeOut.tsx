@@ -50,5 +50,5 @@ export function FadeOut({ children, x = 0, y = 0, duration = 500, delay = 0, sty
         };
     });
 
-    return <Animated.View style={[style, animatedStyle, rest]}>{children}</Animated.View>;
+    return <Animated.View style={{ ...(style as any), ...animatedStyle, ...rest }}>{children}</Animated.View>;
 }

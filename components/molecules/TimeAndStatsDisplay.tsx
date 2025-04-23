@@ -47,6 +47,7 @@ const s = StyleSheet.create({
     container: {
         paddingHorizontal: 24,
         paddingTop: 12,
+        borderRadius: 8,
         // borderWidth: 1,
         // borderColor: "red",
     },

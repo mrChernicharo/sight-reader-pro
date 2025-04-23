@@ -36,15 +36,6 @@ const RangeSlider = ({
 
     return (
         <>
-            {/* <AppView style={s.container}>
-        <AppView>
-          <AppText style={[{ fontWeight: "bold" }, { fontSize: 18 }]}>{low}</AppText>
-        </AppView>
-        <AppView>
-          <AppText style={[{ fontWeight: "bold" }, { fontSize: 18 }]}>{high}</AppText>
-        </AppView>
-      </AppView> */}
-
             <RangeSliderRN
                 high={high}
                 low={low}

@@ -14,5 +14,5 @@ export function AppView({ style, lightColor, darkColor, transparentBG, ...otherP
 
     const backgroundColor = transparentBG ? "transparent" : themeBG;
 
-    return <View style={[{ backgroundColor }, style]} {...otherProps} />;
+    return <View style={{ backgroundColor, ...(style as any) }} {...otherProps} />;
 }

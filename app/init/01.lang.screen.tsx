@@ -30,7 +30,7 @@ export default function LangScreen() {
     // console.log(langObj);
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
+        <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
             <AppView style={s.top}>
                 <AppText type="subtitle">{t("routes.init.lang.title")}</AppText>
             </AppView>
@@ -55,7 +55,7 @@ export default function LangScreen() {
                 <AppButton
                     disabled={!language}
                     text={t("routes.next")}
-                    style={[s.btn, { borderColor: Colors[theme].text }]}
+                    style={{ ...s.btn, borderColor: Colors[theme].text }}
                     textStyle={{ color: "white" }}
                     onPress={() => router.push({ pathname: "/init/02.knowledge.screen" })}
                 />

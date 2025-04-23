@@ -21,21 +21,18 @@ export function LevelTile({ level, isLocked }: LevelTileProps) {
     return (
         <Pressable
             disabled={isLocked}
-            style={[s.item, { backgroundColor }]}
+            style={{ ...s.item, backgroundColor }}
             android_ripple={{ radius: 90, color: Colors[theme].text }}
             onPress={() => {
                 router.dismissTo({
                     pathname: "/level-details/[id]",
                     params: { id: level.id },
                 });
-                // router.push({
-                // });
+                // router.push({});
             }}
         >
-            {/* <AppView style={[s.item, { backgroundColor }]}> */}
             <AppText>{levelName}</AppText>
             <AppText>{levelIdx}</AppText>
-            {/* </AppView> */}
         </Pressable>
     );
 }

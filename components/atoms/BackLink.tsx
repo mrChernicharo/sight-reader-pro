@@ -21,9 +21,9 @@ export function BackLink(props: BacklinkProps) {
     const theme = useTheme();
 
     return (
-        <AppView style={[wrapperStyle, { position: "absolute", zIndex: 100, width: 28 }]}>
+        <AppView style={{ position: "absolute", zIndex: 100, width: 28, ...(wrapperStyle as any) }}>
             <Link {...rest} href={href} asChild replace>
-                <TouchableOpacity style={[style, { padding: 16, ...testBorder() }]} onPress={onPress}>
+                <TouchableOpacity style={{ ...(style as any) }} onPress={onPress}>
                     <Ionicons name="chevron-back" size={24} color={Colors[theme].text} />
                 </TouchableOpacity>
             </Link>

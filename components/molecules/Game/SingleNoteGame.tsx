@@ -158,7 +158,7 @@ export function SingleNoteGameComponent() {
 
     useEffect(() => {
         // console.log("SINGLE NOTE GAME MOUNTED!!!");
-        setTimeout(() => setTourStep(0), 200);
+        setTimeout(() => setTourStep(0), 240);
     }, []);
 
     useEffect(() => {
@@ -167,9 +167,9 @@ export function SingleNoteGameComponent() {
         };
     }, []);
 
-    useEffect(() => {
-        console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });
-    }, [hasCompletedTour, tourStep]);
+    // useEffect(() => {
+    //     console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });
+    // }, [hasCompletedTour, tourStep]);
 
     useEffect(() => {
         (async () => {
@@ -189,13 +189,17 @@ export function SingleNoteGameComponent() {
     const noteProps = { keys: [currNote], clef: level.clef, keySignature, noteColor };
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor }]}>
+        <SafeAreaView style={{ ...s.container, backgroundColor }}>
             <AppView style={s.top}>
                 <Tooltip
                     isVisible={!hasCompletedTour && tourStep == 3}
                     placement="bottom"
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                    contentStyle={{}}
+                    // contentStyle={{ borderRadius: 16 }}
+                    contentStyle={{ transform: [{ translateY: 32 }] }}
+                    arrowStyle={{ transform: [{ translateY: -32 }] }}
+                    // childrenWrapperStyle={{ borderRadius: 16 }}
+                    // parentWrapperStyle={{ borderRadius: 16 }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.3" />
@@ -281,7 +285,7 @@ export function SingleNoteGameComponent() {
                 </Tooltip>
             )}
 
-            <AppView style={[s.attemptedNotes, { transform: [{ translateY: 20 }] }]}>
+            <AppView style={{ ...s.attemptedNotes, transform: [{ translateY: 20 }] }}>
                 {attemptedNotes.map((attempt) => (
                     <AttemptedNote key={attempt.id} attempt={attempt} />
                 ))}

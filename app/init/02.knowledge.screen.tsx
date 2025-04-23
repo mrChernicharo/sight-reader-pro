@@ -73,7 +73,7 @@ export default function KnowledgeScreen() {
     const { knowledge, setKnowledge } = useAppStore();
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
+        <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
             <AppView style={s.top}>
                 <AppView style={{ position: "absolute", left: 0, top: 6 }}>
                     <BackLink to="/init/01.lang.screen" />
@@ -110,18 +110,16 @@ export default function KnowledgeScreen() {
                                 key={opt.key}
                                 onPress={() => setKnowledge(opt.key as Knowledge)}
                                 android_ripple={{ radius: 200, color: Colors[theme].ripple }}
-                                style={[
-                                    s.listItem,
-                                    {
-                                        borderColor: Colors[theme].ripple,
-                                        ...(first && { borderTopLeftRadius: 20, borderTopRightRadius: 20 }),
-                                        ...(last && { borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }),
-                                        ...(selected && {
-                                            backgroundColor: Colors[theme].bgSelected,
-                                            // backgroundOpacity: 0.5,
-                                        }),
-                                    },
-                                ]}
+                                style={{
+                                    ...s.listItem,
+                                    borderColor: Colors[theme].ripple,
+                                    ...(first && { borderTopLeftRadius: 20, borderTopRightRadius: 20 }),
+                                    ...(last && { borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }),
+                                    ...(selected && {
+                                        backgroundColor: Colors[theme].bgSelected,
+                                        // backgroundOpacity: 0.5,
+                                    }),
+                                }}
                             >
                                 <AppText>
                                     {opt.emoji} {t(opt.value)}
@@ -136,7 +134,7 @@ export default function KnowledgeScreen() {
                 <AppButton
                     disabled={!knowledge}
                     text={t("routes.next")}
-                    style={[s.btn, { borderColor: Colors[theme].text }]}
+                    style={{ ...s.btn, borderColor: Colors[theme].text }}
                     textStyle={{ color: "white" }}
                     onPress={() => router.push({ pathname: "/init/03.name.screen" })}
                 />

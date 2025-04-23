@@ -20,7 +20,7 @@ export default function SettingsScreen() {
     if (!games) return null;
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor }]}>
+        <SafeAreaView style={{ ...s.container, backgroundColor }}>
             <AppView style={s.top}>
                 <AppView style={{ position: "absolute", left: 0, top: 1 }}>
                     <BackLink />

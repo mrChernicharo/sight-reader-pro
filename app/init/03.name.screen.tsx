@@ -37,7 +37,7 @@ export default function NameScreen() {
     const { username, setUsername, setTourCompleted } = useAppStore();
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
+        <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
             <AppView style={s.top}>
                 <AppView style={{ position: "absolute", left: 0, top: 6 }}>
                     <BackLink to="/init/02.knowledge.screen" />
@@ -48,7 +48,7 @@ export default function NameScreen() {
             <AppView style={s.inputContainer}>
                 <AppText>{t("settings.username")}</AppText>
                 <TextInput
-                    style={[s.input, { color: textColor }]}
+                    style={{ ...s.input, color: textColor }}
                     placeholderTextColor={textColor}
                     // onChangeText={setLocalUsername}
                     defaultValue={username}
@@ -63,14 +63,14 @@ export default function NameScreen() {
                 {/* <Link asChild href="/init/03.knowledge.screen">
                     <AppButton
                         text={t("routes.next")}
-                        style={[s.btn, { borderColor: Colors[theme].text }]}
+                        style={{ ...s.btn, borderColor: Colors[theme].text }}
                         textStyle={{ color: "white" }}
                     />
                 </Link> */}
                 <AppButton
                     disabled={!username}
                     text={t("routes.next")}
-                    style={[s.btn, { borderColor: Colors[theme].text }]}
+                    style={{ ...s.btn, borderColor: Colors[theme].text }}
                     textStyle={{ color: "white" }}
                     onPress={async () => {
                         // await setInitTourCompleted(true);

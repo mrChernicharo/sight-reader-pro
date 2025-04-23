@@ -155,7 +155,7 @@ export function MelodyGameComponent() {
     }, []);
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
+        <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
             <AppView style={s.top}>
                 <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
             </AppView>
@@ -166,7 +166,7 @@ export function MelodyGameComponent() {
                 </AppView>
             ) : null}
 
-            <AppView style={[s.attemptedNotes, {}]}>
+            <AppView style={s.attemptedNotes}>
                 {attemptedNotes.map((attempt) => (
                     <AttemptedNote key={attempt.id} attempt={attempt} />
                 ))}

@@ -33,17 +33,17 @@ export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDispla
     // }, [attempts, hitsPerMinute, elapsed, theme]);
 
     return (
-        <AppView style={[s.container, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+        <AppView style={{ ...s.container, backgroundColor: "rgba(0, 0, 0, 0)" }}>
             <BackLink to={backLinkTo} wrapperStyle={{ top: 6 }} />
 
-            <AppView style={[s.row, s.score, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+            <AppView style={{ ...s.row, ...s.score, backgroundColor: "rgba(0, 0, 0, 0)" }}>
                 <AppText style={{ fontFamily: "Grotesque", fontSize: 20 }}>
                     {t("game.score")} {intl.format(score.value)}
                 </AppText>
             </AppView>
 
             <AppView style={{ width: 220, marginHorizontal: "auto" }}>
-                <AppView style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+                <AppView style={{ ...s.row, backgroundColor: "rgba(0, 0, 0, 0)" }}>
                     <AppView style={s.rowItem}>
                         <AppText>
                             <Ionicons name="musical-notes-outline" />
@@ -66,7 +66,7 @@ export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDispla
                     </AppView>
                 </AppView>
 
-                <AppView style={[s.row, { backgroundColor: "rgba(0, 0, 0, 0)" }]}>
+                <AppView style={{ ...s.row, backgroundColor: "rgba(0, 0, 0, 0)" }}>
                     <AppView style={s.rowItem}>
                         <AppText style={{ width: 20 }}>
                             <Ionicons name="eye-outline" />
@@ -74,7 +74,7 @@ export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDispla
                         <AppText>{accuracy}</AppText>
                     </AppView>
 
-                    <AppView style={[s.rowItem, { width: 150, justifyContent: "flex-end" }]}>
+                    <AppView style={{ ...s.rowItem, width: 150, justifyContent: "flex-end" }}>
                         <AppText>
                             <Ionicons name="time-outline" />
                         </AppText>

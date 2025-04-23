@@ -17,7 +17,7 @@ const AppButton = forwardRef<any, AppButtonProps>((props, ref) => {
 
     return (
         <TouchableOpacity ref={ref} style={buttonStyle} disabled={disabled} {...otherProps}>
-            <AppText style={[{ color: "white" }, textStyle]}>{text}</AppText>
+            <AppText style={{ color: "white", ...textStyle }}>{text}</AppText>
         </TouchableOpacity>
     );
 });

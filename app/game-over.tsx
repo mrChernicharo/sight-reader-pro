@@ -78,7 +78,7 @@ export default function GameOverScreen() {
     }, []);
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor }]}>
+        <SafeAreaView style={{ ...s.container, backgroundColor }}>
             <ScrollView
                 style={{ width: "100%" }}
                 ref={(ref) => {
@@ -94,7 +94,7 @@ export default function GameOverScreen() {
                         </>
                     ) : null}
 
-                    <AppView transparentBG style={[s.messageContainer]}>
+                    <AppView transparentBG style={s.messageContainer}>
                         <AppText style={{ fontFamily: "Grotesque", fontSize: 28, lineHeight: 40 }}>
                             {headingText + emoji}
                         </AppText>
@@ -104,7 +104,7 @@ export default function GameOverScreen() {
                         {hasWon ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
                     </AppView>
 
-                    <AppView style={[s.btnsContainer]}>
+                    <AppView style={s.btnsContainer}>
                         {isPracticeLevel ? (
                             <>
                                 <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>

@@ -59,21 +59,25 @@ export function Piano({
     }, [hintCount]);
 
     return (
-        <AppView style={[s.piano]}>
+        <AppView style={s.piano}>
             {/* TODO: SPLIT BLACK_NOTES IN 2 CHUNKS */}
             <AppView
-                style={[
-                    s.blackNotes,
-                    { width: keyboardMargin + keyWidth * 2.35, left: keyboardMargin + keyWidth / 1.63 },
-                ]}
+                style={{
+                    ...s.blackNotes,
+                    width: keyboardMargin + keyWidth * 2.35,
+                    left: keyboardMargin + keyWidth / 1.63,
+                }}
             >
                 {blackNotesLeft.map((note) => (
-                    <AppView key={note} style={[s.blackNote, { width: keyWidth, ...(!String(note) && { height: 0 }) }]}>
+                    <AppView
+                        key={note}
+                        style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
+                    >
                         <Pressable
-                            style={[
-                                s.blackNoteInner,
-                                { ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }) },
-                            ]}
+                            style={{
+                                ...s.blackNoteInner,
+                                ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }),
+                            }}
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => {
                                 onKeyPressed(note);
@@ -90,18 +94,22 @@ export function Piano({
             </AppView>
 
             <AppView
-                style={[
-                    s.blackNotes,
-                    { width: keyboardMargin + keyWidth * 2.35, right: keyboardMargin + keyWidth / 0.96 },
-                ]}
+                style={{
+                    ...s.blackNotes,
+                    width: keyboardMargin + keyWidth * 2.35,
+                    right: keyboardMargin + keyWidth / 0.96,
+                }}
             >
                 {blackNotesRight.map((note) => (
-                    <AppView key={note} style={[s.blackNote, { width: keyWidth, ...(!String(note) && { height: 0 }) }]}>
+                    <AppView
+                        key={note}
+                        style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
+                    >
                         <Pressable
-                            style={[
-                                s.blackNoteInner,
-                                { ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }) },
-                            ]}
+                            style={{
+                                ...s.blackNoteInner,
+                                ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }),
+                            }}
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => {
                                 onKeyPressed(note);
@@ -128,13 +136,11 @@ export function Piano({
                                 hints.current--;
                             }}
                             onPressOut={() => onKeyReleased(note)}
-                            style={[
-                                s.whiteNote,
-                                {
-                                    width: keyWidth,
-                                    ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }),
-                                },
-                            ]}
+                            style={{
+                                ...s.whiteNote,
+                                width: keyWidth,
+                                ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }),
+                            }}
                         >
                             {showPianoNoteNames && (
                                 <AppText style={{ color: "black" }}>{capitalizeStr(t(`music.notes.${note}`))}</AppText>
