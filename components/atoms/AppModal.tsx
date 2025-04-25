@@ -1,9 +1,8 @@
-import { ReactNode, useState } from "react";
-import { Button, Dimensions, Platform } from "react-native";
+import { ReactNode } from "react";
+import { Pressable } from "react-native";
 import Modal from "react-native-modal";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
-import { Pressable } from "react-native-gesture-handler";
 
 interface IModalProps {
     isOpen: boolean;

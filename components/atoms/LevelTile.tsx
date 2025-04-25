@@ -4,7 +4,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 import { Level } from "@/utils/types";
 import { StyleSheet } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
+import { Pressable } from "react-native";
 
 import { router } from "expo-router";
 

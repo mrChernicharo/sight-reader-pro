@@ -1,6 +1,5 @@
 import React, { forwardRef } from "react";
-// import { TouchableOpacity, TouchableOpacityProps } from "react-native";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native-gesture-handler";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { AppText } from "./AppText";
 
 interface AppButtonProps extends TouchableOpacityProps {
@@ -10,7 +9,7 @@ interface AppButtonProps extends TouchableOpacityProps {
     disabled?: boolean;
 }
 
-const AppButton = forwardRef<TouchableOpacity, AppButtonProps>((props, ref) => {
+const AppButton = forwardRef<any, AppButtonProps>((props, ref) => {
     const { text, style, textStyle, disabled, ...otherProps } = props;
     const disabledStyles = { backgroundColor: disabled ? "gray" : "blue", opacity: disabled ? 0.5 : 1 };
     const buttonStyle = [defaultStyles, disabledStyles, style];

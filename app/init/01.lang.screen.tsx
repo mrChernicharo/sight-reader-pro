@@ -1,22 +1,18 @@
+import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { BackLink } from "@/components/atoms/BackLink";
-import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
-import { Colors } from "@/utils/Colors";
-import { StyleSheet, useWindowDimensions } from "react-native";
-import { ScrollView, type TouchableOpacity } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { SelectList } from "react-native-dropdown-select-list";
-import { LANGS } from "@/utils/constants";
-import { Link, router } from "expo-router";
-import AppButton from "@/components/atoms/AppButton";
-import { DEFAULT_LANGUAGE } from "@/translations";
 import { useTheme } from "@/hooks/useTheme";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/utils/Colors";
+import { LANGS } from "@/utils/constants";
 import { STYLES } from "@/utils/styles";
+import { router } from "expo-router";
 import { useCallback, useRef } from "react";
-import { wait } from "@/utils/helperFns";
+import { SelectList } from "react-native-dropdown-select-list";
+import { type TouchableOpacity } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const s = STYLES.init;
 

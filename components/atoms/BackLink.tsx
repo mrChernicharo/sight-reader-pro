@@ -4,7 +4,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Href, Link } from "expo-router";
 import { LinkProps } from "expo-router/build/link/Link";
 import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import { AppView } from "./AppView";
 
 // @ts-ignore

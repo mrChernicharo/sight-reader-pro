@@ -4,19 +4,12 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
-import {
-    NativeSyntheticEvent,
-    StyleSheet,
-    TextInput,
-    TextInputChangeEventData,
-    useWindowDimensions,
-} from "react-native";
+import { NativeSyntheticEvent, StyleSheet, TextInput, TextInputChangeEventData } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { type TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import AppButton from "@/components/atoms/AppButton";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { STYLES } from "@/utils/styles";
 import { useCallback, useRef } from "react";
 
@@ -72,13 +65,6 @@ export default function NameScreen() {
             </AppView>
 
             <AppView style={s.btnContainer}>
-                {/* <Link asChild href="/init/03.knowledge.screen">
-                    <AppButton
-                        text={t("routes.next")}
-                        style={{ ...s.btn, borderColor: Colors[theme].text }}
-                        textStyle={{ color: "white" }}
-                    />
-                </Link> */}
                 <AppButton
                     ref={btnRef}
                     disabled={!username}

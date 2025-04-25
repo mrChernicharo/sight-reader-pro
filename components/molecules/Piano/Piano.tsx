@@ -11,7 +11,7 @@ import { WHITE_NOTES } from "@/utils/notes";
 import { Note } from "@/utils/types";
 import { useCallback, useEffect, useRef } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
+import { Pressable } from "react-native";
 
 const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
     Flat: ["db", "eb", "", "gb", "ab", "bb"] as NoteName[],
