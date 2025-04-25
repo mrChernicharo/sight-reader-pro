@@ -39,8 +39,6 @@ import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 
-const DELAY = 20;
-
 const s = STYLES.game;
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
@@ -109,7 +107,7 @@ export function SingleNoteGameComponent() {
             return prev;
         });
 
-        await wait(DELAY);
+        await wait(0);
 
         if (!currentGame || currentGame.type !== GameType.Single) return;
 
