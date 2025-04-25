@@ -10,7 +10,8 @@ import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
 import { Note } from "@/utils/types";
 import { useCallback, useEffect, useRef } from "react";
-import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
+import { Pressable } from "react-native-gesture-handler";
 
 const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
     Flat: ["db", "eb", "", "gb", "ab", "bb"] as NoteName[],

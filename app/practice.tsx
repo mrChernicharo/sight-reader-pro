@@ -26,8 +26,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import RangeSlider from "../components/atoms/RangeSlider";
 import { useAllLevels } from "@/hooks/useAllLevels";
 
-// const KEY_SIGNATURES = Object.values(KeySignature).map((v) => ({ label: v, value: v.toLowerCase() }));
-const durationInSeconds = 6;
+const durationInSeconds = 60;
 
 export default function PracticeScreen() {
     const theme = useTheme();
@@ -38,8 +37,7 @@ export default function PracticeScreen() {
     const { clef, isMinorKey, scale, keySignature = KeySignature.C, noteRangeIndices, gameType } = practiceSettings;
 
     const SCALES = useMemo(() => Object.values(Scale).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) })), [t]);
-    const DEFAULT_SCALE = useMemo(() => SCALES.find((acc) => acc.key === scale), []);
-    // const DEFAULT_ACCIDENT = ACCIDENTS.find((acc) => acc.key === accident);
+    const DEFAULT_SCALE = useMemo(() => SCALES.find((acc) => acc.key === scale), [scale]);
 
     const keySigArray = useMemo(() => (isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES), [isMinorKey]);
     const altKeySigArray = useMemo(() => (isMinorKey ? MAJOR_KEY_SIGNATURES : MINOR_KEY_SIGNATURES), [isMinorKey]);
@@ -69,8 +67,8 @@ export default function PracticeScreen() {
         });
     }, [clef, keySignature]);
 
-    const rangeLow = allNotes[noteRangeIndices.low] || "c/4";
-    const rangeHigh = allNotes[noteRangeIndices.high] || "c/5";
+    const rangeLow = allNotes?.[noteRangeIndices.low] || "c/4";
+    const rangeHigh = allNotes?.[noteRangeIndices.high] || "c/5";
 
     const onKeySignatureChange = useCallback(
         (n: number) => {
