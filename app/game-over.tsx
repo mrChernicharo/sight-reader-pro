@@ -108,8 +108,17 @@ export default function GameOverScreen() {
                             <>
                                 <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>
                                     <Link asChild href={"/practice"}>
-                                        <AppButton text={"OK!"} />
+                                        <AppButton text={t("game.goTo.practice")} />
                                     </Link>
+                                </FadeIn>
+
+                                <FadeIn y={50} x={0} delay={2400}>
+                                    <AppButton
+                                        text={t("game.goTo.again")}
+                                        style={{ ...(hasWon && { backgroundColor: "transparent" }) }}
+                                        textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
+                                        onPress={playAgain}
+                                    />
                                 </FadeIn>
                             </>
                         ) : (

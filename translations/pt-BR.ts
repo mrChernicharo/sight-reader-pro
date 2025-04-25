@@ -55,6 +55,7 @@ const ptBR = {
             next: "Próximo Nível",
             again: "Jogar Novamente",
             levelSelection: "Selecionar Nível",
+            practice: "Voltar",
         },
         type: {
             title: "Tipo de jogo",
