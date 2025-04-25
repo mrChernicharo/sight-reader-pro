@@ -5,7 +5,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, type TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { SelectList } from "react-native-dropdown-select-list";
@@ -15,19 +15,30 @@ import AppButton from "@/components/atoms/AppButton";
 import { DEFAULT_LANGUAGE } from "@/translations";
 import { useTheme } from "@/hooks/useTheme";
 import { STYLES } from "@/utils/styles";
+import { useCallback, useRef } from "react";
+import { wait } from "@/utils/helperFns";
 
 const s = STYLES.init;
 
 export default function LangScreen() {
-    const theme = useTheme();
-    const { width, height } = useWindowDimensions();
+    // const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
-    const { language } = useAppStore();
+
+    const theme = useTheme();
     const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
+
+    const language = useAppStore((state) => state.language);
     const setLanguage = useAppStore((state) => state.setLanguage);
-    console.log(language);
+
+    // console.log(language);
     // const langObj = language ? { key: t(`${language}.title`), value: language } : undefined;
     // console.log(langObj);
+    const btnRef = useRef<TouchableOpacity>(null);
+
+    const onSelect = useCallback(async (lang: any) => {
+        setLanguage(lang);
+        btnRef.current?.setOpacityTo(1, 200);
+    }, []);
 
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
@@ -40,7 +51,7 @@ export default function LangScreen() {
                 <SelectList
                     data={LANGS}
                     save="key"
-                    setSelected={setLanguage}
+                    setSelected={onSelect}
                     search={false}
                     placeholder={t("settings.lang.placeholder")}
                     // defaultOption={language}
@@ -53,6 +64,7 @@ export default function LangScreen() {
 
             <AppView style={s.btnContainer}>
                 <AppButton
+                    ref={btnRef}
                     disabled={!language}
                     text={t("routes.next")}
                     style={{ ...s.btn, borderColor: Colors[theme].text }}

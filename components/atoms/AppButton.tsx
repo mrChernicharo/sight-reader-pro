@@ -10,7 +10,7 @@ interface AppButtonProps extends TouchableOpacityProps {
     disabled?: boolean;
 }
 
-const AppButton = forwardRef<any, AppButtonProps>((props, ref) => {
+const AppButton = forwardRef<TouchableOpacity, AppButtonProps>((props, ref) => {
     const { text, style, textStyle, disabled, ...otherProps } = props;
     const disabledStyles = { backgroundColor: disabled ? "gray" : "blue", opacity: disabled ? 0.5 : 1 };
     const buttonStyle = [defaultStyles, disabledStyles, style];

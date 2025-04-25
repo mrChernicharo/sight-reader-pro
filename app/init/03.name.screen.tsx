@@ -4,14 +4,21 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
-import { StyleSheet, TextInput, useWindowDimensions } from "react-native";
+import {
+    NativeSyntheticEvent,
+    StyleSheet,
+    TextInput,
+    TextInputChangeEventData,
+    useWindowDimensions,
+} from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import AppButton from "@/components/atoms/AppButton";
 import { Link, router } from "expo-router";
 import { STYLES } from "@/utils/styles";
+import { useCallback, useRef } from "react";
 
 const s = {
     ...STYLES.init,
@@ -32,9 +39,16 @@ const s = {
 export default function NameScreen() {
     const theme = useTheme();
     const textColor = Colors[theme].text;
-    const { width, height } = useWindowDimensions();
+    // const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
     const { username, setUsername, setTourCompleted } = useAppStore();
+
+    const btnRef = useRef<TouchableOpacity>(null);
+
+    const onInputChange = useCallback((ev: NativeSyntheticEvent<TextInputChangeEventData>) => {
+        setUsername(ev.nativeEvent.text);
+        if (ev.nativeEvent.text.length > 0) btnRef.current?.setOpacityTo(1, 200);
+    }, []);
 
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
@@ -53,9 +67,7 @@ export default function NameScreen() {
                     // onChangeText={setLocalUsername}
                     defaultValue={username}
                     placeholder={t("settings.username")}
-                    onChange={(ev) => {
-                        setUsername(ev.nativeEvent.text);
-                    }}
+                    onChange={onInputChange}
                 />
             </AppView>
 
@@ -68,13 +80,12 @@ export default function NameScreen() {
                     />
                 </Link> */}
                 <AppButton
+                    ref={btnRef}
                     disabled={!username}
                     text={t("routes.next")}
                     style={{ ...s.btn, borderColor: Colors[theme].text }}
                     textStyle={{ color: "white" }}
                     onPress={async () => {
-                        // await setInitTourCompleted(true);
-                        console.log("hhhhoy");
                         await setTourCompleted("init", true);
                         router.replace({ pathname: "/" });
                     }}

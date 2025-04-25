@@ -1,19 +1,18 @@
-import { router } from "expo-router";
+import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
-import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
-import { Colors } from "@/utils/Colors";
-import { StyleSheet, TextInput, useWindowDimensions } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { Pressable, ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import AppButton from "@/components/atoms/AppButton";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { Link } from "expo-router";
+import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/utils/Colors";
 import { Knowledge } from "@/utils/enums";
 import { STYLES } from "@/utils/styles";
+import { router } from "expo-router";
+import { useCallback, useRef } from "react";
+import { StyleSheet } from "react-native";
+import { Pressable, type TouchableOpacity } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const s = {
     ...STYLES.init,
@@ -32,33 +31,40 @@ const s = {
     }),
 };
 
-const knowledgeOptions = [
+interface KnowledgeOption {
+    key: Knowledge;
+    title: string;
+    value: string;
+    emoji: string;
+}
+
+const knowledgeOptions: KnowledgeOption[] = [
     {
-        key: "novice",
+        key: Knowledge.novice,
         title: "music.knowledge.novice.title",
         value: "music.knowledge.novice.description",
         emoji: "👶",
     },
     {
-        key: "beginner",
+        key: Knowledge.beginner,
         title: "music.knowledge.beginner.title",
         value: "music.knowledge.beginner.description",
         emoji: "🌱",
     },
     {
-        key: "intermediary",
+        key: Knowledge.intermediary,
         title: "music.knowledge.intermediary.title",
         value: "music.knowledge.intermediary.description",
         emoji: "🧑‍🏫",
     },
     {
-        key: "advanced",
+        key: Knowledge.advanced,
         title: "music.knowledge.advanced.title",
         value: "music.knowledge.advanced.description",
         emoji: "🧑‍🎓",
     },
     {
-        key: "pro",
+        key: Knowledge.pro,
         title: "music.knowledge.pro.title",
         value: "music.knowledge.pro.description",
         emoji: "🧑‍🎤",
@@ -68,9 +74,15 @@ const knowledgeOptions = [
 export default function KnowledgeScreen() {
     const theme = useTheme();
     // const textColor = useThemeColor({ light: Colors.light.text, dark: Colors.dark.text }, "text");
-    const { width, height } = useWindowDimensions();
+    // const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
     const { knowledge, setKnowledge } = useAppStore();
+    const btnRef = useRef<TouchableOpacity>(null);
+
+    const onSelect = useCallback((opt: KnowledgeOption) => {
+        setKnowledge(opt.key as Knowledge);
+        btnRef.current?.setOpacityTo(1, 200);
+    }, []);
 
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
@@ -108,7 +120,7 @@ export default function KnowledgeScreen() {
                         return (
                             <Pressable
                                 key={opt.key}
-                                onPress={() => setKnowledge(opt.key as Knowledge)}
+                                onPress={() => onSelect(opt)}
                                 android_ripple={{ radius: 200, color: Colors[theme].ripple }}
                                 style={{
                                     ...s.listItem,
@@ -132,6 +144,7 @@ export default function KnowledgeScreen() {
 
             <AppView style={s.btnContainer}>
                 <AppButton
+                    ref={btnRef}
                     disabled={!knowledge}
                     text={t("routes.next")}
                     style={{ ...s.btn, borderColor: Colors[theme].text }}

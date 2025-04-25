@@ -54,35 +54,10 @@ const getNoteColor = (gameState: GameState, theme: "light" | "dark") => {
     }
 };
 
-export function SingleNoteGameComponent() {
-    const { t } = useTranslation();
-    const theme = useTheme();
-    const backgroundColor = Colors[theme].bg;
-
-    const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
-
-    const { playPianoNote, playSoundEfx } = useSoundContext();
-    const { getLevel, unloadPracticeLevel } = useAllLevels();
-    const { currentGame, saveGameRecord, startNewGame, addNewRound, updatePlayedNotes, setTourCompleted } =
-        useAppStore();
-
-    const hasCompletedTour = useAppStore((state) => state.completedTours.game);
+function useGameTour() {
+    const setTourCompleted = useAppStore((state) => state.setTourCompleted);
 
     const [tourStep, setTourStep] = useState(-1);
-
-    const keySignature = decodeURIComponent(keySig) as KeySignature;
-    const level = getLevel(id)!;
-    const possibleNotes = getPossibleNotesInLevel(level);
-    const hintCount = getLevelHintCount(level.skillLevel);
-    const isPracticeLevel = getIsPracticeLevel(currentGame?.levelId);
-
-    const rounds = currentGame?.rounds || [];
-
-    const [gameState, setGameState] = useState<GameState>(GameState.Idle);
-    const [currNote, setCurrNote] = useState<Note>(
-        decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
-    );
-    const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
 
     const goToStepOne = useCallback(() => {
         setTourStep(1);
@@ -104,6 +79,51 @@ export function SingleNoteGameComponent() {
         await setTourCompleted("game", true);
         setTourStep(-1);
     }, []);
+
+    useEffect(() => {
+        // console.log("Start up game tour!!!");
+        setTimeout(() => setTourStep(0), 200);
+    }, []);
+
+    return {
+        tourStep,
+        goToStepOne,
+        goToStepTwo,
+        goToStepThree,
+        goToStepFour,
+        doFinalStep,
+    };
+}
+
+export function SingleNoteGameComponent() {
+    const { t } = useTranslation();
+    const theme = useTheme();
+    const backgroundColor = Colors[theme].bg;
+
+    const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
+
+    const { playPianoNote, playSoundEfx } = useSoundContext();
+    const { getLevel, unloadPracticeLevel } = useAllLevels();
+    const { currentGame, saveGameRecord, startNewGame, addNewRound, updatePlayedNotes, setTourCompleted } =
+        useAppStore();
+
+    const { tourStep, goToStepOne, goToStepTwo, goToStepThree, goToStepFour, doFinalStep } = useGameTour();
+
+    const hasCompletedTour = useAppStore((state) => state.completedTours.game);
+
+    const keySignature = decodeURIComponent(keySig) as KeySignature;
+    const level = getLevel(id)!;
+    const possibleNotes = getPossibleNotesInLevel(level);
+    const hintCount = getLevelHintCount(level.skillLevel);
+    // const isPracticeLevel = getIsPracticeLevel(currentGame?.levelId);
+
+    const rounds = currentGame?.rounds || [];
+
+    const [gameState, setGameState] = useState<GameState>(GameState.Idle);
+    const [currNote, setCurrNote] = useState<Note>(
+        decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
+    );
+    const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
 
     async function onPianoKeyPress(notename: NoteName) {
         if (gameState !== GameState.Idle) return;
@@ -174,11 +194,6 @@ export function SingleNoteGameComponent() {
         };
         startNewGame({ ...level, ...gameInfo } as CurrentGame);
     }, [id, level]);
-
-    useEffect(() => {
-        // console.log("SINGLE NOTE GAME MOUNTED!!!");
-        setTimeout(() => setTourStep(0), 240);
-    }, []);
 
     useEffect(() => {
         return () => {
