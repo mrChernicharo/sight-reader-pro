@@ -41,8 +41,7 @@ export function MelodyGameComponent() {
 
     const { playPianoNote, playSoundEfx } = useSoundContext();
     const { getLevel } = useAllLevels();
-    const { currentGame, saveGameRecord, startNewGame, endGame, games, updateRound, addNewRound, updatePlayedNotes } =
-        useAppStore();
+    const { currentGame, saveGameRecord, startNewGame, updateRound, addNewRound, updatePlayedNotes } = useAppStore();
 
     const rounds = currentGame?.rounds || [];
     const currRound = rounds.at(-1) as MelodyRound;
@@ -51,7 +50,7 @@ export function MelodyGameComponent() {
     const level = getLevel(id)!;
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
-    const isPracticeLevel = getIsPracticeLevel(level.id);
+    // const isPracticeLevel = getIsPracticeLevel(level.id);
 
     const [melodyIdx, setMelodyIdx] = useState(0);
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
@@ -85,6 +84,10 @@ export function MelodyGameComponent() {
         const attempts = [...currRound.attempts, playedNote];
 
         updateRound({ attempts });
+        setAttemptedNotes((prev) => {
+            prev.push({ id: randomUID(), you: playedNote, correct: currNote });
+            return prev;
+        });
 
         if (success) {
             updatePlayedNotes(playedNote);
@@ -94,10 +97,6 @@ export function MelodyGameComponent() {
             playPianoNote(currNote);
             playSoundEfx(SoundEffect.WrongAnswer2);
         }
-        setAttemptedNotes((prev) => {
-            prev.push({ id: randomUID(), you: playedNote, correct: currNote });
-            return prev;
-        });
 
         if (isLastNote) {
             await wait(0);
@@ -119,7 +118,7 @@ export function MelodyGameComponent() {
         });
         router.replace({ pathname: "/game-over" });
         // router.replace({ pathname: isPracticeLevel ? "/practice" : "/game-over" });
-    }, [level, id, rounds, games, currentGame]);
+    }, [level, id, rounds]);
 
     // start new game
     useEffect(() => {

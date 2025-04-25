@@ -3,10 +3,9 @@ import { Colors } from "@/utils/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Href, Link } from "expo-router";
 import { LinkProps } from "expo-router/build/link/Link";
-import { GestureResponderEvent, StyleProp, ViewStyle, TouchableOpacity } from "react-native";
-import {} from "react-native-gesture-handler";
+import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { AppView } from "./AppView";
-import { testBorder } from "@/utils/styles";
 
 // @ts-ignore
 export interface BacklinkProps extends Partial<LinkProps<{}>> {
@@ -23,7 +22,7 @@ export function BackLink(props: BacklinkProps) {
     return (
         <AppView style={{ position: "absolute", zIndex: 100, width: 28, ...(wrapperStyle as any) }}>
             <Link {...rest} href={href} asChild replace>
-                <TouchableOpacity style={{ ...(style as any) }} onPress={onPress}>
+                <TouchableOpacity style={style} hitSlop={20} onPress={onPress}>
                     <Ionicons name="chevron-back" size={24} color={Colors[theme].text} />
                 </TouchableOpacity>
             </Link>

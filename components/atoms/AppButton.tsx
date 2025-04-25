@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native";
-// import { TouchableOpacity, TouchableOpacityProps } from "react-native-gesture-handler";
+// import { TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native-gesture-handler";
 import { AppText } from "./AppText";
 
 interface AppButtonProps extends TouchableOpacityProps {

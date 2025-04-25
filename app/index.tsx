@@ -5,29 +5,33 @@ import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { useAppStore } from "@/hooks/useAppStore";
+import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { Link, router, usePathname } from "expo-router";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { StyleProp, StyleSheet, TextStyle, useWindowDimensions } from "react-native";
-import { useTheme } from "@/hooks/useTheme";
-
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { StyleProp, StyleSheet, TextStyle } from "react-native";
 import Tooltip from "react-native-walkthrough-tooltip";
 
+const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
+
 export default function Home() {
+    const { t } = useTranslation();
     const path = usePathname();
     const theme = useTheme();
-    const { t } = useTranslation();
+    // const { width } = useWindowDimensions();
+
     const username = useAppStore((state) => state.username);
     const hasCompletedTour = useAppStore((state) => state.completedTours.home);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
-    const { width } = useWindowDimensions();
 
     const [tourStep, setTourStep] = useState(-1);
 
-    const greetingMessage = t("app.welcome") + (username ? `, ${username}` : "!");
-    const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
+    const onTooltipDismiss = useCallback(() => {
+        setTourStep(-1);
+        setTourCompleted("home", true);
+    }, [setTourStep, setTourCompleted]);
 
     useLayoutEffect(() => {
         setTimeout(() => {
@@ -39,20 +43,10 @@ export default function Home() {
         if (router.canDismiss()) router.dismissAll();
     }, []);
 
+    const greetingMessage = t("app.welcome") + (username ? `, ${username}` : "!");
+
     return (
         <AppView style={s.container}>
-            {/* <RenderHTML source={source} contentWidth={width} defaultViewProps={{}} /> */}
-            {/* <RenderHTML
-                contentWidth={300}
-                source={{ html: htmlContent }}
-                renderers={renderers}
-                renderersProps={{
-                    svg: {
-                        data: `<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50" fill="blue" /></svg>`,
-                    },
-                }}
-            /> */}
-
             <FadeIn y={50} x={0} delay={0}>
                 <AppTextLogo subtitles={t("app.slogan")} />
             </FadeIn>
@@ -98,7 +92,7 @@ export default function Home() {
                 isVisible={tourStep == 0}
                 placement="center"
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                onClose={() => setTourStep(1)}
+                onClose={onTooltipDismiss}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <AppText {...tourTextProps} type="subtitle">
@@ -108,10 +102,7 @@ export default function Home() {
                         <AppButton
                             style={{ marginVertical: 6 }}
                             text={t("tour.home.0_ok")}
-                            onPress={() => {
-                                setTourStep(-1);
-                                setTourCompleted("home", true);
-                            }}
+                            onPress={onTooltipDismiss}
                         />
                     </AppView>
                 }

@@ -2,24 +2,20 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { useAppStore } from "@/hooks/useAppStore";
-import { useIntl } from "@/hooks/useIntl";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Tooltip from "react-native-walkthrough-tooltip";
-
 import AppButton from "@/components/atoms/AppButton";
 import { LevelTile } from "@/components/atoms/LevelTile";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { BottomTabs } from "@/components/molecules/BottomTabs";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { testBorder } from "@/utils/styles";
-import { useTheme } from "@/hooks/useTheme";
 import { useAllLevels } from "@/hooks/useAllLevels";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const cols = 3;
 
@@ -29,7 +25,7 @@ export default function LevelSelectionScreen() {
     const { sectionedLevels, unlockedLevels } = useAllLevels();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     // const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "accent");
-    const games = useAppStore((state) => state.games);
+    // const games = useAppStore((state) => state.games);
     const clef = useAppStore((state) => state.selectedLevelsClef);
     const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
@@ -40,6 +36,19 @@ export default function LevelSelectionScreen() {
     const clefLevels = sectionedLevels.find((lvls) => lvls.title == clef)!;
     const grid = makeGrid(clefLevels.data, cols);
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
+
+    const goToStepOne = useCallback(() => {
+        setTourStep(1);
+    }, []);
+
+    const goToStepTwo = useCallback(() => {
+        setTourStep(2);
+    }, []);
+
+    const doFinalStep = useCallback(() => {
+        setTourCompleted("levelSelection", true);
+        setTourStep(-1);
+    }, []);
 
     useLayoutEffect(() => {
         if (!hasCompletedTour) setTourStep(0);
@@ -77,16 +86,14 @@ export default function LevelSelectionScreen() {
                                                 placement="right"
                                                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                                                 contentStyle={{ minHeight: 146 }}
+                                                onClose={doFinalStep}
                                                 content={
                                                     <AppView transparentBG style={{ alignItems: "center" }}>
                                                         <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
                                                         <AppButton
                                                             style={{ marginVertical: 8 }}
                                                             text="OK"
-                                                            onPress={() => {
-                                                                setTourCompleted("levelSelection", true);
-                                                                setTourStep(-1);
-                                                            }}
+                                                            onPress={doFinalStep}
                                                         />
                                                     </AppView>
                                                 }
@@ -115,16 +122,11 @@ export default function LevelSelectionScreen() {
                     isVisible={tourStep == 0}
                     placement="center"
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
+                    onClose={goToStepOne}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
-                            <AppButton
-                                style={{ marginVertical: 8 }}
-                                text="OK"
-                                onPress={() => {
-                                    setTourStep(1);
-                                }}
-                            />
+                            <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepOne} />
                         </AppView>
                     }
                 />
@@ -139,16 +141,11 @@ export default function LevelSelectionScreen() {
                 tooltipStyle={{ transform: [{ translateY: -100 }] }}
                 contentStyle={{ height: 132 }}
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
+                onClose={goToStepTwo}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
-                        <AppButton
-                            style={{ marginVertical: 8 }}
-                            text="OK"
-                            onPress={() => {
-                                setTourStep(2);
-                            }}
-                        />
+                        <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepTwo} />
                     </AppView>
                 }
             >
