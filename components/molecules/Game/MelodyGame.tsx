@@ -100,7 +100,7 @@ export function MelodyGameComponent() {
         });
 
         if (isLastNote) {
-            await wait(60);
+            await wait(0);
             setMelodyIdx(0);
             addNewRound(decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes));
         } else {

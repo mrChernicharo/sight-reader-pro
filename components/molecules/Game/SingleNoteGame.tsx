@@ -38,8 +38,7 @@ import Tooltip from "react-native-walkthrough-tooltip";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-
-const DELAY = 20;
+import { AttemptedNotes } from "../AttemptedNotes";
 
 const s = STYLES.game;
 
@@ -64,7 +63,7 @@ export function SingleNoteGameComponent() {
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
     const { playPianoNote, playSoundEfx } = useSoundContext();
-    const { getLevel, unloadPracticeLevel } = useAllLevels();
+    const { getLevel } = useAllLevels();
     const { currentGame, saveGameRecord, startNewGame, addNewRound, updatePlayedNotes, setTourCompleted } =
         useAppStore();
 
@@ -76,23 +75,26 @@ export function SingleNoteGameComponent() {
     const level = getLevel(id)!;
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
-    const isPracticeLevel = getIsPracticeLevel(currentGame?.levelId);
+    // const isPracticeLevel = getIsPracticeLevel(currentGame?.levelId);
 
     const rounds = currentGame?.rounds || [];
 
     const [gameState, setGameState] = useState<GameState>(GameState.Idle);
+    const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
     const [currNote, setCurrNote] = useState<Note>(
         decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
-    const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
 
     async function onPianoKeyPress(notename: NoteName) {
         if (gameState !== GameState.Idle) return;
         const { noteName, octave } = explodeNote(currNote);
         const playedNote = `${notename}/${+octave}` as Note;
         const success = isNoteMatch(notename, noteName);
-
         // console.log({ currNote, attemptedNote: playedNote, success });
+        setAttemptedNotes((prev) => {
+            prev.push({ id: randomUID(), you: playedNote, correct: currNote });
+            return prev;
+        });
 
         if (success) {
             setGameState(GameState.Success);
@@ -104,12 +106,6 @@ export function SingleNoteGameComponent() {
             playPianoNote(currNote);
             playSoundEfx(SoundEffect.WrongAnswer2);
         }
-        setAttemptedNotes((prev) => {
-            prev.push({ id: randomUID(), you: playedNote, correct: currNote });
-            return prev;
-        });
-
-        await wait(DELAY);
 
         if (!currentGame || currentGame.type !== GameType.Single) return;
 
@@ -120,8 +116,9 @@ export function SingleNoteGameComponent() {
             attempt: playedNote,
         })!;
 
-        if (nextNote) setCurrNote(nextNote);
+        await wait(0);
 
+        if (nextNote) setCurrNote(nextNote);
         setGameState(GameState.Idle);
     }
 
@@ -166,22 +163,6 @@ export function SingleNoteGameComponent() {
             console.log("SINGLE NOTE GAME UNMOUNT!!!");
         };
     }, []);
-
-    // useEffect(() => {
-    //     console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });
-    // }, [hasCompletedTour, tourStep]);
-
-    useEffect(() => {
-        (async () => {
-            const duration = getAttemptedNoteDuration(true);
-            await wait(duration);
-
-            setAttemptedNotes((prev) => {
-                prev.shift();
-                return prev;
-            });
-        })();
-    }, [rounds]);
 
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 
@@ -268,8 +249,8 @@ export function SingleNoteGameComponent() {
                     placement="bottom"
                     tooltipStyle={{ transform: [{ translateY: 0 }] }}
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                    contentStyle={{}}
-                    parentWrapperStyle={{}}
+                    // contentStyle={{}}
+                    // parentWrapperStyle={{}}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.1" />
@@ -285,11 +266,11 @@ export function SingleNoteGameComponent() {
                 </Tooltip>
             )}
 
-            <AppView style={{ ...s.attemptedNotes, transform: [{ translateY: 20 }] }}>
-                {attemptedNotes.map((attempt) => (
-                    <AttemptedNote key={attempt.id} attempt={attempt} />
-                ))}
-            </AppView>
+            <AttemptedNotes
+                rounds={rounds.length}
+                attemptedNotes={attemptedNotes}
+                setAttemptedNotes={setAttemptedNotes}
+            />
 
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 2}

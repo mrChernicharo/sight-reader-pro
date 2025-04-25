@@ -11,7 +11,7 @@ import { WHITE_NOTES } from "@/utils/notes";
 import { Note } from "@/utils/types";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
+import { GestureHandlerRootView, Pressable } from "react-native-gesture-handler";
 import { WhitePianoKey } from "./WhiteKey";
 import { BlackPianoKey } from "./BlackKey";
 

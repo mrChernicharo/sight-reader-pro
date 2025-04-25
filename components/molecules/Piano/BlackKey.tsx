@@ -6,8 +6,8 @@ import { Colors } from "@/utils/Colors";
 import { NoteName } from "@/utils/enums";
 import { capitalizeStr } from "@/utils/helperFns";
 import { memo, useCallback } from "react";
-import { StyleSheet } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
+import { StyleSheet, Pressable } from "react-native";
+// import { Pressable } from "react-native-gesture-handler";
 
 export const BlackPianoKey = memo(
     ({
