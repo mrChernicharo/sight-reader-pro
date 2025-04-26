@@ -52,7 +52,7 @@ export default function Home() {
             </FadeIn>
 
             <FadeIn y={50} x={0} delay={250}>
-                <AppView style={{ alignItems: "center", rowGap: 12, width: 200 }}>
+                <AppView style={s.btnGroup}>
                     <Link asChild href="/practice">
                         <AppButton
                             text={t("routes.practice")}
@@ -117,8 +117,9 @@ const s = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         paddingTop: 104,
-        paddingBottom: 52,
+        paddingBottom: 54,
     },
-    btn: { backgroundColor: "transparent", borderWidth: 1, width: 200 },
+    btnGroup: { alignItems: "center", rowGap: 12, width: 200, marginTop: -32 },
+    btn: { backgroundColor: "transparent", borderWidth: StyleSheet.hairlineWidth, width: 200 },
     cta: { width: 300, height: 56 },
 });

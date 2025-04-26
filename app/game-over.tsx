@@ -137,8 +137,13 @@ export default function GameOverScreen() {
                                 <FadeIn y={50} x={0} delay={2400}>
                                     <AppButton
                                         text={t("game.goTo.again")}
-                                        style={{ backgroundColor: "transparent" }}
-                                        textStyle={{ color: Colors[theme].text }}
+                                        style={{
+                                            ...s.btn,
+                                            borderColor: Colors[theme].text,
+                                        }}
+                                        textStyle={{
+                                            color: Colors[theme].text,
+                                        }}
                                         onPress={playAgain}
                                     />
                                 </FadeIn>
@@ -146,8 +151,11 @@ export default function GameOverScreen() {
                                 <FadeIn y={50} x={0} delay={2600}>
                                     <AppButton
                                         text={t("game.goTo.levelSelection")}
-                                        style={{ backgroundColor: "transparent" }}
-                                        textStyle={{ color: "gray" }}
+                                        style={{
+                                            ...s.btn,
+                                            backgroundColor: "transparent",
+                                        }}
+                                        textStyle={{ color: Colors[theme].text }}
                                         onPress={goToLevelSelection}
                                     />
                                 </FadeIn>
@@ -156,7 +164,11 @@ export default function GameOverScreen() {
                         <FadeIn y={50} x={0} delay={2800}>
                             <AppButton
                                 text={t("game.goTo.mainMenu")}
-                                style={{ backgroundColor: "transparent", marginBottom: 36 }}
+                                style={{
+                                    ...s.btn,
+                                    backgroundColor: "transparent",
+                                    marginBottom: 36,
+                                }}
                                 textStyle={{ color: "gray" }}
                                 onPress={goToMainMenu}
                             />
@@ -193,5 +205,9 @@ const s = StyleSheet.create({
         justifyContent: "center",
         textAlign: "center",
         lineHeight: 90,
+    },
+    btn: {
+        backgroundColor: "transparent",
+        borderWidth: StyleSheet.hairlineWidth,
     },
 });

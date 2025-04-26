@@ -11,13 +11,12 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
-import { Clef, GameType, KeySignature, LevelAccidentType, WinRank } from "@/utils/enums";
+import { Clef, GameType, KeySignature, WinRank } from "@/utils/enums";
 import { isNoteHigher } from "@/utils/helperFns";
 import { testBorder } from "@/utils/styles";
 import { Level, Note } from "@/utils/types";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { useCallback } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -91,11 +90,11 @@ export default function LevelDetails() {
                 </FadeIn>
 
                 {/* Separator */}
-                <FadeIn y={50} x={0} delay={300}>
+                <FadeIn y={0} x={-100} delay={400}>
                     <AppView style={{ ...s.separator, borderColor: muteColor }} />
                 </FadeIn>
 
-                <FadeIn y={50} x={0} delay={400}>
+                <FadeIn y={0} x={-100} delay={600}>
                     <AppView style={s.musicSheetContainer}>
                         <SheetMusic.RangeDisplay
                             clef={level.clef}
@@ -106,7 +105,7 @@ export default function LevelDetails() {
                 </FadeIn>
 
                 <AppView style={s.ctaContainer}>
-                    <FadeIn y={50} x={0} delay={600}>
+                    <FadeIn y={50} x={0} delay={800}>
                         <AppButton
                             text={t("game.state.start")}
                             style={s.cta}
