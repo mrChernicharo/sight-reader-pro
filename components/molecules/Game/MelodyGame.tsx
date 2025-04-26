@@ -9,7 +9,6 @@ import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/util
 import {
     explodeNote,
     getAttemptedNoteDuration,
-    getIsPracticeLevel,
     getLevelHintCount,
     getPossibleNotesInLevel,
     isNoteMatch,
@@ -143,7 +142,7 @@ export function MelodyGameComponent() {
                 return prev;
             });
         })();
-    }, [rounds]);
+    }, [rounds.length]);
 
     useEffect(() => {
         return () => {

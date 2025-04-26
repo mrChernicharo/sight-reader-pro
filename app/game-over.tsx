@@ -121,8 +121,6 @@ export default function GameOverScreen() {
                                 <FadeIn y={50} x={0} delay={2400}>
                                     <AppButton
                                         text={t("game.goTo.again")}
-                                        // style={{ ...(hasWon && { backgroundColor: "transparent" }) }}
-                                        // textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
                                         style={{ backgroundColor: "transparent" }}
                                         onPress={playAgain}
                                     />
@@ -139,8 +137,8 @@ export default function GameOverScreen() {
                                 <FadeIn y={50} x={0} delay={2400}>
                                     <AppButton
                                         text={t("game.goTo.again")}
-                                        style={{ ...(hasWon && { backgroundColor: "transparent" }) }}
-                                        textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
+                                        style={{ backgroundColor: "transparent" }}
+                                        textStyle={{ color: Colors[theme].text }}
                                         onPress={playAgain}
                                     />
                                 </FadeIn>

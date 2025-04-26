@@ -2,26 +2,26 @@ import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
-
-import { SheetMusic } from "@/components/molecules/SheetMusic";
-import { Colors } from "@/utils/Colors";
-import { LevelAccidentType, Clef, GameType, WinRank, KeySignature } from "@/utils/enums";
-import { isNoteHigher } from "@/utils/helperFns";
-import { Level, Note } from "@/utils/types";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { router, useLocalSearchParams } from "expo-router";
-import { Dimensions, StatusBar, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { FadeIn } from "@/components/atoms/FadeIn";
-import { useTranslation } from "@/hooks/useTranslation";
-import { ScrollView } from "react-native-gesture-handler";
-import { useAppStore } from "@/hooks/useAppStore";
-import { useEffect } from "react";
-import { glyphs } from "@/utils/constants";
-import { testBorder } from "@/utils/styles";
+import { SheetMusic } from "@/components/molecules/SheetMusic";
 import { useAllLevels } from "@/hooks/useAllLevels";
+import { useAppStore } from "@/hooks/useAppStore";
 import { useTheme } from "@/hooks/useTheme";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/utils/Colors";
+import { glyphs } from "@/utils/constants";
+import { Clef, GameType, KeySignature, LevelAccidentType, WinRank } from "@/utils/enums";
+import { isNoteHigher } from "@/utils/helperFns";
+import { testBorder } from "@/utils/styles";
+import { Level, Note } from "@/utils/types";
+import { Ionicons } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useCallback } from "react";
+import { Dimensions, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LevelDetails() {
     const { getLevel } = useAllLevels();
@@ -33,16 +33,9 @@ export default function LevelDetails() {
     const { currentGame, endGame } = useAppStore();
     const theme = useTheme();
 
-    // console.log(":::LevelDetails", level);
-    // if (level.gameType !== GameType.Single) return;
+    const rangeKeys = (level as Level).noteRanges.map((range) => range.split(":::") as [Note, Note]);
 
-    const displayInfo = {
-        rangeTitleOffset: getRangeTitleOffset(level),
-        accidentText: level.keySignature,
-        rangeKeys: (level as Level).noteRanges.map((range) => range.split(":::") as [Note, Note]),
-    };
-
-    function handleNewGame() {
+    const handleNewGame = useCallback(() => {
         if (currentGame) endGame();
         switch (level.type) {
             case GameType.Single:
@@ -54,7 +47,7 @@ export default function LevelDetails() {
                 });
             }
         }
-    }
+    }, [currentGame, level]);
 
     if (!level) return null;
 
@@ -63,13 +56,8 @@ export default function LevelDetails() {
             <ScrollView contentContainerStyle={s.container}>
                 <FadeIn y={50} x={0}>
                     <AppView style={s.top}>
-                        <BackLink to="/level-selection" wrapperStyle={{ left: 24, top: 6, position: "absolute" }} />
-                        <AppText type="title" style={s.title}>
-                            {level.name}
-                        </AppText>
-                        {/* <AppText type="subtitle" style={s.subtitle}>
-                        {level.id}
-                    </AppText> */}
+                        <BackLink to="/level-selection" wrapperStyle={{ left: 24, top: 5.5, position: "absolute" }} />
+                        <AppText style={s.title}>{level.name}</AppText>
                     </AppView>
                     <AppView style={s.topInfo}>
                         <AppText
@@ -90,39 +78,44 @@ export default function LevelDetails() {
                     </AppView>
                 </FadeIn>
 
-                <FadeIn y={50} x={0} delay={200} style={s.midContainer}>
-                    <AppText>{t(`game.type.${level.type}`)}</AppText>
-                    {/* <AppText>{t(`game.config.${displayInfo.accidentText}`)}</AppText> */}
-                    <AppText>
-                        <Ionicons name="time-outline" /> {level.durationInSeconds} {t("time.seconds")}
-                    </AppText>
-                    <AppText>
-                        <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
-                    </AppText>
+                <FadeIn y={50} x={0} delay={200}>
+                    <AppView style={s.midContainer}>
+                        <AppText>{t(`game.type.${level.type}`)}</AppText>
+                        <AppText>
+                            <Ionicons name="time-outline" /> {level.durationInSeconds} {t("time.seconds")}
+                        </AppText>
+                        <AppText>
+                            <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
+                        </AppText>
+                    </AppView>
                 </FadeIn>
 
                 {/* Separator */}
                 <FadeIn y={50} x={0} delay={300}>
-                    <AppView style={{ borderBottomWidth: 1, borderColor: muteColor }} />
+                    <AppView style={{ ...s.separator, borderColor: muteColor }} />
                 </FadeIn>
 
-                <FadeIn y={50} x={0} delay={400} style={s.musicSheetContainer}>
-                    <SheetMusic.RangeDisplay
-                        clef={level.clef}
-                        keys={displayInfo.rangeKeys}
-                        keySignature={level.keySignature || KeySignature["C"]}
-                    />
+                <FadeIn y={50} x={0} delay={400}>
+                    <AppView style={s.musicSheetContainer}>
+                        <SheetMusic.RangeDisplay
+                            clef={level.clef}
+                            keys={rangeKeys}
+                            keySignature={level.keySignature || KeySignature["C"]}
+                        />
+                    </AppView>
                 </FadeIn>
 
-                <FadeIn y={50} x={0} delay={600} style={s.ctaContainer}>
-                    <AppButton
-                        text={t("game.state.start")}
-                        style={s.cta}
-                        textStyle={{ color: "white", fontSize: 24 }}
-                        activeOpacity={0.7}
-                        onPress={handleNewGame}
-                    />
-                </FadeIn>
+                <AppView style={s.ctaContainer}>
+                    <FadeIn y={50} x={0} delay={600}>
+                        <AppButton
+                            text={t("game.state.start")}
+                            style={s.cta}
+                            textStyle={{ color: "white", fontSize: 24 }}
+                            activeOpacity={0.7}
+                            onPress={handleNewGame}
+                        />
+                    </FadeIn>
+                </AppView>
             </ScrollView>
         </SafeAreaView>
     );
@@ -130,9 +123,11 @@ export default function LevelDetails() {
 
 const s = StyleSheet.create({
     container: {
+        position: "relative",
+        // justifyContent: "center",
         alignItems: "center",
-        paddingHorizontal: 36,
-        // minHeight: "100%",
+        minHeight: Dimensions.get("window").height,
+        // ...testBorder(),
     },
     top: {
         width: Dimensions.get("window").width,
@@ -141,17 +136,13 @@ const s = StyleSheet.create({
         // ...testBorder(),
     },
     title: {
+        fontFamily: "Grotesque",
+        fontSize: 22,
+        lineHeight: 36,
         textAlign: "center",
         pointerEvents: "none",
         // borderWidth: 1,
         // borderColor: "blue",
-    },
-    subtitle: {
-        color: "gray",
-        textAlign: "center",
-        width: "100%",
-        // borderWidth: 1,
-        // borderColor: "red",
     },
     topInfo: {
         flexDirection: "row",
@@ -164,29 +155,32 @@ const s = StyleSheet.create({
     midContainer: {
         alignItems: "center",
         paddingVertical: 24,
-        // borderWidth: 1,
-        // borderColor: "orange",
+        // ...testBorder(),
+    },
+    separator: {
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        width: Dimensions.get("window").width - 96,
+        height: 20,
+        marginBottom: 20,
+        // ...testBorder(),
     },
     rangeTitle: {
         textAlign: "center",
-        // borderWidth: 1,
-        // borderColor: "red",
     },
     musicSheetContainer: {
-        height: 180,
-        // borderWidth: 1,
-        // borderColor: "green",
+        height: 200,
+        // ...testBorder(),
     },
     ctaContainer: {
-        position: "relative",
+        position: "absolute",
+        bottom: 0,
+        height: 100,
+        paddingHorizontal: 48,
         width: Dimensions.get("window").width,
-        // borderWidth: 1,
-        // borderColor: "orange",
+        // ...testBorder("green"),
     },
     cta: {
         height: 56,
-        bottom: 56,
-        width: 300,
     },
     ctaText: {
         color: "white",
@@ -223,15 +217,15 @@ function getRangeTitleOffset(level: Level) {
     }
 }
 
-function getAccidentText(levelAccident: LevelAccidentType) {
-    switch (levelAccident) {
-        case LevelAccidentType.None:
-            return "no accidents";
-        case LevelAccidentType["#"]:
-            return "♯ sharp accidents";
-        case LevelAccidentType.b:
-            return "♭ flat accidents";
-        default:
-            return "@TODO";
-    }
-}
+// function getAccidentText(levelAccident: LevelAccidentType) {
+//     switch (levelAccident) {
+//         case LevelAccidentType.None:
+//             return "no accidents";
+//         case LevelAccidentType["#"]:
+//             return "♯ sharp accidents";
+//         case LevelAccidentType.b:
+//             return "♭ flat accidents";
+//         default:
+//             return "@TODO";
+//     }
+// }

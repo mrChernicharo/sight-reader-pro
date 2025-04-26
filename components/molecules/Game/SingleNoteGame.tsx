@@ -14,7 +14,6 @@ import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "
 import {
     explodeNote,
     getAttemptedNoteDuration,
-    getIsPracticeLevel,
     getLevelHintCount,
     getPossibleNotesInLevel,
     isNoteMatch,
@@ -38,6 +37,7 @@ import Tooltip from "react-native-walkthrough-tooltip";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import { useGameTour } from "@/hooks/tours/useGameTour";
 
 const s = STYLES.game;
 
@@ -54,47 +54,6 @@ const getNoteColor = (gameState: GameState, theme: "light" | "dark") => {
     }
 };
 
-function useGameTour() {
-    const setTourCompleted = useAppStore((state) => state.setTourCompleted);
-
-    const [tourStep, setTourStep] = useState(-1);
-
-    const goToStepOne = useCallback(() => {
-        setTourStep(1);
-    }, []);
-
-    const goToStepTwo = useCallback(() => {
-        setTourStep(2);
-    }, []);
-
-    const goToStepThree = useCallback(() => {
-        setTourStep(3);
-    }, []);
-
-    const goToStepFour = useCallback(() => {
-        setTourStep(4);
-    }, []);
-
-    const doFinalStep = useCallback(async () => {
-        await setTourCompleted("game", true);
-        setTourStep(-1);
-    }, []);
-
-    useEffect(() => {
-        // console.log("Start up game tour!!!");
-        setTimeout(() => setTourStep(0), 200);
-    }, []);
-
-    return {
-        tourStep,
-        goToStepOne,
-        goToStepTwo,
-        goToStepThree,
-        goToStepFour,
-        doFinalStep,
-    };
-}
-
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
     const theme = useTheme();
@@ -103,9 +62,8 @@ export function SingleNoteGameComponent() {
     const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
     const { playPianoNote, playSoundEfx } = useSoundContext();
-    const { getLevel, unloadPracticeLevel } = useAllLevels();
-    const { currentGame, saveGameRecord, startNewGame, addNewRound, updatePlayedNotes, setTourCompleted } =
-        useAppStore();
+    const { getLevel } = useAllLevels();
+    const { currentGame, saveGameRecord, startNewGame, addNewRound, updatePlayedNotes } = useAppStore();
 
     const { tourStep, goToStepOne, goToStepTwo, goToStepThree, goToStepFour, doFinalStep } = useGameTour();
 
@@ -196,16 +154,6 @@ export function SingleNoteGameComponent() {
     }, [id, level]);
 
     useEffect(() => {
-        return () => {
-            console.log("SINGLE NOTE GAME UNMOUNT!!!");
-        };
-    }, []);
-
-    // useEffect(() => {
-    //     console.log("<SingleNoteGame>", { hasCompletedTour, tourStep });
-    // }, [hasCompletedTour, tourStep]);
-
-    useEffect(() => {
         (async () => {
             const duration = getAttemptedNoteDuration(true);
             await wait(duration);
@@ -215,7 +163,13 @@ export function SingleNoteGameComponent() {
                 return prev;
             });
         })();
-    }, [rounds]);
+    }, [rounds.length]);
+
+    useEffect(() => {
+        return () => {
+            console.log("SINGLE NOTE GAME UNMOUNT!!!");
+        };
+    }, []);
 
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 
