@@ -7,7 +7,7 @@ const ptBR = {
     },
     routes: {
         practice: "Prática Personalizada",
-        profile: "Perfil",
+        profile: "Histórico",
         settings: "Configurações",
         levelSelection: "Selecionar Nível",
         main: {
@@ -55,7 +55,7 @@ const ptBR = {
             next: "Próximo Nível",
             again: "Jogar Novamente",
             levelSelection: "Selecionar Nível",
-            practice: "Voltar",
+            practice: "Configurar Exercício",
             mainMenu: "Menu Principal",
         },
         type: {
@@ -89,7 +89,7 @@ const ptBR = {
         lang: { placeholder: "Escolher idioma" },
     },
     profile: {
-        title: "Perfil",
+        title: "Histórico",
         username: "Nome de Usuário",
         level: "Nível",
         progress: "Progresso",

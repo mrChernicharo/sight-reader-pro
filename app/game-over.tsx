@@ -36,6 +36,7 @@ export default function GameOverScreen() {
     const { hasWon, hitsPerMinute } = getGameStats(level, lastGame?.rounds ?? [], intl);
     const emoji = isPracticeLevel ? "" : hasWon ? " 🎉 " : " 😩 ";
     const headingText = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
+    const btnTextStyle = { color: Colors[theme].text };
 
     const goToNextLevel = useCallback(() => {
         const nextLevel = allLevels.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
@@ -113,40 +114,40 @@ export default function GameOverScreen() {
                         {isPracticeLevel ? (
                             <>
                                 <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>
-                                    <Link asChild href={"/practice"}>
-                                        <AppButton text={t("game.goTo.practice")} />
-                                    </Link>
+                                    <AppButton text={t("game.goTo.again")} onPress={playAgain} />
                                 </FadeIn>
 
                                 <FadeIn y={50} x={0} delay={2400}>
-                                    <AppButton
-                                        text={t("game.goTo.again")}
-                                        style={{ backgroundColor: "transparent" }}
-                                        onPress={playAgain}
-                                    />
+                                    <Link asChild href={"/practice"}>
+                                        <AppButton
+                                            text={t("game.goTo.practice")}
+                                            style={{ ...s.btn, borderColor: Colors[theme].text }}
+                                            textStyle={btnTextStyle}
+                                        />
+                                    </Link>
                                 </FadeIn>
                             </>
                         ) : (
                             <>
                                 {hasWon ? (
-                                    <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>
-                                        <AppButton text={t("game.goTo.next")} onPress={goToNextLevel} />
-                                    </FadeIn>
-                                ) : null}
+                                    <>
+                                        <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>
+                                            <AppButton text={t("game.goTo.next")} onPress={goToNextLevel} />
+                                        </FadeIn>
 
-                                <FadeIn y={50} x={0} delay={2400}>
-                                    <AppButton
-                                        text={t("game.goTo.again")}
-                                        style={{
-                                            ...s.btn,
-                                            borderColor: Colors[theme].text,
-                                        }}
-                                        textStyle={{
-                                            color: Colors[theme].text,
-                                        }}
-                                        onPress={playAgain}
-                                    />
-                                </FadeIn>
+                                        <FadeIn y={50} x={0} delay={2400}>
+                                            <AppButton
+                                                text={t("game.goTo.again")}
+                                                style={{ backgroundColor: Colors[theme].accent }}
+                                                onPress={playAgain}
+                                            />
+                                        </FadeIn>
+                                    </>
+                                ) : (
+                                    <FadeIn y={50} x={0} delay={2400}>
+                                        <AppButton text={t("game.goTo.again")} onPress={playAgain} />
+                                    </FadeIn>
+                                )}
 
                                 <FadeIn y={50} x={0} delay={2600}>
                                     <AppButton
@@ -155,7 +156,7 @@ export default function GameOverScreen() {
                                             ...s.btn,
                                             backgroundColor: "transparent",
                                         }}
-                                        textStyle={{ color: Colors[theme].text }}
+                                        textStyle={btnTextStyle}
                                         onPress={goToLevelSelection}
                                     />
                                 </FadeIn>
@@ -164,11 +165,7 @@ export default function GameOverScreen() {
                         <FadeIn y={50} x={0} delay={2800}>
                             <AppButton
                                 text={t("game.goTo.mainMenu")}
-                                style={{
-                                    ...s.btn,
-                                    backgroundColor: "transparent",
-                                    marginBottom: 36,
-                                }}
+                                style={{ ...s.btn, marginBottom: 36 }}
                                 textStyle={{ color: "gray" }}
                                 onPress={goToMainMenu}
                             />

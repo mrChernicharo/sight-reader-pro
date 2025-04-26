@@ -27,6 +27,7 @@ import RangeSlider from "../components/atoms/RangeSlider";
 import { useAllLevels } from "@/hooks/useAllLevels";
 
 const durationInSeconds = 60;
+// const durationInSeconds = 60;
 
 export default function PracticeScreen() {
     const theme = useTheme();

@@ -7,7 +7,7 @@ const en = {
     },
     routes: {
         practice: "Custom Practice",
-        profile: "Profile",
+        profile: "History",
         settings: "Settings",
         levelSelection: "Level Selection",
         main: {
@@ -55,7 +55,7 @@ const en = {
             next: "Next Level",
             again: "Play Again",
             levelSelection: "Level Selection",
-            practice: "Back to Practice Settings",
+            practice: "Practice Settings",
             mainMenu: "Main Menu",
         },
         type: {
@@ -88,7 +88,7 @@ const en = {
         lang: { placeholder: "Select language" },
     },
     profile: {
-        title: "Profile",
+        title: "History",
         username: "Username",
         level: "Level",
         progress: "Progress",

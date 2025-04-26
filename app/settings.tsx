@@ -14,6 +14,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { LANGS } from "@/utils/constants";
 import { AppSwitch } from "@/components/atoms/AppSwitch";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function SettingsScreen() {
     const { t } = useTranslation();
@@ -145,6 +146,7 @@ export default function SettingsScreen() {
                 </AppView>
 
                 <AppButton
+                    icon={<FontAwesome name="trash-o" color={"white"} size={16} />}
                     text={t("settings.resetMyData.title")}
                     textStyle={{ color: "white" }}
                     style={{ backgroundColor: "red" }}
