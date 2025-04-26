@@ -134,28 +134,21 @@ export default function GameOverScreen() {
                                         <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>
                                             <AppButton text={t("game.goTo.next")} onPress={goToNextLevel} />
                                         </FadeIn>
-
-                                        <FadeIn y={50} x={0} delay={2400}>
-                                            <AppButton
-                                                text={t("game.goTo.again")}
-                                                style={{ backgroundColor: Colors[theme].accent }}
-                                                onPress={playAgain}
-                                            />
-                                        </FadeIn>
                                     </>
-                                ) : (
-                                    <FadeIn y={50} x={0} delay={2400}>
-                                        <AppButton text={t("game.goTo.again")} onPress={playAgain} />
-                                    </FadeIn>
-                                )}
+                                ) : null}
+
+                                <FadeIn y={50} x={0} delay={2400}>
+                                    <AppButton
+                                        text={t("game.goTo.again")}
+                                        style={{ backgroundColor: Colors[theme].accent }}
+                                        onPress={playAgain}
+                                    />
+                                </FadeIn>
 
                                 <FadeIn y={50} x={0} delay={2600}>
                                     <AppButton
                                         text={t("game.goTo.levelSelection")}
-                                        style={{
-                                            ...s.btn,
-                                            backgroundColor: "transparent",
-                                        }}
+                                        style={{ ...s.btn, borderColor: Colors[theme].text }}
                                         textStyle={btnTextStyle}
                                         onPress={goToLevelSelection}
                                     />
@@ -165,7 +158,7 @@ export default function GameOverScreen() {
                         <FadeIn y={50} x={0} delay={2800}>
                             <AppButton
                                 text={t("game.goTo.mainMenu")}
-                                style={{ ...s.btn, marginBottom: 36 }}
+                                style={{ ...s.btn, borderColor: "transparent", marginBottom: 36 }}
                                 textStyle={{ color: "gray" }}
                                 onPress={goToMainMenu}
                             />
