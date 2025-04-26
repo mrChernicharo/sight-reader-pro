@@ -36,11 +36,8 @@ export default function NameScreen() {
     const { t } = useTranslation();
     const { username, setUsername, setTourCompleted } = useAppStore();
 
-    const btnRef = useRef<TouchableOpacity>(null);
-
     const onInputChange = useCallback((ev: NativeSyntheticEvent<TextInputChangeEventData>) => {
         setUsername(ev.nativeEvent.text);
-        if (ev.nativeEvent.text.length > 0) btnRef.current?.setOpacityTo(1, 200);
     }, []);
 
     return (
@@ -66,13 +63,12 @@ export default function NameScreen() {
 
             <AppView style={s.btnContainer}>
                 <AppButton
-                    ref={btnRef}
                     disabled={!username}
                     text={t("routes.next")}
                     style={{ ...s.btn, borderColor: Colors[theme].text }}
                     textStyle={{ color: "white" }}
-                    onPress={async () => {
-                        await setTourCompleted("init", true);
+                    onPress={() => {
+                        setTourCompleted("init", true);
                         router.replace({ pathname: "/" });
                     }}
                 />

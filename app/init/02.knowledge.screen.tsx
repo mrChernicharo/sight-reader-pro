@@ -10,8 +10,8 @@ import { Knowledge } from "@/utils/enums";
 import { STYLES } from "@/utils/styles";
 import { router } from "expo-router";
 import { useCallback, useRef } from "react";
-import { StyleSheet, Pressable } from "react-native";
-import { type TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, Pressable, TouchableOpacity, View } from "react-native";
+// import { type TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const s = {
@@ -77,11 +77,9 @@ export default function KnowledgeScreen() {
     // const { width, height } = useWindowDimensions();
     const { t } = useTranslation();
     const { knowledge, setKnowledge } = useAppStore();
-    const btnRef = useRef<TouchableOpacity>(null);
 
     const onSelect = useCallback((opt: KnowledgeOption) => {
         setKnowledge(opt.key as Knowledge);
-        btnRef.current?.setOpacityTo(1, 200);
     }, []);
 
     return (
@@ -144,7 +142,6 @@ export default function KnowledgeScreen() {
 
             <AppView style={s.btnContainer}>
                 <AppButton
-                    ref={btnRef}
                     disabled={!knowledge}
                     text={t("routes.next")}
                     style={{ ...s.btn, borderColor: Colors[theme].text }}

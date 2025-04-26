@@ -1,18 +1,18 @@
 import React, { forwardRef } from "react";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { TextStyle, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from "react-native";
 import { AppText } from "./AppText";
 
 interface AppButtonProps extends TouchableOpacityProps {
     text: string;
-    style?: any;
-    textStyle?: any;
+    style?: ViewStyle;
+    textStyle?: TextStyle;
     disabled?: boolean;
 }
 
-const AppButton = forwardRef<any, AppButtonProps>((props, ref) => {
+const AppButton = forwardRef<View, AppButtonProps>((props, ref) => {
     const { text, style, textStyle, disabled, ...otherProps } = props;
     const disabledStyles = { backgroundColor: disabled ? "gray" : "blue", opacity: disabled ? 0.5 : 1 };
-    const buttonStyle = [defaultStyles, disabledStyles, style];
+    const buttonStyle = [defaultStyles, disabledStyles, style] as ViewStyle[];
 
     return (
         <TouchableOpacity ref={ref} style={buttonStyle} disabled={disabled} {...otherProps}>

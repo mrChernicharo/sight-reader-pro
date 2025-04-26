@@ -14,7 +14,7 @@ import { Colors } from "@/utils/Colors";
 import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
 import { GameScreenParams } from "@/utils/types";
 import { Link, router, useLocalSearchParams } from "expo-router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -37,7 +37,7 @@ export default function GameOverScreen() {
     const emoji = isPracticeLevel ? "" : hasWon ? " 🎉 " : " 😩 ";
     const headingText = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
 
-    function goToNextLevel() {
+    const goToNextLevel = useCallback(() => {
         const nextLevel = allLevels.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
         if (nextLevel) {
             router.replace({
@@ -48,8 +48,8 @@ export default function GameOverScreen() {
             console.log("NO MORE LEVELS. ZEROU O GAME!");
         }
         return;
-    }
-    function playAgain() {
+    }, [level.clef, level.index]);
+    const playAgain = useCallback(() => {
         return router.replace({
             pathname: "/game-level/[id]",
             params: {
@@ -58,12 +58,18 @@ export default function GameOverScreen() {
                 previousPage: "/level-details",
             },
         });
-    }
-    function goToLevelSelection() {
+    }, [level.keySignature]);
+    const goToLevelSelection = useCallback(() => {
         return router.replace({
             pathname: "/level-selection",
         });
-    }
+    }, []);
+
+    const goToMainMenu = useCallback(() => {
+        return router.replace({
+            pathname: "/",
+        });
+    }, []);
 
     useEffect(() => {
         return () => {
@@ -117,7 +123,7 @@ export default function GameOverScreen() {
                                         text={t("game.goTo.again")}
                                         // style={{ ...(hasWon && { backgroundColor: "transparent" }) }}
                                         // textStyle={{ ...(hasWon && { color: Colors[theme].text }) }}
-                                        style={{ backgroundColor: "transparent", marginBottom: 36 }}
+                                        style={{ backgroundColor: "transparent" }}
                                         onPress={playAgain}
                                     />
                                 </FadeIn>
@@ -142,13 +148,21 @@ export default function GameOverScreen() {
                                 <FadeIn y={50} x={0} delay={2600}>
                                     <AppButton
                                         text={t("game.goTo.levelSelection")}
-                                        style={{ backgroundColor: "transparent", marginBottom: 36 }}
+                                        style={{ backgroundColor: "transparent" }}
                                         textStyle={{ color: "gray" }}
                                         onPress={goToLevelSelection}
                                     />
                                 </FadeIn>
                             </>
                         )}
+                        <FadeIn y={50} x={0} delay={2800}>
+                            <AppButton
+                                text={t("game.goTo.mainMenu")}
+                                style={{ backgroundColor: "transparent", marginBottom: 36 }}
+                                textStyle={{ color: "gray" }}
+                                onPress={goToMainMenu}
+                            />
+                        </FadeIn>
                     </AppView>
                 </AppView>
             </ScrollView>

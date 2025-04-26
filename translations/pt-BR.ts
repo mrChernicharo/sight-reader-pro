@@ -56,6 +56,7 @@ const ptBR = {
             again: "Jogar Novamente",
             levelSelection: "Selecionar Nível",
             practice: "Voltar",
+            mainMenu: "Menu Principal",
         },
         type: {
             title: "Tipo de jogo",

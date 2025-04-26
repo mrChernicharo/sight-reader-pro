@@ -29,11 +29,9 @@ export default function LangScreen() {
     // console.log(language);
     // const langObj = language ? { key: t(`${language}.title`), value: language } : undefined;
     // console.log(langObj);
-    const btnRef = useRef<TouchableOpacity>(null);
 
     const onSelect = useCallback(async (lang: any) => {
         setLanguage(lang);
-        btnRef.current?.setOpacityTo(1, 200);
     }, []);
 
     return (
@@ -60,7 +58,6 @@ export default function LangScreen() {
 
             <AppView style={s.btnContainer}>
                 <AppButton
-                    ref={btnRef}
                     disabled={!language}
                     text={t("routes.next")}
                     style={{ ...s.btn, borderColor: Colors[theme].text }}

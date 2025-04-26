@@ -56,6 +56,7 @@ const en = {
             again: "Play Again",
             levelSelection: "Level Selection",
             practice: "Back to Practice Settings",
+            mainMenu: "Main Menu",
         },
         type: {
             title: "Game Type",

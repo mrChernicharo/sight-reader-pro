@@ -22,17 +22,16 @@ const cols = 3;
 export default function LevelSelectionScreen() {
     const { t } = useTranslation();
     // const theme = useTheme();
-    const { sectionedLevels, unlockedLevels } = useAllLevels();
-    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     // const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "accent");
-    // const games = useAppStore((state) => state.games);
+    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
+
+    const { sectionedLevels, unlockedLevels } = useAllLevels();
     const clef = useAppStore((state) => state.selectedLevelsClef);
     const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
 
     const [tourStep, setTourStep] = useState(-1);
 
-    // const unlockedLevels = getUnlockedLevels(games, intl);
     const clefLevels = sectionedLevels.find((lvls) => lvls.title == clef)!;
     const grid = makeGrid(clefLevels.data, cols);
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
@@ -160,7 +159,6 @@ export const s = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 16,
         paddingBottom: 24,
-        // paddingTop: StatusBar.currentHeight,
         minHeight: Dimensions.get("window").height,
         position: "relative",
     },
@@ -169,15 +167,10 @@ export const s = StyleSheet.create({
         position: "relative",
         alignItems: "center",
         marginHorizontal: "auto",
-        // ...testBorder(),
     },
     sectionTitle: {
         paddingBottom: 16,
         paddingTop: 24,
-        // justifyContent: "center",
-        // alignItems: "baseline",
-        // borderWidth: 2,
-        // borderColor: "red",
     },
     gridSection: {
         justifyContent: "center",
