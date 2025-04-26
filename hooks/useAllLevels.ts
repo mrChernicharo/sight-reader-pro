@@ -58,6 +58,9 @@ export function useAllLevels() {
         else return result;
     }, [knowledge, practiceLevel]);
 
+    // otherwise practice level ends up on the list
+    const nonPracticeLevels = useMemo(() => allLevels.filter((lvl) => !lvl.id.includes("practice")), [allLevels]);
+
     const loadPracticeLevel = useCallback(async (level: Level) => {
         // console.log("<load practice level>", level);
         await setPracticeLevel(level);
@@ -72,14 +75,14 @@ export function useAllLevels() {
         return [
             {
                 title: Clef.Treble,
-                data: allLevels.filter((lvl) => lvl.clef == Clef.Treble),
+                data: nonPracticeLevels.filter((lvl) => lvl.clef == Clef.Treble),
             },
             {
                 title: Clef.Bass,
-                data: allLevels.filter((lvl) => lvl.clef == Clef.Bass),
+                data: nonPracticeLevels.filter((lvl) => lvl.clef == Clef.Bass),
             },
         ] as SectionedLevel[];
-    }, [allLevels]);
+    }, [nonPracticeLevels]);
 
     const unlockedLevels = useMemo(() => {
         let highestTrebleIdx = -1;

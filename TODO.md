@@ -67,14 +67,14 @@ tutorials
 ---
 
 level-selection-walkthrough ✅
-translate walkthroughs (tours)
+translate walkthroughs (tours) ✅
 style walkthroughs
 translate pianoKeys ✅
 sync practice settings in store ✅
-globalVolume and volume settings https://www.npmjs.com/package/react-native-volume-manager
+globalVolume and volume settings https://www.npmjs.com/package/react-native-volume-manager ✅
 scrollable level details ✅
-fix armor bemol note after bequadro note
-mo better levels
+fix armor bemol note after bequadro note ✅
+mo better levels ✅
 
 ====
 
@@ -84,6 +84,6 @@ lagginess after switching pages a lot
 titles: top spacing + fontSize (maybe)
 tutorial for beginners
 
----
+======
 
----
+hint color gradually fades away

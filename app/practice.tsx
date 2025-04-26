@@ -34,7 +34,7 @@ export default function PracticeScreen() {
     const { t } = useTranslation();
     const { loadPracticeLevel } = useAllLevels();
 
-    const { practiceSettings, updatePracticeSettings } = useAppStore();
+    const { knowledge, practiceSettings, updatePracticeSettings } = useAppStore();
     const { clef, isMinorKey, scale, keySignature = KeySignature.C, noteRangeIndices, gameType } = practiceSettings;
 
     const SCALES = useMemo(() => Object.values(Scale).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) })), [t]);
@@ -105,7 +105,7 @@ export default function PracticeScreen() {
         const practiceLevelSingle: Level = {
             id: levelId,
             name: "single note practice",
-            skillLevel: Knowledge.intermediary,
+            skillLevel: knowledge || Knowledge.intermediary,
             clef,
             type: GameType.Single,
             durationInSeconds,
@@ -120,7 +120,7 @@ export default function PracticeScreen() {
         const practiceLevelMelody: Level = {
             id: levelId,
             name: "melody practice",
-            skillLevel: Knowledge.intermediary,
+            skillLevel: knowledge || Knowledge.intermediary,
             clef,
             type: GameType.Melody,
             timeSignature: TimeSignature["4/4"],

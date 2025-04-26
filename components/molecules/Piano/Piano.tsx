@@ -4,7 +4,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { KeySignature, NoteName } from "@/utils/enums";
+import { GameType, KeySignature, NoteName } from "@/utils/enums";
 import { capitalizeStr, explodeNote } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
@@ -18,13 +18,23 @@ const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
     Sharp: ["c#", "d#", "", "f#", "g#", "a#"] as NoteName[],
 };
 
+const hintColors: Record<number, string> = {
+    4: "#02ba5e", // Darkest Green
+    3: "#39c37e",
+    2: "#70cc9e",
+    1: "#a6d4bd",
+    // 1: "#dddddd"  // Lightest Gray (#ddd)
+};
+
 export function Piano({
+    gameType,
     currNote,
     keySignature,
     hintCount,
     onKeyPressed,
     onKeyReleased,
 }: {
+    gameType: GameType;
     currNote: Note | null;
     keySignature: KeySignature;
     hintCount: number;
@@ -49,15 +59,16 @@ export function Piano({
 
     const hintPianoKey = useCallback(
         (note: NoteName) => {
-            // console.log({ note, currNoteName, currNote, notePlayedTimes, hintCount });
-            return hasCompletedTour && note === currNoteName && hints.current > 0;
+            // console.log({ note, hintCount, hintsLeft: hints.current });
+            switch (gameType) {
+                case GameType.Single:
+                    return hasCompletedTour && note === currNoteName && hints.current > 0;
+                default:
+                    return note === currNoteName && hints.current > 0;
+            }
         },
-        [hintCount, currNoteName, hasCompletedTour]
+        [hintCount, gameType, currNoteName, hasCompletedTour]
     );
-
-    useEffect(() => {
-        console.log("hintCount::::", hintCount);
-    }, [hintCount]);
 
     return (
         <AppView style={s.piano}>
@@ -77,7 +88,7 @@ export function Piano({
                         <Pressable
                             style={{
                                 ...s.blackNoteInner,
-                                ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }),
+                                ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
                             }}
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => {
@@ -111,7 +122,7 @@ export function Piano({
                         <Pressable
                             style={{
                                 ...s.blackNoteInner,
-                                ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }),
+                                ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
                             }}
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => {
@@ -144,7 +155,7 @@ export function Piano({
                             style={{
                                 ...s.whiteNote,
                                 width: keyWidth,
-                                ...(hintPianoKey(note) && { backgroundColor: Colors[theme].green }),
+                                ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
                             }}
                         >
                             {showPianoNoteNames && (

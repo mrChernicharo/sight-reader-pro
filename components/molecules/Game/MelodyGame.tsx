@@ -169,6 +169,7 @@ export function MelodyGameComponent() {
             </AppView>
 
             <Piano
+                gameType={GameType.Melody}
                 hintCount={hintCount}
                 currNote={currRound?.values?.[melodyIdx] || null}
                 keySignature={keySignature}

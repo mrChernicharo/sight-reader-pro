@@ -284,6 +284,7 @@ export function SingleNoteGameComponent() {
                 }
             >
                 <Piano
+                    gameType={GameType.Single}
                     hintCount={hintCount}
                     currNote={currNote}
                     keySignature={keySignature}
