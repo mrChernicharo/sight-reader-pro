@@ -8,6 +8,7 @@ import { GameType, KeySignature, NoteName } from "@/utils/enums";
 import { capitalizeStr, explodeNote } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
+import { testBorder } from "@/utils/styles";
 import { Note } from "@/utils/types";
 import { useCallback, useEffect, useRef } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
@@ -76,8 +77,8 @@ export function Piano({
             <AppView
                 style={{
                     ...s.blackNotes,
-                    width: keyboardMargin + keyWidth * 2.35,
-                    left: keyboardMargin + keyWidth / 1.63,
+                    // width: keyboardMargin + keyWidth * 2.35,
+                    left: keyboardMargin + keyWidth * 0.5,
                 }}
             >
                 {blackNotesLeft.map((note) => (
@@ -98,7 +99,13 @@ export function Piano({
                             onPressOut={() => onKeyReleased(note)}
                         >
                             {showPianoNoteNames && (
-                                <AppText style={{ color: "white", userSelect: "none" }}>
+                                <AppText
+                                    style={{
+                                        color: hintPianoKey(note) ? "#232323" : "#9b9b9b",
+                                        fontWeight: 700,
+                                        userSelect: "none",
+                                    }}
+                                >
                                     {capitalizeStr(t(`music.notes.${note}`))}
                                 </AppText>
                             )}
@@ -110,8 +117,8 @@ export function Piano({
             <AppView
                 style={{
                     ...s.blackNotes,
-                    width: keyboardMargin + keyWidth * 2.35,
-                    right: keyboardMargin + keyWidth / 0.96,
+                    // width: keyboardMargin + keyWidth * 2.35,
+                    right: keyboardMargin + keyWidth * 0.5,
                 }}
             >
                 {blackNotesRight.map((note) => (
@@ -132,7 +139,13 @@ export function Piano({
                             onPressOut={() => onKeyReleased(note)}
                         >
                             {showPianoNoteNames && (
-                                <AppText style={{ color: "white", userSelect: "none" }}>
+                                <AppText
+                                    style={{
+                                        color: hintPianoKey(note) ? "#232323" : "#9b9b9b",
+                                        fontWeight: 700,
+                                        userSelect: "none",
+                                    }}
+                                >
                                     {capitalizeStr(t(`music.notes.${note}`))}
                                 </AppText>
                             )}
@@ -159,7 +172,13 @@ export function Piano({
                             }}
                         >
                             {showPianoNoteNames && (
-                                <AppText style={{ color: "black", userSelect: "none" }}>
+                                <AppText
+                                    style={{
+                                        color: hintPianoKey(note) ? "#232323" : "#9b9b9b",
+                                        fontWeight: 700,
+                                        userSelect: "none",
+                                    }}
+                                >
                                     {capitalizeStr(t(`music.notes.${note}`))}
                                 </AppText>
                             )}
@@ -193,12 +212,12 @@ const s = StyleSheet.create({
         flexDirection: "row",
         position: "absolute",
         top: -10,
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        zIndex: 10000,
+        backgroundColor: "transparent",
+        zIndex: 100,
     },
     blackNote: {
         height: 110,
-        backgroundColor: "rgba(0, 0, 0, 0)",
+        backgroundColor: "transparent",
     },
     blackNoteInner: {
         justifyContent: "flex-end",
@@ -208,5 +227,6 @@ const s = StyleSheet.create({
         width: "80%",
         borderRadius: 6,
         zIndex: 10000,
+        margin: "auto",
     },
 });
