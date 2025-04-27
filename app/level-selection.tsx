@@ -9,13 +9,13 @@ import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { useCallback, useLayoutEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Tooltip from "react-native-walkthrough-tooltip";
 import AppButton from "@/components/atoms/AppButton";
 import { LevelTile } from "@/components/atoms/LevelTile";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { BottomTabs } from "@/components/molecules/BottomTabs";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Tooltip, { Placement } from "react-native-tooltip-2";
 
 const cols = 3;
 
@@ -81,10 +81,10 @@ export default function LevelSelectionScreen() {
                                         return isFirstLevel ? (
                                             <Tooltip
                                                 key={`tooltip-${level.id}`}
-                                                isVisible={tourStep == 2}
-                                                placement="right"
+                                                isVisible={Boolean(tourStep == 2)}
+                                                placement={Placement.RIGHT}
                                                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                                                contentStyle={{ minHeight: 146 }}
+                                                contentStyle={{ minHeight: 150 }}
                                                 onClose={doFinalStep}
                                                 content={
                                                     <AppView transparentBG style={{ alignItems: "center" }}>
@@ -118,8 +118,8 @@ export default function LevelSelectionScreen() {
                 </AppView>
 
                 <Tooltip
-                    isVisible={tourStep == 0}
-                    placement="center"
+                    isVisible={Boolean(tourStep == 0)}
+                    placement={Placement.CENTER}
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                     onClose={goToStepOne}
                     content={
@@ -135,10 +135,11 @@ export default function LevelSelectionScreen() {
 
             {/* Bottom Tabs */}
             <Tooltip
-                isVisible={tourStep == 1}
-                placement="top"
-                tooltipStyle={{ transform: [{ translateY: -100 }] }}
-                contentStyle={{ height: 132 }}
+                isVisible={Boolean(tourStep == 1)}
+                placement={Placement.TOP}
+                contentStyle={{ transform: [{ translateY: -100 }] }}
+                // @ts-ignore
+                arrowStyle={{ transform: [{ translateY: -100 }] }}
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 onClose={goToStepTwo}
                 content={

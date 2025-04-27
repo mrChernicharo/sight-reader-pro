@@ -31,13 +31,13 @@ import {
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { StyleProp, TextStyle } from "react-native";
+import { Dimensions, StyleProp, TextStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Tooltip from "react-native-walkthrough-tooltip";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { useGameTour } from "@/hooks/tours/useGameTour";
+import Tooltip, { Placement } from "react-native-tooltip-2";
 
 const s = STYLES.game;
 
@@ -182,9 +182,10 @@ export function SingleNoteGameComponent() {
             <AppView style={s.top}>
                 <Tooltip
                     isVisible={!hasCompletedTour && tourStep == 3}
-                    placement="bottom"
+                    placement={Placement.BOTTOM}
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                     contentStyle={{ transform: [{ translateY: 32 }] }}
+                    // @ts-ignore
                     arrowStyle={{ transform: [{ translateY: -32 }] }}
                     onClose={goToStepFour}
                     // contentStyle={{ borderRadius: 16 }}
@@ -211,7 +212,7 @@ export function SingleNoteGameComponent() {
 
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 0}
-                placement="center"
+                placement={Placement.CENTER}
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 onClose={goToStepOne}
                 content={
@@ -223,7 +224,7 @@ export function SingleNoteGameComponent() {
             />
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 4}
-                placement="center"
+                placement={Placement.CENTER}
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 onClose={doFinalStep}
                 content={
@@ -242,12 +243,12 @@ export function SingleNoteGameComponent() {
             {currNote && (
                 <Tooltip
                     isVisible={!hasCompletedTour && tourStep == 1}
-                    placement="bottom"
-                    tooltipStyle={{ transform: [{ translateY: 0 }] }}
+                    placement={Placement.BOTTOM}
                     topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                     onClose={goToStepTwo}
-                    // contentStyle={{}}
-                    // parentWrapperStyle={{}}
+                    // @ts-ignore
+                    arrowStyle={{ transform: [{ translateY: 60 }] }}
+                    contentStyle={{ minHeight: 128, transform: [{ translateY: -60 }] }}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.1" />
@@ -271,10 +272,11 @@ export function SingleNoteGameComponent() {
 
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 2}
-                placement="top"
+                placement={Placement.TOP}
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                tooltipStyle={{ transform: [{ translateY: -60 }] }}
-                contentStyle={{ minHeight: 128 }}
+                // @ts-ignore
+                arrowStyle={{ transform: [{ translateY: -36 }] }}
+                contentStyle={{ minHeight: 128, transform: [{ translateY: -36 }] }}
                 onClose={goToStepThree}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>

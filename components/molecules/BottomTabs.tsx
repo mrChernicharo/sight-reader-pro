@@ -5,6 +5,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
 import { Clef } from "@/utils/enums";
+import { testBorder } from "@/utils/styles";
 import { Dimensions, Pressable, StyleSheet } from "react-native";
 
 export function BottomTabs() {
@@ -21,9 +22,11 @@ export function BottomTabs() {
                 style={{
                     flex: 1,
                     alignItems: "center",
+                    justifyContent: "center",
                     paddingTop: 5,
                     borderColor: clef == Clef.Treble ? accentColor : backgroundColor,
                     borderTopWidth: 3,
+                    height: "100%",
                 }}
             >
                 <AppText type="lg" style={{ lineHeight: 54 }}>
@@ -36,9 +39,11 @@ export function BottomTabs() {
                 style={{
                     flex: 1,
                     alignItems: "center",
+                    justifyContent: "center",
                     paddingTop: 5,
                     borderColor: clef == Clef.Bass ? accentColor : backgroundColor,
                     borderTopWidth: 3,
+                    height: "100%",
                 }}
             >
                 <AppText type="title" style={{ lineHeight: 54 }}>
@@ -55,6 +60,9 @@ export const s = StyleSheet.create({
         bottom: 0,
         zIndex: 100,
         flexDirection: "row",
+        alignItems: "center",
+        minHeight: 74,
+        // ...testBorder(),
         // borderWidth: 1,
         // borderColor: "red",
     },

@@ -12,7 +12,8 @@ import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { Link, router, usePathname } from "expo-router";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { StyleProp, StyleSheet, TextStyle } from "react-native";
-import Tooltip from "react-native-walkthrough-tooltip";
+// import Tooltip from "react-native-walkthrough-tooltip";
+import Tooltip, { Placement } from "react-native-tooltip-2";
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
@@ -90,7 +91,7 @@ export default function Home() {
 
             <Tooltip
                 isVisible={tourStep == 0}
-                placement="center"
+                placement={Placement.CENTER}
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 onClose={onTooltipDismiss}
                 content={
