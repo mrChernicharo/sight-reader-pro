@@ -16,6 +16,8 @@ import { BottomTabs } from "@/components/molecules/BottomTabs";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tooltip, { Placement } from "react-native-tooltip-2";
+import { FadeIn } from "@/components/atoms/FadeIn";
+import { Clef } from "@/utils/enums";
 
 const cols = 3;
 
@@ -35,6 +37,7 @@ export default function LevelSelectionScreen() {
     const clefLevels = sectionedLevels.find((lvls) => lvls.title == clef)!;
     const grid = makeGrid(clefLevels.data, cols);
     const clefInfo = { name: clef, glyph: glyphs[`${clef}Clef`] };
+    const xDisplacement = clef == Clef.Treble ? 50 : -50;
 
     const goToStepOne = useCallback(() => {
         setTourStep(1);
@@ -65,55 +68,62 @@ export default function LevelSelectionScreen() {
                     </AppView>
 
                     <AppView key={clefLevels.title}>
-                        <AppView style={{ flexDirection: "row", justifyContent: "center", gap: 4 }}>
-                            <AppText type="title" style={s.sectionTitle}>
-                                {clefInfo.glyph}
-                            </AppText>
-                            <AppView style={{ justifyContent: "center" }}>
-                                <AppText type="mdSemiBold">{t(`music.clefs.${clefInfo.name}`)}</AppText>
+                        <FadeIn x={xDisplacement} delay={0}>
+                            <AppView style={{ flexDirection: "row", justifyContent: "center", gap: 4 }}>
+                                <AppText type="title" style={s.sectionTitle}>
+                                    {clefInfo.glyph}
+                                </AppText>
+                                <AppView style={{ justifyContent: "center" }}>
+                                    <AppText type="mdSemiBold">{t(`music.clefs.${clefInfo.name}`)}</AppText>
+                                </AppView>
                             </AppView>
-                        </AppView>
-                        <AppView style={s.gridSection}>
-                            {grid.map((row, rowIdx) => (
-                                <AppView key={`row-${rowIdx}`} style={s.gridRow}>
-                                    {row.map((level, lvlIdx) => {
-                                        const isFirstLevel = rowIdx == 0 && lvlIdx == 0;
-                                        return isFirstLevel ? (
-                                            <Tooltip
-                                                key={`tooltip-${level.id}`}
-                                                isVisible={Boolean(tourStep == 2)}
-                                                placement={Placement.RIGHT}
-                                                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                                                contentStyle={{ minHeight: 150 }}
-                                                onClose={doFinalStep}
-                                                content={
-                                                    <AppView transparentBG style={{ alignItems: "center" }}>
-                                                        <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
-                                                        <AppButton
-                                                            style={{ marginVertical: 8 }}
-                                                            text="OK"
-                                                            onPress={doFinalStep}
-                                                        />
-                                                    </AppView>
-                                                }
-                                            >
+                        </FadeIn>
+
+                        <FadeIn x={xDisplacement} delay={300}>
+                            <AppView style={s.gridSection}>
+                                {grid.map((row, rowIdx) => (
+                                    <AppView key={`row-${rowIdx}`} style={s.gridRow}>
+                                        {row.map((level, lvlIdx) => {
+                                            const isFirstLevel = rowIdx == 0 && lvlIdx == 0;
+                                            return isFirstLevel ? (
+                                                <Tooltip
+                                                    key={`tooltip-${level.id}`}
+                                                    isVisible={Boolean(tourStep == 2)}
+                                                    placement={Placement.RIGHT}
+                                                    topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
+                                                    contentStyle={{ minHeight: 150 }}
+                                                    onClose={doFinalStep}
+                                                    content={
+                                                        <AppView transparentBG style={{ alignItems: "center" }}>
+                                                            <TooltipTextLines
+                                                                keypath={`tour.levelSelection.${tourStep}`}
+                                                            />
+                                                            <AppButton
+                                                                style={{ marginVertical: 8 }}
+                                                                text="OK"
+                                                                onPress={doFinalStep}
+                                                            />
+                                                        </AppView>
+                                                    }
+                                                >
+                                                    <LevelTile
+                                                        key={level.id}
+                                                        level={level}
+                                                        isLocked={level.index > unlockedLevels[level.clef] + 1}
+                                                    />
+                                                </Tooltip>
+                                            ) : (
                                                 <LevelTile
                                                     key={level.id}
                                                     level={level}
                                                     isLocked={level.index > unlockedLevels[level.clef] + 1}
                                                 />
-                                            </Tooltip>
-                                        ) : (
-                                            <LevelTile
-                                                key={level.id}
-                                                level={level}
-                                                isLocked={level.index > unlockedLevels[level.clef] + 1}
-                                            />
-                                        );
-                                    })}
-                                </AppView>
-                            ))}
-                        </AppView>
+                                            );
+                                        })}
+                                    </AppView>
+                                ))}
+                            </AppView>
+                        </FadeIn>
                     </AppView>
                 </AppView>
 
