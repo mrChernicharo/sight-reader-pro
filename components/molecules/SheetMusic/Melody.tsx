@@ -243,7 +243,6 @@ function colorizeNoteOutput(svgStruct: any, roundResults: (1 | 0)[], colors: { s
                     const isSuccess = roundResults[noteCount] === 1;
                     noteCount++;
                     // console.log("note!", noteCount, ch, isSuccess);
-
                     if (noteCount > roundResults.length) {
                         return ch;
                     } else {
@@ -256,8 +255,6 @@ function colorizeNoteOutput(svgStruct: any, roundResults: (1 | 0)[], colors: { s
                                     props: {
                                         ...ich.props,
                                         children: ich.props.children.map((iich: any) => {
-                                            // console.log("note-group", ich);
-                                            // console.log("note-element", iich);
                                             return {
                                                 ...iich,
                                                 props: {
@@ -265,13 +262,6 @@ function colorizeNoteOutput(svgStruct: any, roundResults: (1 | 0)[], colors: { s
                                                     fill: isSuccess ? colors.success : colors.mistake,
                                                     stroke: isSuccess ? colors.success : colors.mistake,
                                                     children: iich.props.children.map((iiich: any, i: number) => {
-                                                        // console.log("note-element", iiich, iiich.props.d);
-                                                        // console.log("d match", [...iiich.props.d.match(/M(\d)+/g)]);
-                                                        // console.log(
-                                                        //   "x position",
-                                                        //   noteCount,
-                                                        //   +[...iiich.props.d.match(/M(\d)+/g)][0].replace("M", "")
-                                                        // );
                                                         return {
                                                             ...iiich,
                                                             props: {

@@ -5,11 +5,6 @@ import { Platform } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-let DEV_RESET = false;
-DEV_RESET = true;
-
-type PlayedNotes = Partial<Record<Note, number>>;
-
 interface PracticeSettings {
     clef: Clef;
     isMinorKey: boolean;
@@ -37,7 +32,6 @@ export interface AppState {
     selectedLevelsClef: Clef;
     completedTours: CompletedTours;
     practiceSettings: PracticeSettings;
-    playedNotes: PlayedNotes;
     practiceLevel: Level | null;
     soundsLoaded: boolean;
     _hydrated: boolean;
@@ -70,7 +64,6 @@ export interface AppActions {
     endGame: (previousPage?: string) => Promise<void>;
     addNewRound: (round: Round<GameType>) => Promise<void>;
     updateRound: (val: Partial<Round<GameType>>) => Promise<void>;
-    updatePlayedNotes: (note: Note) => Promise<void>;
     updatePracticeSettings: (setting: keyof PracticeSettings, value: any) => Promise<void>;
 
     setSoundsLoaded: (soundsLoaded: boolean) => Promise<void>;
@@ -90,7 +83,6 @@ const defaultStore: Omit<AppState, "_hydrated"> = {
     selectedLevelsClef: Clef.Treble,
     practiceSettings: defaultPracticeSettings,
     currentGame: null,
-    playedNotes: {},
     practiceLevel: null,
     soundsLoaded: false,
     completedTours: {
@@ -118,7 +110,6 @@ export const useAppStore = create<AppState & AppActions>()(
                 currentGame: null,
                 selectedLevelsClef: Clef.Treble,
                 practiceSettings: defaultPracticeSettings,
-                playedNotes: {},
                 practiceLevel: null,
                 soundsLoaded: false,
                 completedTours: {
@@ -143,7 +134,6 @@ export const useAppStore = create<AppState & AppActions>()(
                 setGlobalVolume: async (volume: number) => set(() => ({ globalVolume: volume })),
                 toggleShowPianoNoteNames: async (show: boolean) => set(() => ({ showPianoNoteNames: show })),
                 setSelectedLevelsClef: async (clef: Clef) => set(() => ({ selectedLevelsClef: clef })),
-                // setDifficulty: async (difficulty: Difficulty) => set(() => ({ difficulty: difficulty })),
 
                 setTourCompleted: async (tourName: keyof CompletedTours, completed: boolean) =>
                     set((state) => ({ ...state, completedTours: { ...state.completedTours, [tourName]: completed } })),
@@ -159,7 +149,7 @@ export const useAppStore = create<AppState & AppActions>()(
                 },
                 endGame: async () => {
                     console.log("<<< END GAME >>>");
-                    set({ currentGame: null, playedNotes: {} });
+                    set({ currentGame: null });
                 },
 
                 addNewRound: async (round: Round<GameType>) =>
@@ -182,15 +172,6 @@ export const useAppStore = create<AppState & AppActions>()(
                             currentGame: { ...state.currentGame!, rounds: [...previousRounds, updatedRound] },
                         };
                     });
-                },
-                updatePlayedNotes: async (note: Note) => {
-                    set((state) => ({
-                        ...state,
-                        playedNotes: {
-                            ...state.playedNotes,
-                            [note]: state.playedNotes[note] ? state.playedNotes[note] + 1 : 1,
-                        },
-                    }));
                 },
                 updatePracticeSettings: async (setting: keyof PracticeSettings, value: any) => {
                     set((state) => {

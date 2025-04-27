@@ -63,7 +63,7 @@ export function SingleNoteGameComponent() {
 
     const { playPianoNote, playSoundEfx } = useSoundContext();
     const { getLevel } = useAllLevels();
-    const { currentGame, saveGameRecord, startNewGame, addNewRound, updatePlayedNotes } = useAppStore();
+    const { currentGame, saveGameRecord, startNewGame, addNewRound } = useAppStore();
 
     const { tourStep, goToStepOne, goToStepTwo, goToStepThree, goToStepFour, doFinalStep } = useGameTour();
 
@@ -97,7 +97,7 @@ export function SingleNoteGameComponent() {
 
         if (success) {
             setGameState(GameState.Success);
-            updatePlayedNotes(playedNote);
+            // updatePlayedNotes(playedNote);
             playPianoNote(playedNote);
         } else {
             setGameState(GameState.Mistake);

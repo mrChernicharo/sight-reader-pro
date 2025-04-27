@@ -21,12 +21,13 @@ import {
     AttemptedNote as AttemptedNoteType,
     CurrentGame,
     GameScreenParams,
+    Level,
     MelodyRound,
     Note,
     Round,
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
@@ -34,15 +35,12 @@ import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 
 const s = STYLES.game;
 
-export function MelodyGameComponent() {
-    const theme = useTheme();
-    const { id, keySignature: kSign, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
+export function useMelody() {
+    const { id, keySignature: kSign } = useLocalSearchParams() as unknown as GameScreenParams;
 
-    const { playPianoNote, playSoundEfx } = useSoundContext();
     const { getLevel } = useAllLevels();
-    const { currentGame, saveGameRecord, startNewGame, updateRound, addNewRound, updatePlayedNotes } = useAppStore();
-
-    const locked = useRef(false);
+    const { playPianoNote, playSoundEfx } = useSoundContext();
+    const { currentGame, saveGameRecord, startNewGame, updateRound, addNewRound } = useAppStore();
 
     const rounds = currentGame?.rounds || [];
     const currRound = rounds.at(-1) as MelodyRound;
@@ -53,28 +51,23 @@ export function MelodyGameComponent() {
     const hintCount = getLevelHintCount(level.skillLevel);
     // const isPracticeLevel = getIsPracticeLevel(level.id);
 
-    const [melodyIdx, setMelodyIdx] = useState(0);
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
     const [roundResults, setRoundResults] = useState<(0 | 1)[]>([]);
-    // const currNote = currRound?.values?.[melodyIdx] || null;
-    const isLastNote = melodyIdx === currRound.values.length - 1;
-    const currNote = currRound.values[melodyIdx];
+
+    const melodyIdx = roundResults.length;
+    const isLastNote = currRound?.values ? melodyIdx >= currRound.values.length - 1 : false;
+    const currNote = currRound?.values?.[melodyIdx] || "c/4";
 
     const onPianoKeyPress = useCallback(
         async (attempt: NoteName) => {
-            if (locked.current) return;
-            locked.current = true;
-
             const { noteName, octave } = explodeNote(currNote);
             const success = isNoteMatch(attempt, noteName);
             const playedNote = `${attempt}/${+octave}` as Note;
 
-            updateRound({ attempts: [...currRound.attempts, playedNote] });
             setRoundResults((prev) => (success ? [...prev, 1] : [...prev, 0]));
             setAttemptedNotes((prev) => [...prev, { id: randomUID(), you: playedNote, correct: currNote }]);
 
             if (success) {
-                updatePlayedNotes(playedNote);
                 playPianoNote(playedNote);
             } else {
                 playPianoNote(playedNote);
@@ -85,14 +78,12 @@ export function MelodyGameComponent() {
             if (isLastNote) {
                 await wait(0);
                 setRoundResults([]);
-                setMelodyIdx(0);
                 addNewRound(decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes));
             } else {
-                setMelodyIdx((prev) => prev + 1);
             }
-            locked.current = false;
+            updateRound({ attempts: [...currRound.attempts, playedNote] });
         },
-        [level, isLastNote, currRound.values, melodyIdx, currRound.attempts]
+        [level, isLastNote, currRound?.values, currRound?.attempts]
     );
 
     const onCountdownFinish = useCallback(async () => {
@@ -133,17 +124,24 @@ export function MelodyGameComponent() {
         })();
     }, [rounds.length]);
 
-    // useEffect(() => {
-    //     console.log({ roundResults });
-    // }, [roundResults]);
+    return {
+        currRound,
+        rounds,
+        currNote,
+        melodyIdx,
+        hintCount,
+        attemptedNotes,
+        roundResults,
+        level,
+        onPianoKeyPress,
+        onCountdownFinish,
+    };
+}
 
-    // useEffect(() => {
-    //     console.log({ attempts: currRound.attempts });
-    // }, [currRound.attempts]);
-
-    // useEffect(() => {
-    //     console.log(":::", { values: currRound.values });
-    // }, [currRound.values]);
+export function MelodyGameComponent() {
+    const theme = useTheme();
+    const { level, currRound, melodyIdx, hintCount, attemptedNotes, roundResults, onPianoKeyPress, onCountdownFinish } =
+        useMelody();
 
     useEffect(() => {
         return () => {
@@ -152,9 +150,9 @@ export function MelodyGameComponent() {
     }, []);
 
     return (
-        <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
+        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
             <AppView style={s.top}>
-                <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={id} />
+                <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={level.id} />
             </AppView>
 
             {currRound?.values ? (
@@ -162,7 +160,7 @@ export function MelodyGameComponent() {
                     <SheetMusic.Melody
                         clef={level.clef}
                         durations={currRound.durations}
-                        keySignature={keySignature}
+                        keySignature={level.keySignature}
                         timeSignature={level.timeSignature}
                         keys={currRound.values}
                         roundResults={roundResults}
@@ -180,7 +178,7 @@ export function MelodyGameComponent() {
                 gameType={GameType.Melody}
                 hintCount={hintCount}
                 currNote={currRound?.values?.[melodyIdx] || null}
-                keySignature={keySignature}
+                keySignature={level.keySignature}
                 onKeyPressed={onPianoKeyPress}
                 onKeyReleased={() => {}}
                 // onKeyReleased={() => releasePianoNote(currRound?.values?.[melodyIdx] || null)}
