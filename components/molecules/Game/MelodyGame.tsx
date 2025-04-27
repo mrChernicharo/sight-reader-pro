@@ -5,7 +5,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useSoundContext } from "@/hooks/useSoundsContext";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
+import { GameState, GameType, KeySignature, NoteName, SoundEffect, TimeSignature } from "@/utils/enums";
 import {
     explodeNote,
     getAttemptedNoteDuration,
@@ -26,7 +26,7 @@ import {
     Round,
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
@@ -36,15 +36,17 @@ const s = STYLES.game;
 
 export function MelodyGameComponent() {
     const theme = useTheme();
-    const { id, keySignature: ksig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
+    const { id, keySignature: kSign, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
     const { playPianoNote, playSoundEfx } = useSoundContext();
     const { getLevel } = useAllLevels();
     const { currentGame, saveGameRecord, startNewGame, updateRound, addNewRound, updatePlayedNotes } = useAppStore();
 
+    const locked = useRef(false);
+
     const rounds = currentGame?.rounds || [];
     const currRound = rounds.at(-1) as MelodyRound;
-    const keySignature = decodeURIComponent(ksig) as KeySignature;
+    const keySignature = decodeURIComponent(kSign) as KeySignature;
 
     const level = getLevel(id)!;
     const possibleNotes = getPossibleNotesInLevel(level);
@@ -53,58 +55,45 @@ export function MelodyGameComponent() {
 
     const [melodyIdx, setMelodyIdx] = useState(0);
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
-
+    const [roundResults, setRoundResults] = useState<(0 | 1)[]>([]);
     // const currNote = currRound?.values?.[melodyIdx] || null;
+    const isLastNote = melodyIdx === currRound.values.length - 1;
+    const currNote = currRound.values[melodyIdx];
 
-    const noteProps = {
-        keys: currRound?.values || [],
-        durations: currRound?.durations || [],
-        clef: level.clef,
-        keySignature,
-        timeSignature: (level as any).timeSignature,
-        roundResults: (currRound?.attempts ?? []).reduce((acc: (0 | 1)[], attempt, i) => {
-            if (isNoteMatch(attempt.split("/")[0] as NoteName, currRound.values[i].split("/")[0] as NoteName)) {
-                acc.push(1);
+    const onPianoKeyPress = useCallback(
+        async (attempt: NoteName) => {
+            if (locked.current) return;
+            locked.current = true;
+
+            const { noteName, octave } = explodeNote(currNote);
+            const success = isNoteMatch(attempt, noteName);
+            const playedNote = `${attempt}/${+octave}` as Note;
+
+            updateRound({ attempts: [...currRound.attempts, playedNote] });
+            setRoundResults((prev) => (success ? [...prev, 1] : [...prev, 0]));
+            setAttemptedNotes((prev) => [...prev, { id: randomUID(), you: playedNote, correct: currNote }]);
+
+            if (success) {
+                updatePlayedNotes(playedNote);
+                playPianoNote(playedNote);
             } else {
-                acc.push(0);
+                playPianoNote(playedNote);
+                playPianoNote(currNote);
+                playSoundEfx(SoundEffect.WrongAnswer2);
             }
-            return acc;
-        }, []),
-    };
 
-    async function onPianoKeyPress(attempt: NoteName) {
-        // if (!currRound) return;
-        const currNote = currRound.values[melodyIdx];
-        const { noteName, octave } = explodeNote(currNote);
-        const success = isNoteMatch(attempt, noteName);
-        const playedNote = `${attempt}/${+octave}` as Note;
-
-        const isLastNote = melodyIdx === currRound.values.length - 1;
-        const attempts = [...currRound.attempts, playedNote];
-
-        updateRound({ attempts });
-        setAttemptedNotes((prev) => {
-            prev.push({ id: randomUID(), you: playedNote, correct: currNote });
-            return prev;
-        });
-
-        if (success) {
-            updatePlayedNotes(playedNote);
-            playPianoNote(playedNote);
-        } else {
-            playPianoNote(playedNote);
-            playPianoNote(currNote);
-            playSoundEfx(SoundEffect.WrongAnswer2);
-        }
-
-        if (isLastNote) {
-            await wait(0);
-            setMelodyIdx(0);
-            addNewRound(decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes));
-        } else {
-            setMelodyIdx((prev) => prev + 1);
-        }
-    }
+            if (isLastNote) {
+                await wait(0);
+                setRoundResults([]);
+                setMelodyIdx(0);
+                addNewRound(decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes));
+            } else {
+                setMelodyIdx((prev) => prev + 1);
+            }
+            locked.current = false;
+        },
+        [level, isLastNote, currRound.values, melodyIdx, currRound.attempts]
+    );
 
     const onCountdownFinish = useCallback(async () => {
         await saveGameRecord({
@@ -144,6 +133,18 @@ export function MelodyGameComponent() {
         })();
     }, [rounds.length]);
 
+    // useEffect(() => {
+    //     console.log({ roundResults });
+    // }, [roundResults]);
+
+    // useEffect(() => {
+    //     console.log({ attempts: currRound.attempts });
+    // }, [currRound.attempts]);
+
+    // useEffect(() => {
+    //     console.log(":::", { values: currRound.values });
+    // }, [currRound.values]);
+
     useEffect(() => {
         return () => {
             console.log("MELODY GAME UNMOUNT!!!");
@@ -158,7 +159,14 @@ export function MelodyGameComponent() {
 
             {currRound?.values ? (
                 <AppView>
-                    <SheetMusic.Melody {...noteProps} />
+                    <SheetMusic.Melody
+                        clef={level.clef}
+                        durations={currRound.durations}
+                        keySignature={keySignature}
+                        timeSignature={level.timeSignature}
+                        keys={currRound.values}
+                        roundResults={roundResults}
+                    />
                 </AppView>
             ) : null}
 
