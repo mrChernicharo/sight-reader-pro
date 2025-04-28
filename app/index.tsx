@@ -1,5 +1,4 @@
 import AppButton from "@/components/atoms/AppButton";
-import { AppLogo } from "@/components/atoms/AppLogo";
 import { AppText } from "@/components/atoms/AppText";
 import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
@@ -7,59 +6,29 @@ import { FadeIn } from "@/components/atoms/FadeIn";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
 import { LoadingScreen } from "@/components/molecules/LoadingScreen";
 import { useAppStore } from "@/hooks/useAppStore";
+import { useLoadingNavigation } from "@/hooks/useLoadingNavigation";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
-import { wait } from "@/utils/helperFns";
-import { Link, router, usePathname } from "expo-router";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { router } from "expo-router";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { StyleProp, StyleSheet, TextStyle } from "react-native";
-import Animated from "react-native-reanimated";
 // import Tooltip from "react-native-walkthrough-tooltip";
 import Tooltip, { Placement } from "react-native-tooltip-2";
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
-export function useAppNavigation() {
-    const [isNavigating, setIsNavigating] = useState(false);
-    const path = usePathname();
-
-    const navigateTo = useCallback(async (route: any) => {
-        setIsNavigating(true);
-        console.log("navigating to ", route);
-        await wait(200);
-        router.push({
-            pathname: route,
-        });
-    }, []);
-
-    useEffect(() => {
-        console.log("path :::", { p: path });
-
-        if (path) {
-            setIsNavigating(false);
-        }
-    }, [path]);
-
-    useEffect(() => {
-        console.log("isNavigating :::", { isNavigating });
-    }, [isNavigating]);
-
-    return {
-        navigateTo,
-        isNavigating,
-    };
-}
-
 export default function Home() {
     const { t } = useTranslation();
-    const { navigateTo, isNavigating } = useAppNavigation();
+    const { navigateTo, isNavigating } = useLoadingNavigation();
     const theme = useTheme();
 
     const username = useAppStore((state) => state.username);
     const hasCompletedTour = useAppStore((state) => state.completedTours.home);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
+
+    const greetingMessage = t("app.welcome") + (username ? `, ${username}` : "!");
 
     const [tourStep, setTourStep] = useState(-1);
 
@@ -73,7 +42,7 @@ export default function Home() {
             if (!hasCompletedTour) {
                 setTourStep(0);
             }
-        });
+        }, 0);
     }, [hasCompletedTour]);
 
     useEffect(() => {
@@ -81,8 +50,6 @@ export default function Home() {
             router.dismissAll();
         }
     }, []);
-
-    const greetingMessage = t("app.welcome") + (username ? `, ${username}` : "!");
 
     if (isNavigating) return <LoadingScreen />;
 

@@ -100,7 +100,7 @@ export function useAppInitialization() {
         SystemUI.setBackgroundColorAsync(theme == "light" ? Colors.light.bg : Colors.dark.bg);
 
         // @TODO: REMOVE THIS BEFORE BUILD
-        router.navigate("/level-selection");
+        // router.navigate("/level-selection");
         // router.navigate("/practice");
     }, [theme]);
 

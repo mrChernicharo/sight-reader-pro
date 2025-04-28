@@ -5,8 +5,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
 import { Clef } from "@/utils/enums";
-import { testBorder } from "@/utils/styles";
-import { Dimensions, Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
 export function BottomTabs() {
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
