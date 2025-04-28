@@ -1,27 +1,61 @@
 import AppButton from "@/components/atoms/AppButton";
+import { AppLogo } from "@/components/atoms/AppLogo";
 import { AppText } from "@/components/atoms/AppText";
 import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
+import { LoadingScreen } from "@/components/molecules/LoadingScreen";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
+import { wait } from "@/utils/helperFns";
 import { Link, router, usePathname } from "expo-router";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import Animated from "react-native-reanimated";
 // import Tooltip from "react-native-walkthrough-tooltip";
 import Tooltip, { Placement } from "react-native-tooltip-2";
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
+export function useAppNavigation() {
+    const [isNavigating, setIsNavigating] = useState(false);
+    const path = usePathname();
+
+    const navigateTo = useCallback(async (route: any) => {
+        setIsNavigating(true);
+        console.log("navigating to ", route);
+        await wait(200);
+        router.push({
+            pathname: route,
+        });
+    }, []);
+
+    useEffect(() => {
+        console.log("path :::", { p: path });
+
+        if (path) {
+            setIsNavigating(false);
+        }
+    }, [path]);
+
+    useEffect(() => {
+        console.log("isNavigating :::", { isNavigating });
+    }, [isNavigating]);
+
+    return {
+        navigateTo,
+        isNavigating,
+    };
+}
+
 export default function Home() {
     const { t } = useTranslation();
-    const path = usePathname();
+    const { navigateTo, isNavigating } = useAppNavigation();
     const theme = useTheme();
-    // const { width } = useWindowDimensions();
 
     const username = useAppStore((state) => state.username);
     const hasCompletedTour = useAppStore((state) => state.completedTours.home);
@@ -36,15 +70,21 @@ export default function Home() {
 
     useLayoutEffect(() => {
         setTimeout(() => {
-            if (path == "/" && !hasCompletedTour) setTourStep(0);
+            if (!hasCompletedTour) {
+                setTourStep(0);
+            }
         });
-    }, [hasCompletedTour, path]);
+    }, [hasCompletedTour]);
 
     useEffect(() => {
-        if (router.canDismiss()) router.dismissAll();
+        if (router.canDismiss()) {
+            router.dismissAll();
+        }
     }, []);
 
     const greetingMessage = t("app.welcome") + (username ? `, ${username}` : "!");
+
+    if (isNavigating) return <LoadingScreen />;
 
     return (
         <AppView style={s.container}>
@@ -54,39 +94,37 @@ export default function Home() {
 
             <FadeIn y={50} x={0} delay={250}>
                 <AppView style={s.btnGroup}>
-                    <Link asChild href="/practice">
-                        <AppButton
-                            text={t("routes.practice")}
-                            style={{ ...s.btn, borderColor: Colors[theme].text }}
-                            textStyle={{ color: Colors[theme].text }}
-                        />
-                    </Link>
-                    <Link asChild href="/profile">
-                        <AppButton
-                            text={t("routes.profile")}
-                            style={{ ...s.btn, borderColor: Colors[theme].text }}
-                            textStyle={{ color: Colors[theme].text }}
-                        />
-                    </Link>
-                    <Link asChild href="/settings">
-                        <AppButton
-                            text={t("routes.settings")}
-                            style={{ ...s.btn, borderColor: Colors[theme].text }}
-                            textStyle={{ color: Colors[theme].text }}
-                        />
-                    </Link>
+                    <AppButton
+                        onPress={() => navigateTo("/practice")}
+                        text={t("routes.practice")}
+                        style={{ ...s.btn, borderColor: Colors[theme].text }}
+                        textStyle={{ color: Colors[theme].text }}
+                    />
+
+                    <AppButton
+                        onPress={() => navigateTo("/profile")}
+                        text={t("routes.profile")}
+                        style={{ ...s.btn, borderColor: Colors[theme].text }}
+                        textStyle={{ color: Colors[theme].text }}
+                    />
+
+                    <AppButton
+                        onPress={() => navigateTo("/settings")}
+                        text={t("routes.settings")}
+                        style={{ ...s.btn, borderColor: Colors[theme].text }}
+                        textStyle={{ color: Colors[theme].text }}
+                    />
                 </AppView>
             </FadeIn>
 
             <FadeIn y={50} x={0} delay={500}>
-                <Link asChild href="/level-selection">
-                    <AppButton
-                        text={t("routes.main.cta")}
-                        style={s.cta}
-                        textStyle={{ color: "white", fontSize: 24 }}
-                        activeOpacity={0.7}
-                    />
-                </Link>
+                <AppButton
+                    onPress={() => navigateTo("/level-selection")}
+                    text={t("routes.main.cta")}
+                    style={s.cta}
+                    textStyle={{ color: "white", fontSize: 24 }}
+                    activeOpacity={0.7}
+                />
             </FadeIn>
 
             <Tooltip

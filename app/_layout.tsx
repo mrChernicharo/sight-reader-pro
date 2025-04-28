@@ -23,8 +23,38 @@ SplashScreen.setOptions({
 });
 
 export default function RootLayout() {
-    // const { id, keySignature, previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
-    const path = usePathname();
+    const { fontsError, _hydrated, theme } = useAppInitialization();
+
+    if (fontsError) {
+        return (
+            <AppView style={{ flex: 1 }}>
+                <AppText>Ooops...</AppText>
+            </AppView>
+        );
+    }
+
+    if (!_hydrated)
+        return (
+            <AppView style={{ flex: 1 }}>
+                <AppText>Loading...</AppText>
+            </AppView>
+        );
+
+    return (
+        <SafeAreaProvider style={{ paddingTop: 24 }}>
+            <GestureHandlerRootView>
+                <SoundContextProvider>
+                    <StatusBar translucent style={theme == "light" ? "dark" : "light"} />
+                    <AppRoutes />
+                </SoundContextProvider>
+            </GestureHandlerRootView>
+        </SafeAreaProvider>
+    );
+}
+
+export function useAppInitialization() {
+    // const path = usePathname();
+    const theme = useTheme();
 
     const [fontsLoaded, fontsError] = useFonts({
         SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -33,16 +63,10 @@ export default function RootLayout() {
     });
 
     const _hydrated = useAppStore((state) => state._hydrated);
-    // const currentGame = useAppStore((state) => state.currentGame);
-    const games = useAppStore((state) => state.games);
     const initTourCompleted = useAppStore((state) => state.completedTours.init);
     const soundsLoaded = useAppStore((state) => state.soundsLoaded);
 
-    const theme = useTheme();
-    // const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
-
     const endGame = useAppStore((state) => state.endGame);
-    const allState = useAppStore();
 
     // ensure there's no ongoing game on app startup
     // store state is always persisted, so games can be wrongly persisted if you close the app during a game
@@ -51,19 +75,8 @@ export default function RootLayout() {
     }, [_hydrated]);
 
     // useEffect(() => {
-    // }, []);
-
-    useEffect(() => {
-        console.log("path :::", path);
-    }, [path]);
-
-    // useEffect(() => {
-    //     console.log("currentGame :::", { currentGame: currentGame?.name });
-    // }, [currentGame]);
-
-    // useEffect(() => {
-    //     console.log("games :::", { games: games.length, lastGame: games.at(-1) });
-    // }, [games]);
+    //     console.log("path :::", path);
+    // }, [path]);
 
     useEffect(() => {
         if (!initTourCompleted) {
@@ -91,29 +104,9 @@ export default function RootLayout() {
         // router.navigate("/practice");
     }, [theme]);
 
-    if (fontsError) {
-        return (
-            <AppView style={{ flex: 1 }}>
-                <AppText>Ooops...</AppText>
-            </AppView>
-        );
-    }
-
-    if (!_hydrated)
-        return (
-            <AppView style={{ flex: 1 }}>
-                <AppText>Loading...</AppText>
-            </AppView>
-        );
-
-    return (
-        <SafeAreaProvider style={{ paddingTop: 24 }}>
-            <GestureHandlerRootView>
-                <SoundContextProvider>
-                    <StatusBar translucent style={theme == "light" ? "dark" : "light"} />
-                    <AppRoutes />
-                </SoundContextProvider>
-            </GestureHandlerRootView>
-        </SafeAreaProvider>
-    );
+    return {
+        theme,
+        fontsError,
+        _hydrated,
+    };
 }

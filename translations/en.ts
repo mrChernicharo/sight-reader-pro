@@ -4,6 +4,7 @@ const en = {
         title: "Sight Reader Pro",
         slogan: "Level up your music reading",
         welcome: "Welcome",
+        loading: "Loading",
     },
     routes: {
         practice: "Custom Practice",

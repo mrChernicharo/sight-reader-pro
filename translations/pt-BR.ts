@@ -4,6 +4,7 @@ const ptBR = {
         title: "Sight Reader Pro",
         slogan: "Leve sua leitura musical para o próximo nível",
         welcome: "Boas vindas",
+        loading: "Carregando",
     },
     routes: {
         practice: "Prática Personalizada",
