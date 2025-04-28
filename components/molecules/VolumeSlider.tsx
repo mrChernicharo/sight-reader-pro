@@ -24,6 +24,9 @@ export function VolumeSlider() {
                 maximumValue={1}
                 value={globalVolume}
                 onValueChange={setGlobalVolume}
+                hitSlop={32}
+                minimumTrackTintColor="#5b99d4"
+                thumbTintColor="#5b99d4"
                 maximumTrackTintColor={theme === "light" ? "black" : "white"}
                 // value={keySigIndex}
                 // minimumTrackTintColor={theme === "light" ? "black" : "white"}

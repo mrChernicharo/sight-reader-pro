@@ -41,7 +41,7 @@ export default function RootLayout() {
         );
 
     return (
-        <SafeAreaProvider style={{ paddingTop: 24 }}>
+        <SafeAreaProvider style={{ paddingTop: 0 }}>
             <GestureHandlerRootView>
                 <SoundContextProvider>
                     <StatusBar translucent style={theme == "light" ? "dark" : "light"} />
@@ -74,10 +74,6 @@ export function useAppInitialization() {
         if (!_hydrated) endGame();
     }, [_hydrated]);
 
-    // useEffect(() => {
-    //     console.log("path :::", path);
-    // }, [path]);
-
     useEffect(() => {
         if (!initTourCompleted) {
             router.replace("/init/01.lang.screen");
@@ -89,6 +85,10 @@ export function useAppInitialization() {
             SplashScreen.hideAsync();
         }
     }, [soundsLoaded, fontsLoaded]);
+
+    // useEffect(() => {
+    //     console.log("path :::", path);
+    // }, [path]);
 
     useEffect(() => {
         NavigationBar.setVisibilityAsync("hidden");

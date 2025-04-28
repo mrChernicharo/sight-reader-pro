@@ -30,6 +30,7 @@ export function KeySignatureSlider({
                 minimumTrackTintColor="#5b99d4"
                 thumbTintColor="#5b99d4"
                 maximumTrackTintColor={theme === "light" ? "black" : "white"}
+                hitSlop={32}
             />
             <AppText style={{ fontSize: 32 }}> {glyphs.sharp}</AppText>
         </AppView>

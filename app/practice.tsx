@@ -76,9 +76,10 @@ export default function PracticeScreen() {
     const onKeySignatureChange = useCallback(
         (n: number) => {
             const keySig = keySigArray.find((_, i) => i == n);
+            // console.log({ keySig, isMinorKey, keySigIndex });
             updatePracticeSettings("keySignature", keySig);
         },
-        [updatePracticeSettings]
+        [updatePracticeSettings, isMinorKey, keySigIndex]
     );
 
     const onNoteRangeSliderChange = useCallback(
@@ -170,7 +171,7 @@ export default function PracticeScreen() {
                     {/* Separator */}
                     <AppView
                         transparentBG
-                        style={{ ...s.separator, borderColor: Colors[theme].textMute, marginTop: -16 }}
+                        style={{ ...s.separator, borderColor: Colors[theme].textMute, marginTop: -18 }}
                     />
 
                     <AppView transparentBG>
@@ -178,10 +179,10 @@ export default function PracticeScreen() {
                             <AppView transparentBG>
                                 <AppView transparentBG style={s.box}>
                                     <AppText style={{ backgroundColor: "transparent" }}>
-                                        {t("music.keySignature")}
+                                        {t("music.keySignature")}:
                                     </AppText>
                                     <AppText style={{ backgroundColor: "transparent" }} type="mdSemiBold">
-                                        {keySignature}
+                                        {t(`music.keys.${keySignature}`)}
                                     </AppText>
                                 </AppView>
                             </AppView>
@@ -198,9 +199,10 @@ export default function PracticeScreen() {
                                 <AppText>{t("music.scaleType.major")}</AppText>
                                 <AppSwitch
                                     value={isMinorKey}
-                                    setValue={(val) => {
+                                    setValue={(isMinor) => {
                                         const relativeKeySig = altKeySigArray[keySigIndex];
-                                        updatePracticeSettings("isMinorKey", val);
+                                        // console.log({ relativeKeySig, isMinor, keySigIndex });
+                                        updatePracticeSettings("isMinorKey", isMinor);
                                         updatePracticeSettings("keySignature", relativeKeySig);
                                     }}
                                 />
@@ -210,7 +212,14 @@ export default function PracticeScreen() {
                     </AppView>
 
                     {/* Separator */}
-                    <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+                    <AppView
+                        style={{
+                            ...s.separator,
+                            borderColor: Colors[theme].textMute,
+                            marginTop: -4,
+                            marginBottom: 1,
+                        }}
+                    />
 
                     <AppView style={s.rangeSliderContainer}>
                         <AppView style={s.clefSwitch}>
@@ -253,7 +262,7 @@ export default function PracticeScreen() {
                     {/* Separator */}
                     <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
-                    <AppView>
+                    <AppView style={s.scaleInput}>
                         <AppText>{t("music.scale")}</AppText>
                         <SelectList
                             data={SCALES}
@@ -271,14 +280,23 @@ export default function PracticeScreen() {
                         />
                     </AppView>
 
-                    <AppView style={{ ...s.gameTypeContainer, backgroundColor: Colors[theme].bgSelected }}>
-                        <AppView transparentBG style={s.box}>
-                            <AppText>{t("game.type.single")}</AppText>
-                            <AppSwitch value={gameType == GameType.Melody} setValue={setGameType} />
-                            <AppText>{t("game.type.melody")}</AppText>
+                    {/* Separator */}
+                    <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+                    {/* <AppView style={{ ...s.separator, borderColor: "transparent" }} /> */}
+
+                    <AppView style={s.gameTypeContainer}>
+                        <AppText>{t("game.type.title")}</AppText>
+                        <AppView style={{ ...s.gameTypeContent, backgroundColor: Colors[theme].bgSelected }}>
+                            <AppView transparentBG style={s.box}>
+                                <AppText>{t("game.type.single")}</AppText>
+                                <AppSwitch value={gameType == GameType.Melody} setValue={setGameType} />
+                                <AppText>{t("game.type.melody")}</AppText>
+                            </AppView>
                         </AppView>
                     </AppView>
                 </AppView>
+
+                {/* <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} /> */}
 
                 <AppButton
                     text={t("practice.start")}
@@ -318,11 +336,10 @@ const s = StyleSheet.create({
     },
     clefSwitch: {
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
         gap: 8,
         height: 72,
-        // ...testBorder("green"),
     },
     keySignatureContainer: {
         width: "100%",
@@ -333,12 +350,14 @@ const s = StyleSheet.create({
         // ...testBorder("green"),
     },
     gameTypeContainer: {
+        paddingBottom: 36,
+        // ...testBorder("green"),
+    },
+    gameTypeContent: {
         width: "100%",
         paddingVertical: 8,
         borderRadius: 16,
-        marginTop: 28,
-        marginBottom: 12,
-        // ...testBorder("green"),
+        // marginTop: 28,
     },
     rangeSliderContainer: {
         width: "100%",
@@ -347,7 +366,8 @@ const s = StyleSheet.create({
         // ...testBorder("green"),
     },
     noteRangeDisplay: {
-        marginBottom: 8,
+        marginTop: 12,
+        marginBottom: 12,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -358,17 +378,21 @@ const s = StyleSheet.create({
     sheetMusicContainer: {
         // ...testBorder(),
     },
+    scaleInput: {
+        // paddingHorizontal: 16,
+    },
     cta: {
         width: 300,
         height: 56,
-        marginTop: 16,
+        marginBottom: 16,
+        // ...testBorder(),
     },
     separator: {
         borderBottomWidth: StyleSheet.hairlineWidth,
         width: Dimensions.get("window").width - 96,
         height: 20,
-        // marginBottom: 20,
         marginVertical: 10,
+        // marginBottom: 20,
         // ...testBorder(),
     },
 });
