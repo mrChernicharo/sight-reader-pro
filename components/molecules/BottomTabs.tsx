@@ -17,34 +17,18 @@ export function BottomTabs() {
     return (
         <AppView style={s.bottomTabs}>
             <Pressable
-                android_ripple={{ radius: 180, color: textColor }}
+                android_ripple={{ radius: 140, color: textColor }}
                 onPress={() => setSelectedClef(Clef.Treble)}
-                style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingTop: 5,
-                    borderColor: clef == Clef.Treble ? accentColor : backgroundColor,
-                    borderTopWidth: 3,
-                    height: "100%",
-                }}
+                style={[s.tabBtn, { borderColor: clef == Clef.Treble ? accentColor : backgroundColor }]}
             >
-                <AppText type="lg" style={{ lineHeight: 54 }}>
+                <AppText type="lg" style={{ lineHeight: 54, transform: [{ translateY: -3 }] }}>
                     {glyphs[`trebleClef`]}
                 </AppText>
             </Pressable>
             <Pressable
-                android_ripple={{ radius: 180, color: textColor }}
+                android_ripple={{ radius: 140, color: textColor }}
                 onPress={() => setSelectedClef(Clef.Bass)}
-                style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingTop: 5,
-                    borderColor: clef == Clef.Bass ? accentColor : backgroundColor,
-                    borderTopWidth: 3,
-                    height: "100%",
-                }}
+                style={[s.tabBtn, { borderColor: clef == Clef.Treble ? backgroundColor : accentColor }]}
             >
                 <AppText type="title" style={{ lineHeight: 54 }}>
                     {glyphs[`bassClef`]}
@@ -61,9 +45,14 @@ export const s = StyleSheet.create({
         zIndex: 100,
         flexDirection: "row",
         alignItems: "center",
-        minHeight: 74,
+        minHeight: 64,
         // ...testBorder(),
-        // borderWidth: 1,
-        // borderColor: "red",
+    },
+    tabBtn: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        borderTopWidth: 4,
+        height: "100%",
     },
 });
