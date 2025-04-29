@@ -9,6 +9,7 @@ export function useLoadingNavigation() {
     const navigateTo = useCallback(async (route: any) => {
         setIsNavigating(true);
         // console.log("navigating to ", route);
+        // await wait(10000);
         await wait(0);
 
         router.push({

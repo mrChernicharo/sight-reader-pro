@@ -41,20 +41,24 @@ export function LoadingScreen() {
     useEffect(() => {
         rotate.value = withRepeat(withTiming(360, { duration, easing: Easing.linear }), -1, false);
         opacity.value = withRepeat(withTiming(0.15, { duration: 600, easing: Easing.linear }), -1, true);
-        overallOpacity.value = withDelay(600, withTiming(1, { duration: 400 }));
+        overallOpacity.value = withDelay(400, withTiming(1, { duration: 600 }));
     }, []);
 
     return (
-        <Animated.View style={[overallOpacityStyle, { flex: 1, justifyContent: "center", alignItems: "center" }]}>
-            <AppTextLogo subtitles="" />
+        <Animated.View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: Colors[theme].bg }}
+        >
+            <Animated.View style={[overallOpacityStyle, { flex: 1, justifyContent: "center", alignItems: "center" }]}>
+                <AppTextLogo subtitles="" />
 
-            <Animated.Text style={[s.transparentBg, s.text, opacityStyle, { color: Colors[theme].text }]}>
-                {t("app.loading")}...
-            </Animated.Text>
+                <Animated.Text style={[s.transparentBg, s.text, opacityStyle, { color: Colors[theme].text }]}>
+                    {t("app.loading")}...
+                </Animated.Text>
 
-            <Animated.View style={[s.transparentBg, rotationStyle]}>
-                {/* {<Image source={{ uri: "../assets/images/react-logo.png" }} width={50} height={50} />} */}
-                <AntDesign name="loading2" size={32} color={Colors[theme].accent} />
+                <Animated.View style={[s.transparentBg, rotationStyle]}>
+                    {/* {<Image source={{ uri: "../assets/images/react-logo.png" }} width={50} height={50} />} */}
+                    <AntDesign name="loading2" size={32} color={Colors[theme].accent} />
+                </Animated.View>
             </Animated.View>
         </Animated.View>
     );
