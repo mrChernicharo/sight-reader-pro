@@ -172,6 +172,10 @@ export default function PracticeScreen() {
 
                 <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
+                <ClefSwitch />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
                 <KeySignatureSlider
                     keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
                     keySigIndex={keySigIndex}
@@ -183,8 +187,6 @@ export default function PracticeScreen() {
                 <IsMinorSwitch />
 
                 <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
-
-                <ClefSwitch />
 
                 <RangeSlider
                     min={0}
