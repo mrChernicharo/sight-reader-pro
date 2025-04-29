@@ -64,7 +64,7 @@ export function useMelody() {
             const success = isNoteMatch(attempt, noteName);
             const playedNote = `${attempt}/${+octave}` as Note;
 
-            setRoundResults((prev) => (success ? [...prev, 1] : [...prev, 0]));
+            setRoundResults((prev) => [...prev, success ? 1 : 0]);
             setAttemptedNotes((prev) => [...prev, { id: randomUID(), you: playedNote, correct: currNote }]);
 
             if (success) {
@@ -78,12 +78,13 @@ export function useMelody() {
             if (isLastNote) {
                 await wait(0);
                 setRoundResults([]);
-                addNewRound(decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes));
+                const newRound = decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes);
+                addNewRound(newRound);
             } else {
+                updateRound({ attempts: [...currRound.attempts, playedNote] });
             }
-            updateRound({ attempts: [...currRound.attempts, playedNote] });
         },
-        [level, isLastNote, currRound?.values, currRound?.attempts]
+        [level, isLastNote, currNote, currRound?.values, currRound?.attempts]
     );
 
     const onCountdownFinish = useCallback(async () => {
@@ -123,6 +124,15 @@ export function useMelody() {
             });
         })();
     }, [rounds.length]);
+
+    // useEffect(() => {
+    //     console.log({ roundResults });
+    // }, [roundResults]);
+
+    // useEffect(() => {
+    //     console.log("ROUNDS:::", rounds);
+    //     // console.log(JSON.stringify({ rounds }, null, 2));
+    // }, [rounds]);
 
     return {
         currRound,

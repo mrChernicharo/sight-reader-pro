@@ -15,6 +15,7 @@ import AppRoutes from "./_app.routes";
 import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
+import { MenuProvider } from "react-native-popup-menu";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -43,10 +44,12 @@ export default function RootLayout() {
     return (
         <SafeAreaProvider style={{ paddingTop: 0 }}>
             <GestureHandlerRootView>
-                <SoundContextProvider>
-                    <StatusBar translucent style={theme == "light" ? "dark" : "light"} />
-                    <AppRoutes />
-                </SoundContextProvider>
+                <MenuProvider>
+                    <SoundContextProvider>
+                        <StatusBar translucent style={theme == "light" ? "dark" : "light"} />
+                        <AppRoutes />
+                    </SoundContextProvider>
+                </MenuProvider>
             </GestureHandlerRootView>
         </SafeAreaProvider>
     );

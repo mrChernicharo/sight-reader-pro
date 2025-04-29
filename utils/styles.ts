@@ -1,4 +1,5 @@
-import { StyleSheet, ViewStyle } from "react-native";
+import { Dimensions, StyleSheet, ViewStyle } from "react-native";
+import { MenuOption } from "react-native-popup-menu";
 
 export const STYLES = {
     game: StyleSheet.create({
@@ -71,6 +72,35 @@ export const STYLES = {
             // borderColor: "red",
         },
         btn: { width: "100%", height: 48 },
+    }),
+
+    practice: StyleSheet.create({
+        menuItem: {
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingHorizontal: 16,
+            minHeight: 50,
+        },
+        menuTrigger: {
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 6,
+        },
+        menuOption: {
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+        },
+        icon: {
+            transform: [{ translateY: 1 }],
+        },
+        separator: {
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            width: Dimensions.get("window").width,
+            height: 20,
+            marginVertical: 10,
+        },
     }),
 };
 

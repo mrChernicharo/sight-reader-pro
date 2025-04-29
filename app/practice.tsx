@@ -21,12 +21,16 @@ import { router } from "expo-router";
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
-import { ScrollView } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RangeSlider from "../components/atoms/RangeSlider";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { testBorder } from "@/utils/styles";
+import { GameTypeSwitch } from "@/components/molecules/PracticeFields/GameTypeSwitch";
+import { ClefSwitch } from "@/components/molecules/PracticeFields/ClefSwitch";
+import { ScaleSelect } from "@/components/molecules/PracticeFields/ScaleSelect";
+import { IsMinorSwitch } from "@/components/molecules/PracticeFields/IsMinorSwitch";
 
 const durationInSeconds = 60;
 // const durationInSeconds = 60;
@@ -39,11 +43,7 @@ export default function PracticeScreen() {
     const { knowledge, practiceSettings, updatePracticeSettings } = useAppStore();
     const { clef, isMinorKey, scale, keySignature = KeySignature.C, noteRangeIndices, gameType } = practiceSettings;
 
-    const SCALES = useMemo(() => Object.values(Scale).map((v) => ({ key: v, value: t(`music.scaleType.${v}`) })), [t]);
-    const DEFAULT_SCALE = useMemo(() => SCALES.find((acc) => acc.key === scale), [scale]);
-
     const keySigArray = useMemo(() => (isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES), [isMinorKey]);
-    const altKeySigArray = useMemo(() => (isMinorKey ? MAJOR_KEY_SIGNATURES : MINOR_KEY_SIGNATURES), [isMinorKey]);
     const keySigIndex = useMemo(
         () => keySigArray.findIndex((key) => key === keySignature),
         [keySigArray, keySignature]
@@ -53,9 +53,12 @@ export default function PracticeScreen() {
         [keySigArray]
     );
 
-    const allNotes = useMemo(() => {
-        const notes = isFlatKeySignature(keySignature) ? NOTES_FLAT_ALL_OCTAVES : NOTES_SHARP_ALL_OCTAVES;
+    const notes = useMemo(
+        () => (isFlatKeySignature(keySignature) ? NOTES_FLAT_ALL_OCTAVES : NOTES_SHARP_ALL_OCTAVES),
+        [keySignature]
+    );
 
+    const allNotes = useMemo(() => {
         return notes.filter((note) => {
             const { index } = explodeNote(note);
             // console.log({ note, index });
@@ -68,7 +71,7 @@ export default function PracticeScreen() {
                     return [];
             }
         });
-    }, [clef, keySignature]);
+    }, [clef, notes, keySignature]);
 
     const rangeLow = allNotes?.[noteRangeIndices.low] || "c/4";
     const rangeHigh = allNotes?.[noteRangeIndices.high] || "c/5";
@@ -87,14 +90,6 @@ export default function PracticeScreen() {
             updatePracticeSettings("noteRangeIndices", { low, high });
         },
         [updatePracticeSettings, keySigArray]
-    );
-
-    const setGameType = useCallback(
-        (isOn: boolean) => {
-            const type = isOn ? GameType.Melody : GameType.Single;
-            updatePracticeSettings("gameType", type);
-        },
-        [updatePracticeSettings]
     );
 
     // CREATE A LEVEL IN MEMORY, THEN REFERENCE IT WITHIN GAME COMPONENT
@@ -142,12 +137,7 @@ export default function PracticeScreen() {
             pathname: "/game-level/[id]",
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
-    }, [clef, rangeLow, rangeHigh, CURR_KEY_SIGNATURES, keySignature, allNotes, gameType]);
-
-    const [selectedScale, setScale] = useState(scale);
-    useEffect(() => {
-        updatePracticeSettings("scale", selectedScale);
-    }, [updatePracticeSettings, selectedScale]);
+    }, [clef, rangeLow, rangeHigh, CURR_KEY_SIGNATURES, keySignature, allNotes, scale, gameType]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
@@ -159,144 +149,68 @@ export default function PracticeScreen() {
                     <AppText type="subtitle">{t("practice.title")}</AppText>
                 </AppView>
 
-                <AppView style={s.controlsContainer}>
-                    <AppView style={s.sheetMusicContainer}>
-                        <SheetMusic.RangeDisplay
-                            clef={clef}
-                            keySignature={keySignature}
-                            keys={[[rangeLow, rangeHigh]]}
-                        />
-                    </AppView>
-
-                    {/* Separator */}
-                    <AppView
-                        transparentBG
-                        style={{ ...s.separator, borderColor: Colors[theme].textMute, marginTop: -18 }}
-                    />
-
-                    <AppView transparentBG>
-                        <AppView style={s.keySignatureContainer}>
-                            <AppView transparentBG>
-                                <AppView transparentBG style={s.box}>
-                                    <AppText style={{ backgroundColor: "transparent" }}>
-                                        {t("music.keySignature")}:
-                                    </AppText>
-                                    <AppText style={{ backgroundColor: "transparent" }} type="mdSemiBold">
-                                        {t(`music.keys.${keySignature}`)}
-                                    </AppText>
-                                </AppView>
-                            </AppView>
-
-                            <AppView transparentBG style={s.box}>
-                                <KeySignatureSlider
-                                    keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
-                                    keySigIndex={keySigIndex}
-                                    setKeySigIndex={onKeySignatureChange}
-                                />
-                            </AppView>
-
-                            <AppView transparentBG style={s.box}>
-                                <AppText>{t("music.scaleType.major")}</AppText>
-                                <AppSwitch
-                                    value={isMinorKey}
-                                    setValue={(isMinor) => {
-                                        const relativeKeySig = altKeySigArray[keySigIndex];
-                                        // console.log({ relativeKeySig, isMinor, keySigIndex });
-                                        updatePracticeSettings("isMinorKey", isMinor);
-                                        updatePracticeSettings("keySignature", relativeKeySig);
-                                    }}
-                                />
-                                <AppText>{t("music.scaleType.minor")}</AppText>
-                            </AppView>
-                        </AppView>
-                    </AppView>
-
-                    {/* Separator */}
-                    <AppView
-                        style={{
-                            ...s.separator,
-                            borderColor: Colors[theme].textMute,
-                            marginTop: -4,
-                            marginBottom: 1,
-                        }}
-                    />
-
-                    <AppView style={s.rangeSliderContainer}>
-                        <AppView style={s.clefSwitch}>
-                            <AppText>{t("music.clef")}</AppText>
-                            <AppText style={{ fontSize: 34, lineHeight: 80 }}>{glyphs.trebleClef}</AppText>
-                            <AppSwitch
-                                value={clef == Clef.Bass}
-                                setValue={(val) => {
-                                    updatePracticeSettings("clef", val ? Clef.Bass : Clef.Treble);
-                                }}
-                            />
-                            <AppText style={{ fontSize: 48, marginTop: 6, marginLeft: -8, lineHeight: 80 }}>
-                                {glyphs.bassClef}
-                            </AppText>
-                        </AppView>
-
-                        <AppView style={s.noteRangeDisplay}>
-                            <AppText>{t("music.noteRange")}</AppText>
-                            <AppText type="mdSemiBold">
-                                {t(`music.notes.${rangeLow.split("/")[0]}`) + "/" + rangeLow.split("/")[1]}
-                            </AppText>
-                            <AppText type="mdSemiBold">
-                                <FontAwesome5 name="arrows-alt-h" />
-                            </AppText>
-                            <AppText type="mdSemiBold">
-                                {t(`music.notes.${rangeHigh.split("/")[0]}`) + "/" + rangeHigh.split("/")[1]}
-                            </AppText>
-                        </AppView>
-
-                        <RangeSlider
-                            min={0}
-                            max={allNotes.length - 1}
-                            step={1}
-                            handleValueChange={onNoteRangeSliderChange}
-                            high={noteRangeIndices.high}
-                            low={noteRangeIndices.low}
-                        />
-                    </AppView>
-
-                    {/* Separator */}
-                    <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
-
-                    <AppView style={s.scaleInput}>
-                        <AppText>{t("music.scale")}</AppText>
-                        <SelectList
-                            data={SCALES}
-                            save="key"
-                            setSelected={setScale} // setScale is dangerous and can cause infinite loops
-                            search={false}
-                            defaultOption={DEFAULT_SCALE}
-                            inputStyles={{ color: Colors[theme].text, backgroundColor: Colors[theme].bg }}
-                            dropdownTextStyles={{ color: Colors[theme].text }}
-                            disabledTextStyles={{ color: Colors[theme].textMute }}
-                            // boxStyles={{}}
-                            // dropdownStyles={{}}
-                            // disabledItemStyles={{}}
-                            // dropdownItemStyles={{}}
-                        />
-                    </AppView>
-
-                    {/* Separator */}
-                    <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
-                    {/* <AppView style={{ ...s.separator, borderColor: "transparent" }} /> */}
-
-                    <AppView style={s.gameTypeContainer}>
-                        <AppText>{t("game.type.title")}</AppText>
-                        <AppView style={{ ...s.gameTypeContent, backgroundColor: Colors[theme].bgSelected }}>
-                            <AppView transparentBG style={s.box}>
-                                <AppText>{t("game.type.single")}</AppText>
-                                <AppSwitch value={gameType == GameType.Melody} setValue={setGameType} />
-                                <AppText>{t("game.type.melody")}</AppText>
-                            </AppView>
-                        </AppView>
-                    </AppView>
+                <AppView style={s.box}>
+                    <AppText style={{ backgroundColor: "transparent" }}>{t("music.keySignature")}:</AppText>
+                    <AppText style={{ backgroundColor: "transparent" }} type="mdSemiBold">
+                        {t(`music.keys.${keySignature}`)}
+                    </AppText>
                 </AppView>
 
-                {/* <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} /> */}
+                <AppView style={s.noteRangeTextDisplay}>
+                    <AppText>{t("music.noteRange")}:</AppText>
+                    <AppText type="mdSemiBold">
+                        {t(`music.notes.${rangeLow.split("/")[0]}`) + "/" + rangeLow.split("/")[1]}
+                    </AppText>
+                    <AppText type="mdSemiBold">
+                        <FontAwesome5 name="arrows-alt-h" />
+                    </AppText>
+                    <AppText type="mdSemiBold">
+                        {t(`music.notes.${rangeHigh.split("/")[0]}`) + "/" + rangeHigh.split("/")[1]}
+                    </AppText>
+                </AppView>
+
+                <AppView style={s.sheetMusicContainer}>
+                    <SheetMusic.RangeDisplay clef={clef} keySignature={keySignature} keys={[[rangeLow, rangeHigh]]} />
+                </AppView>
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
+                <ClefSwitch />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
+                <KeySignatureSlider
+                    keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
+                    keySigIndex={keySigIndex}
+                    setKeySigIndex={onKeySignatureChange}
+                />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
+                <IsMinorSwitch />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
+                <RangeSlider
+                    min={0}
+                    max={allNotes.length - 1}
+                    step={1}
+                    handleValueChange={onNoteRangeSliderChange}
+                    high={noteRangeIndices.high}
+                    low={noteRangeIndices.low}
+                    allNotes={allNotes}
+                />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
+                <ScaleSelect />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
+                <GameTypeSwitch />
+
+                {/* Spacer */}
+                <AppView style={{ paddingBottom: 32 }} />
 
                 <AppButton
                     text={t("practice.start")}
@@ -329,70 +243,33 @@ const s = StyleSheet.create({
         position: "relative",
         alignItems: "center",
     },
-    controlsContainer: {
-        width: "100%",
-        paddingHorizontal: 16,
-        // gap: 16,
-    },
-    clefSwitch: {
+    noteRangeTextDisplay: {
         flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        gap: 8,
-        height: 72,
-    },
-    keySignatureContainer: {
-        width: "100%",
-        // paddingVertical: 8,
-        borderRadius: 16,
-        backgroundColor: "transparent",
-        // marginVertical: 12,
-        // ...testBorder("green"),
-    },
-    gameTypeContainer: {
-        paddingBottom: 36,
-        // ...testBorder("green"),
-    },
-    gameTypeContent: {
-        width: "100%",
-        paddingVertical: 8,
-        borderRadius: 16,
-        // marginTop: 28,
-    },
-    rangeSliderContainer: {
-        width: "100%",
-        alignItems: "center",
-        paddingTop: 16,
-        // ...testBorder("green"),
-    },
-    noteRangeDisplay: {
-        marginTop: 12,
-        marginBottom: 12,
-        flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         gap: 12,
         width: 160,
         // ...testBorder(),
     },
     sheetMusicContainer: {
+        marginTop: 8,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 12,
+        width: 160,
         // ...testBorder(),
-    },
-    scaleInput: {
-        // paddingHorizontal: 16,
     },
     cta: {
         width: 300,
         height: 56,
-        marginBottom: 16,
+        marginBottom: 24,
         // ...testBorder(),
     },
     separator: {
         borderBottomWidth: StyleSheet.hairlineWidth,
-        width: Dimensions.get("window").width - 96,
-        height: 20,
-        marginVertical: 10,
-        // marginBottom: 20,
-        // ...testBorder(),
+        width: Dimensions.get("window").width,
+        // height: 20,
+        // marginVertical: 10,
     },
 });

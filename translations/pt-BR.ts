@@ -72,7 +72,7 @@ const ptBR = {
         },
     },
     practice: {
-        title: "Configuração de Prática",
+        title: "Configurar Exercício",
         start: "Começar",
     },
     settings: {
@@ -109,7 +109,8 @@ const ptBR = {
             bass: "Clave de Fá",
         },
         keySignature: "Tonalidade",
-        // keySignature: "Armadura de Clave",
+        armature: "Armadura",
+        mode: "Modo",
         note: "Nota",
         noteRange: "Extensão",
         scale: "Escala",

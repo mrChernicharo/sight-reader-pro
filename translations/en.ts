@@ -108,6 +108,8 @@ const en = {
             bass: "Bass Clef",
         },
         keySignature: "Key Signature",
+        armature: "Armature",
+        mode: "Mode",
         note: "Note",
         noteRange: "Note Range",
         scale: "Scale",
