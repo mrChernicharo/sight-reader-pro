@@ -68,7 +68,7 @@ tutorials
 
 level-selection-walkthrough ✅
 translate walkthroughs (tours) ✅
-style walkthroughs
+style walkthroughs ✅
 translate pianoKeys ✅
 sync practice settings in store ✅
 globalVolume and volume settings https://www.npmjs.com/package/react-native-volume-manager ✅
@@ -86,4 +86,20 @@ tutorial for beginners
 
 ======
 
-hint color gradually fades away
+hint color gradually fades away ✅ (need better colors)
+prevent playing piano during walkthrough
+translate level names
+level colors & overall UI
+iOS walkthrough tooltip
+optimize icon imports
+style settings page
+better images for google app store
+
+rethink game scores!
+
+0 streak - 100
+1 streak - 110
+2 streak - 120
+...
+10 streak - 200
+20 streak - 300

@@ -87,6 +87,7 @@ export function Piano({
                         style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
                     >
                         <Pressable
+                            disabled={!hasCompletedTour}
                             style={{
                                 ...s.blackNoteInner,
                                 ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
@@ -127,6 +128,7 @@ export function Piano({
                         style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
                     >
                         <Pressable
+                            disabled={!hasCompletedTour}
                             style={{
                                 ...s.blackNoteInner,
                                 ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
@@ -158,6 +160,7 @@ export function Piano({
                 {WHITE_NOTES.map((note) => {
                     return (
                         <Pressable
+                            disabled={!hasCompletedTour}
                             key={note}
                             android_ripple={{ radius: 90, color: "#000000066" }}
                             onPressIn={() => {
