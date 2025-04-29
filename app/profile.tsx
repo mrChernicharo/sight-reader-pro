@@ -22,7 +22,7 @@ export default function SettingsScreen() {
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor }}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 1 }}>
+                <AppView style={{ position: "absolute", left: 10, top: 6 }}>
                     <BackLink />
                 </AppView>
                 <AppText type="subtitle">{t("profile.title")}</AppText>

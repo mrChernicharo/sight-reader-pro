@@ -72,7 +72,7 @@ export default function SettingsScreen() {
                     <AppView style={{ position: "absolute", left: 0, top: 6 }}>
                         <BackLink />
                     </AppView>
-                    <AppText type="title">{t("settings.title")}</AppText>
+                    <AppText type="subtitle">{t("settings.title")}</AppText>
                 </AppView>
 
                 <AppView style={s.inputContainer}>

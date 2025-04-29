@@ -42,7 +42,7 @@ export default function RootLayout() {
         );
 
     return (
-        <SafeAreaProvider style={{ paddingTop: 0 }}>
+        <SafeAreaProvider style={{ paddingTop: 8 }}>
             <GestureHandlerRootView>
                 <MenuProvider>
                     <SoundContextProvider>
