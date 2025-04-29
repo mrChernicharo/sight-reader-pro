@@ -53,9 +53,12 @@ export default function PracticeScreen() {
         [keySigArray]
     );
 
-    const allNotes = useMemo(() => {
-        const notes = isFlatKeySignature(keySignature) ? NOTES_FLAT_ALL_OCTAVES : NOTES_SHARP_ALL_OCTAVES;
+    const notes = useMemo(
+        () => (isFlatKeySignature(keySignature) ? NOTES_FLAT_ALL_OCTAVES : NOTES_SHARP_ALL_OCTAVES),
+        [keySignature]
+    );
 
+    const allNotes = useMemo(() => {
         return notes.filter((note) => {
             const { index } = explodeNote(note);
             // console.log({ note, index });
@@ -68,7 +71,7 @@ export default function PracticeScreen() {
                     return [];
             }
         });
-    }, [clef, keySignature]);
+    }, [clef, notes, keySignature]);
 
     const rangeLow = allNotes?.[noteRangeIndices.low] || "c/4";
     const rangeHigh = allNotes?.[noteRangeIndices.high] || "c/5";
@@ -195,6 +198,7 @@ export default function PracticeScreen() {
                     handleValueChange={onNoteRangeSliderChange}
                     high={noteRangeIndices.high}
                     low={noteRangeIndices.low}
+                    allNotes={allNotes}
                 />
 
                 {/* Separator */}

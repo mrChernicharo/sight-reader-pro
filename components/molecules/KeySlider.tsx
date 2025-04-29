@@ -45,13 +45,3 @@ export function KeySignatureSlider({
         </AppView>
     );
 }
-
-// const s = StyleSheet.create({
-//     keySlider: {
-//         flexDirection: "row",
-//         alignItems: "center",
-//         gap: 6,
-//         // borderWidth: 1,
-//         // width: "100%",
-//     },
-// });

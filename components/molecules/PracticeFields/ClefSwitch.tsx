@@ -23,14 +23,14 @@ export function ClefSwitch() {
             <AppText>{t("music.clef")}</AppText>
 
             <AppView style={s.menuTrigger}>
-                <AppText style={{ fontSize: 24, lineHeight: 80 }}>{glyphs.trebleClef}</AppText>
+                <AppText style={{ fontSize: 24, lineHeight: 50 }}>{glyphs.trebleClef}</AppText>
                 <AppSwitch
                     value={clef == Clef.Bass}
                     setValue={(val) => {
                         updatePracticeSettings("clef", val ? Clef.Bass : Clef.Treble);
                     }}
                 />
-                <AppText style={{ fontSize: 32, marginTop: 6, marginLeft: -8, lineHeight: 80 }}>
+                <AppText style={{ fontSize: 32, marginTop: 6, marginLeft: -8, lineHeight: 50 }}>
                     {glyphs.bassClef}
                 </AppText>
             </AppView>
