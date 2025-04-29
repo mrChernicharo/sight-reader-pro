@@ -170,15 +170,22 @@ export default function PracticeScreen() {
                     <SheetMusic.RangeDisplay clef={clef} keySignature={keySignature} keys={[[rangeLow, rangeHigh]]} />
                 </AppView>
 
-                <AppView transparentBG style={s.box}>
-                    <KeySignatureSlider
-                        keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
-                        keySigIndex={keySigIndex}
-                        setKeySigIndex={onKeySignatureChange}
-                    />
-                </AppView>
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
+                {/* <AppView transparentBG style={s.box}> */}
+                {/* <AppText>{t("music.armature")}</AppText> */}
+                <KeySignatureSlider
+                    keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
+                    keySigIndex={keySigIndex}
+                    setKeySigIndex={onKeySignatureChange}
+                />
+                {/* </AppView> */}
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
                 <IsMinorSwitch />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
                 <ClefSwitch />
 
@@ -196,10 +203,14 @@ export default function PracticeScreen() {
 
                 <ScaleSelect />
 
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
                 {/* Separator */}
                 {/* <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} /> */}
 
                 <GameTypeSwitch />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
                 <AppButton
                     text={t("practice.start")}
@@ -275,8 +286,8 @@ const s = StyleSheet.create({
     separator: {
         borderBottomWidth: StyleSheet.hairlineWidth,
         width: Dimensions.get("window").width,
-        height: 20,
-        marginVertical: 10,
+        // height: 20,
+        // marginVertical: 10,
     },
 });
 

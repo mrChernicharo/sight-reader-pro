@@ -25,10 +25,12 @@ import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { FadeIn } from "@/components/atoms/FadeIn";
-import { testBorder } from "@/utils/styles";
+import { STYLES, testBorder } from "@/utils/styles";
 import { GameTypeSwitch } from "@/components/molecules/PracticeFields/GameTypeSwitch";
 import { ClefSwitch } from "@/components/molecules/PracticeFields/ClefSwitch";
 import { ScaleSelect } from "@/components/molecules/PracticeFields/ScaleSelect";
+
+const s = STYLES.practice;
 
 export function IsMinorSwitch() {
     const theme = useTheme();
@@ -45,92 +47,46 @@ export function IsMinorSwitch() {
     );
 
     return (
-        <AppView transparentBG style={s.box}>
-            <AppText>{t("music.scaleType.major")}</AppText>
-            <AppSwitch
-                value={isMinorKey}
-                setValue={(isMinor) => {
-                    const relativeKeySig = altKeySigArray[keySigIndex];
-                    // console.log({ relativeKeySig, isMinor, keySigIndex });
-                    updatePracticeSettings("isMinorKey", isMinor);
-                    updatePracticeSettings("keySignature", relativeKeySig);
-                }}
-            />
-            <AppText>{t("music.scaleType.minor")}</AppText>
+        <AppView style={s.menuItem}>
+            <AppText>{t("music.mode")}</AppText>
+            <AppView transparentBG style={s.menuTrigger}>
+                <AppText>{t("music.scaleType.major")}</AppText>
+                <AppSwitch
+                    value={isMinorKey}
+                    setValue={(isMinor) => {
+                        const relativeKeySig = altKeySigArray[keySigIndex];
+                        // console.log({ relativeKeySig, isMinor, keySigIndex });
+                        updatePracticeSettings("isMinorKey", isMinor);
+                        updatePracticeSettings("keySignature", relativeKeySig);
+                    }}
+                />
+                <AppText>{t("music.scaleType.minor")}</AppText>
+            </AppView>
         </AppView>
     );
 }
 
-const s = StyleSheet.create({
-    container: {
-        alignItems: "center",
-        paddingHorizontal: 24,
-        paddingVertical: 24,
-    },
-    box: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 8,
-        minHeight: 42,
-        // ...testBorder("blue"),
-    },
-    top: {
-        width: "100%",
-        position: "relative",
-        alignItems: "center",
-    },
-    controlsContainer: {
-        width: "100%",
-        paddingHorizontal: 16,
-        // gap: 16,
-    },
-    clefSwitch: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        gap: 8,
-        height: 72,
-    },
-    keySignatureContainer: {
-        width: "100%",
-        // paddingVertical: 8,
-        borderRadius: 16,
-        backgroundColor: "transparent",
-        // marginVertical: 12,
-        // ...testBorder("green"),
-    },
-    rangeSliderContainer: {
-        width: "100%",
-        alignItems: "center",
-        paddingTop: 16,
-        // ...testBorder("green"),
-    },
-    noteRangeDisplay: {
-        marginTop: 12,
-        marginBottom: 12,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        gap: 12,
-        width: 160,
-        // ...testBorder(),
-    },
-    sheetMusicContainer: {
-        // ...testBorder(),
-    },
-    cta: {
-        width: 300,
-        height: 56,
-        marginBottom: 16,
-        // ...testBorder(),
-    },
-    separator: {
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        width: Dimensions.get("window").width - 96,
-        height: 20,
-        marginVertical: 10,
-        // marginBottom: 20,
-        // ...testBorder(),
-    },
-});
+// const s = StyleSheet.create({
+//     container: {
+//         alignItems: "center",
+//         paddingHorizontal: 24,
+//         paddingVertical: 24,
+//     },
+//     box: {
+//         width: "100%",
+//         flexDirection: "row",
+//         justifyContent: "space-between",
+//         alignItems: "center",
+//         gap: 8,
+//         minHeight: 42,
+//         ...testBorder("blue"),
+//     },
+//     innerBox: {
+//         flexDirection: "row",
+//         justifyContent: "center",
+//         alignItems: "center",
+//         gap: 8,
+//         minHeight: 42,
+//         ...testBorder(),
+//     },
+// });

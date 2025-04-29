@@ -80,6 +80,7 @@ export const STYLES = {
             justifyContent: "space-between",
             alignItems: "center",
             paddingHorizontal: 16,
+            minHeight: 50,
         },
         menuTrigger: {
             flexDirection: "row",
