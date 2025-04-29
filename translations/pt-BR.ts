@@ -72,7 +72,7 @@ const ptBR = {
         },
     },
     practice: {
-        title: "Configuração de Prática",
+        title: "Configurar Exercício",
         start: "Começar",
     },
     settings: {

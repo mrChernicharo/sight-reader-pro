@@ -137,7 +137,7 @@ export default function PracticeScreen() {
             pathname: "/game-level/[id]",
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
-    }, [clef, rangeLow, rangeHigh, CURR_KEY_SIGNATURES, keySignature, allNotes, gameType]);
+    }, [clef, rangeLow, rangeHigh, CURR_KEY_SIGNATURES, keySignature, allNotes, scale, gameType]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
@@ -157,7 +157,7 @@ export default function PracticeScreen() {
                 </AppView>
 
                 <AppView style={s.noteRangeTextDisplay}>
-                    <AppText>{t("music.noteRange")}</AppText>
+                    <AppText>{t("music.noteRange")}:</AppText>
                     <AppText type="mdSemiBold">
                         {t(`music.notes.${rangeLow.split("/")[0]}`) + "/" + rangeLow.split("/")[1]}
                     </AppText>
@@ -252,8 +252,7 @@ const s = StyleSheet.create({
         // ...testBorder(),
     },
     sheetMusicContainer: {
-        marginTop: 12,
-        marginBottom: 12,
+        marginTop: 8,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
@@ -264,7 +263,7 @@ const s = StyleSheet.create({
     cta: {
         width: 300,
         height: 56,
-        marginBottom: 16,
+        marginBottom: 24,
         // ...testBorder(),
     },
     separator: {
@@ -274,56 +273,3 @@ const s = StyleSheet.create({
         // marginVertical: 10,
     },
 });
-
-// export default function PracticeScreen() {
-//     const theme = useTheme();
-//     const { t } = useTranslation();
-
-//     const MENU_ITEMS = [
-//         { title: "clef", component: <ClefSwitch /> },
-//         { title: "armature", component: null },
-//         { title: "isMinor", component: null },
-//         { title: "noteRange", component: null },
-//         { title: "scale", component: null },
-//         { title: "gameType", component: null },
-//     ];
-
-//     return (
-//         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
-//             {/* <ScrollView contentContainerStyle={s.container}> */}
-//             <AppView style={s.top}>
-//                 <AppView style={{ position: "absolute", left: 0, top: 6 }}>
-//                     <BackLink />
-//                 </AppView>
-//                 <AppText type="subtitle">{t("practice.title")}</AppText>
-//             </AppView>
-
-//             <FlatList
-//                 data={MENU_ITEMS}
-//                 keyExtractor={({ title }) => title}
-//                 renderItem={({ item, index, separators }) => <>{item.component}</>}
-//             />
-//             {/* </ScrollView> */}
-//         </SafeAreaView>
-//     );
-// }
-
-// const s = StyleSheet.create({
-//     container: {
-//         alignItems: "center",
-//         paddingHorizontal: 24,
-//         paddingVertical: 24,
-//     },
-//     top: {
-//         width: "100%",
-//         position: "relative",
-//         alignItems: "center",
-//     },
-//     clefSwitch: {
-//         flexDirection: "row",
-//         justifyContent: "space-between",
-//         alignItems: "center",
-//         gap: 8,
-//         height: 72,
-//     },
-// });
