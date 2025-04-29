@@ -153,6 +153,19 @@ export default function PracticeScreen() {
                     </AppText>
                 </AppView>
 
+                <AppView style={s.noteRangeTextDisplay}>
+                    <AppText>{t("music.noteRange")}</AppText>
+                    <AppText type="mdSemiBold">
+                        {t(`music.notes.${rangeLow.split("/")[0]}`) + "/" + rangeLow.split("/")[1]}
+                    </AppText>
+                    <AppText type="mdSemiBold">
+                        <FontAwesome5 name="arrows-alt-h" />
+                    </AppText>
+                    <AppText type="mdSemiBold">
+                        {t(`music.notes.${rangeHigh.split("/")[0]}`) + "/" + rangeHigh.split("/")[1]}
+                    </AppText>
+                </AppView>
+
                 <AppView style={s.sheetMusicContainer}>
                     <SheetMusic.RangeDisplay clef={clef} keySignature={keySignature} keys={[[rangeLow, rangeHigh]]} />
                 </AppView>
@@ -168,19 +181,6 @@ export default function PracticeScreen() {
                 <IsMinorSwitch />
 
                 <ClefSwitch />
-
-                <AppView style={s.noteRangeDisplay}>
-                    <AppText>{t("music.noteRange")}</AppText>
-                    <AppText type="mdSemiBold">
-                        {t(`music.notes.${rangeLow.split("/")[0]}`) + "/" + rangeLow.split("/")[1]}
-                    </AppText>
-                    <AppText type="mdSemiBold">
-                        <FontAwesome5 name="arrows-alt-h" />
-                    </AppText>
-                    <AppText type="mdSemiBold">
-                        {t(`music.notes.${rangeHigh.split("/")[0]}`) + "/" + rangeHigh.split("/")[1]}
-                    </AppText>
-                </AppView>
 
                 <RangeSlider
                     min={0}
@@ -246,11 +246,11 @@ const s = StyleSheet.create({
         paddingTop: 16,
         // ...testBorder("green"),
     },
-    noteRangeDisplay: {
-        marginTop: 12,
-        marginBottom: 12,
+    noteRangeTextDisplay: {
+        // marginTop: -8,
+        // marginBottom: 12,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         gap: 12,
         width: 160,
@@ -260,7 +260,7 @@ const s = StyleSheet.create({
         marginTop: 12,
         marginBottom: 12,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         gap: 12,
         width: 160,
