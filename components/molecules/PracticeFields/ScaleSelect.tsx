@@ -41,7 +41,13 @@ export function ScaleSelect() {
 
                 <MenuOptions>
                     {SCALES.map((sc) => (
-                        <MenuOption key={sc.key} onSelect={() => setScale(sc.key)} text={sc.value} />
+                        <MenuOption
+                            key={sc.key}
+                            text={sc.value}
+                            style={[s.menuOption, { backgroundColor: Colors[theme].bgSelected }]}
+                            customStyles={{ optionText: { color: Colors[theme].text } }}
+                            onSelect={() => setScale(sc.key)}
+                        />
                     ))}
                 </MenuOptions>
             </Menu>

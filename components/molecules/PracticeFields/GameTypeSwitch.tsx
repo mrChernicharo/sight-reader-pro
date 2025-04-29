@@ -47,7 +47,13 @@ export function GameTypeSwitch() {
 
                 <MenuOptions>
                     {TYPES.map((sc) => (
-                        <MenuOption key={sc.key} onSelect={() => setGameType(sc.key)} text={t(sc.value)} />
+                        <MenuOption
+                            key={sc.key}
+                            onSelect={() => setGameType(sc.key)}
+                            style={[s.menuOption, { backgroundColor: Colors[theme].bgSelected }]}
+                            customStyles={{ optionText: { color: Colors[theme].text } }}
+                            text={t(sc.value)}
+                        />
                     ))}
                 </MenuOptions>
             </Menu>

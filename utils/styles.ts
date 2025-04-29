@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet, ViewStyle } from "react-native";
+import { MenuOption } from "react-native-popup-menu";
 
 export const STYLES = {
     game: StyleSheet.create({
@@ -86,6 +87,10 @@ export const STYLES = {
             flexDirection: "row",
             alignItems: "center",
             gap: 6,
+        },
+        menuOption: {
+            paddingVertical: 12,
+            paddingHorizontal: 16,
         },
         icon: {
             transform: [{ translateY: 1 }],
