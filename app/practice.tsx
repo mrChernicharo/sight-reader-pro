@@ -201,19 +201,16 @@ export default function PracticeScreen() {
                     allNotes={allNotes}
                 />
 
-                {/* Separator */}
                 <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
                 <ScaleSelect />
 
                 <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
-                {/* Separator */}
-                {/* <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} /> */}
-
                 <GameTypeSwitch />
 
-                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+                {/* Spacer */}
+                <AppView style={{ paddingBottom: 32 }} />
 
                 <AppButton
                     text={t("practice.start")}
@@ -246,23 +243,7 @@ const s = StyleSheet.create({
         position: "relative",
         alignItems: "center",
     },
-    keySignatureContainer: {
-        width: "100%",
-        // paddingVertical: 8,
-        borderRadius: 16,
-        backgroundColor: "transparent",
-        // marginVertical: 12,
-        // ...testBorder("green"),
-    },
-    rangeSliderContainer: {
-        width: "100%",
-        alignItems: "center",
-        paddingTop: 16,
-        // ...testBorder("green"),
-    },
     noteRangeTextDisplay: {
-        // marginTop: -8,
-        // marginBottom: 12,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
