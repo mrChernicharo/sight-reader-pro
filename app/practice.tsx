@@ -172,14 +172,11 @@ export default function PracticeScreen() {
 
                 <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
-                {/* <AppView transparentBG style={s.box}> */}
-                {/* <AppText>{t("music.armature")}</AppText> */}
                 <KeySignatureSlider
                     keySignatures={CURR_KEY_SIGNATURES.map((item) => item.label)}
                     keySigIndex={keySigIndex}
                     setKeySigIndex={onKeySignatureChange}
                 />
-                {/* </AppView> */}
 
                 <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 

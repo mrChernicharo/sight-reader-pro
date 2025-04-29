@@ -5,8 +5,11 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useTranslation } from "@/hooks/useTranslation";
 import { glyphs } from "@/utils/constants";
 import { Clef } from "@/utils/enums";
+import { STYLES } from "@/utils/styles";
 
 import { Dimensions, StyleSheet } from "react-native";
+
+const s = STYLES.practice;
 
 export function ClefSwitch() {
     const { t } = useTranslation();
@@ -16,42 +19,21 @@ export function ClefSwitch() {
     const { clef } = practiceSettings;
 
     return (
-        <AppView style={s.clefSwitch}>
+        <AppView style={s.menuItem}>
             <AppText>{t("music.clef")}</AppText>
-            <AppText style={{ fontSize: 34, lineHeight: 80 }}>{glyphs.trebleClef}</AppText>
-            <AppSwitch
-                value={clef == Clef.Bass}
-                setValue={(val) => {
-                    updatePracticeSettings("clef", val ? Clef.Bass : Clef.Treble);
-                }}
-            />
-            <AppText style={{ fontSize: 48, marginTop: 6, marginLeft: -8, lineHeight: 80 }}>{glyphs.bassClef}</AppText>
+
+            <AppView style={s.menuTrigger}>
+                <AppText style={{ fontSize: 24, lineHeight: 80 }}>{glyphs.trebleClef}</AppText>
+                <AppSwitch
+                    value={clef == Clef.Bass}
+                    setValue={(val) => {
+                        updatePracticeSettings("clef", val ? Clef.Bass : Clef.Treble);
+                    }}
+                />
+                <AppText style={{ fontSize: 32, marginTop: 6, marginLeft: -8, lineHeight: 80 }}>
+                    {glyphs.bassClef}
+                </AppText>
+            </AppView>
         </AppView>
     );
 }
-
-const s = StyleSheet.create({
-    box: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 8,
-        minHeight: 42,
-        // ...testBorder("blue"),
-    },
-    clefSwitch: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        gap: 8,
-        height: 72,
-    },
-    separator: {
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        width: Dimensions.get("window").width - 96,
-        height: 20,
-        marginVertical: 10,
-        // marginBottom: 20,
-        // ...testBorder(),
-    },
-});
