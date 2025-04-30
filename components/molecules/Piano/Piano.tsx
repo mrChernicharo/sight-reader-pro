@@ -58,7 +58,19 @@ export function Piano({
 
     const hints = useRef(hintCount);
     const playedNotesInInterval = useRef(0);
+    const successesInInterval = useRef(0);
     const interval = useRef(0);
+
+    const disabled = gameType == GameType.Single && !hasCompletedTour;
+
+    const onPianoKeyPress = useCallback(
+        (note: NoteName) => {
+            onKeyPressed(note);
+            playedNotesInInterval.current++;
+            hints.current--;
+        },
+        [onKeyPressed]
+    );
 
     const hintPianoKey = useCallback(
         (note: NoteName) => {
@@ -78,6 +90,7 @@ export function Piano({
             const isSpamming = playedNotesInInterval.current > 4;
             console.log({ clickCount: playedNotesInInterval.current, isSpamming });
             playedNotesInInterval.current = 0;
+            // playedNotesInInterval.current = 0;
         }, 2000);
 
         return () => window.clearInterval(interval.current);
@@ -99,17 +112,14 @@ export function Piano({
                         style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
                     >
                         <Pressable
-                            disabled={!hasCompletedTour}
+                            disabled={disabled}
                             style={{
                                 ...s.blackNoteInner,
                                 ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
                             }}
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => {
-                                onKeyPressed(note);
-
-                                playedNotesInInterval.current++;
-                                hints.current--;
+                                onPianoKeyPress(note);
                             }}
                             onPressOut={() => onKeyReleased(note)}
                         >
@@ -142,16 +152,14 @@ export function Piano({
                         style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
                     >
                         <Pressable
-                            disabled={!hasCompletedTour}
+                            disabled={disabled}
                             style={{
                                 ...s.blackNoteInner,
                                 ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
                             }}
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => {
-                                onKeyPressed(note);
-                                playedNotesInInterval.current++;
-                                hints.current--;
+                                onPianoKeyPress(note);
                             }}
                             onPressOut={() => onKeyReleased(note)}
                         >
@@ -175,13 +183,11 @@ export function Piano({
                 {WHITE_NOTES.map((note) => {
                     return (
                         <Pressable
-                            disabled={!hasCompletedTour}
+                            disabled={disabled}
                             key={note}
                             android_ripple={{ radius: 90, color: "#000000066" }}
                             onPressIn={() => {
-                                onKeyPressed(note);
-                                playedNotesInInterval.current++;
-                                hints.current--;
+                                onPianoKeyPress(note);
                             }}
                             onPressOut={() => onKeyReleased(note)}
                             style={{
