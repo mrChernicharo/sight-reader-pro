@@ -57,6 +57,8 @@ export function Piano({
     const hasCompletedTour = useAppStore((state) => state.completedTours.game);
 
     const hints = useRef(hintCount);
+    const playedNotesInInterval = useRef(0);
+    const interval = useRef(0);
 
     const hintPianoKey = useCallback(
         (note: NoteName) => {
@@ -70,6 +72,16 @@ export function Piano({
         },
         [hintCount, gameType, currNoteName, hasCompletedTour]
     );
+
+    useEffect(() => {
+        interval.current = window.setInterval(() => {
+            const isSpamming = playedNotesInInterval.current > 4;
+            console.log({ clickCount: playedNotesInInterval.current, isSpamming });
+            playedNotesInInterval.current = 0;
+        }, 2000);
+
+        return () => window.clearInterval(interval.current);
+    }, []);
 
     return (
         <AppView style={s.piano}>
@@ -95,6 +107,8 @@ export function Piano({
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => {
                                 onKeyPressed(note);
+
+                                playedNotesInInterval.current++;
                                 hints.current--;
                             }}
                             onPressOut={() => onKeyReleased(note)}
@@ -136,6 +150,7 @@ export function Piano({
                             android_ripple={{ radius: 90, color: "#ffffff33" }}
                             onPressIn={() => {
                                 onKeyPressed(note);
+                                playedNotesInInterval.current++;
                                 hints.current--;
                             }}
                             onPressOut={() => onKeyReleased(note)}
@@ -165,6 +180,7 @@ export function Piano({
                             android_ripple={{ radius: 90, color: "#000000066" }}
                             onPressIn={() => {
                                 onKeyPressed(note);
+                                playedNotesInInterval.current++;
                                 hints.current--;
                             }}
                             onPressOut={() => onKeyReleased(note)}

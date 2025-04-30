@@ -1,5 +1,6 @@
 import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
+import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useTheme } from "@/hooks/useTheme";
@@ -37,17 +38,21 @@ export default function LangScreen() {
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
             <AppView style={s.top}>
-                <AppText type="subtitle">{t("routes.init.lang.title")}</AppText>
+                <AppTextLogo />
             </AppView>
 
             <AppView style={{ paddingHorizontal: 12, paddingBottom: 120 }}>
-                <AppText style={{ marginBottom: 12, textAlign: "center" }}>{t("settings.language")}</AppText>
+                <AppText type="subtitle" style={{ marginBottom: 8 }}>
+                    {t("routes.init.lang.title")}
+                </AppText>
+                {/* <AppText style={{ marginBottom: 12, textAlign: "center" }}>{t("settings.language")}</AppText> */}
                 <SelectList
                     data={LANGS}
                     save="key"
                     setSelected={onSelect}
                     search={false}
-                    placeholder={t("settings.lang.placeholder")}
+                    // placeholder={"English"}
+                    placeholder={t("lang")}
                     // defaultOption={language}
                     inputStyles={{ color: textColor, backgroundColor: Colors[theme].bg, width: "100%" }}
                     dropdownTextStyles={{ color: textColor }}

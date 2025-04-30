@@ -12,6 +12,7 @@ import AppButton from "@/components/atoms/AppButton";
 import { router } from "expo-router";
 import { STYLES } from "@/utils/styles";
 import { useCallback, useRef } from "react";
+import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 
 const s = {
     ...STYLES.init,
@@ -43,14 +44,16 @@ export default function NameScreen() {
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 6 }}>
+                <AppView style={s.backLink}>
                     <BackLink to="/init/02.knowledge.screen" />
                 </AppView>
-                <AppText type="subtitle">{t("routes.init.name.title")}</AppText>
+
+                <AppTextLogo />
             </AppView>
 
             <AppView style={s.inputContainer}>
-                <AppText>{t("settings.username")}</AppText>
+                <AppText type="subtitle">{t("routes.init.name.title")}</AppText>
+                {/* <AppText>{t("settings.username")}</AppText> */}
                 <TextInput
                     style={{ ...s.input, color: textColor }}
                     placeholderTextColor={textColor}

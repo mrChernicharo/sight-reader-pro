@@ -1,5 +1,6 @@
 import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
+import { AppTextLogo } from "@/components/atoms/AppTextLogo";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { useAppStore } from "@/hooks/useAppStore";
@@ -85,30 +86,24 @@ export default function KnowledgeScreen() {
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
             <AppView style={s.top}>
-                <AppView style={{ position: "absolute", left: 0, top: 6 }}>
+                <AppView style={s.backLink}>
                     <BackLink to="/init/01.lang.screen" />
                 </AppView>
-                <AppText type="subtitle">
-                    {knowledge ? t("routes.init.knowledge.you") : t("routes.init.knowledge.title")}
-                </AppText>
+                <AppTextLogo />
+            </AppView>
 
+            <AppText type="subtitle">
+                {knowledge ? t("routes.init.knowledge.you") : t("routes.init.knowledge.title")}
+            </AppText>
+
+            <AppView style={s.listContainer}>
                 {knowledge && (
-                    <AppView
-                        style={{
-                            alignItems: "center",
-                            // borderWidth: 2,
-                            // justifyContent: "center",
-                            // borderColor: "red",
-                            // alignItems: "center",
-                        }}
-                    >
+                    <AppView style={{ alignItems: "center" }}>
                         {/* <AppText type="mdSemiBold">{}</AppText> */}
                         <AppText type="title">{t(`music.knowledge.${knowledge}.title`)}</AppText>
                     </AppView>
                 )}
-            </AppView>
 
-            <AppView style={s.listContainer}>
                 <AppView>
                     {knowledgeOptions.map((opt, idx) => {
                         const first = idx == 0;

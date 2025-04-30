@@ -4,14 +4,14 @@
         "slug": "sight-reader-pro",
         "version": "1.0.25",
         "orientation": "portrait",
-        "icon": "./assets/images/sight-reader-art.png",
+        "icon": "./assets/images/app-logo.png",
         "scheme": "sight-reader-pro",
         "userInterfaceStyle": "automatic",
         "android": {
             "versionCode": 25,
             "package": "com.chernicharo.sightreaderpro",
             "adaptiveIcon": {
-                "foregroundImage": "./assets/images/sight-reader-art.png",
+                "foregroundImage": "./assets/images/app-logo.png",
                 "backgroundColor": "#000000"
             }
         },
@@ -49,10 +49,10 @@
             [
                 "expo-splash-screen",
                 {
-                    "image": "./assets/images/sight-reader-art-1024.png",
+                    "image": "./assets/images/app-logo.png",
                     "backgroundColor": "#000000",
                     "dark": {
-                        "image": "./assets/images/sight-reader-art-1024.png",
+                        "image": "./assets/images/app-logo.png",
                         "backgroundColor": "#000000"
                     },
                     "imageWidth": 240

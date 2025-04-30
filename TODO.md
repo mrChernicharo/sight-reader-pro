@@ -87,19 +87,26 @@ tutorial for beginners
 ======
 
 hint color gradually fades away ✅ (need better colors)
-prevent playing piano during walkthrough
+prevent playing piano during walkthrough ✅
 translate level names
 level colors & overall UI
 iOS walkthrough tooltip
 optimize icon imports
 style settings page
 better images for google app store
+bronze/silver/gold <-> 1,2,3 stars
+block piano spamming
 
 rethink game scores!
 
 0 streak - 100
 1 streak - 110
 2 streak - 120
+3 streak - 130
 ...
 10 streak - 200
 20 streak - 300
+30 streak - 400
+40 streak - 500 (MAX)
+
+played mover 20 notes within

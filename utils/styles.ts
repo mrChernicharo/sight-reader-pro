@@ -72,6 +72,7 @@ export const STYLES = {
             // borderColor: "red",
         },
         btn: { width: "100%", height: 48 },
+        backLink: { position: "absolute", left: 0, top: 20 },
     }),
 
     practice: StyleSheet.create({
