@@ -87,7 +87,7 @@ const ptBR = {
             heading: "Tem certeza?",
             description: "Todos os seus dados serão apagados. Essa ação não é reversível",
         },
-        lang: { placeholder: "Escolher idioma" },
+        lang: { placeholder: "Idioma ..." },
     },
     profile: {
         title: "Histórico",

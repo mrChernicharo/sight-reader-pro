@@ -86,7 +86,7 @@ const en = {
             heading: "Are you sure?",
             description: "All your data will be erased. This action cannot be reverted",
         },
-        lang: { placeholder: "Select language" },
+        lang: { placeholder: "Language ..." },
     },
     profile: {
         title: "History",

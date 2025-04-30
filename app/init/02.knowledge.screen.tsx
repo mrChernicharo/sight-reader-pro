@@ -92,17 +92,23 @@ export default function KnowledgeScreen() {
                 <AppTextLogo />
             </AppView>
 
-            <AppText type="subtitle">
-                {knowledge ? t("routes.init.knowledge.you") : t("routes.init.knowledge.title")}
-            </AppText>
-
-            <AppView style={s.listContainer}>
-                {knowledge && (
+            <AppView style={{ marginBottom: 24 }}>
+                {knowledge ? (
                     <AppView style={{ alignItems: "center" }}>
-                        {/* <AppText type="mdSemiBold">{}</AppText> */}
+                        <AppText type="subtitle" style={{ textAlign: "center" }}>
+                            {t("routes.init.knowledge.you")}
+                        </AppText>
                         <AppText type="title">{t(`music.knowledge.${knowledge}.title`)}</AppText>
                     </AppView>
+                ) : (
+                    <AppText type="subtitle">{t("routes.init.knowledge.title")}</AppText>
                 )}
+            </AppView>
+
+            <AppView style={s.listContainer}>
+                {/* {knowledge && (
+               
+                )} */}
 
                 <AppView>
                     {knowledgeOptions.map((opt, idx) => {

@@ -52,7 +52,7 @@ export default function LangScreen() {
                     setSelected={onSelect}
                     search={false}
                     // placeholder={"English"}
-                    placeholder={t("lang")}
+                    placeholder={t("settings.lang.placeholder")}
                     // defaultOption={language}
                     inputStyles={{ color: textColor, backgroundColor: Colors[theme].bg, width: "100%" }}
                     dropdownTextStyles={{ color: textColor }}

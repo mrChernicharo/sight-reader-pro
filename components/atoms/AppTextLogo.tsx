@@ -1,3 +1,4 @@
+import { testBorder } from "@/utils/styles";
 import { AppLogo } from "./AppLogo";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
@@ -11,7 +12,12 @@ export function AppTextLogo({ subtitles }: { subtitles?: string }) {
                     Sight Reader Pro
                 </AppText>
             </AppView>
-            {subtitles ? <AppText>{subtitles}</AppText> : null}
+
+            {subtitles ? (
+                <AppView style={{ width: "110%", marginTop: -16 }}>
+                    <AppText style={{ textAlign: "center" }}>{subtitles}</AppText>
+                </AppView>
+            ) : null}
         </AppView>
     );
 }
