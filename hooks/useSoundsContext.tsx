@@ -2,7 +2,7 @@ import { SoundEffect } from "@/utils/enums";
 import { getEquivalentNotes, pluckNoteFromMp3Filename, wait } from "@/utils/helperFns";
 import { Note } from "@/utils/types";
 import { Asset } from "expo-asset";
-import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
+import { ReactNode, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { AudioBuffer, AudioBufferSourceNode, AudioContext, GainNode } from "react-native-audio-api";
 import { useAppStore } from "./useAppStore";
 
@@ -127,7 +127,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
     const playingSoundsRef = useRef<PR<PlayingSound>>({});
     const bufferMapRef = useRef<PR<AudioBuffer>>({});
 
-    async function playPianoNote(originalNote: Note) {
+    const playPianoNote = useCallback(async (originalNote: Note) => {
         releasePianoNote(originalNote);
 
         const audioContext = audioContextRef.current;
@@ -149,9 +149,9 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         source.start(tNow);
 
         playingSoundsRef.current[originalNote] = { source, envelope, startedAt: tNow };
-    }
+    }, []);
 
-    async function playSoundEfx(efx: SoundEffect) {
+    const playSoundEfx = useCallback(async (efx: SoundEffect) => {
         releaseSoundEfx(efx);
 
         const audioContext = audioContextRef.current;
@@ -172,9 +172,9 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         source.start(tNow);
 
         playingSoundsRef.current[efx] = { source, envelope, startedAt: tNow };
-    }
+    }, []);
 
-    function releasePianoNote(originalNote: Note) {
+    const releasePianoNote = useCallback((originalNote: Note) => {
         // console.log("<SoundContext> releasePianoNote", originalNote);
         const audioContext = audioContextRef.current!;
         const sound = playingSoundsRef.current[originalNote];
@@ -188,7 +188,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
         sound.source.stop(tStop + 0.1);
 
         playingSoundsRef.current[originalNote] = undefined;
-    }
+    }, []);
 
     function releaseSoundEfx(efx: SoundEffect) {
         const audioContext = audioContextRef.current!;

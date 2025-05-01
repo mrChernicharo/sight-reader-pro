@@ -24,7 +24,7 @@ SplashScreen.setOptions({
 });
 
 export default function RootLayout() {
-    const { fontsError, _hydrated, theme } = useAppInitialization();
+    const { fontsError, _hydrated } = useAppInitialization();
 
     if (fontsError) {
         return (
@@ -46,7 +46,7 @@ export default function RootLayout() {
             <GestureHandlerRootView>
                 <MenuProvider>
                     <SoundContextProvider>
-                        <StatusBar translucent style={theme == "light" ? "dark" : "light"} />
+                        <StatusBar translucent style="dark" />
                         <AppRoutes />
                     </SoundContextProvider>
                 </MenuProvider>
@@ -97,10 +97,10 @@ export function useAppInitialization() {
         NavigationBar.setVisibilityAsync("hidden");
         NavigationBar.setBehaviorAsync("overlay-swipe");
 
-        NavigationBar.setBackgroundColorAsync(theme == "light" ? Colors.light.bg : Colors.dark.bg);
-        NavigationBar.setButtonStyleAsync(theme == "light" ? "dark" : "light");
+        NavigationBar.setBackgroundColorAsync(Colors.dark.bg);
+        NavigationBar.setButtonStyleAsync("light");
 
-        SystemUI.setBackgroundColorAsync(theme == "light" ? Colors.light.bg : Colors.dark.bg);
+        SystemUI.setBackgroundColorAsync(Colors.dark.bg);
 
         // @TODO: REMOVE THIS BEFORE BUILD
         // router.navigate("/level-selection");
@@ -108,7 +108,6 @@ export function useAppInitialization() {
     }, [theme]);
 
     return {
-        theme,
         fontsError,
         _hydrated,
     };

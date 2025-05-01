@@ -5,7 +5,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useSoundContext } from "@/hooks/useSoundsContext";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { GameState, GameType, KeySignature, NoteName, SoundEffect, TimeSignature } from "@/utils/enums";
+import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import {
     explodeNote,
     getAttemptedNoteDuration,
@@ -21,13 +21,12 @@ import {
     AttemptedNote as AttemptedNoteType,
     CurrentGame,
     GameScreenParams,
-    Level,
     MelodyRound,
     Note,
     Round,
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
@@ -135,9 +134,9 @@ export function useMelody() {
     // }, [rounds]);
 
     return {
+        currNote,
         currRound,
         rounds,
-        currNote,
         melodyIdx,
         hintCount,
         attemptedNotes,
@@ -150,7 +149,7 @@ export function useMelody() {
 
 export function MelodyGameComponent() {
     const theme = useTheme();
-    const { level, currRound, melodyIdx, hintCount, attemptedNotes, roundResults, onPianoKeyPress, onCountdownFinish } =
+    const { level, currRound, currNote, hintCount, attemptedNotes, roundResults, onPianoKeyPress, onCountdownFinish } =
         useMelody();
 
     useEffect(() => {
@@ -187,7 +186,7 @@ export function MelodyGameComponent() {
             <Piano
                 gameType={GameType.Melody}
                 hintCount={hintCount}
-                currNote={currRound?.values?.[melodyIdx] || null}
+                currNote={currNote}
                 keySignature={level.keySignature}
                 onKeyPressed={onPianoKeyPress}
                 onKeyReleased={() => {}}
