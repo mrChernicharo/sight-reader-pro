@@ -510,6 +510,38 @@ export function capitalizeStr(text: string) {
     const [first, ...rest] = text;
     return [first.toUpperCase(), ...rest].join("");
 }
+
+export function toCamelCase(str: string) {
+    // Remove espaços iniciais e finais e divide a string em palavras usando espaços como delimitadores.
+    const words = str.trim().split(" ");
+
+    // Se a string estiver vazia ou contiver apenas espaços, retorna uma string vazia.
+    if (!words || words.length === 0) {
+        return "";
+    }
+
+    // Converte a primeira palavra para minúsculas.
+    let result = words[0].toLowerCase();
+
+    // Itera sobre as palavras restantes (a partir da segunda palavra).
+    for (let i = 1; i < words.length; i++) {
+        // Converte a palavra para minúsculas e capitaliza a primeira letra.
+        const capitalizedWord = words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase();
+        // Concatena a palavra capitalizada ao resultado.
+        result += capitalizedWord;
+    }
+
+    // Retorna a string resultante em camelCase.
+    return result;
+}
+
+export function getLevelName(item: Level) {
+    const splitLevelName = item.name.split(" ");
+    const levelIdx = splitLevelName.pop();
+    const levelName = splitLevelName.join(" ");
+    return { levelIdx, levelName };
+}
+
 export function getAudioFilepath(note: Note) {
     const filepathBase = "@/assets/sounds/piano-notes";
     const [key, octave] = note.split("/");

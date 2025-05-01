@@ -1,4 +1,4 @@
-import { Clef, GameType, KeySignature, Knowledge, TimeSignature } from "./enums";
+import { Clef, GameType, KeySignature, Knowledge, LevelName, TimeSignature } from "./enums";
 import { getGameStats, makeLevelGroup, padZero } from "./helperFns";
 
 import { Game, Level, Scale, SectionedLevel } from "./types";
@@ -31,7 +31,7 @@ export function assembleLevelInfo(clef: Clef, levelInfo: Partial<Level>[]): Leve
 // ******************************************************
 
 const TREBLE_NOVICE_LEVELS = makeLevelGroup({
-    name: "basics",
+    name: LevelName.basics,
     skillLevel: Knowledge.novice,
     clef: Clef.Treble,
     durations: { min: 20, max: 40 },
@@ -49,7 +49,7 @@ const TREBLE_NOVICE_LEVELS = makeLevelGroup({
 });
 
 const TREBLE_BEGINNER_LEVELS = makeLevelGroup({
-    name: "apprentice",
+    name: LevelName.apprentice,
     skillLevel: Knowledge.beginner,
     clef: Clef.Treble,
     durations: { min: 30, max: 60 },
@@ -65,7 +65,7 @@ const TREBLE_BEGINNER_LEVELS = makeLevelGroup({
 });
 
 const TREBLE_INTERMEDIARY_LEVELS_C = makeLevelGroup({
-    name: "intermediary",
+    name: LevelName.intermediary,
     skillLevel: Knowledge.intermediary,
     clef: Clef.Treble,
     durations: { min: 30, max: 60 },
@@ -81,7 +81,7 @@ const TREBLE_INTERMEDIARY_LEVELS_C = makeLevelGroup({
 });
 
 const TREBLE_INTERMEDIARY_LEVELS = makeLevelGroup({
-    name: "key signatures",
+    name: LevelName.keySignatures,
     skillLevel: Knowledge.intermediary,
     clef: Clef.Treble,
     durations: { min: 30, max: 60 },
@@ -104,7 +104,7 @@ const TREBLE_INTERMEDIARY_LEVELS = makeLevelGroup({
 });
 
 const TREBLE_ADVANCED_LEVELS = makeLevelGroup({
-    name: "more key signatures",
+    name: LevelName.advanced,
     skillLevel: Knowledge.advanced,
     clef: Clef.Treble,
     durations: { min: 45, max: 75 },
@@ -133,7 +133,7 @@ const TREBLE_ADVANCED_LEVELS = makeLevelGroup({
 });
 
 const TREBLE_PRO_LEVELS = makeLevelGroup({
-    name: "pro levels",
+    name: LevelName.pro,
     clef: Clef.Treble,
     skillLevel: Knowledge.pro,
     durations: { min: 45, max: 75 },
@@ -172,7 +172,7 @@ const TREBLE_PRO_LEVELS = makeLevelGroup({
 });
 
 const GUITAR_LEVELS = makeLevelGroup({
-    name: "guitar",
+    name: LevelName.guitar,
     clef: Clef.Treble,
     skillLevel: Knowledge.pro,
     durations: { min: 45, max: 75 },
@@ -200,7 +200,7 @@ const GUITAR_LEVELS = makeLevelGroup({
 // const FLUTE_LEVELS;
 
 const TREBLE_LOW_LEVELS = makeLevelGroup({
-    name: "low notes",
+    name: LevelName.lowNotes,
     skillLevel: Knowledge.pro,
     clef: Clef.Treble,
     durations: { min: 45, max: 75 },
@@ -225,7 +225,7 @@ const TREBLE_LOW_LEVELS = makeLevelGroup({
     },
 });
 const TREBLE_HIGH_LEVELS = makeLevelGroup({
-    name: "high notes",
+    name: LevelName.highNotes,
     skillLevel: Knowledge.pro,
     clef: Clef.Treble,
     durations: { min: 45, max: 75 },
@@ -259,7 +259,7 @@ const TREBLE_HIGH_LEVELS = makeLevelGroup({
 /////////
 
 const BASS_NOVICE_LEVELS = makeLevelGroup({
-    name: "basics",
+    name: LevelName.basics,
     skillLevel: Knowledge.novice,
     clef: Clef.Bass,
     durations: { min: 20, max: 40 },
@@ -275,7 +275,7 @@ const BASS_NOVICE_LEVELS = makeLevelGroup({
 });
 
 const BASS_BEGINNER_LEVELS = makeLevelGroup({
-    name: "apprentice",
+    name: LevelName.apprentice,
     skillLevel: Knowledge.beginner,
     clef: Clef.Bass,
     durations: { min: 30, max: 60 },
@@ -291,7 +291,7 @@ const BASS_BEGINNER_LEVELS = makeLevelGroup({
 });
 
 const BASS_INTERMEDIARY_LEVELS_C = makeLevelGroup({
-    name: "intermediary",
+    name: LevelName.intermediary,
     skillLevel: Knowledge.intermediary,
     clef: Clef.Bass,
     durations: { min: 30, max: 60 },
@@ -307,7 +307,7 @@ const BASS_INTERMEDIARY_LEVELS_C = makeLevelGroup({
 });
 
 const BASS_INTERMEDIARY_LEVELS = makeLevelGroup({
-    name: "key signatures",
+    name: LevelName.keySignatures,
     skillLevel: Knowledge.intermediary,
     clef: Clef.Bass,
     durations: { min: 30, max: 60 },
@@ -330,7 +330,7 @@ const BASS_INTERMEDIARY_LEVELS = makeLevelGroup({
 });
 
 const BASS_ADVANCED_LEVELS = makeLevelGroup({
-    name: "more key signatures",
+    name: LevelName.advanced,
     skillLevel: Knowledge.advanced,
     clef: Clef.Bass,
     durations: { min: 45, max: 75 },
@@ -359,7 +359,7 @@ const BASS_ADVANCED_LEVELS = makeLevelGroup({
 });
 
 const BASS_PRO_LEVELS = makeLevelGroup({
-    name: "pro levels",
+    name: LevelName.pro,
     skillLevel: Knowledge.pro,
     clef: Clef.Bass,
     durations: { min: 45, max: 75 },
@@ -398,7 +398,7 @@ const BASS_PRO_LEVELS = makeLevelGroup({
 });
 
 const TROMBONE_LEVELS = makeLevelGroup({
-    name: "trombone",
+    name: LevelName.trombone,
     skillLevel: Knowledge.pro,
     clef: Clef.Bass,
     durations: { min: 45, max: 75 },
@@ -425,7 +425,7 @@ const TROMBONE_LEVELS = makeLevelGroup({
 // const VIOLIN_LEVELS;
 // const FLUTE_LEVELS;
 const BASS_LOW_LEVELS = makeLevelGroup({
-    name: "low notes",
+    name: LevelName.lowNotes,
     skillLevel: Knowledge.pro,
     clef: Clef.Bass,
     durations: { min: 45, max: 75 },
@@ -450,7 +450,7 @@ const BASS_LOW_LEVELS = makeLevelGroup({
     },
 });
 const BASS_HIGH_LEVELS = makeLevelGroup({
-    name: "high notes",
+    name: LevelName.highNotes,
     skillLevel: Knowledge.pro,
     clef: Clef.Bass,
     durations: { min: 45, max: 75 },

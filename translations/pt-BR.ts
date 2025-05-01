@@ -221,6 +221,19 @@ const ptBR = {
         },
         practice: { "0": "", "1": "", "2": "", "3": "", "4": "" },
     },
+    levelName: {
+        basics: "básico",
+        apprentice: "aprendiz",
+        intermediary: "intermediário",
+        advanced: "avançado",
+        pro: "profissional",
+        keySignatures: "armaduras de clave",
+        keySignatures2: "armaduras de clave II",
+        lowNotes: "notas graves",
+        highNotes: "notas agudas",
+        guitar: "violão",
+        trombone: "trombone",
+    },
 };
 
 export default ptBR;

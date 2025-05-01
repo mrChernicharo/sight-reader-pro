@@ -12,7 +12,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
 import { Clef, GameType, KeySignature, WinRank } from "@/utils/enums";
-import { isNoteHigher } from "@/utils/helperFns";
+import { getLevelName, isNoteHigher, toCamelCase } from "@/utils/helperFns";
 import { testBorder } from "@/utils/styles";
 import { Level, Note } from "@/utils/types";
 import { Ionicons } from "@expo/vector-icons";
@@ -33,6 +33,7 @@ export default function LevelDetails() {
     const theme = useTheme();
 
     const rangeKeys = (level as Level).noteRanges.map((range) => range.split(":::") as [Note, Note]);
+    const { levelName, levelIdx } = getLevelName(level);
 
     const handleNewGame = useCallback(() => {
         if (currentGame) endGame();
@@ -56,7 +57,9 @@ export default function LevelDetails() {
                 <FadeIn y={50} x={0}>
                     <AppView style={s.top}>
                         <BackLink wrapperStyle={{ left: 24, top: 5.5, position: "absolute" }} />
-                        <AppText style={s.title}>{level.name}</AppText>
+                        <AppText style={s.title}>
+                            {t(`levelName.${toCamelCase(levelName)}`)} {levelIdx}
+                        </AppText>
                     </AppView>
                     <AppView style={s.topInfo}>
                         <AppText

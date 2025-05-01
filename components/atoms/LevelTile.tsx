@@ -7,6 +7,8 @@ import { StyleSheet } from "react-native";
 import { Pressable } from "react-native";
 
 import { router } from "expo-router";
+import { useTranslation } from "@/hooks/useTranslation";
+import { getLevelName, toCamelCase } from "@/utils/helperFns";
 
 interface LevelTileProps {
     level: Level;
@@ -14,6 +16,7 @@ interface LevelTileProps {
 }
 export function LevelTile({ level, isLocked }: LevelTileProps) {
     const { levelName, levelIdx } = getLevelName(level);
+    const { t } = useTranslation();
     const theme = useTheme();
     const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "bg");
     const backgroundColor = isLocked ? "gray" : accentColor;
@@ -31,17 +34,12 @@ export function LevelTile({ level, isLocked }: LevelTileProps) {
                 // router.push({});
             }}
         >
-            <AppText>{levelName}</AppText>
+            <AppText style={{ textAlign: "center" }}>{t(`levelName.${toCamelCase(levelName)}`)}</AppText>
             <AppText>{levelIdx}</AppText>
         </Pressable>
     );
 }
-function getLevelName(item: Level) {
-    const splitLevelName = item.name.split(" ");
-    const levelIdx = splitLevelName.pop();
-    const levelName = splitLevelName.join(" ");
-    return { levelIdx, levelName };
-}
+
 export const s = StyleSheet.create({
     item: {
         width: 100,

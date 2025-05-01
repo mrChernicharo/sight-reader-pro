@@ -152,11 +152,11 @@ export function MelodyGameComponent() {
     const { level, currRound, currNote, hintCount, attemptedNotes, roundResults, onPianoKeyPress, onCountdownFinish } =
         useMelody();
 
-    useEffect(() => {
-        return () => {
-            console.log("MELODY GAME UNMOUNT!!!");
-        };
-    }, []);
+    // useEffect(() => {
+    //     return () => {
+    //         console.log("MELODY GAME UNMOUNT!!!");
+    //     };
+    // }, []);
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>

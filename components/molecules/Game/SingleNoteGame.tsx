@@ -165,11 +165,11 @@ export function SingleNoteGameComponent() {
         })();
     }, [rounds.length]);
 
-    useEffect(() => {
-        return () => {
-            console.log("SINGLE NOTE GAME UNMOUNT!!!");
-        };
-    }, []);
+    // useEffect(() => {
+    //     return () => {
+    //         console.log("SINGLE NOTE GAME UNMOUNT!!!");
+    //     };
+    // }, []);
 
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 

@@ -46,7 +46,7 @@ export default function RootLayout() {
             <GestureHandlerRootView>
                 <MenuProvider>
                     <SoundContextProvider>
-                        <StatusBar translucent style="dark" />
+                        <StatusBar translucent style="light" />
                         <AppRoutes />
                     </SoundContextProvider>
                 </MenuProvider>

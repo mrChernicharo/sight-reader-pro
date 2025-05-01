@@ -214,3 +214,17 @@ export enum FullInterval {
     M13 = 13,
     // Add more augmented, diminished, etc., for ninths, elevenths, etc., as needed
 }
+
+export enum LevelName {
+    basics = "basics",
+    apprentice = "apprentice",
+    intermediary = "intermediary",
+    advanced = "advanced",
+    pro = "pro",
+    keySignatures = "key signatures",
+    keySignaturesII = "key signatures II",
+    lowNotes = "low notes",
+    highNotes = "high notes",
+    guitar = "guitar",
+    trombone = "trombone",
+}

@@ -75,9 +75,9 @@ export default function GameOverScreen() {
 
     useEffect(() => {
         return () => {
-            console.log("GAME OVER UNMOUNT!!!!");
+            // console.log("GAME OVER UNMOUNT!!!!");
             if (previousPage == "/practice") {
-                console.log("leaving practice game");
+                // console.log("leaving practice game");
                 unloadPracticeLevel();
             }
             endGame();

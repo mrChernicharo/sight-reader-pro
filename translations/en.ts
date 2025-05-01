@@ -223,6 +223,19 @@ const en = {
         },
         practice: { "0": "", "1": "", "2": "", "3": "", "4": "" },
     },
+    levelName: {
+        basics: "basics",
+        apprentice: "apprentice",
+        intermediary: "intermediary",
+        advanced: "advanced",
+        pro: "pro",
+        keySignatures: "key signatures",
+        keySignatures2: "key signatures II",
+        lowNotes: "low notes",
+        highNotes: "high notes",
+        guitar: "guitar",
+        trombone: "trombone",
+    },
 };
 
 export default en;
