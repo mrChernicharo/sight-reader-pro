@@ -24,7 +24,7 @@ export function LevelTile({ level, isLocked }: LevelTileProps) {
             style={{ ...s.item, backgroundColor }}
             android_ripple={{ radius: 90, color: Colors[theme].text }}
             onPress={() => {
-                router.dismissTo({
+                router.push({
                     pathname: "/level-details/[id]",
                     params: { id: level.id },
                 });

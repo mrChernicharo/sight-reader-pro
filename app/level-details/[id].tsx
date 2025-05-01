@@ -40,7 +40,7 @@ export default function LevelDetails() {
             case GameType.Single:
             case GameType.Melody: {
                 // console.log({ level, displayInfo });
-                router.push({
+                router.replace({
                     pathname: "/game-level/[id]",
                     params: { id: String(id), keySignature: level.keySignature, previousPage: "/level-details" },
                 });
@@ -55,7 +55,7 @@ export default function LevelDetails() {
             <ScrollView contentContainerStyle={s.container}>
                 <FadeIn y={50} x={0}>
                     <AppView style={s.top}>
-                        <BackLink to="/level-selection" wrapperStyle={{ left: 24, top: 5.5, position: "absolute" }} />
+                        <BackLink wrapperStyle={{ left: 24, top: 5.5, position: "absolute" }} />
                         <AppText style={s.title}>{level.name}</AppText>
                     </AppView>
                     <AppView style={s.topInfo}>

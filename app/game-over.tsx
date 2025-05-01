@@ -61,13 +61,14 @@ export default function GameOverScreen() {
         });
     }, [level.keySignature]);
     const goToLevelSelection = useCallback(() => {
-        return router.replace({
-            pathname: "/level-selection",
-        });
+        // return router.navigate({
+        //     pathname: "/level-selection",
+        // });
+        return router.back();
     }, []);
 
     const goToMainMenu = useCallback(() => {
-        return router.replace({
+        return router.dismissTo({
             pathname: "/",
         });
     }, []);
@@ -118,7 +119,7 @@ export default function GameOverScreen() {
                                 </FadeIn>
 
                                 <FadeIn y={50} x={0} delay={2400}>
-                                    <Link asChild href={"/practice"}>
+                                    <Link asChild dismissTo href={"/practice"}>
                                         <AppButton
                                             text={t("game.goTo.practice")}
                                             style={{ ...s.btn, borderColor: Colors[theme].text }}

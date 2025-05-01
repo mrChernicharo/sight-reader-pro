@@ -87,7 +87,7 @@ export default function KnowledgeScreen() {
         <SafeAreaView style={{ ...s.container, backgroundColor: Colors[theme].bg }}>
             <AppView style={s.top}>
                 <AppView style={s.backLink}>
-                    <BackLink to="/init/01.lang.screen" />
+                    <BackLink />
                 </AppView>
                 <AppTextLogo />
             </AppView>
