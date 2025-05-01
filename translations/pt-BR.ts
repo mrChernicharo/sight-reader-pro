@@ -70,6 +70,11 @@ const ptBR = {
             lose: "Derrota",
             practiceEnd: "Exercício Concluído",
         },
+        spam: {
+            title: "Aviso",
+            message: "Por favor, foque na sua precisão e tente novamente",
+            goBack: "Voltar",
+        },
     },
     practice: {
         title: "Configurar Exercício",

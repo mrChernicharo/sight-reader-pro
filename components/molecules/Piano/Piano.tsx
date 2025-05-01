@@ -1,17 +1,19 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
+import { useSpamBlocker } from "@/hooks/useSpamBlocker";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { GameType, KeySignature, NoteName } from "@/utils/enums";
-import { capitalizeStr, explodeNote } from "@/utils/helperFns";
+import { capitalizeStr, explodeNote, getNoteIdx, isNoteMatch } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
 import { testBorder } from "@/utils/styles";
 import { Note } from "@/utils/types";
+import { router } from "expo-router";
 import { useCallback, useEffect, useRef } from "react";
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { Alert, StyleSheet, useWindowDimensions } from "react-native";
 import { Pressable } from "react-native";
 
 const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
@@ -43,10 +45,12 @@ export function Piano({
     onKeyReleased: (note: NoteName) => void;
 }) {
     const { t } = useTranslation();
+    const { updateSpamData } = useSpamBlocker();
+
     const { width } = useWindowDimensions();
     const showPianoNoteNames = useAppStore((state) => state.showPianoNoteNames);
     // const playedNotes = useAppStore((state) => state.playedNotes);
-    const theme = useTheme();
+    // const theme = useTheme();
 
     const pianoBlackKeySpec = FLAT_KEY_SIGNATURES.includes(keySignature) ? "Flat" : "Sharp";
     const BLACK_NOTES = blackNoteNames[pianoBlackKeySpec];
@@ -57,20 +61,8 @@ export function Piano({
     const hasCompletedTour = useAppStore((state) => state.completedTours.game);
 
     const hints = useRef(hintCount);
-    const playedNotesInInterval = useRef(0);
-    const successesInInterval = useRef(0);
-    const interval = useRef(0);
 
-    const disabled = gameType == GameType.Single && !hasCompletedTour;
-
-    const onPianoKeyPress = useCallback(
-        (note: NoteName) => {
-            onKeyPressed(note);
-            playedNotesInInterval.current++;
-            hints.current--;
-        },
-        [onKeyPressed]
-    );
+    const pianoDisabled = gameType == GameType.Single && !hasCompletedTour;
 
     const hintPianoKey = useCallback(
         (note: NoteName) => {
@@ -85,16 +77,16 @@ export function Piano({
         [hintCount, gameType, currNoteName, hasCompletedTour]
     );
 
-    useEffect(() => {
-        interval.current = window.setInterval(() => {
-            const isSpamming = playedNotesInInterval.current > 4;
-            console.log({ clickCount: playedNotesInInterval.current, isSpamming });
-            playedNotesInInterval.current = 0;
-            // playedNotesInInterval.current = 0;
-        }, 2000);
+    const onPianoKeyPress = useCallback(
+        (note: NoteName) => {
+            hints.current--;
 
-        return () => window.clearInterval(interval.current);
-    }, []);
+            if (currNoteName) updateSpamData({ currNoteName, playedNote: note });
+
+            onKeyPressed(note);
+        },
+        [onKeyPressed]
+    );
 
     return (
         <AppView style={s.piano}>
@@ -112,7 +104,7 @@ export function Piano({
                         style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
                     >
                         <Pressable
-                            disabled={disabled}
+                            disabled={pianoDisabled}
                             style={{
                                 ...s.blackNoteInner,
                                 ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
@@ -152,7 +144,7 @@ export function Piano({
                         style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
                     >
                         <Pressable
-                            disabled={disabled}
+                            disabled={pianoDisabled}
                             style={{
                                 ...s.blackNoteInner,
                                 ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
@@ -183,7 +175,7 @@ export function Piano({
                 {WHITE_NOTES.map((note) => {
                     return (
                         <Pressable
-                            disabled={disabled}
+                            disabled={pianoDisabled}
                             key={note}
                             android_ripple={{ radius: 90, color: "#000000066" }}
                             onPressIn={() => {

@@ -95,7 +95,8 @@ optimize icon imports
 style settings page
 better images for google app store
 bronze/silver/gold <-> 1,2,3 stars
-block piano spamming
+block piano spamming ✅ (needs better spam text)
+restart game button
 
 rethink game scores!
 

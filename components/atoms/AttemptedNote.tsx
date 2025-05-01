@@ -1,7 +1,7 @@
 import { AppText } from "./AppText";
 import { AttemptedNote as AttemptedNoteType } from "@/utils/types";
 import { FadeOut } from "./FadeOut";
-import { explodeNote, getAttemptedNoteDuration, getNoteIdx, mapRange } from "@/utils/helperFns";
+import { explodeNote, getAttemptedNoteDuration, getNoteIdx, isNoteMatch, mapRange } from "@/utils/helperFns";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";

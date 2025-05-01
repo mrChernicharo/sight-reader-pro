@@ -70,6 +70,11 @@ const en = {
             lose: "You Lose",
             practiceEnd: "Exercise Concluded",
         },
+        spam: {
+            title: "Warning",
+            message: "Please, focus on your accuracy and try again",
+            goBack: "Go Back",
+        },
     },
     practice: {
         title: "Practice Setup",
