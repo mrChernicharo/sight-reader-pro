@@ -7,13 +7,12 @@ import { useTranslation } from "./useTranslation";
 
 export function useSpamBlocker() {
     const { t } = useTranslation();
+    const alertTitle = t("game.spam.title");
+    const alertDescription = t("game.spam.message");
 
     const interval = useRef(0);
     const playedNotesInInterval = useRef(0);
     const successesInInterval = useRef(0);
-
-    const alertTitle = t("game.spam.title");
-    const alertDescription = t("game.spam.message");
 
     const updateSpamData = useCallback(
         ({ currNoteName, playedNote }: { currNoteName: NoteName; playedNote: NoteName }) => {
@@ -38,7 +37,7 @@ export function useSpamBlocker() {
                     router.back();
                 } else {
                     Alert.alert(alertTitle, alertDescription, [
-                        { text: "Go back", onPress: router.back },
+                        { text: t("game.spam.goBack"), onPress: router.back },
                         // @TODO { text: "Retry", onPress: () => { restartGame } }
                     ]);
                 }

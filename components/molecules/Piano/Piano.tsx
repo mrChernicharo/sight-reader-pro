@@ -1,20 +1,23 @@
-import { AppText } from "@/components/atoms/AppText";
-import { AppView } from "@/components/atoms/AppView";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useSpamBlocker } from "@/hooks/useSpamBlocker";
-import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Colors } from "@/utils/Colors";
 import { GameType, KeySignature, NoteName } from "@/utils/enums";
-import { capitalizeStr, explodeNote, getNoteIdx, isNoteMatch } from "@/utils/helperFns";
+import { capitalizeStr, explodeNote } from "@/utils/helperFns";
 import { FLAT_KEY_SIGNATURES } from "@/utils/keySignature";
 import { WHITE_NOTES } from "@/utils/notes";
-import { testBorder } from "@/utils/styles";
 import { Note } from "@/utils/types";
-import { router } from "expo-router";
-import { useCallback, useEffect, useRef } from "react";
-import { Alert, StyleSheet, useWindowDimensions } from "react-native";
-import { Pressable } from "react-native";
+import { useCallback, useRef } from "react";
+import { Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { WhitePianoKey } from "./WhitePianoKey";
+import { BlackPianoKey } from "./BlackPianoKey";
+
+export interface PianoKeyProps {
+    note: NoteName;
+    keyWidth: number;
+    disabled?: boolean;
+    hintColor?: string;
+    onPressed: (note: NoteName) => void;
+}
 
 const blackNoteNames: Record<"Flat" | "Sharp", NoteName[]> = {
     Flat: ["db", "eb", "", "gb", "ab", "bb"] as NoteName[],
@@ -44,13 +47,9 @@ export function Piano({
     onKeyPressed: (note: NoteName) => void;
     onKeyReleased: (note: NoteName) => void;
 }) {
-    const { t } = useTranslation();
     const { updateSpamData } = useSpamBlocker();
 
     const { width } = useWindowDimensions();
-    const showPianoNoteNames = useAppStore((state) => state.showPianoNoteNames);
-    // const playedNotes = useAppStore((state) => state.playedNotes);
-    // const theme = useTheme();
 
     const pianoBlackKeySpec = FLAT_KEY_SIGNATURES.includes(keySignature) ? "Flat" : "Sharp";
     const BLACK_NOTES = blackNoteNames[pianoBlackKeySpec];
@@ -89,121 +88,56 @@ export function Piano({
     );
 
     return (
-        <AppView style={s.piano}>
+        <View style={s.piano}>
             {/* TODO: SPLIT BLACK_NOTES IN 2 CHUNKS */}
-            <AppView
-                style={{
-                    ...s.blackNotes,
-                    // width: keyboardMargin + keyWidth * 2.35,
-                    left: keyboardMargin + keyWidth * 0.5,
-                }}
-            >
-                {blackNotesLeft.map((note) => (
-                    <AppView
-                        key={note}
-                        style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
-                    >
-                        <Pressable
-                            disabled={pianoDisabled}
-                            style={{
-                                ...s.blackNoteInner,
-                                ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
-                            }}
-                            android_ripple={{ radius: 90, color: "#ffffff33" }}
-                            onPressIn={() => {
-                                onPianoKeyPress(note);
-                            }}
-                            onPressOut={() => onKeyReleased(note)}
-                        >
-                            {showPianoNoteNames && (
-                                <AppText
-                                    style={{
-                                        color: hintPianoKey(note) ? "#232323" : "#9b9b9b",
-                                        fontWeight: 700,
-                                        userSelect: "none",
-                                    }}
-                                >
-                                    {capitalizeStr(t(`music.notes.${note}`))}
-                                </AppText>
-                            )}
-                        </Pressable>
-                    </AppView>
-                ))}
-            </AppView>
-
-            <AppView
-                style={{
-                    ...s.blackNotes,
-                    // width: keyboardMargin + keyWidth * 2.35,
-                    right: keyboardMargin + keyWidth * 0.5,
-                }}
-            >
-                {blackNotesRight.map((note) => (
-                    <AppView
-                        key={note}
-                        style={{ ...s.blackNote, width: keyWidth, ...(!String(note) && { height: 0 }) }}
-                    >
-                        <Pressable
-                            disabled={pianoDisabled}
-                            style={{
-                                ...s.blackNoteInner,
-                                ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
-                            }}
-                            android_ripple={{ radius: 90, color: "#ffffff33" }}
-                            onPressIn={() => {
-                                onPianoKeyPress(note);
-                            }}
-                            onPressOut={() => onKeyReleased(note)}
-                        >
-                            {showPianoNoteNames && (
-                                <AppText
-                                    style={{
-                                        color: hintPianoKey(note) ? "#232323" : "#9b9b9b",
-                                        fontWeight: 700,
-                                        userSelect: "none",
-                                    }}
-                                >
-                                    {capitalizeStr(t(`music.notes.${note}`))}
-                                </AppText>
-                            )}
-                        </Pressable>
-                    </AppView>
-                ))}
-            </AppView>
-
-            <AppView style={s.whiteNotes}>
-                {WHITE_NOTES.map((note) => {
+            <View style={{ ...s.blackNotes, left: keyboardMargin + keyWidth * 0.5 }}>
+                {blackNotesLeft.map((note) => {
+                    const hintColor = hintPianoKey(note) ? hintColors[hints.current] : undefined;
                     return (
-                        <Pressable
+                        <BlackPianoKey
+                            key={`black-key-${note}`}
+                            note={note}
+                            keyWidth={keyWidth}
                             disabled={pianoDisabled}
-                            key={note}
-                            android_ripple={{ radius: 90, color: "#000000066" }}
-                            onPressIn={() => {
-                                onPianoKeyPress(note);
-                            }}
-                            onPressOut={() => onKeyReleased(note)}
-                            style={{
-                                ...s.whiteNote,
-                                width: keyWidth,
-                                ...(hintPianoKey(note) && { backgroundColor: hintColors[hints.current] }),
-                            }}
-                        >
-                            {showPianoNoteNames && (
-                                <AppText
-                                    style={{
-                                        color: hintPianoKey(note) ? "#232323" : "#9b9b9b",
-                                        fontWeight: 700,
-                                        userSelect: "none",
-                                    }}
-                                >
-                                    {capitalizeStr(t(`music.notes.${note}`))}
-                                </AppText>
-                            )}
-                        </Pressable>
+                            onPressed={onPianoKeyPress}
+                            hintColor={hintColor}
+                        />
                     );
                 })}
-            </AppView>
-        </AppView>
+            </View>
+
+            <View style={{ ...s.blackNotes, right: keyboardMargin + keyWidth * 0.5 }}>
+                {blackNotesRight.map((note) => {
+                    const hintColor = hintPianoKey(note) ? hintColors[hints.current] : undefined;
+                    return (
+                        <BlackPianoKey
+                            key={`black-key-${note}`}
+                            note={note}
+                            keyWidth={keyWidth}
+                            disabled={pianoDisabled}
+                            onPressed={onPianoKeyPress}
+                            hintColor={hintColor}
+                        />
+                    );
+                })}
+            </View>
+
+            <View style={s.whiteNotes}>
+                {WHITE_NOTES.map((note) => {
+                    const hintColor = hintPianoKey(note) ? hintColors[hints.current] : undefined;
+                    return (
+                        <WhitePianoKey
+                            key={`white-key-${note}`}
+                            note={note}
+                            keyWidth={keyWidth}
+                            disabled={pianoDisabled}
+                            onPressed={onPianoKeyPress}
+                            hintColor={hintColor}
+                        />
+                    );
+                })}
+            </View>
+        </View>
     );
 }
 
