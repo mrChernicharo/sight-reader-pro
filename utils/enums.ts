@@ -1,3 +1,7 @@
+export enum AppEvents {
+    NotePlayed = "note-played",
+}
+
 export enum NoteNameBase {
     "c" = "c",
     "d" = "d",

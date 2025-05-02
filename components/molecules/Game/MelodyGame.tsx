@@ -1,11 +1,10 @@
 import { AppView } from "@/components/atoms/AppView";
-import { AttemptedNote } from "@/components/atoms/AttemptedNote";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useSoundContext } from "@/hooks/useSoundsContext";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
+import { AppEvents, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import {
     explodeNote,
     getAttemptedNoteDuration,
@@ -17,20 +16,16 @@ import {
 } from "@/utils/helperFns";
 import { decideNextRound } from "@/utils/noteFns";
 import { STYLES } from "@/utils/styles";
-import {
-    AttemptedNote as AttemptedNoteType,
-    CurrentGame,
-    GameScreenParams,
-    MelodyRound,
-    Note,
-    Round,
-} from "@/utils/types";
+import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AttemptedNotes } from "../AttemptedNotes";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import { eventEmitter } from "@/app/_layout";
+import { ScoreManager } from "@/utils/ScoreManager";
 
 const s = STYLES.game;
 
@@ -50,7 +45,7 @@ export function useMelody() {
     const hintCount = getLevelHintCount(level.skillLevel);
     // const isPracticeLevel = getIsPracticeLevel(level.id);
 
-    const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
+    // const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
     const [roundResults, setRoundResults] = useState<(0 | 1)[]>([]);
 
     const melodyIdx = roundResults.length;
@@ -60,14 +55,16 @@ export function useMelody() {
     const onPianoKeyPress = useCallback(
         async (attempt: NoteName) => {
             const { noteName, octave } = explodeNote(currNote);
-            const success = isNoteMatch(attempt, noteName);
+            const isSuccess = isNoteMatch(attempt, noteName);
             const playedNote = `${attempt}/${+octave}` as Note;
+            const noteScore = ScoreManager.push(isSuccess ? "success" : "mistake");
 
-            setRoundResults((prev) => [...prev, success ? 1 : 0]);
-            setAttemptedNotes((prev) => [...prev, { id: randomUID(), you: playedNote, correct: currNote }]);
+            eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, noteScore } });
+
+            setRoundResults((prev) => [...prev, isSuccess ? 1 : 0]);
             updateRound({ attempts: [...currRound.attempts, playedNote] });
 
-            if (success) {
+            if (isSuccess) {
                 playPianoNote(playedNote);
             } else {
                 playPianoNote(playedNote);
@@ -116,10 +113,10 @@ export function useMelody() {
             const duration = getAttemptedNoteDuration(true);
             await wait(duration);
 
-            setAttemptedNotes((prev) => {
-                prev.shift();
-                return prev;
-            });
+            // setAttemptedNotes((prev) => {
+            //     prev.shift();
+            //     return prev;
+            // });
         })();
     }, [rounds.length]);
 
@@ -138,7 +135,7 @@ export function useMelody() {
         rounds,
         melodyIdx,
         hintCount,
-        attemptedNotes,
+        // attemptedNotes,
         roundResults,
         level,
         onPianoKeyPress,
@@ -148,14 +145,14 @@ export function useMelody() {
 
 export function MelodyGameComponent() {
     const theme = useTheme();
-    const { level, currRound, currNote, hintCount, attemptedNotes, roundResults, onPianoKeyPress, onCountdownFinish } =
-        useMelody();
+    const { level, currRound, currNote, hintCount, roundResults, onPianoKeyPress, onCountdownFinish } = useMelody();
 
-    // useEffect(() => {
-    //     return () => {
-    //         console.log("MELODY GAME UNMOUNT!!!");
-    //     };
-    // }, []);
+    useEffect(() => {
+        return () => {
+            // console.log("MELODY GAME UNMOUNT!!!");
+            ScoreManager.reset();
+        };
+    }, []);
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
@@ -176,11 +173,7 @@ export function MelodyGameComponent() {
                 </AppView>
             ) : null}
 
-            <AppView style={s.attemptedNotes}>
-                {attemptedNotes.map((attempt) => (
-                    <AttemptedNote key={attempt.id} attempt={attempt} />
-                ))}
-            </AppView>
+            <AttemptedNotes />
 
             <Piano
                 gameType={GameType.Melody}

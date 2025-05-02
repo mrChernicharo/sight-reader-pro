@@ -64,12 +64,14 @@ const noteStyles: Record<NoteName, any> = {
 export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
     const { t } = useTranslation();
     const theme = useTheme();
-    const { noteName } = explodeNote(attempt.you);
-    const { noteName: correct } = explodeNote(attempt.correct);
-    const success = getNoteIdx(attempt.you) === getNoteIdx(attempt.correct);
-    const duration = getAttemptedNoteDuration(success);
-    const color = success ? Colors[theme].green : Colors[theme].red;
 
+    const { you, correct, isSuccess, noteScore } = attempt;
+
+    const { noteName } = explodeNote(you);
+    // const { noteName: correct } = explodeNote(attempt.correct);
+
+    const duration = getAttemptedNoteDuration(isSuccess);
+    const color = isSuccess ? Colors[theme].green : Colors[theme].red;
     const notePositionStyles = noteStyles[noteName];
 
     return (
@@ -86,7 +88,7 @@ export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
             {/* TOP LINE */}
             <AppView transparentBG style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
                 <AntDesign
-                    name={success ? "checkcircle" : "closecircle"}
+                    name={isSuccess ? "checkcircle" : "closecircle"}
                     style={{ fontWeight: 900, marginBottom: 2 }}
                     size={14}
                     color={color}
@@ -99,7 +101,9 @@ export function AttemptedNote({ attempt }: { attempt: AttemptedNoteType }) {
 
             {/* BOTTOM LINE */}
             <AppText style={{ fontFamily: "Grotesque", lineHeight: 18 }}>
-                {success ? "800 pts" : `( ${t(`game.was`)} ${t(`music.notes.${correct}`)} )`}
+                {isSuccess
+                    ? `${noteScore} pts`
+                    : `( ${t(`game.was`)} ${t(`music.notes.${explodeNote(correct).noteName}`)} )`}
             </AppText>
         </FadeOut>
     );

@@ -1,8 +1,8 @@
+import { eventEmitter } from "@/app/_layout";
 import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
-import { AppView } from "@/components/atoms/AppView";
-import { AttemptedNote } from "@/components/atoms/AttemptedNote";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
+import { useGameTour } from "@/hooks/tours/useGameTour";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useSoundContext } from "@/hooks/useSoundsContext";
@@ -10,10 +10,9 @@ import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
-import { Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
+import { AppEvents, Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import {
     explodeNote,
-    getAttemptedNoteDuration,
     getLevelHintCount,
     getPossibleNotesInLevel,
     isNoteMatch,
@@ -21,24 +20,18 @@ import {
     wait,
 } from "@/utils/helperFns";
 import { decideNextRound } from "@/utils/noteFns";
+import { ScoreManager } from "@/utils/ScoreManager";
 import { STYLES } from "@/utils/styles";
-import {
-    AttemptedNote as AttemptedNoteType,
-    CurrentGame,
-    GameScreenParams,
-    Note,
-    SingleNoteRound,
-} from "@/utils/types";
+import { CurrentGame, GameScreenParams, Note, SingleNoteRound } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Dimensions, StyleProp, TextStyle } from "react-native";
+import { StyleProp, TextStyle, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Tooltip, { Placement } from "react-native-tooltip-2";
+import { AttemptedNotes } from "../AttemptedNotes";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { useGameTour } from "@/hooks/tours/useGameTour";
-import Tooltip, { Placement } from "react-native-tooltip-2";
-import { ScoreManager } from "@/utils/ScoreManager";
 
 const s = STYLES.game;
 
@@ -80,19 +73,18 @@ export function SingleNoteGameComponent() {
     const [currNote, setCurrNote] = useState<Note>(
         () => decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
-    const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
 
     async function onPianoKeyPress(notename: NoteName) {
         if (gameState !== GameState.Idle) return;
         const { noteName, octave } = explodeNote(currNote);
         const playedNote = `${notename}/${+octave}` as Note;
-        const success = isNoteMatch(notename, noteName);
+        const isSuccess = isNoteMatch(notename, noteName);
 
         // console.log({ currNote, attemptedNote: playedNote, success });
-        setAttemptedNotes((prev) => [...prev, { id: randomUID(), you: playedNote, correct: currNote }]);
-        ScoreManager.push(success ? "success" : "mistake");
+        const noteScore = ScoreManager.push(isSuccess ? "success" : "mistake");
+        eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, noteScore } });
 
-        if (success) {
+        if (isSuccess) {
             setGameState(GameState.Success);
             playPianoNote(playedNote);
         } else {
@@ -145,21 +137,9 @@ export function SingleNoteGameComponent() {
     }, [id, level]);
 
     useEffect(() => {
-        (async () => {
-            const duration = getAttemptedNoteDuration(true);
-            await wait(duration);
-
-            setAttemptedNotes((prev) => {
-                prev.shift();
-                return prev;
-            });
-        })();
-    }, [rounds.length]);
-
-    useEffect(() => {
         return () => {
+            // console.log("SINGLE NOTE GAME UNMOUNT!!!");
             ScoreManager.reset();
-            console.log("SINGLE NOTE GAME UNMOUNT!!!");
         };
     }, []);
 
@@ -171,7 +151,7 @@ export function SingleNoteGameComponent() {
 
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor }}>
-            <AppView style={s.top}>
+            <View style={s.top}>
                 <Tooltip
                     isVisible={!hasCompletedTour && tourStep == 3}
                     placement={Placement.BOTTOM}
@@ -184,14 +164,14 @@ export function SingleNoteGameComponent() {
                     // childrenWrapperStyle={{ borderRadius: 16 }}
                     // parentWrapperStyle={{ borderRadius: 16 }}
                     content={
-                        <AppView transparentBG style={{ alignItems: "center" }}>
+                        <View style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.3" />
                             <AppButton
                                 style={{ marginVertical: 8 }}
                                 text={t("tour.game.3_ok")}
                                 onPress={goToStepFour}
                             />
-                        </AppView>
+                        </View>
                     }
                 >
                     <TimerAndStatsDisplay
@@ -200,7 +180,7 @@ export function SingleNoteGameComponent() {
                         levelId={id}
                     />
                 </Tooltip>
-            </AppView>
+            </View>
 
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 0}
@@ -208,10 +188,10 @@ export function SingleNoteGameComponent() {
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 onClose={goToStepOne}
                 content={
-                    <AppView transparentBG style={{ alignItems: "center" }}>
+                    <View style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.0" />
                         <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepOne} />
-                    </AppView>
+                    </View>
                 }
             />
             <Tooltip
@@ -220,14 +200,14 @@ export function SingleNoteGameComponent() {
                 topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 onClose={doFinalStep}
                 content={
-                    <AppView transparentBG style={{ alignItems: "center" }}>
+                    <View style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.4" />
                         <AppText {...tourTextProps} type="mdSemiBold">
                             {t("tour.game.4_ready")}
                         </AppText>
 
                         <AppButton style={{ marginVertical: 8 }} text={t("tour.game.4_ok")} onPress={doFinalStep} />
-                    </AppView>
+                    </View>
                 }
             />
 
@@ -242,25 +222,20 @@ export function SingleNoteGameComponent() {
                     arrowStyle={{ transform: [{ translateY: 60 }] }}
                     contentStyle={{ minHeight: 128, transform: [{ translateY: -60 }] }}
                     content={
-                        <AppView transparentBG style={{ alignItems: "center" }}>
+                        <View style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.1" />
                             <AppText {...tourTextProps} type="mdSemiBold">
                                 {currNoteText}
                             </AppText>
                             <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepTwo} />
-                        </AppView>
+                        </View>
                     }
                 >
-                    {/* GAME STAGE */}
                     <SingleNoteGameStage noteProps={noteProps} />
                 </Tooltip>
             )}
 
-            <AppView style={{ ...s.attemptedNotes, transform: [{ translateY: 20 }] }}>
-                {attemptedNotes.map((attempt) => (
-                    <AttemptedNote key={attempt.id} attempt={attempt} />
-                ))}
-            </AppView>
+            <AttemptedNotes />
 
             <Tooltip
                 isVisible={!hasCompletedTour && tourStep == 2}
@@ -271,10 +246,10 @@ export function SingleNoteGameComponent() {
                 contentStyle={{ minHeight: 128, transform: [{ translateY: -36 }] }}
                 onClose={goToStepThree}
                 content={
-                    <AppView transparentBG style={{ alignItems: "center" }}>
+                    <View style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.2" />
                         <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepThree} />
-                    </AppView>
+                    </View>
                 }
             >
                 <Piano
@@ -288,6 +263,13 @@ export function SingleNoteGameComponent() {
             </Tooltip>
         </SafeAreaView>
     );
+}
+
+export interface NotePlayedEventData {
+    playedNote: Note;
+    currNote: Note;
+    isSuccess: boolean;
+    noteScore: number;
 }
 
 function SingleNoteGameStage({

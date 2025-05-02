@@ -16,12 +16,15 @@ import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
 import { MenuProvider } from "react-native-popup-menu";
+import { NativeEventEmitter } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
     fade: true,
     duration: 1000,
 });
+
+export const eventEmitter = new NativeEventEmitter();
 
 export default function RootLayout() {
     const { fontsError, _hydrated } = useAppInitialization();
