@@ -378,7 +378,6 @@ export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl
         hasWon: false,
         accuracy: "--",
         hitsPerMinute: 0,
-        score: { value: 0 },
     };
 
     // if (true) return DEFAULT_STATS;
@@ -400,7 +399,6 @@ export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl
 
                     acc.accuracy = isNaN(accuracy) ? "--" : intl.format(accuracy * 100) + "%";
                     acc.hitsPerMinute = acc.successes * (60 / level.durationInSeconds);
-                    acc.score = calcLevelScore(acc.successes, accuracy, acc.hitsPerMinute, level.winConditions);
                     acc.hasWon =
                         acc.hitsPerMinute >= level.winConditions[WinRank.Bronze] && accuracy >= GAME_WIN_MIN_ACCURACY;
 
@@ -413,7 +411,6 @@ export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl
                     hasWon: false,
                     accuracy: "--",
                     hitsPerMinute: 0,
-                    score: { value: 0 },
                 }
             );
         case GameType.Melody:
@@ -436,10 +433,9 @@ export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl
 
             const accuracyStr = isNaN(accuracy) ? "--" : intl.format(accuracy * 100) + "%";
             const hitsPerMinute = successes * (60 / level.durationInSeconds);
-            const score = calcLevelScore(successes, accuracy, hitsPerMinute, level.winConditions);
             const hasWon = hitsPerMinute >= level.winConditions[WinRank.Bronze] && accuracy >= GAME_WIN_MIN_ACCURACY;
 
-            return { ...baseInfo, accuracy: accuracyStr, score, hasWon, hitsPerMinute };
+            return { ...baseInfo, accuracy: accuracyStr, hasWon, hitsPerMinute };
 
         case GameType.Chord:
         case GameType.Rhythm:

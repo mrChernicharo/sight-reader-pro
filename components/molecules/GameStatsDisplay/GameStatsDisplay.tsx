@@ -10,8 +10,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 import { AppText } from "../../atoms/AppText";
 import { AppView } from "../../atoms/AppView";
+import { ScoreManager } from "@/utils/ScoreManager";
 
-export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps) {
+export function GameStatsDisplay({ level }: GameStatsDisplayProps) {
     const theme = useTheme();
     const { intl } = useIntl();
     const { t } = useTranslation();
@@ -20,15 +21,11 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
     if (!currentGame?.rounds || currentGame.rounds.length === 0) return <></>;
 
-    const {
-        accuracy = 1,
-        attempts = 0,
-        successes = 0,
-        mistakes = 0,
-        score: gs = { value: 0 },
-    } = getGameStats(level, currentGame?.rounds, intl);
-    const score = gs as LevelScore;
+    const { accuracy, attempts, successes, mistakes, hitsPerMinute } = getGameStats(level, currentGame?.rounds, intl);
     const notesPerMinute = !hitsPerMinute ? "--" : intl.format(hitsPerMinute ?? 0);
+
+    const score = ScoreManager.getScore();
+
     // useEffect(() => {
     //   console.log({ attempts, hitsPerMinute, elapsed, theme });
     // }, [attempts, hitsPerMinute, elapsed, theme]);
@@ -66,7 +63,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
             <AppView transparentBG style={s.row}>
                 <FadeIn y={50} x={0}>
                     <AppView transparentBG style={s.rowItem}>
-                        <AppText>
+                        <AppText style={{ width: "100%" }} numberOfLines={1}>
                             <Ionicons name="musical-notes-outline" />
                             &nbsp;{t("game.attempts")}
                         </AppText>
@@ -78,7 +75,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
                 <FadeIn y={50} x={0}>
                     <AppView transparentBG style={s.rowItem}>
-                        <AppText>
+                        <AppText style={{ width: "100%" }}>
                             <Ionicons name="checkmark" color={Colors[theme].green} />
                             &nbsp;{t("game.successes")}
                         </AppText>
@@ -91,7 +88,7 @@ export function GameStatsDisplay({ level, hitsPerMinute }: GameStatsDisplayProps
 
                 <FadeIn y={50} x={0}>
                     <AppView transparentBG style={s.rowItem}>
-                        <AppText>
+                        <AppText style={{ width: "100%" }}>
                             <Ionicons name="close-outline" color={Colors[theme].red} />
                             &nbsp;{t("game.mistakes")}
                         </AppText>
@@ -163,7 +160,7 @@ const s = StyleSheet.create({
     rowItem: {
         alignItems: "center",
         padding: 8,
-        minWidth: 80,
+        minWidth: 100,
         // borderWidth: 1,
         // borderColor: "#444",
     },

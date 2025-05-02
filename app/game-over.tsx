@@ -33,7 +33,7 @@ export default function GameOverScreen() {
     const level = getLevel(lastGame?.levelId || "");
     const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
 
-    const { hasWon, hitsPerMinute } = getGameStats(level, lastGame?.rounds ?? [], intl);
+    const { hasWon } = getGameStats(level, lastGame?.rounds ?? [], intl);
     const emoji = isPracticeLevel ? "" : hasWon ? " 🎉 " : " 😩 ";
     const headingText = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
     const btnTextStyle = { color: Colors[theme].text };
@@ -106,7 +106,7 @@ export default function GameOverScreen() {
                             {headingText + emoji}
                         </AppText>
 
-                        <GameStatsDisplay level={level} hitsPerMinute={hitsPerMinute} />
+                        <GameStatsDisplay level={level} />
 
                         {hasWon ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
                     </AppView>

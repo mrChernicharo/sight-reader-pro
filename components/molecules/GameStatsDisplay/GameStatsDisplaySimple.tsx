@@ -10,8 +10,9 @@ import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIntl } from "@/hooks/useIntl";
 import { BackLink } from "@/components/atoms/BackLink";
+import { ScoreManager } from "@/utils/ScoreManager";
 
-export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDisplayProps) {
+export function GameStatsDisplaySimple({ level }: GameStatsDisplayProps) {
     const theme = useTheme();
     const { t } = useTranslation();
     const { intl } = useIntl();
@@ -23,8 +24,8 @@ export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDispla
 
     if (!currentGame?.rounds || currentGame.rounds.length === 0) return <></>;
 
-    const { accuracy, attempts, successes, mistakes, score: gs } = getGameStats(level, currentGame?.rounds, intl);
-    const score = gs as LevelScore;
+    const { accuracy, attempts, successes, mistakes, hitsPerMinute } = getGameStats(level, currentGame?.rounds, intl);
+    const score = ScoreManager.getScore();
 
     // useEffect(() => {
     //   console.log({ attempts, hitsPerMinute, elapsed, theme });
