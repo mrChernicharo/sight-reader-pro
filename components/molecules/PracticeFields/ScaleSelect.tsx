@@ -7,7 +7,7 @@ import { Colors } from "@/utils/Colors";
 
 import { STYLES } from "@/utils/styles";
 import { Scale } from "@/utils/types";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { useEffect, useMemo, useState } from "react";
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-menu";
 

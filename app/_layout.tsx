@@ -4,19 +4,18 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { SoundContextProvider } from "@/hooks/useSoundsContext";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
+import { useFonts } from "expo-font";
 import * as NavigationBar from "expo-navigation-bar";
-import { router, usePathname } from "expo-router";
+import { router } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
+import { NativeEventEmitter } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
-import { useFonts } from "expo-font";
-import { FontAwesome } from "@expo/vector-icons";
-import * as SplashScreen from "expo-splash-screen";
-import { MenuProvider } from "react-native-popup-menu";
-import { NativeEventEmitter } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -65,7 +64,7 @@ export function useAppInitialization() {
     const [fontsLoaded, fontsError] = useFonts({
         SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
         Grotesque: require("../assets/fonts/BowlbyOneSC-Regular.ttf"),
-        ...FontAwesome.font,
+        // ...FontAwesome.font,
     });
 
     const _hydrated = useAppStore((state) => state._hydrated);

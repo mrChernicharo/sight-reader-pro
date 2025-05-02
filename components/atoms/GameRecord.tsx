@@ -1,14 +1,13 @@
+import { useAllLevels } from "@/hooks/useAllLevels";
+import { useIntl } from "@/hooks/useIntl";
+import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { getGameStats, isNoteMatch } from "@/utils/helperFns";
-import { Game, Note } from "@/utils/types";
-import { Ionicons } from "@expo/vector-icons";
+import { getGameStats } from "@/utils/helperFns";
+import { Game } from "@/utils/types";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
-import { GameType } from "@/utils/enums";
-import { useIntl } from "@/hooks/useIntl";
-import { useTheme } from "@/hooks/useTheme";
-import { useAllLevels } from "@/hooks/useAllLevels";
 
 const intlDate = new Intl.DateTimeFormat("en-us", { dateStyle: "medium", timeStyle: "medium" });
 

@@ -7,7 +7,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 import { useTheme } from "@/hooks/useTheme";
 import { testBorder } from "@/utils/styles";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/build/AntDesign";
 import { AppView } from "./AppView";
 import { NoteName } from "@/utils/enums";
 import { Dimensions } from "react-native";

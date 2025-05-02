@@ -6,7 +6,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { GameType } from "@/utils/enums";
 import { STYLES } from "@/utils/styles";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 
 import { useCallback } from "react";
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-menu";

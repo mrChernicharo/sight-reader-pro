@@ -16,7 +16,7 @@ import { MAJOR_KEY_SIGNATURES, MINOR_KEY_SIGNATURES } from "@/utils/keySignature
 
 import { NOTES_FLAT_ALL_OCTAVES, NOTES_SHARP_ALL_OCTAVES } from "@/utils/notes";
 import { Level, LevelId, NoteRange, Scale } from "@/utils/types";
-import { FontAwesome5 } from "@expo/vector-icons";
+import FontAwesome5 from "@expo/vector-icons/build/FontAwesome5";
 import { router } from "expo-router";
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";

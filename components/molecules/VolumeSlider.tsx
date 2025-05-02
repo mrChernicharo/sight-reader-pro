@@ -1,13 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
-import { glyphs } from "@/utils/constants";
-import { KeySignature } from "@/utils/enums";
+import { useAppStore } from "@/hooks/useAppStore";
+import { useTheme } from "@/hooks/useTheme";
+import { Colors } from "@/utils/Colors";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 import Slider from "@react-native-community/slider";
 import { StyleSheet } from "react-native";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
-import { Colors } from "@/utils/Colors";
-import { useAppStore } from "@/hooks/useAppStore";
-import { useTheme } from "@/hooks/useTheme";
 
 export function VolumeSlider() {
     const theme = useTheme();
@@ -27,7 +25,8 @@ export function VolumeSlider() {
                 hitSlop={32}
                 minimumTrackTintColor="#5b99d4"
                 thumbTintColor="#5b99d4"
-                maximumTrackTintColor={theme === "light" ? "black" : "white"}
+                maximumTrackTintColor={"white"}
+                // maximumTrackTintColor={theme === "light" ? "black" : "white"}
                 // value={keySigIndex}
                 // minimumTrackTintColor={theme === "light" ? "black" : "white"}
             />

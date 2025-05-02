@@ -15,7 +15,7 @@ import { Clef, GameType, KeySignature, WinRank } from "@/utils/enums";
 import { getLevelName, isNoteHigher, toCamelCase } from "@/utils/helperFns";
 import { testBorder } from "@/utils/styles";
 import { Level, Note } from "@/utils/types";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
 import { Dimensions, StyleSheet } from "react-native";

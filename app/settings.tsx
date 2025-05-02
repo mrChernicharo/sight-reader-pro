@@ -14,7 +14,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { LANGS } from "@/utils/constants";
 import { AppSwitch } from "@/components/atoms/AppSwitch";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FontAwesome } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/build/FontAwesome";
 import { testBorder } from "@/utils/styles";
 
 export default function SettingsScreen() {

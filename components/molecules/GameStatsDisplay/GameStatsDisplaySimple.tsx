@@ -4,7 +4,7 @@ import { Colors } from "@/utils/Colors";
 import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
 import { GameStatsDisplayProps, LevelScore } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";

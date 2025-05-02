@@ -6,7 +6,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { getGameStats } from "@/utils/helperFns";
 import { GameStatsDisplayProps, LevelScore } from "@/utils/types";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
 import { AppText } from "../../atoms/AppText";
 import { AppView } from "../../atoms/AppView";

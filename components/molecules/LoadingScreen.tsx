@@ -15,7 +15,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
 import { useTranslation } from "@/hooks/useTranslation";
 import { AppTextLogo } from "../atoms/AppTextLogo";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/build/AntDesign";
 // import ReactLogo from "@/assets/images/react-logo.png";
 
 const duration = 2000;
