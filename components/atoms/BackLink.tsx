@@ -9,14 +9,12 @@ import { AppView } from "./AppView";
 
 // @ts-ignore
 export interface BacklinkProps extends Partial<TouchableOpacityProps<{}>> {
-    to?: Href;
     style?: StyleProp<ViewStyle>;
     wrapperStyle?: StyleProp<ViewStyle>;
     // onPress?: (((event: GestureResponderEvent) => void) & (() => void)) | undefined;
 }
 export function BackLink(props: BacklinkProps) {
-    const { to, style, wrapperStyle = {}, ...rest } = props;
-    // const href = (to || "/") as Href;
+    const { style, wrapperStyle = undefined, ...rest } = props;
     const theme = useTheme();
 
     return (

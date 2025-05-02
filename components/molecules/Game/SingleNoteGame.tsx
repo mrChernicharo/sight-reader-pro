@@ -30,7 +30,7 @@ import {
     SingleNoteRound,
 } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Dimensions, StyleProp, TextStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Piano } from "../Piano/Piano";
@@ -38,6 +38,7 @@ import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { useGameTour } from "@/hooks/tours/useGameTour";
 import Tooltip, { Placement } from "react-native-tooltip-2";
+import { ScoreManager } from "@/utils/ScoreManager";
 
 const s = STYLES.game;
 
@@ -59,14 +60,12 @@ export function SingleNoteGameComponent() {
     const theme = useTheme();
     const backgroundColor = Colors[theme].bg;
 
-    const { id, keySignature: keySig, previousPage: prevPage } = useLocalSearchParams() as unknown as GameScreenParams;
+    const { id, keySignature: keySig } = useLocalSearchParams() as unknown as GameScreenParams;
 
     const { playPianoNote, playSoundEfx } = useSoundContext();
     const { getLevel } = useAllLevels();
-    const { currentGame, saveGameRecord, startNewGame, addNewRound } = useAppStore();
-
     const { tourStep, goToStepOne, goToStepTwo, goToStepThree, goToStepFour, doFinalStep } = useGameTour();
-
+    const { currentGame, saveGameRecord, startNewGame, addNewRound } = useAppStore();
     const hasCompletedTour = useAppStore((state) => state.completedTours.game);
 
     const keySignature = decodeURIComponent(keySig) as KeySignature;
@@ -75,11 +74,11 @@ export function SingleNoteGameComponent() {
     const hintCount = getLevelHintCount(level.skillLevel);
     // const isPracticeLevel = getIsPracticeLevel(currentGame?.levelId);
 
-    const rounds = currentGame?.rounds || [];
+    const rounds = useMemo(() => currentGame?.rounds || [], [currentGame?.rounds]);
 
     const [gameState, setGameState] = useState<GameState>(GameState.Idle);
     const [currNote, setCurrNote] = useState<Note>(
-        decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
+        () => decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
 
@@ -90,14 +89,11 @@ export function SingleNoteGameComponent() {
         const success = isNoteMatch(notename, noteName);
 
         // console.log({ currNote, attemptedNote: playedNote, success });
-        setAttemptedNotes((prev) => {
-            prev.push({ id: randomUID(), you: playedNote, correct: currNote });
-            return prev;
-        });
+        setAttemptedNotes((prev) => [...prev, { id: randomUID(), you: playedNote, correct: currNote }]);
+        ScoreManager.push(success ? "success" : "mistake");
 
         if (success) {
             setGameState(GameState.Success);
-            // updatePlayedNotes(playedNote);
             playPianoNote(playedNote);
         } else {
             setGameState(GameState.Mistake);
@@ -112,13 +108,9 @@ export function SingleNoteGameComponent() {
 
         addNewRound({ value: currNote, attempt: playedNote });
 
-        const { value: nextNote } = decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes, {
-            value: currNote,
-            attempt: playedNote,
-        })!;
-
+        const prevRound = { value: currNote, attempt: playedNote };
+        const { value: nextNote } = decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes, prevRound);
         if (nextNote) setCurrNote(nextNote);
-
         setGameState(GameState.Idle);
     }
 
@@ -137,7 +129,6 @@ export function SingleNoteGameComponent() {
         // console.log("OK", { gameRecord });
         await saveGameRecord(gameRecord);
         router.replace({ pathname: "/game-over" });
-        // router.replace({ pathname: isPracticeLevel ? "/practice" : "/game-over" });
     }, [level, id, rounds]);
 
     // start game
@@ -165,11 +156,12 @@ export function SingleNoteGameComponent() {
         })();
     }, [rounds.length]);
 
-    // useEffect(() => {
-    //     return () => {
-    //         console.log("SINGLE NOTE GAME UNMOUNT!!!");
-    //     };
-    // }, []);
+    useEffect(() => {
+        return () => {
+            ScoreManager.reset();
+            console.log("SINGLE NOTE GAME UNMOUNT!!!");
+        };
+    }, []);
 
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 

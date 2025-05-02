@@ -65,6 +65,7 @@ export function useMelody() {
 
             setRoundResults((prev) => [...prev, success ? 1 : 0]);
             setAttemptedNotes((prev) => [...prev, { id: randomUID(), you: playedNote, correct: currNote }]);
+            updateRound({ attempts: [...currRound.attempts, playedNote] });
 
             if (success) {
                 playPianoNote(playedNote);
@@ -79,8 +80,6 @@ export function useMelody() {
                 setRoundResults([]);
                 const newRound = decideNextRound<Round<GameType.Melody>>(level, keySignature, possibleNotes);
                 addNewRound(newRound);
-            } else {
-                updateRound({ attempts: [...currRound.attempts, playedNote] });
             }
         },
         [level, isLastNote, currNote, currRound?.values, currRound?.attempts]
