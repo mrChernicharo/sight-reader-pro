@@ -1,5 +1,6 @@
 import { Clef, GameType, KeySignature, NoteName, WinRank, Accident, Knowledge } from "./enums";
 import {
+    Game,
     Level,
     LevelGroupSpec,
     LevelScore,
@@ -370,6 +371,20 @@ export function stemDown(note: Note, clef: Clef) {
     }
 }
 
+export function isGameWin(game: Game | undefined) {
+    if (!game) return false;
+
+    switch (game.type) {
+        case GameType.Single:
+            // game.rounds.reduce()
+            break;
+        case GameType.Melody:
+            break;
+        default:
+            break;
+    }
+}
+
 export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl.NumberFormat) {
     const DEFAULT_STATS = {
         attempts: 0,
@@ -400,7 +415,8 @@ export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl
                     acc.accuracy = isNaN(accuracy) ? "--" : intl.format(accuracy * 100) + "%";
                     acc.hitsPerMinute = acc.successes * (60 / level.durationInSeconds);
                     acc.hasWon =
-                        acc.hitsPerMinute >= level.winConditions[WinRank.Bronze] && accuracy >= GAME_WIN_MIN_ACCURACY;
+                        acc.hitsPerMinute >= level.winConditions[WinRank.Bronze] &&
+                        accuracy >= level.winConditions.minAccuracy;
 
                     return acc;
                 },
@@ -427,15 +443,14 @@ export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl
                 });
             });
 
-            const { successes, attempts } = baseInfo;
-
+            const { successes, attempts, mistakes } = baseInfo;
             const accuracy = successes / attempts;
-
             const accuracyStr = isNaN(accuracy) ? "--" : intl.format(accuracy * 100) + "%";
             const hitsPerMinute = successes * (60 / level.durationInSeconds);
             const hasWon = hitsPerMinute >= level.winConditions[WinRank.Bronze] && accuracy >= GAME_WIN_MIN_ACCURACY;
 
-            return { ...baseInfo, accuracy: accuracyStr, hasWon, hitsPerMinute };
+            const result = { successes, attempts, mistakes, accuracy: accuracyStr, hasWon, hitsPerMinute };
+            return result;
 
         case GameType.Chord:
         case GameType.Rhythm:
@@ -443,55 +458,6 @@ export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl
             // prettier-ignore
             return DEFAULT_STATS;
     }
-}
-
-function calcLevelScore(
-    hits: number,
-    accuracy: number,
-    hitsPerMinute: number,
-    winConditions: WinConditions
-): LevelScore {
-    const hitScore = 1000;
-    let multiplier = 1;
-
-    if (accuracy < 1 && accuracy >= 0.9) {
-        multiplier -= 0.1;
-    } else if (accuracy >= 0.8) {
-        multiplier -= 0.2;
-    } else if (accuracy >= 0.7) {
-        multiplier -= 0.3;
-    } else if (accuracy >= 0.6) {
-    }
-
-    if (hitsPerMinute >= winConditions.gold) {
-        multiplier += 0.5;
-    } else if (hitsPerMinute >= winConditions.silver) {
-        multiplier += 0.4;
-    } else if (hitsPerMinute >= winConditions.bronze) {
-        multiplier += 0.3;
-    }
-
-    const score = {
-        value: hits * hitScore * multiplier,
-        // valueStr: intl.format(hits * hitScore * multiplier),
-        multiplier,
-        hits,
-        hitScore,
-        winConditions,
-        accuracy,
-        formula: `hits * hitScore * multiplier = score`,
-    };
-    // console.log("<<< calcLevelScore >>> ", {
-    //   hits,
-    //   accuracy,
-    //   hitsPerMinute,
-    //   winConditions,
-    //   score,
-    //   multiplier,
-    //   formula: `hits${hits} * hitScore${hitScore} * multiplier${multiplier} = score${score}`,
-    // });
-
-    return score;
 }
 
 const sharpToFlatTable = { a: "b", b: "c", c: "d", d: "e", e: "f", f: "g", g: "a" };
@@ -508,26 +474,25 @@ export function capitalizeStr(text: string) {
 }
 
 export function toCamelCase(str: string) {
-    // Remove espaços iniciais e finais e divide a string em palavras usando espaços como delimitadores.
+    // Remove initial and final spaces and divides the string into words using spaces as delimiters.
     const words = str.trim().split(" ");
 
-    // Se a string estiver vazia ou contiver apenas espaços, retorna uma string vazia.
+    // If the string is empty or contains only spaces, returns an empty string.
     if (!words || words.length === 0) {
         return "";
     }
 
-    // Converte a primeira palavra para minúsculas.
+    // Converts the first word to lowercase.
     let result = words[0].toLowerCase();
 
-    // Itera sobre as palavras restantes (a partir da segunda palavra).
+    // Iterates over the remaining words (starting from the second word).
     for (let i = 1; i < words.length; i++) {
-        // Converte a palavra para minúsculas e capitaliza a primeira letra.
+        // Converts the word to lowercase and capitalizes the first letter.
         const capitalizedWord = words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase();
-        // Concatena a palavra capitalizada ao resultado.
+        // Concatenates the capitalized word to the result.
         result += capitalizedWord;
     }
-
-    // Retorna a string resultante em camelCase.
+    // Returns the resulting string in camelCase.
     return result;
 }
 
@@ -573,22 +538,6 @@ export function groupArrayElements<T>(arr: T[]): T[] {
                 groupedArray.push(ele);
             });
     }
-
-    // let currentElement = arr[0];
-    // let count = 1;
-
-    // for (let i = 1; i < arr.length; i++) {
-    //   if (arr[i] === currentElement) {
-    //     count++;
-    //   } else {
-    //     groupedArray.push(...Array(count).fill(currentElement));
-    //     currentElement = arr[i];
-    //     count = 1;
-    //   }
-    // }
-
-    // groupedArray.push(...Array(count).fill(currentElement));
-
     return groupedArray;
 }
 
@@ -682,15 +631,18 @@ export function makeLevelGroup(spec: LevelGroupSpec) {
             skillLevel,
             clef,
             durationInSeconds: mapRange(groupProgress, durations.min, durations.max, 5),
-            winConditions: {
-                bronze: mapRange(groupProgress, winConditions.min.bronze, winConditions.max.bronze, 1),
-                silver: mapRange(groupProgress, winConditions.min.silver, winConditions.max.silver, 1),
-                gold: mapRange(groupProgress, winConditions.min.gold, winConditions.max.gold, 1),
-            },
+
             keySignature,
             timeSignature: timeSignatures[timeSignatureIdx],
             scale,
             noteRanges: [`${loNote}:::${hiNote}` as NoteRange],
+
+            winConditions: {
+                minAccuracy: mapRange(groupProgress, winConditions.min.minAccuracy, winConditions.max.minAccuracy, 0.1),
+                bronze: mapRange(groupProgress, winConditions.min.bronze, winConditions.max.bronze, 1),
+                silver: mapRange(groupProgress, winConditions.min.silver, winConditions.max.silver, 1),
+                gold: mapRange(groupProgress, winConditions.min.gold, winConditions.max.gold, 1),
+            },
         });
     }
 
@@ -745,3 +697,52 @@ export function pluckNoteFromMp3Filename(filename: string) {
     }
     return filename;
 }
+
+// function calcLevelScore(
+//     hits: number,
+//     accuracy: number,
+//     hitsPerMinute: number,
+//     winConditions: WinConditions
+// ): LevelScore {
+//     const hitScore = 1000;
+//     let multiplier = 1;
+
+//     if (accuracy < 1 && accuracy >= 0.9) {
+//         multiplier -= 0.1;
+//     } else if (accuracy >= 0.8) {
+//         multiplier -= 0.2;
+//     } else if (accuracy >= 0.7) {
+//         multiplier -= 0.3;
+//     } else if (accuracy >= 0.6) {
+//     }
+
+//     if (hitsPerMinute >= winConditions.gold) {
+//         multiplier += 0.5;
+//     } else if (hitsPerMinute >= winConditions.silver) {
+//         multiplier += 0.4;
+//     } else if (hitsPerMinute >= winConditions.bronze) {
+//         multiplier += 0.3;
+//     }
+
+//     const score = {
+//         value: hits * hitScore * multiplier,
+//         // valueStr: intl.format(hits * hitScore * multiplier),
+//         multiplier,
+//         hits,
+//         hitScore,
+//         winConditions,
+//         accuracy,
+//         formula: `hits * hitScore * multiplier = score`,
+//     };
+//     // console.log("<<< calcLevelScore >>> ", {
+//     //   hits,
+//     //   accuracy,
+//     //   hitsPerMinute,
+//     //   winConditions,
+//     //   score,
+//     //   multiplier,
+//     //   formula: `hits${hits} * hitScore${hitScore} * multiplier${multiplier} = score${score}`,
+//     // });
+
+//     return score;
+// }

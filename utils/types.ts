@@ -66,6 +66,7 @@ export type MelodyNote = {
  * ```// example: { gold: 40, silver: 37, bronze: 32 }```
  */
 export type WinConditions = {
+    minAccuracy: number;
     [WinRank.Gold]: number;
     [WinRank.Silver]: number;
     [WinRank.Bronze]: number;
@@ -120,10 +121,10 @@ export type CurrentGame = Game & Level & { state: GameState };
 
 export type PianoKeySpec = "Flat" | "Sharp"; /* | 'Both' */
 
-export interface GameScore {
-    successes: number;
-    mistakes: number;
-}
+// export interface GameScore {
+//     successes: number;
+//     mistakes: number;
+// }
 
 export type SectionedLevel = {
     title: string;

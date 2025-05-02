@@ -14,7 +14,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function SettingsScreen() {
     const { t } = useTranslation();
     const { username = "user", games } = useAppStore();
-    const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     // console.log("games ::: ", games);
     if (!games) return null;

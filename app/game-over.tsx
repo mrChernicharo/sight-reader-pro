@@ -11,7 +11,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
+import { getGameStats, getIsPracticeLevel, isGameWin } from "@/utils/helperFns";
 import { GameScreenParams } from "@/utils/types";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect } from "react";
@@ -32,8 +32,9 @@ export default function GameOverScreen() {
 
     const level = getLevel(lastGame?.levelId || "");
     const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
-
     const { hasWon } = getGameStats(level, lastGame?.rounds ?? [], intl);
+    // const hasWon = isGameWin(lastGame);
+
     const emoji = isPracticeLevel ? "" : hasWon ? " 🎉 " : " 😩 ";
     const headingText = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
     const btnTextStyle = { color: Colors[theme].text };
