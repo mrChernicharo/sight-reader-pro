@@ -105,7 +105,10 @@ const en = {
         trebleClef: "Treble Clef",
         bassClef: "Bass Clef",
     },
-    levelDetails: {},
+    levelDetails: {
+        duration: "Duration",
+        minAccuracy: "Minimal accuracy",
+    },
     music: {
         clef: "Clef",
         clefs: {

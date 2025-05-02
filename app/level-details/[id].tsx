@@ -6,6 +6,7 @@ import { FadeIn } from "@/components/atoms/FadeIn";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
+import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -18,7 +19,7 @@ import { Level, Note } from "@/utils/types";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -28,6 +29,7 @@ export default function LevelDetails() {
     const muteColor = useThemeColor({ light: Colors.light.textMute, dark: Colors.dark.textMute }, "textMute");
     const { id } = useLocalSearchParams() as { id: string };
     const { t } = useTranslation();
+    const { intl } = useIntl();
     const level = getLevel(id);
     const { currentGame, endGame } = useAppStore();
     const theme = useTheme();
@@ -50,6 +52,8 @@ export default function LevelDetails() {
     }, [currentGame, level]);
 
     if (!level) return null;
+
+    const percAccuracy = intl.format(level.winConditions.minAccuracy * 100);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
@@ -83,12 +87,6 @@ export default function LevelDetails() {
                 <FadeIn y={50} x={0} delay={200}>
                     <AppView style={s.midContainer}>
                         <AppText>{t(`game.type.${level.type}`)}</AppText>
-                        <AppText>
-                            <Ionicons name="time-outline" /> {level.durationInSeconds} {t("time.seconds")}
-                        </AppText>
-                        <AppText>
-                            <Ionicons name="flag-outline" /> {level.winConditions[WinRank.Bronze]}/min
-                        </AppText>
                     </AppView>
                 </FadeIn>
 
@@ -96,6 +94,62 @@ export default function LevelDetails() {
                 <FadeIn y={0} x={-100} delay={400}>
                     <AppView style={{ ...s.separator, borderColor: muteColor }} />
                 </FadeIn>
+
+                <AppView style={{ flexDirection: "row", gap: 4 }}>
+                    <AppView transparentBG style={{ transform: [{ translateY: 5 }] }}>
+                        <Ionicons name="time-outline" size={16} color={Colors.dark.text} />
+                    </AppView>
+
+                    <AppText>{`${t("levelDetails.duration")} ${level.durationInSeconds} ${t("time.seconds")}`}</AppText>
+                </AppView>
+
+                <AppView style={{ flexDirection: "row", gap: 4 }}>
+                    <AppView transparentBG style={{ transform: [{ translateY: 5 }] }}>
+                        <Ionicons name="flag-outline" size={16} color={Colors.dark.text} />
+                    </AppView>
+
+                    <AppText>{`${t("levelDetails.minAccuracy")} ${percAccuracy}%`}</AppText>
+                </AppView>
+
+                {/* Separator */}
+                <FadeIn y={0} x={-100} delay={400}>
+                    <AppView style={{ ...s.separator, borderColor: muteColor }} />
+                </FadeIn>
+
+                <AppText>
+                    <Ionicons name="star" /> {level.winConditions[WinRank.Bronze]} {t("game.NpM")}
+                </AppText>
+
+                <View style={{ flexDirection: "row", gap: 4 }}>
+                    <View style={{ flexDirection: "row" }}>
+                        <AppText>
+                            <Ionicons name="star" />
+                        </AppText>
+                        <AppText>
+                            <Ionicons name="star" />
+                        </AppText>
+                    </View>
+                    <AppText>
+                        {level.winConditions[WinRank.Silver]} {t("game.NpM")}
+                    </AppText>
+                </View>
+
+                <View style={{ flexDirection: "row", gap: 4 }}>
+                    <View style={{ flexDirection: "row" }}>
+                        <AppText>
+                            <Ionicons name="star" />
+                        </AppText>
+                        <AppText>
+                            <Ionicons name="star" />
+                        </AppText>
+                        <AppText>
+                            <Ionicons name="star" />
+                        </AppText>
+                    </View>
+                    <AppText>
+                        {level.winConditions[WinRank.Gold]} {t("game.NpM")}
+                    </AppText>
+                </View>
 
                 <FadeIn y={0} x={-100} delay={600}>
                     <AppView style={s.musicSheetContainer}>
@@ -155,8 +209,10 @@ const s = StyleSheet.create({
         // ...testBorder(),
     },
     midContainer: {
+        width: "100%",
         alignItems: "center",
-        paddingVertical: 24,
+        // width: Dimensions.get("window").width,
+        // paddingVertical: 24,
         // ...testBorder(),
     },
     separator: {

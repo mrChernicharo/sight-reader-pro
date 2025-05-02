@@ -106,7 +106,10 @@ const ptBR = {
         trebleClef: "Clave de Sol",
         bassClef: "Clave de Fá",
     },
-    levelDetails: {},
+    levelDetails: {
+        duration: "Duração",
+        minAccuracy: "Precisão mínima",
+    },
     music: {
         clef: "Clave",
         clefs: {

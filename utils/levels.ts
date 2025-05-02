@@ -43,8 +43,8 @@ const TREBLE_NOVICE_LEVELS = makeLevelGroup({
     noteRanges: { min: ["c/4", "c/4"], max: ["e/4", "c/5"] },
     scales: [Scale.Diatonic /*, Scale.Pentatonic */],
     winConditions: {
-        min: { bronze: 12, silver: 18, gold: 24, minAccuracy: 0.8 },
-        max: { bronze: 14, silver: 20, gold: 26, minAccuracy: 0.8 },
+        min: { bronze: 12, silver: 18, gold: 24, minAccuracy: 0.5 },
+        max: { bronze: 14, silver: 20, gold: 26, minAccuracy: 0.6 },
     },
 });
 
@@ -59,8 +59,8 @@ const TREBLE_BEGINNER_LEVELS = makeLevelGroup({
     noteRanges: { min: ["g/3", "c/4"], max: ["g/4", "e/5"] },
     scales: [Scale.Diatonic /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 14, silver: 20, gold: 26, minAccuracy: 0.8 },
-        max: { bronze: 16, silver: 22, gold: 28, minAccuracy: 0.8 },
+        min: { bronze: 14, silver: 20, gold: 26, minAccuracy: 0.6 },
+        max: { bronze: 16, silver: 22, gold: 28, minAccuracy: 0.7 },
     },
 });
 
@@ -75,8 +75,8 @@ const TREBLE_INTERMEDIARY_LEVELS_C = makeLevelGroup({
     noteRanges: { min: ["g/3", "c/4"], max: ["b/4", "g/5"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 16, silver: 22, gold: 28, minAccuracy: 0.8 },
-        max: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.8 },
+        min: { bronze: 16, silver: 22, gold: 28, minAccuracy: 0.7 },
+        max: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.75 },
     },
 });
 
@@ -98,7 +98,7 @@ const TREBLE_INTERMEDIARY_LEVELS = makeLevelGroup({
     noteRanges: { min: ["a/3", "e/4"], max: ["b/4", "g/5"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.8 },
+        min: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.75 },
         max: { bronze: 20, silver: 26, gold: 32, minAccuracy: 0.8 },
     },
 });
@@ -128,7 +128,7 @@ const TREBLE_ADVANCED_LEVELS = makeLevelGroup({
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
         min: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.8 },
-        max: { bronze: 20, silver: 26, gold: 32, minAccuracy: 0.8 },
+        max: { bronze: 20, silver: 26, gold: 32, minAccuracy: 0.85 },
     },
 });
 
@@ -167,7 +167,7 @@ const TREBLE_PRO_LEVELS = makeLevelGroup({
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
         min: { bronze: 20, silver: 26, gold: 32, minAccuracy: 0.8 },
-        max: { bronze: 22, silver: 28, gold: 34, minAccuracy: 0.8 },
+        max: { bronze: 22, silver: 28, gold: 34, minAccuracy: 0.85 },
     },
 });
 
@@ -192,8 +192,8 @@ const GUITAR_LEVELS = makeLevelGroup({
     noteRanges: { min: ["e/3", "b/3"], max: ["e/5", "e/6"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 22, silver: 28, gold: 34, minAccuracy: 0.8 },
-        max: { bronze: 24, silver: 30, gold: 36, minAccuracy: 0.8 },
+        min: { bronze: 22, silver: 28, gold: 34, minAccuracy: 0.825 },
+        max: { bronze: 24, silver: 30, gold: 36, minAccuracy: 0.875 },
     },
 });
 // const VIOLIN_LEVELS;
@@ -220,8 +220,8 @@ const TREBLE_LOW_LEVELS = makeLevelGroup({
     noteRanges: { min: ["b/2", "f/3"], max: ["g/4", "b/4"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 24, silver: 30, gold: 36, minAccuracy: 0.8 },
-        max: { bronze: 26, silver: 32, gold: 38, minAccuracy: 0.8 },
+        min: { bronze: 24, silver: 30, gold: 36, minAccuracy: 0.85 },
+        max: { bronze: 26, silver: 32, gold: 38, minAccuracy: 0.9 },
     },
 });
 const TREBLE_HIGH_LEVELS = makeLevelGroup({
@@ -251,8 +251,8 @@ const TREBLE_HIGH_LEVELS = makeLevelGroup({
     noteRanges: { min: ["c/5", "f/5"], max: ["e/6", "e/7"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 26, silver: 32, gold: 38, minAccuracy: 0.8 },
-        max: { bronze: 28, silver: 34, gold: 40, minAccuracy: 0.8 },
+        min: { bronze: 26, silver: 32, gold: 38, minAccuracy: 0.85 },
+        max: { bronze: 28, silver: 34, gold: 40, minAccuracy: 0.9 },
     },
 });
 
@@ -269,8 +269,8 @@ const BASS_NOVICE_LEVELS = makeLevelGroup({
     noteRanges: { min: ["c/3", "c/3"], max: ["e/3", "c/4"] },
     scales: [Scale.Diatonic /*, Scale.Pentatonic */],
     winConditions: {
-        min: { bronze: 12, silver: 18, gold: 24, minAccuracy: 0.8 },
-        max: { bronze: 14, silver: 20, gold: 26, minAccuracy: 0.8 },
+        min: { bronze: 12, silver: 18, gold: 24, minAccuracy: 0.5 },
+        max: { bronze: 14, silver: 20, gold: 26, minAccuracy: 0.6 },
     },
 });
 
@@ -285,8 +285,8 @@ const BASS_BEGINNER_LEVELS = makeLevelGroup({
     noteRanges: { min: ["g/2", "c/3"], max: ["f/3", "c/4"] },
     scales: [Scale.Diatonic /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 14, silver: 20, gold: 26, minAccuracy: 0.8 },
-        max: { bronze: 16, silver: 22, gold: 28, minAccuracy: 0.8 },
+        min: { bronze: 14, silver: 20, gold: 26, minAccuracy: 0.6 },
+        max: { bronze: 16, silver: 22, gold: 28, minAccuracy: 0.7 },
     },
 });
 
@@ -301,8 +301,8 @@ const BASS_INTERMEDIARY_LEVELS_C = makeLevelGroup({
     noteRanges: { min: ["e/2", "c/3"], max: ["f/3", "c/4"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 16, silver: 22, gold: 28, minAccuracy: 0.8 },
-        max: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.8 },
+        min: { bronze: 16, silver: 22, gold: 28, minAccuracy: 0.7 },
+        max: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.75 },
     },
 });
 
@@ -324,7 +324,7 @@ const BASS_INTERMEDIARY_LEVELS = makeLevelGroup({
     noteRanges: { min: ["d/2", "c/3"], max: ["f/3", "d/4"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.8 },
+        min: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.75 },
         max: { bronze: 20, silver: 26, gold: 32, minAccuracy: 0.8 },
     },
 });
@@ -354,7 +354,7 @@ const BASS_ADVANCED_LEVELS = makeLevelGroup({
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
         min: { bronze: 18, silver: 24, gold: 30, minAccuracy: 0.8 },
-        max: { bronze: 20, silver: 26, gold: 32, minAccuracy: 0.8 },
+        max: { bronze: 20, silver: 26, gold: 32, minAccuracy: 0.85 },
     },
 });
 
@@ -393,7 +393,7 @@ const BASS_PRO_LEVELS = makeLevelGroup({
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
         min: { bronze: 20, silver: 26, gold: 32, minAccuracy: 0.8 },
-        max: { bronze: 22, silver: 28, gold: 34, minAccuracy: 0.8 },
+        max: { bronze: 22, silver: 28, gold: 34, minAccuracy: 0.85 },
     },
 });
 
@@ -418,8 +418,8 @@ const TROMBONE_LEVELS = makeLevelGroup({
     noteRanges: { min: ["e/2", "e/2"], max: ["c/4", "c/5"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 22, silver: 28, gold: 34, minAccuracy: 0.8 },
-        max: { bronze: 24, silver: 30, gold: 36, minAccuracy: 0.8 },
+        min: { bronze: 22, silver: 28, gold: 34, minAccuracy: 0.825 },
+        max: { bronze: 24, silver: 30, gold: 36, minAccuracy: 0.875 },
     },
 });
 // const VIOLIN_LEVELS;
@@ -445,8 +445,8 @@ const BASS_LOW_LEVELS = makeLevelGroup({
     noteRanges: { min: ["c/1", "c/2"], max: ["c/3", "f/3"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 24, silver: 30, gold: 36, minAccuracy: 0.8 },
-        max: { bronze: 26, silver: 32, gold: 38, minAccuracy: 0.8 },
+        min: { bronze: 24, silver: 30, gold: 36, minAccuracy: 0.85 },
+        max: { bronze: 26, silver: 32, gold: 38, minAccuracy: 0.9 },
     },
 });
 const BASS_HIGH_LEVELS = makeLevelGroup({
@@ -476,8 +476,8 @@ const BASS_HIGH_LEVELS = makeLevelGroup({
     noteRanges: { min: ["d/3", "f/3"], max: ["e/4", "c/5"] },
     scales: [Scale.Diatonic /*Scale.Chromatic*/ /* , Scale.Pentatonic, Scale.Melodic */],
     winConditions: {
-        min: { bronze: 26, silver: 32, gold: 38, minAccuracy: 0.8 },
-        max: { bronze: 28, silver: 34, gold: 40, minAccuracy: 0.8 },
+        min: { bronze: 26, silver: 32, gold: 38, minAccuracy: 0.85 },
+        max: { bronze: 28, silver: 34, gold: 40, minAccuracy: 0.9 },
     },
 });
 
