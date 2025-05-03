@@ -14,6 +14,15 @@ import { ScoreManager } from "@/utils/ScoreManager";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useLocalSearchParams } from "expo-router";
+import {
+    HIT_BASE_SCORE,
+    MAX_HIT_SCORE,
+    STREAK_SCORE,
+    BEST_STREAK_BONUS,
+    ACCURACY_BONUS,
+    SPEED_BONUS,
+    PERFECT_ACCURACY_BONUS,
+} from "@/utils/ScoreManager";
 
 export function GameStatsDisplay({ level }: GameStatsDisplayProps) {
     const theme = useTheme();
@@ -109,11 +118,10 @@ export function GameStatsDisplay({ level }: GameStatsDisplayProps) {
 export function ScoreDisplay() {
     const { intl } = useIntl();
     const { t } = useTranslation();
-    const { allLevels, getLevel, unloadPracticeLevel } = useAllLevels();
+    const { getLevel } = useAllLevels();
     const theme = useTheme();
-    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
-    const { endGame, games } = useAppStore();
-    const { previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
+    // const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
+    const { games } = useAppStore();
 
     const lastGame = games.at(-1);
     const level = getLevel(lastGame?.levelId!);
@@ -124,6 +132,8 @@ export function ScoreDisplay() {
 
     const score = ScoreManager.getScore();
     const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
+    const { accuracy, attemptCount, bestStreak, currNoteScore, hitCount, mistakeCount, streak, totalNoteScore } = score;
+    const { bestStreakBonus, accuracyBonus, perfectAccuracyBonus, speedBonus, totalScore, hitsPerMinute } = finalScore;
 
     console.log({ finalScore });
 
@@ -156,6 +166,21 @@ export function ScoreDisplay() {
                     </FadeIn>
                 </AppView> */}
 
+            <AppText>totalNoteScore {intl.format(score.totalNoteScore)}</AppText>
+            <AppText>
+                bestStreakBonus: {bestStreak} X {intl.format(BEST_STREAK_BONUS)} = {intl.format(bestStreakBonus)}
+            </AppText>
+            <AppText>
+                accuracyBonus {intl.format(ACCURACY_BONUS)} X {intl.format(accuracy)} = {intl.format(accuracyBonus)}
+            </AppText>
+
+            <>{perfectAccuracyBonus && <AppText>perfectAccuracyBonus {intl.format(perfectAccuracyBonus)}</AppText>}</>
+
+            <AppText>
+                speedBonus {hitsPerMinute} X {SPEED_BONUS} = {intl.format(speedBonus)}
+            </AppText>
+            {/* <AppText>{bestStreakBonus}</AppText> */}
+
             <FadeIn delay={1000} x={50} duration={250} y={0}>
                 <AppView transparentBG style={{ ...s.line, backgroundColor: Colors[theme].text }} />
             </FadeIn>
@@ -166,7 +191,7 @@ export function ScoreDisplay() {
                 </FadeIn>
                 <FadeIn delay={1600} x={-50} y={0}>
                     <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>
-                        {intl.format(score.totalNoteScore)}
+                        {intl.format(totalScore)}
                     </AppText>
                 </FadeIn>
             </AppView>

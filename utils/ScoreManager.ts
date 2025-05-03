@@ -2,9 +2,10 @@ export const HIT_BASE_SCORE = 100;
 export const MAX_HIT_SCORE = 500;
 export const STREAK_SCORE = 20;
 
-export const BEST_STREAK_BONUS = 10;
-export const ACCURACY_BONUS = 500;
-export const SPEED_BONUS = 10;
+export const BEST_STREAK_BONUS = 50;
+export const ACCURACY_BONUS = 2000;
+export const PERFECT_ACCURACY_BONUS = 1000;
+export const SPEED_BONUS = 20;
 
 export class ScoreManager {
     static currNoteScore = 0;
@@ -48,6 +49,7 @@ export class ScoreManager {
             streak: this.streak,
             bestStreak: this.bestStreak,
             totalNoteScore: this.totalNoteScore,
+            accuracy: this.getAccuracy(),
         };
         // console.log(score);
         return score;
@@ -61,16 +63,19 @@ export class ScoreManager {
         const bestStreakBonus = this.bestStreak * BEST_STREAK_BONUS;
 
         const accuracyBonus = ACCURACY_BONUS * this.getAccuracy();
+        const perfectAccuracyBonus = this.getAccuracy() === 1 ? PERFECT_ACCURACY_BONUS : 0;
 
         const hitsPerMinute = this.hitCount * (60 / levelDurationInSeconds);
-
         const speedBonus = SPEED_BONUS * hitsPerMinute;
 
+        const totalScore = this.totalNoteScore + bestStreakBonus + speedBonus + accuracyBonus + perfectAccuracyBonus;
         return {
             bestStreakBonus,
             accuracyBonus,
+            perfectAccuracyBonus,
             speedBonus,
-            totalScore: this.totalNoteScore + bestStreakBonus + accuracyBonus + speedBonus,
+            hitsPerMinute,
+            totalScore,
         };
         // this.noteScore + bestStreakBonus + accuracyBonus;
     }
