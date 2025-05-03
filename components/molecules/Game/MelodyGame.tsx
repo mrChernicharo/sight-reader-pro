@@ -57,9 +57,9 @@ export function useMelody() {
             const { noteName, octave } = explodeNote(currNote);
             const isSuccess = isNoteMatch(attempt, noteName);
             const playedNote = `${attempt}/${+octave}` as Note;
-            const noteScore = ScoreManager.push(isSuccess ? "success" : "mistake");
+            const { currNoteScore } = ScoreManager.push(isSuccess ? "success" : "mistake");
 
-            eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, noteScore } });
+            eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, currNoteScore } });
 
             setRoundResults((prev) => [...prev, isSuccess ? 1 : 0]);
             updateRound({ attempts: [...currRound.attempts, playedNote] });

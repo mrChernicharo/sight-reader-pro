@@ -81,8 +81,8 @@ export function SingleNoteGameComponent() {
         const isSuccess = isNoteMatch(notename, noteName);
 
         // console.log({ currNote, attemptedNote: playedNote, success });
-        const noteScore = ScoreManager.push(isSuccess ? "success" : "mistake");
-        eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, noteScore } });
+        const { currNoteScore } = ScoreManager.push(isSuccess ? "success" : "mistake");
+        eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, currNoteScore } });
 
         if (isSuccess) {
             setGameState(GameState.Success);
@@ -269,7 +269,7 @@ export interface NotePlayedEventData {
     playedNote: Note;
     currNote: Note;
     isSuccess: boolean;
-    noteScore: number;
+    currNoteScore: number;
 }
 
 function SingleNoteGameStage({

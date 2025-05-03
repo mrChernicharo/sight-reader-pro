@@ -3,7 +3,7 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { Confetti } from "@/components/molecules/Game/Confetti";
-import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
+import { GameStatsDisplay, ScoreDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
@@ -33,7 +33,7 @@ export default function GameOverScreen() {
     const level = getLevel(lastGame?.levelId || "");
     const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
     const { hasWon } = getGameStats(level, lastGame?.rounds ?? [], intl);
-    // const hasWon = isGameWin(lastGame);
+    // const hasWon = isGameWin(level, lastGame);
 
     const emoji = isPracticeLevel ? "" : hasWon ? " 🎉 " : " 😩 ";
     const headingText = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
@@ -42,48 +42,37 @@ export default function GameOverScreen() {
     const goToNextLevel = useCallback(() => {
         const nextLevel = allLevels.find((lvl) => lvl.clef === level.clef && lvl.index === level.index + 1);
         if (nextLevel) {
-            router.replace({
-                pathname: "/level-details/[id]",
-                params: { id: nextLevel.id, clef: nextLevel.clef },
-            });
+            router.replace({ pathname: "/level-details/[id]", params: { id: nextLevel.id, clef: nextLevel.clef } });
         } else {
             console.log("NO MORE LEVELS. ZEROU O GAME!");
         }
-        return;
     }, [level.clef, level.index]);
+
     const playAgain = useCallback(() => {
-        return router.replace({
+        router.replace({
             pathname: "/game-level/[id]",
-            params: {
-                id: level.id,
-                keySignature: level.keySignature,
-                previousPage: "/level-details",
-            },
+            params: { id: level.id, keySignature: level.keySignature, previousPage: "/level-details" },
         });
     }, [level.keySignature]);
+
     const goToLevelSelection = useCallback(() => {
-        // return router.navigate({
-        //     pathname: "/level-selection",
-        // });
-        return router.back();
+        router.back();
     }, []);
 
     const goToMainMenu = useCallback(() => {
-        return router.dismissTo({
-            pathname: "/",
-        });
+        router.dismissTo({ pathname: "/" });
     }, []);
 
-    useEffect(() => {
-        return () => {
-            // console.log("GAME OVER UNMOUNT!!!!");
-            if (previousPage == "/practice") {
-                // console.log("leaving practice game");
-                unloadPracticeLevel();
-            }
-            endGame();
-        };
-    }, []);
+    // useEffect(() => {
+    //     return () => {
+    //         // console.log("GAME OVER UNMOUNT!!!!");
+    //         if (previousPage == "/practice") {
+    //             // console.log("leaving practice game");
+    //             unloadPracticeLevel();
+    //         }
+    //         endGame();
+    //     };
+    // }, []);
 
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor }}>
@@ -108,6 +97,8 @@ export default function GameOverScreen() {
                         </AppText>
 
                         <GameStatsDisplay level={level} />
+
+                        <ScoreDisplay />
 
                         {hasWon ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
                     </AppView>

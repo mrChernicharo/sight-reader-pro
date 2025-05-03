@@ -37,7 +37,7 @@ export function GameStatsDisplaySimple({ level }: GameStatsDisplayProps) {
 
             <AppView style={{ ...s.row, ...s.score, backgroundColor: "rgba(0, 0, 0, 0)" }}>
                 <AppText style={{ fontFamily: "Grotesque", fontSize: 20, lineHeight: 28 }}>
-                    {t("game.score")} {intl.format(score.value)}
+                    {t("game.score")} {intl.format(score.totalNoteScore)}
                 </AppText>
             </AppView>
 

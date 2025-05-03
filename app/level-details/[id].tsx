@@ -66,7 +66,10 @@ export default function LevelDetails() {
                             {t(`levelName.${toCamelCase(levelName)}`)} {levelIdx}
                         </AppText>
                     </AppView>
+                </FadeIn>
 
+                {/* MID */}
+                <FadeIn y={50} x={0} delay={200}>
                     <AppView style={s.topInfo}>
                         <AppText
                             style={{ color: muteColor, lineHeight: 46, fontSize: level.clef == Clef.Bass ? 28 : 24 }}
@@ -87,12 +90,11 @@ export default function LevelDetails() {
                 </FadeIn>
 
                 {/* Separator */}
-                <FadeIn y={0} x={-100} delay={400}>
+                <FadeIn y={0} x={-100} delay={300}>
                     <AppView style={{ ...s.separator, borderColor: muteColor }} />
                 </FadeIn>
 
-                {/* MID */}
-                <FadeIn y={50} x={0} delay={200}>
+                <FadeIn y={50} x={0} delay={400}>
                     <AppText style={{ textAlign: "center" }}>{t(`game.type.${level.type}`)}</AppText>
 
                     <AppView style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
@@ -107,7 +109,7 @@ export default function LevelDetails() {
                 </FadeIn>
 
                 {/* Separator */}
-                <FadeIn y={0} x={-100} delay={400}>
+                <FadeIn y={0} x={100} delay={500}>
                     <AppView style={{ ...s.separator, borderColor: muteColor }} />
                 </FadeIn>
 
@@ -187,7 +189,6 @@ export default function LevelDetails() {
 const s = StyleSheet.create({
     container: {
         position: "relative",
-        // justifyContent: "center",
         alignItems: "center",
         minHeight: Dimensions.get("window").height,
         // ...testBorder(),
@@ -204,8 +205,6 @@ const s = StyleSheet.create({
         lineHeight: 36,
         textAlign: "center",
         pointerEvents: "none",
-        // borderWidth: 1,
-        // borderColor: "blue",
     },
     topInfo: {
         flexDirection: "row",
@@ -213,22 +212,17 @@ const s = StyleSheet.create({
         alignItems: "center",
         gap: 4,
         marginTop: 32,
-        // ...testBorder(),
     },
     midContainer: {
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
-        // width: Dimensions.get("window").width,
-        // paddingVertical: 24,
-        // ...testBorder(),
     },
     separator: {
         borderBottomWidth: StyleSheet.hairlineWidth,
         width: Dimensions.get("window").width - 96,
         height: 20,
         marginBottom: 20,
-        // ...testBorder(),
     },
     rangeTitle: {
         textAlign: "center",

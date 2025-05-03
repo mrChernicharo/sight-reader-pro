@@ -4,13 +4,16 @@ import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { getGameStats } from "@/utils/helperFns";
-import { GameStatsDisplayProps, LevelScore } from "@/utils/types";
+import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
+import { GameScreenParams, GameStatsDisplayProps, LevelScore } from "@/utils/types";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
 import { AppText } from "../../atoms/AppText";
 import { AppView } from "../../atoms/AppView";
 import { ScoreManager } from "@/utils/ScoreManager";
+import { useAllLevels } from "@/hooks/useAllLevels";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { useLocalSearchParams } from "expo-router";
 
 export function GameStatsDisplay({ level }: GameStatsDisplayProps) {
     const theme = useTheme();
@@ -99,9 +102,34 @@ export function GameStatsDisplay({ level }: GameStatsDisplayProps) {
                     </AppView>
                 </FadeIn>
             </AppView>
+        </AppView>
+    );
+}
 
-            <AppView transparentBG style={s.score}>
-                <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
+export function ScoreDisplay() {
+    const { intl } = useIntl();
+    const { t } = useTranslation();
+    const { allLevels, getLevel, unloadPracticeLevel } = useAllLevels();
+    const theme = useTheme();
+    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
+    const { endGame, games } = useAppStore();
+    const { previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
+
+    const lastGame = games.at(-1);
+    const level = getLevel(lastGame?.levelId!);
+
+    // const level = getLevel(lastGame?.levelId || "");
+    // const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
+    // const { hasWon } = getGameStats(level, lastGame?.rounds ?? [], intl);
+
+    const score = ScoreManager.getScore();
+    const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
+
+    console.log({ finalScore });
+
+    return (
+        <AppView transparentBG style={s.score}>
+            {/* <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
                     <FadeIn delay={0} x={50} duration={250} y={0}>
                         <AppText style={{ color: Colors[theme].textMute }}>
                             <AppText style={{ fontWeight: 900 }}>{score.hits} </AppText>
@@ -126,22 +154,21 @@ export function GameStatsDisplay({ level }: GameStatsDisplayProps) {
                             X
                         </AppText>
                     </FadeIn>
-                </AppView>
+                </AppView> */}
 
-                <FadeIn delay={1000} x={50} duration={250} y={0}>
-                    <AppView transparentBG style={{ ...s.line, backgroundColor: Colors[theme].text }} />
+            <FadeIn delay={1000} x={50} duration={250} y={0}>
+                <AppView transparentBG style={{ ...s.line, backgroundColor: Colors[theme].text }} />
+            </FadeIn>
+
+            <AppView transparentBG style={{ alignItems: "center" }}>
+                <FadeIn delay={1500} x={-50} y={0}>
+                    <AppText type="default">{t("game.TOTAL_SCORE")}</AppText>
                 </FadeIn>
-
-                <AppView transparentBG style={{ alignItems: "center" }}>
-                    <FadeIn delay={1500} x={-50} y={0}>
-                        <AppText type="default">{t("game.TOTAL_SCORE")}</AppText>
-                    </FadeIn>
-                    <FadeIn delay={1600} x={-50} y={0}>
-                        <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>
-                            {intl.format(score.value)}
-                        </AppText>
-                    </FadeIn>
-                </AppView>
+                <FadeIn delay={1600} x={-50} y={0}>
+                    <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>
+                        {intl.format(score.totalNoteScore)}
+                    </AppText>
+                </FadeIn>
             </AppView>
         </AppView>
     );
