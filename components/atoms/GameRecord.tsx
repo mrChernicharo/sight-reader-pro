@@ -16,6 +16,8 @@ export function GameRecord({ game }: { game: Game }) {
     const { getLevel } = useAllLevels();
 
     const level = getLevel(game.levelId);
+    if (!level) return null;
+
     const isPracticeLevel = getIsPracticeLevel(level.id);
 
     const { intl, intlDate } = useIntl();

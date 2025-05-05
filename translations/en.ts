@@ -108,6 +108,10 @@ const en = {
         progress: "Progress",
         stats: "Statistics",
         achievements: "Achievements",
+        empty: {
+            title: "Nothing here for now...",
+            hint: "Play a few games and your history will be shown here",
+        },
     },
     levelSelection: {
         trebleClef: "Treble Clef",

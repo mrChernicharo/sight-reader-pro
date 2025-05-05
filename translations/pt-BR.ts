@@ -109,6 +109,10 @@ const ptBR = {
         progress: "Progresso",
         stats: "Estatísticas",
         achievements: "Conquistas",
+        empty: {
+            title: "Nada aqui por enquanto...",
+            hint: "Jogue algumas partidas e o seu histórico vai aparecer aqui",
+        },
     },
     levelSelection: {
         trebleClef: "Clave de Sol",

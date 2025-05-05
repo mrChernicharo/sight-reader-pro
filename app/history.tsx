@@ -33,12 +33,21 @@ export default function HistoryScreen() {
                 </AppView>
             </AppView>
 
-            <FlatList
-                data={games.toReversed()}
-                keyExtractor={(game) => game.id}
-                renderItem={({ item: game }) => <GameRecord game={game} />}
-                style={s.flatlist}
-            />
+            {games.length > 0 ? (
+                <FlatList
+                    data={games.toReversed()}
+                    keyExtractor={(game) => game.id}
+                    renderItem={({ item: game }) => <GameRecord game={game} />}
+                    style={s.flatlist}
+                />
+            ) : (
+                <AppView style={{ flex: 1, paddingHorizontal: 32, justifyContent: "center", alignItems: "center" }}>
+                    <AppText style={{ textAlign: "center" }} type="mdSemiBold">
+                        {t("history.empty.title")}
+                    </AppText>
+                    <AppText style={{ textAlign: "center" }}>{t("history.empty.hint")}</AppText>
+                </AppView>
+            )}
         </SafeAreaView>
     );
 }
