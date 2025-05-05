@@ -22,7 +22,7 @@ import {
 import { decideNextRound } from "@/utils/noteFns";
 import { ScoreManager } from "@/utils/ScoreManager";
 import { STYLES } from "@/utils/styles";
-import { CurrentGame, GameScreenParams, Note, SingleNoteRound } from "@/utils/types";
+import { CurrentGame, Game, GameScreenParams, Note, SingleNoteRound } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleProp, TextStyle, View } from "react-native";
@@ -81,8 +81,8 @@ export function SingleNoteGameComponent() {
         const isSuccess = isNoteMatch(notename, noteName);
 
         // console.log({ currNote, attemptedNote: playedNote, success });
-        const { currNoteScore } = ScoreManager.push(isSuccess ? "success" : "mistake");
-        eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, currNoteScore } });
+        const { currNoteValue } = ScoreManager.push(isSuccess ? "success" : "mistake");
+        eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, currNoteValue } });
 
         if (isSuccess) {
             setGameState(GameState.Success);
@@ -110,14 +110,24 @@ export function SingleNoteGameComponent() {
 
     const onCountdownFinish = useCallback(async () => {
         setGameState(GameState.Idle);
-        const gameRecord = {
+        const gameScoreInfo = ScoreManager.getScore();
+        const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
+
+        const gameRecord: Game = {
             id: randomUID(),
             levelId: id,
             rounds,
             timestamp: Date.now(),
             type: GameType.Single,
             durationInSeconds: level.durationInSeconds,
+            score: {
+                ...gameScoreInfo,
+                ...finalScore,
+            },
         };
+
+        console.log("<onCountdownFinish> ", { finalScore, gameScoreInfo, gameRecord });
+
         // console.log("OK", { gameRecord });
         await saveGameRecord(gameRecord);
         router.replace({ pathname: "/game-over" });
@@ -269,7 +279,7 @@ export interface NotePlayedEventData {
     playedNote: Note;
     currNote: Note;
     isSuccess: boolean;
-    currNoteScore: number;
+    currNoteValue: number;
 }
 
 function SingleNoteGameStage({

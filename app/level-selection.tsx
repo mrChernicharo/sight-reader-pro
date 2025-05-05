@@ -110,6 +110,7 @@ export default function LevelSelectionScreen() {
                                                         key={level.id}
                                                         level={level}
                                                         isLocked={level.index > unlockedLevels[level.clef] + 1}
+                                                        stars={3}
                                                     />
                                                 </Tooltip>
                                             ) : (
@@ -117,6 +118,7 @@ export default function LevelSelectionScreen() {
                                                     key={level.id}
                                                     level={level}
                                                     isLocked={level.index > unlockedLevels[level.clef] + 1}
+                                                    stars={0}
                                                 />
                                             );
                                         })}

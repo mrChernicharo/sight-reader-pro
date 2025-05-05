@@ -8,32 +8,31 @@ export const PERFECT_ACCURACY_BONUS = 1000;
 export const SPEED_BONUS = 20;
 
 export class ScoreManager {
-    static currNoteScore = 0;
+    static currNoteValue = 0;
+    static currStreak = 0;
 
-    static attemptCount = 0;
-    static hitCount = 0;
-    static mistakeCount = 0;
+    static attempts = 0;
+    static successes = 0;
+    static mistakes = 0;
 
-    static streak = 0;
     static bestStreak = 0;
-
     static totalNoteScore = 0;
 
     static push(value: "success" | "mistake") {
-        this.attemptCount++;
+        this.attempts++;
 
         switch (value) {
             case "success":
-                this.currNoteScore = Math.min(MAX_HIT_SCORE, HIT_BASE_SCORE + this.streak * STREAK_SCORE);
-                this.hitCount++;
-                this.streak++;
-                this.bestStreak = Math.max(this.streak, this.bestStreak);
-                this.totalNoteScore += this.currNoteScore;
+                this.currNoteValue = Math.min(MAX_HIT_SCORE, HIT_BASE_SCORE + this.currStreak * STREAK_SCORE);
+                this.successes++;
+                this.currStreak++;
+                this.bestStreak = Math.max(this.currStreak, this.bestStreak);
+                this.totalNoteScore += this.currNoteValue;
                 break;
             case "mistake":
-                this.currNoteScore = 0;
-                this.mistakeCount++;
-                this.streak = 0;
+                this.currNoteValue = 0;
+                this.mistakes++;
+                this.currStreak = 0;
                 break;
         }
         console.log("<ScoreManager> push", this.getScore());
@@ -42,11 +41,11 @@ export class ScoreManager {
 
     static getScore() {
         const score = {
-            currNoteScore: this.currNoteScore,
-            attemptCount: this.attemptCount,
-            hitCount: this.hitCount,
-            mistakeCount: this.mistakeCount,
-            streak: this.streak,
+            currNoteValue: this.currNoteValue,
+            attempts: this.attempts,
+            successes: this.successes,
+            mistakes: this.mistakes,
+            currStreak: this.currStreak,
             bestStreak: this.bestStreak,
             totalNoteScore: this.totalNoteScore,
             accuracy: this.getAccuracy(),
@@ -56,7 +55,7 @@ export class ScoreManager {
     }
 
     static getAccuracy() {
-        return this.hitCount / this.attemptCount;
+        return this.successes / this.attempts;
     }
 
     static getFinalScore(levelDurationInSeconds: number) {
@@ -65,7 +64,7 @@ export class ScoreManager {
         const accuracyBonus = ACCURACY_BONUS * this.getAccuracy();
         const perfectAccuracyBonus = this.getAccuracy() === 1 ? PERFECT_ACCURACY_BONUS : 0;
 
-        const hitsPerMinute = this.hitCount * (60 / levelDurationInSeconds);
+        const hitsPerMinute = this.successes * (60 / levelDurationInSeconds);
         const speedBonus = SPEED_BONUS * hitsPerMinute;
 
         const totalScore = this.totalNoteScore + bestStreakBonus + speedBonus + accuracyBonus + perfectAccuracyBonus;
@@ -81,11 +80,11 @@ export class ScoreManager {
     }
 
     static reset() {
-        this.currNoteScore = 0;
-        this.attemptCount = 0;
-        this.hitCount = 0;
-        this.mistakeCount = 0;
-        this.streak = 0;
+        this.currNoteValue = 0;
+        this.attempts = 0;
+        this.successes = 0;
+        this.mistakes = 0;
+        this.currStreak = 0;
         this.bestStreak = 0;
         this.totalNoteScore = 0;
 

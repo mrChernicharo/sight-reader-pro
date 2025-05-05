@@ -57,9 +57,9 @@ export function useMelody() {
             const { noteName, octave } = explodeNote(currNote);
             const isSuccess = isNoteMatch(attempt, noteName);
             const playedNote = `${attempt}/${+octave}` as Note;
-            const { currNoteScore } = ScoreManager.push(isSuccess ? "success" : "mistake");
+            const { currNoteValue } = ScoreManager.push(isSuccess ? "success" : "mistake");
 
-            eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, currNoteScore } });
+            eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, currNoteValue } });
 
             setRoundResults((prev) => [...prev, isSuccess ? 1 : 0]);
             updateRound({ attempts: [...currRound.attempts, playedNote] });
@@ -83,6 +83,9 @@ export function useMelody() {
     );
 
     const onCountdownFinish = useCallback(async () => {
+        const gameScoreInfo = ScoreManager.getScore();
+        const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
+
         await saveGameRecord({
             id: randomUID(),
             levelId: id,
@@ -90,6 +93,10 @@ export function useMelody() {
             timestamp: Date.now(),
             type: GameType.Melody,
             durationInSeconds: level.durationInSeconds,
+            score: {
+                ...gameScoreInfo,
+                ...finalScore,
+            },
         });
         router.replace({ pathname: "/game-over" });
         // router.replace({ pathname: isPracticeLevel ? "/practice" : "/game-over" });

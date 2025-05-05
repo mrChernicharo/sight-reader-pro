@@ -8,7 +8,7 @@ const en = {
     },
     routes: {
         practice: "Custom Practice",
-        profile: "History",
+        history: "History",
         settings: "Settings",
         levelSelection: "Level Selection",
         main: {
@@ -93,7 +93,7 @@ const en = {
         },
         lang: { placeholder: "Language ..." },
     },
-    profile: {
+    history: {
         title: "History",
         username: "Username",
         level: "Level",

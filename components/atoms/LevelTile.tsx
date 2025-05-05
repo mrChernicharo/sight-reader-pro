@@ -12,9 +12,10 @@ import { getLevelName, toCamelCase } from "@/utils/helperFns";
 
 interface LevelTileProps {
     level: Level;
+    stars: number; // 0 - 3
     isLocked: boolean;
 }
-export function LevelTile({ level, isLocked }: LevelTileProps) {
+export function LevelTile({ level, isLocked, stars }: LevelTileProps) {
     const { levelName, levelIdx } = getLevelName(level);
     const { t } = useTranslation();
     const theme = useTheme();

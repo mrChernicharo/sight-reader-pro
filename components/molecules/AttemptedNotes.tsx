@@ -31,11 +31,11 @@ export function AttemptedNotes() {
     useEffect(() => {
         eventEmitter.addListener(AppEvents.NotePlayed, (event) => {
             // console.log(event);
-            const { currNote, playedNote, isSuccess, currNoteScore } = event.data as NotePlayedEventData;
+            const { currNote, playedNote, isSuccess, currNoteValue } = event.data as NotePlayedEventData;
 
             setAttemptedNotes((prev) => [
                 ...prev,
-                { id: randomUID(), you: playedNote, correct: currNote, isSuccess, noteScore: currNoteScore },
+                { id: randomUID(), you: playedNote, correct: currNote, isSuccess, noteScore: currNoteValue },
             ]);
         });
         return () => eventEmitter.removeAllListeners(AppEvents.NotePlayed);

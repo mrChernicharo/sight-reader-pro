@@ -105,41 +105,32 @@ export type Game = {
     durationInSeconds: number;
     type: GameType;
     rounds: Round<GameType>[];
+    score: GameScoreInfo;
 };
 
-// export type Round = {
-//     attempt: null | Note[];
-//     value: Note[];
-// };
+export type GameScoreInfo = {
+    attempts: number;
+    successes: number;
+    mistakes: number;
+    accuracy: number;
+    bestStreak: number;
+    totalNoteScore: number;
 
-// export type ActiveGame = {
-//     state: GameState;
-//     rounds: Round[];
-// };
+    accuracyBonus: number;
+    speedBonus: number;
+    bestStreakBonus: number;
+    perfectAccuracyBonus: number;
+    totalScore: number;
+};
 
 export type CurrentGame = Game & Level & { state: GameState };
 
 export type PianoKeySpec = "Flat" | "Sharp"; /* | 'Both' */
 
-// export interface GameScore {
-//     successes: number;
-//     mistakes: number;
-// }
-
 export type SectionedLevel = {
     title: string;
     data: Level[];
 };
-
-export interface LevelScore {
-    value: number;
-    multiplier: number;
-    hits: number;
-    hitScore: number;
-    winConditions: WinConditions;
-    accuracy: number;
-    formula: string;
-}
 
 export interface GameScreenParams {
     id: string;
@@ -167,4 +158,36 @@ export interface LevelGroupSpec {
     // noteRanges: MinMax<[number, number]>; // { min:  [20, 10], max: [30, 40] }
 }
 
-export type AttemptedNote = { id: string; you: Note; correct: Note; isSuccess: boolean; noteScore: number };
+export type AttemptedNote = {
+    id: string;
+    you: Note;
+    correct: Note;
+    isSuccess: boolean;
+    noteScore: number;
+};
+
+// export type Round = {
+//     attempt: null | Note[];
+//     value: Note[];
+// };
+
+// export type ActiveGame = {
+//     state: GameState;
+//     rounds: Round[];
+// };
+
+// export interface GameScore {
+//     successes: number;
+//     mistakes: number;
+// }
+
+/** @deprecated */
+export interface LevelScore {
+    value: number;
+    multiplier: number;
+    hits: number;
+    hitScore: number;
+    winConditions: WinConditions;
+    accuracy: number;
+    formula: string;
+}

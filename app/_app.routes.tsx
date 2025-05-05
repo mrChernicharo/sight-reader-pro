@@ -17,7 +17,7 @@ export default function AppRoutes() {
 
             <Stack.Screen name="practice" options={{ headerShown: false }} />
 
-            <Stack.Screen name="profile" options={{ headerShown: false }} />
+            <Stack.Screen name="history" options={{ headerShown: false }} />
 
             <Stack.Screen name="settings" options={{ headerShown: false }} />
         </Stack>

@@ -8,7 +8,7 @@ const ptBR = {
     },
     routes: {
         practice: "Prática Personalizada",
-        profile: "Histórico",
+        history: "Histórico",
         settings: "Configurações",
         levelSelection: "Selecionar Nível",
         main: {
@@ -94,7 +94,7 @@ const ptBR = {
         },
         lang: { placeholder: "Idioma ..." },
     },
-    profile: {
+    history: {
         title: "Histórico",
         username: "Nome de Usuário",
         level: "Nível",

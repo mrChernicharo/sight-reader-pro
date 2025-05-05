@@ -71,8 +71,8 @@ export default function Home() {
                     />
 
                     <AppButton
-                        onPress={() => navigateTo("/profile")}
-                        text={t("routes.profile")}
+                        onPress={() => navigateTo("/history")}
+                        text={t("routes.history")}
                         style={{ ...s.btn, borderColor: Colors[theme].text }}
                         textStyle={{ color: Colors[theme].text }}
                     />

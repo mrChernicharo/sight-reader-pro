@@ -11,7 +11,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SettingsScreen() {
+export default function HistoryScreen() {
     const { t } = useTranslation();
     const { username = "user", games } = useAppStore();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
@@ -24,7 +24,7 @@ export default function SettingsScreen() {
                 <AppView style={{ position: "absolute", left: 10, top: 6 }}>
                     <BackLink />
                 </AppView>
-                <AppText type="subtitle">{t("profile.title")}</AppText>
+                <AppText type="subtitle">{t("history.title")}</AppText>
 
                 <AppView>
                     <AppText type="md">{username}</AppText>

@@ -132,7 +132,7 @@ export function ScoreDisplay() {
 
     const score = ScoreManager.getScore();
     const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
-    const { accuracy, attemptCount, bestStreak, currNoteScore, hitCount, mistakeCount, streak, totalNoteScore } = score;
+    const { accuracy, attempts, bestStreak, currNoteValue, successes, mistakes, currStreak, totalNoteScore } = score;
     const { bestStreakBonus, accuracyBonus, perfectAccuracyBonus, speedBonus, totalScore, hitsPerMinute } = finalScore;
 
     console.log({ finalScore });
@@ -174,7 +174,7 @@ export function ScoreDisplay() {
                 accuracyBonus {intl.format(ACCURACY_BONUS)} X {intl.format(accuracy)} = {intl.format(accuracyBonus)}
             </AppText>
 
-            <>{perfectAccuracyBonus && <AppText>perfectAccuracyBonus {intl.format(perfectAccuracyBonus)}</AppText>}</>
+            {perfectAccuracyBonus ? <AppText>perfectAccuracyBonus {intl.format(perfectAccuracyBonus)}</AppText> : null}
 
             <AppText>
                 speedBonus {hitsPerMinute} X {SPEED_BONUS} = {intl.format(speedBonus)}
