@@ -23,6 +23,7 @@ import {
     SPEED_BONUS,
     PERFECT_ACCURACY_BONUS,
 } from "@/utils/ScoreManager";
+import { testBorder } from "@/utils/styles";
 
 export type GameStatsDisplayProps = {
     level: Level;
@@ -128,15 +129,17 @@ const s = StyleSheet.create({
         flexDirection: "row",
         // justifyContent: "space-between",
         justifyContent: "center",
+        // ...testBorder("green"),
     },
     rowItem: {
-        // justifyContent: "center",
+        justifyContent: "center",
         alignItems: "center",
         paddingHorizontal: 8,
-        paddingVertical: 2,
-        minWidth: 100,
+        paddingTop: 4,
+        // minWidth: 100,
         // borderWidth: 1,
         // borderColor: "#444",
+        // ...testBorder("blue"),
     },
     separator: {
         height: 12,

@@ -6,6 +6,7 @@ const en = {
         welcome: "Welcome",
         loading: "Loading",
         gameCount: "games played",
+        notes: "notes",
     },
     routes: {
         practice: "Custom Practice",

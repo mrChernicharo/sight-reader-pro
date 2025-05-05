@@ -44,7 +44,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
                     <AppText style={s.bonusTitle}>{t("game.bonus.bestStreak")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
-                            {bestStreak} notes X {intl.format(BEST_STREAK_BONUS)}
+                            {bestStreak} {t("app.notes")} X {intl.format(BEST_STREAK_BONUS)}
                         </AppText>
                         <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(bestStreakBonus)} pts</AppText>
                     </AppText>
@@ -78,7 +78,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
             {perfectAccuracyBonus ? (
                 <FadeIn delay={1500} x={-100}>
                     <View style={s.bonusView}>
-                        <AppText style={s.bonusTitle}>{t("game.bonus.perfectAccuracyBonus")}</AppText>
+                        <AppText style={s.bonusTitle}>{t("game.bonus.perfectAccuracy")}</AppText>
                         <AppText style={s.bonusTotal}>{intl.format(perfectAccuracyBonus)} pts</AppText>
                     </View>
                 </FadeIn>

@@ -6,6 +6,7 @@ const ptBR = {
         welcome: "Boas vindas",
         loading: "Carregando",
         gameCount: "partidas jogadas",
+        notes: "notas",
     },
     routes: {
         practice: "Prática Personalizada",
