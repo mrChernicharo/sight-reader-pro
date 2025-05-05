@@ -116,6 +116,7 @@ export type GameScoreInfo = {
     bestStreak: number;
     totalNoteScore: number;
 
+    hitsPerMinute: number;
     accuracyBonus: number;
     speedBonus: number;
     bestStreakBonus: number;

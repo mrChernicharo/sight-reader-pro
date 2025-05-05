@@ -1,5 +1,5 @@
 import { Clef, GameType, KeySignature, Knowledge } from "@/utils/enums";
-import { CurrentGame, Game, Level, Note, Round, Scale } from "@/utils/types";
+import { CurrentGame, Game, GameScoreInfo, Level, Note, Round, Scale } from "@/utils/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 import { create } from "zustand";
@@ -96,6 +96,21 @@ const defaultStore: Omit<AppState, "_hydrated"> = {
 
 type OldAppState = Partial<typeof defaultStore>;
 type NewAppState = typeof defaultStore;
+
+const DUMMY_GAME_SCORE: GameScoreInfo = {
+    attempts: 0,
+    successes: 0,
+    mistakes: 0,
+    accuracy: 0,
+    bestStreak: 0,
+    hitsPerMinute: 0,
+    totalNoteScore: 0,
+    accuracyBonus: 0,
+    speedBonus: 0,
+    bestStreakBonus: 0,
+    perfectAccuracyBonus: 0,
+    totalScore: 0,
+};
 
 export const useAppStore = create<AppState & AppActions>()(
     devtools(
@@ -196,14 +211,17 @@ export const useAppStore = create<AppState & AppActions>()(
                     return () => state.setHydrated(true);
                 },
                 migrate: (persistedState: unknown, version) => {
-                    if (version < 2) {
+                    console.log(persistedState, version);
+                    if (version < 3) {
                         const typedState = persistedState as OldAppState;
                         return {
                             ...defaultStore,
                             username: typedState.username || defaultStore.username,
                             language: typedState.language || defaultStore.language,
                             knowledge: typedState.knowledge || defaultStore.knowledge,
-                            games: typedState.games || defaultStore.games,
+                            games:
+                                typedState.games?.map((game) => ({ ...game, score: game.score || DUMMY_GAME_SCORE })) ||
+                                defaultStore.games,
                         } as NewAppState;
                     }
 
@@ -211,7 +229,7 @@ export const useAppStore = create<AppState & AppActions>()(
                     // just return the persisted state.
                     return persistedState as NewAppState;
                 },
-                version: 2,
+                version: 3,
             }
         )
     )

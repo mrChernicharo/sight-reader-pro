@@ -27,7 +27,7 @@ export default function LevelSelectionScreen() {
     // const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "accent");
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
 
-    const { sectionedLevels, unlockedLevels } = useAllLevels();
+    const { sectionedLevels, unlockedLevels, levelStars } = useAllLevels();
     const clef = useAppStore((state) => state.selectedLevelsClef);
     const hasCompletedTour = useAppStore((state) => state.completedTours.levelSelection);
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
@@ -110,7 +110,7 @@ export default function LevelSelectionScreen() {
                                                         key={level.id}
                                                         level={level}
                                                         isLocked={level.index > unlockedLevels[level.clef] + 1}
-                                                        stars={3}
+                                                        stars={levelStars[level.clef][level.index]}
                                                     />
                                                 </Tooltip>
                                             ) : (
@@ -118,7 +118,7 @@ export default function LevelSelectionScreen() {
                                                     key={level.id}
                                                     level={level}
                                                     isLocked={level.index > unlockedLevels[level.clef] + 1}
-                                                    stars={0}
+                                                    stars={levelStars[level.clef][level.index]}
                                                 />
                                             );
                                         })}

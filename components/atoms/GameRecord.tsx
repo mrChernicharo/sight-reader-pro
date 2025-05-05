@@ -2,7 +2,7 @@ import { useAllLevels } from "@/hooks/useAllLevels";
 import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { getGameStats } from "@/utils/helperFns";
+import { getGameStats, getIsGameWin } from "@/utils/helperFns";
 import { Game } from "@/utils/types";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
@@ -17,7 +17,11 @@ export function GameRecord({ game }: { game: Game }) {
 
     const level = getLevel(game.levelId);
     const { intl } = useIntl();
-    const { successes, mistakes, accuracy } = getGameStats(level, game.rounds, intl);
+
+    const { isGameWin, stars } = getIsGameWin(game, level.winConditions);
+    const { accuracy, attempts, successes, mistakes, hitsPerMinute, totalScore } = game.score;
+
+    console.log(game);
 
     if (!level) return null;
 
@@ -45,7 +49,18 @@ export function GameRecord({ game }: { game: Game }) {
                 <AppText>
                     <Ionicons name="eye-outline" />
                 </AppText>
-                <AppText>{accuracy}</AppText>
+                <AppText>{intl.format(accuracy)}</AppText>
+            </AppView>
+
+            <AppView style={s.notesContainer}>
+                <AppText>{isGameWin ? "VICTORY" : "DEFEAT"}</AppText>
+
+                <AppText>
+                    <Ionicons name="star" />
+                </AppText>
+                <AppText>{stars}</AppText>
+
+                <AppText>{intl.format(parseInt(String(totalScore)))} pts.</AppText>
             </AppView>
         </AppView>
     );

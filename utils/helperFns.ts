@@ -371,18 +371,19 @@ export function stemDown(note: Note, clef: Clef) {
     }
 }
 
-export function isGameWin(game: Game | undefined) {
-    if (!game) return false;
+export function getIsGameWin(game: Game | undefined, winConditions: WinConditions) {
+    if (!game) return { isGameWin: false, stars: 0 };
 
-    switch (game.type) {
-        case GameType.Single:
-            // game.rounds.reduce()
-            break;
-        case GameType.Melody:
-            break;
-        default:
-            break;
-    }
+    const isGameWin =
+        game.score.hitsPerMinute >= winConditions[WinRank.Bronze] && game.score.accuracy >= winConditions.minAccuracy;
+
+    let stars = 0;
+    if (game.score.hitsPerMinute >= winConditions[WinRank.Gold]) stars = 3;
+    else if (game.score.hitsPerMinute >= winConditions[WinRank.Silver]) stars = 2;
+    else if (game.score.hitsPerMinute >= winConditions[WinRank.Bronze]) stars = 1;
+    if (!isGameWin) stars = 0;
+
+    return { isGameWin, stars };
 }
 
 export function getGameStats(level: Level, rounds: Round<GameType>[], intl: Intl.NumberFormat) {

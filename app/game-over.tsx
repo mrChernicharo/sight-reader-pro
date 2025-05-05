@@ -11,10 +11,10 @@ import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { getGameStats, getIsPracticeLevel, isGameWin } from "@/utils/helperFns";
+import { getIsGameWin, getIsPracticeLevel } from "@/utils/helperFns";
 import { GameScreenParams } from "@/utils/types";
 import { Link, router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -32,11 +32,13 @@ export default function GameOverScreen() {
 
     const level = getLevel(lastGame?.levelId || "");
     const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
-    const { hasWon } = getGameStats(level, lastGame?.rounds ?? [], intl);
-    // const hasWon = isGameWin(level, lastGame);
+    const { isGameWin } = getIsGameWin(lastGame, level.winConditions);
 
-    const emoji = isPracticeLevel ? "" : hasWon ? " 🎉 " : " 😩 ";
-    const headingText = t(isPracticeLevel ? "game.state.practiceEnd" : hasWon ? "game.state.win" : "game.state.lose");
+    const emoji = isPracticeLevel ? "" : isGameWin ? " 🎉 " : " 😩 ";
+    const headingText = t(
+        isPracticeLevel ? "game.state.practiceEnd" : isGameWin ? "game.state.win" : "game.state.lose"
+    );
+
     const btnTextStyle = { color: Colors[theme].text };
 
     const goToNextLevel = useCallback(() => {
@@ -83,7 +85,7 @@ export default function GameOverScreen() {
                 }}
             >
                 <AppView style={{ minHeight: Dimensions.get("screen").height - (isPracticeLevel ? 60 : 0) }}>
-                    {hasWon ? (
+                    {isGameWin ? (
                         <>
                             <Confetti x={-120} duration={2000} />
                             <Confetti x={0} y={-50} duration={2000} delay={500} />
@@ -100,7 +102,7 @@ export default function GameOverScreen() {
 
                         <ScoreDisplay />
 
-                        {hasWon ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
+                        {isGameWin ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
                     </AppView>
 
                     <AppView style={s.btnsContainer}>
@@ -122,7 +124,7 @@ export default function GameOverScreen() {
                             </>
                         ) : (
                             <>
-                                {hasWon ? (
+                                {isGameWin ? (
                                     <>
                                         <FadeIn y={50} x={0} delay={2200} style={{ paddingTop: 12 }}>
                                             <AppButton text={t("game.goTo.next")} onPress={goToNextLevel} />

@@ -1,5 +1,5 @@
 import { Clef, GameType, Knowledge } from "@/utils/enums";
-import { getGameStats, padZero } from "@/utils/helperFns";
+import { getGameStats, getIsGameWin, padZero } from "@/utils/helperFns";
 import { ALL_LEVELS } from "@/utils/levels";
 import { Level, SectionedLevel } from "@/utils/types";
 import { useCallback, useMemo } from "react";
@@ -95,20 +95,19 @@ export function useAllLevels() {
             //         console.log("level:::", JSON.stringify(level, null, 2));
             if (!game || !level) continue;
 
-            const { hasWon } = getGameStats(level, game.rounds, intl);
+            const { isGameWin } = getIsGameWin(game, level.winConditions);
 
-            // console.log("getUnlockedLevels", { level, game, hasWon });
             switch (level.type) {
                 case GameType.Melody:
                 case GameType.Single: {
                     switch (level.clef) {
                         case Clef.Treble:
-                            if (hasWon && level.index > highestTrebleIdx) {
+                            if (isGameWin && level.index > highestTrebleIdx) {
                                 highestTrebleIdx = level.index;
                             }
                             break;
                         case Clef.Bass:
-                            if (hasWon && level.index > highestBassIdx) {
+                            if (isGameWin && level.index > highestBassIdx) {
                                 highestBassIdx = level.index;
                             }
                             break;
@@ -126,6 +125,27 @@ export function useAllLevels() {
         return response;
     }, [games]);
 
+    const levelStars = useMemo(() => {
+        const treble: number[] = [];
+        const bass: number[] = [];
+
+        games.forEach((game) => {
+            const level = getLevel(game.levelId);
+
+            const arr = level.clef === Clef.Treble ? treble : bass;
+
+            const { stars } = getIsGameWin(game, level.winConditions);
+
+            if (!arr[level.index] || arr[level.index] < stars) {
+                arr[level.index] = stars;
+            }
+        });
+
+        console.log("<levelStars>", { treble, bass });
+
+        return { treble, bass };
+    }, [games]);
+
     // useEffect(() => {
     //     console.log(
     //         "allLevels >>>> ",
@@ -140,5 +160,6 @@ export function useAllLevels() {
         allLevels,
         sectionedLevels,
         unlockedLevels,
+        levelStars,
     };
 }
