@@ -12,7 +12,7 @@ import { useIntl } from "@/hooks/useIntl";
 import { BackLink } from "@/components/atoms/BackLink";
 import { ScoreManager } from "@/utils/ScoreManager";
 
-export function GameStatsDisplaySimple({ level }: GameStatsDisplayProps) {
+export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDisplayProps) {
     const theme = useTheme();
     const { t } = useTranslation();
     const { intl } = useIntl();
@@ -24,7 +24,7 @@ export function GameStatsDisplaySimple({ level }: GameStatsDisplayProps) {
 
     if (!currentGame?.rounds || currentGame.rounds.length === 0) return <></>;
 
-    const { accuracy, attempts, successes, mistakes, hitsPerMinute } = getGameStats(level, currentGame?.rounds, intl);
+    const { accuracy, attempts, successes, mistakes } = getGameStats(level, currentGame?.rounds, intl);
     const score = ScoreManager.getScore();
 
     // useEffect(() => {

@@ -141,6 +141,7 @@ export interface GameScreenParams {
 
 export type GameStatsDisplayProps = {
     level: Level;
+    hitsPerMinute: number;
 };
 
 export type MinMax<T> = { min: T; max: T };
