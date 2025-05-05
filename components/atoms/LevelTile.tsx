@@ -9,7 +9,7 @@ import { Pressable } from "react-native";
 import { router } from "expo-router";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getLevelName, toCamelCase } from "@/utils/helperFns";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { GameStars } from "./GameStars";
 
 interface LevelTileProps {
     level: Level;
@@ -22,8 +22,6 @@ export function LevelTile({ level, isLocked, stars }: LevelTileProps) {
     const theme = useTheme();
     const accentColor = useThemeColor({ light: Colors.light.accent, dark: Colors.dark.accent }, "bg");
     const backgroundColor = isLocked ? "gray" : accentColor;
-
-    const Star = () => <Ionicons name="star" color={Colors.dark.text} />;
 
     return (
         <Pressable
@@ -41,19 +39,7 @@ export function LevelTile({ level, isLocked, stars }: LevelTileProps) {
             <AppText style={{ textAlign: "center" }}>{t(`levelName.${toCamelCase(levelName)}`)}</AppText>
             <AppText>{levelIdx}</AppText>
 
-            <AppText>
-                {stars === 3 ? (
-                    <>
-                        <Star /> <Star /> <Star />
-                    </>
-                ) : null}
-                {stars === 2 ? (
-                    <>
-                        <Star /> <Star />
-                    </>
-                ) : null}
-                {stars === 1 ? <Star /> : null}
-            </AppText>
+            <GameStars stars={stars} />
         </Pressable>
     );
 }
