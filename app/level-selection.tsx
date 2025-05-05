@@ -6,7 +6,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import AppButton from "@/components/atoms/AppButton";
@@ -18,6 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Tooltip, { Placement } from "react-native-tooltip-2";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { Clef } from "@/utils/enums";
+import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
 
 const cols = 3;
 
@@ -40,11 +41,13 @@ export default function LevelSelectionScreen() {
     const xDisplacement = clef == Clef.Treble ? 50 : -50;
 
     const goToStepOne = useCallback(() => {
-        setTourStep(1);
+        setTourStep(-1);
+        setTimeout(() => setTourStep(1), 0);
     }, []);
 
     const goToStepTwo = useCallback(() => {
-        setTourStep(2);
+        setTourStep(-1);
+        setTimeout(() => setTourStep(2), 0);
     }, []);
 
     const doFinalStep = useCallback(() => {
@@ -55,6 +58,10 @@ export default function LevelSelectionScreen() {
     useLayoutEffect(() => {
         if (!hasCompletedTour) setTourStep(0);
     }, [hasCompletedTour]);
+
+    useEffect(() => {
+        console.log({ tourStep });
+    }, [tourStep]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor }}>
@@ -86,13 +93,11 @@ export default function LevelSelectionScreen() {
                                         {row.map((level, lvlIdx) => {
                                             const isFirstLevel = rowIdx == 0 && lvlIdx == 0;
                                             return isFirstLevel ? (
-                                                <Tooltip
+                                                <WalkthroughTooltip
                                                     key={`tooltip-${level.id}`}
                                                     isVisible={Boolean(tourStep == 2)}
                                                     placement={Placement.RIGHT}
-                                                    topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                                                     contentStyle={{ minHeight: 150 }}
-                                                    onClose={doFinalStep}
                                                     content={
                                                         <AppView transparentBG style={{ alignItems: "center" }}>
                                                             <TooltipTextLines
@@ -112,7 +117,7 @@ export default function LevelSelectionScreen() {
                                                         isLocked={level.index > unlockedLevels[level.clef] + 1}
                                                         stars={levelStars[level.clef][level.index]}
                                                     />
-                                                </Tooltip>
+                                                </WalkthroughTooltip>
                                             ) : (
                                                 <LevelTile
                                                     key={level.id}
@@ -129,11 +134,9 @@ export default function LevelSelectionScreen() {
                     </AppView>
                 </AppView>
 
-                <Tooltip
+                <WalkthroughTooltip
                     isVisible={Boolean(tourStep == 0)}
                     placement={Placement.CENTER}
-                    topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                    onClose={goToStepOne}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
@@ -146,14 +149,11 @@ export default function LevelSelectionScreen() {
             </ScrollView>
 
             {/* Bottom Tabs */}
-            <Tooltip
+            <WalkthroughTooltip
                 isVisible={Boolean(tourStep == 1)}
                 placement={Placement.TOP}
                 contentStyle={{ transform: [{ translateY: -100 }] }}
-                // @ts-ignore
                 arrowStyle={{ transform: [{ translateY: -100 }] }}
-                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                onClose={goToStepTwo}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
@@ -162,7 +162,7 @@ export default function LevelSelectionScreen() {
                 }
             >
                 <BottomTabs />
-            </Tooltip>
+            </WalkthroughTooltip>
         </SafeAreaView>
     );
 }

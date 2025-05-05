@@ -99,7 +99,7 @@ export default function Home() {
             <Tooltip
                 isVisible={tourStep == 0}
                 placement={Placement.CENTER}
-                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
+                // topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 onClose={onTooltipDismiss}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>

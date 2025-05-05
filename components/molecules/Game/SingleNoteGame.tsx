@@ -32,6 +32,7 @@ import { AttemptedNotes } from "../AttemptedNotes";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
 
 const s = STYLES.game;
 
@@ -161,17 +162,12 @@ export function SingleNoteGameComponent() {
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor }}>
             <View style={s.top}>
-                <Tooltip
+                <WalkthroughTooltip
                     isVisible={!hasCompletedTour && tourStep == 3}
                     placement={Placement.BOTTOM}
-                    topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                     contentStyle={{ transform: [{ translateY: 32 }] }}
                     // @ts-ignore
                     arrowStyle={{ transform: [{ translateY: -32 }] }}
-                    onClose={goToStepFour}
-                    // contentStyle={{ borderRadius: 16 }}
-                    // childrenWrapperStyle={{ borderRadius: 16 }}
-                    // parentWrapperStyle={{ borderRadius: 16 }}
                     content={
                         <View style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.3" />
@@ -188,14 +184,12 @@ export function SingleNoteGameComponent() {
                         onCountdownFinish={onCountdownFinish}
                         levelId={id}
                     />
-                </Tooltip>
+                </WalkthroughTooltip>
             </View>
 
-            <Tooltip
+            <WalkthroughTooltip
                 isVisible={!hasCompletedTour && tourStep == 0}
                 placement={Placement.CENTER}
-                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                onClose={goToStepOne}
                 content={
                     <View style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.0" />
@@ -203,11 +197,9 @@ export function SingleNoteGameComponent() {
                     </View>
                 }
             />
-            <Tooltip
+            <WalkthroughTooltip
                 isVisible={!hasCompletedTour && tourStep == 4}
                 placement={Placement.CENTER}
-                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                onClose={doFinalStep}
                 content={
                     <View style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.4" />
@@ -222,11 +214,9 @@ export function SingleNoteGameComponent() {
 
             {/* GAME STAGE TOUR */}
             {currNote && (
-                <Tooltip
+                <WalkthroughTooltip
                     isVisible={!hasCompletedTour && tourStep == 1}
                     placement={Placement.BOTTOM}
-                    topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                    onClose={goToStepTwo}
                     // @ts-ignore
                     arrowStyle={{ transform: [{ translateY: 60 }] }}
                     contentStyle={{ minHeight: 128, transform: [{ translateY: -60 }] }}
@@ -241,19 +231,17 @@ export function SingleNoteGameComponent() {
                     }
                 >
                     <SingleNoteGameStage noteProps={noteProps} />
-                </Tooltip>
+                </WalkthroughTooltip>
             )}
 
             <AttemptedNotes />
 
-            <Tooltip
+            <WalkthroughTooltip
                 isVisible={!hasCompletedTour && tourStep == 2}
                 placement={Placement.TOP}
-                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 // @ts-ignore
                 arrowStyle={{ transform: [{ translateY: -36 }] }}
                 contentStyle={{ minHeight: 128, transform: [{ translateY: -36 }] }}
-                onClose={goToStepThree}
                 content={
                     <View style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.2" />
@@ -269,7 +257,7 @@ export function SingleNoteGameComponent() {
                     onKeyPressed={onPianoKeyPress}
                     onKeyReleased={onPianoKeyReleased}
                 />
-            </Tooltip>
+            </WalkthroughTooltip>
         </SafeAreaView>
     );
 }

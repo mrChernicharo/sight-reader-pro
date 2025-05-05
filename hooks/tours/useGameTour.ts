@@ -7,19 +7,23 @@ export function useGameTour() {
     const [tourStep, setTourStep] = useState(-1);
 
     const goToStepOne = useCallback(() => {
-        setTourStep(1);
+        setTourStep(-1);
+        setTimeout(() => setTourStep(1), 0);
     }, []);
 
     const goToStepTwo = useCallback(() => {
-        setTourStep(2);
+        setTourStep(-1);
+        setTimeout(() => setTourStep(2), 0);
     }, []);
 
     const goToStepThree = useCallback(() => {
-        setTourStep(3);
+        setTourStep(-1);
+        setTimeout(() => setTourStep(3), 0);
     }, []);
 
     const goToStepFour = useCallback(() => {
-        setTourStep(4);
+        setTourStep(-1);
+        setTimeout(() => setTourStep(4), 0);
     }, []);
 
     const doFinalStep = useCallback(async () => {

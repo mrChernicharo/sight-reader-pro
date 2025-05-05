@@ -11,7 +11,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
-import { NativeEventEmitter } from "react-native";
+import { NativeEventEmitter, NativeModules } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -23,7 +23,7 @@ SplashScreen.setOptions({
     duration: 1000,
 });
 
-export const eventEmitter = new NativeEventEmitter();
+export const eventEmitter = new NativeEventEmitter("sight-reader-pro" as any);
 
 export default function RootLayout() {
     const { fontsError, _hydrated } = useAppInitialization();
