@@ -102,7 +102,7 @@ export default function GameOverScreen() {
                             <AppView transparentBG style={{ ...s.line, backgroundColor: Colors.dark.text }} />
                         </FadeIn>
 
-                        {isGameWin && !isPracticeLevel ? <ScoreDisplay stars={stars} /> : null}
+                        <ScoreDisplay stars={isPracticeLevel ? 0 : stars} />
 
                         {isGameWin ? (
                             <>

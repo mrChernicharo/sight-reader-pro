@@ -76,6 +76,13 @@ const ptBR = {
             message: "Por favor, foque na sua precisão e tente novamente",
             goBack: "Voltar",
         },
+        bonus: {
+            playedNotes: "Notas Tocadas",
+            bestStreak: "Melhor Sequência",
+            speed: "Bônus de Velocidade",
+            accuracy: "Bônus de Precisão",
+            perfectAccuracy: "Bônus de Precisão Perfeita",
+        },
     },
     practice: {
         title: "Configurar Exercício",

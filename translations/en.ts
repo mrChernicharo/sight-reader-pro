@@ -76,6 +76,13 @@ const en = {
             message: "Please, focus on your accuracy and try again",
             goBack: "Go Back",
         },
+        bonus: {
+            playedNotes: "Played Notes",
+            bestStreak: "Best Streak",
+            speed: "Speed Bonus",
+            accuracy: "Accuracy Bonus",
+            perfectAccuracy: "Perfect Accuracy Bonus",
+        },
     },
     practice: {
         title: "Practice Setup",

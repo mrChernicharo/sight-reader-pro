@@ -34,14 +34,14 @@ export function ScoreDisplay({ stars }: { stars: number }) {
         <AppView transparentBG style={s.scoreView}>
             <FadeIn delay={800} x={-100}>
                 <View style={s.bonusView}>
-                    <AppText style={s.bonusTitle}>Played Notes</AppText>
+                    <AppText style={s.bonusTitle}>{t("game.bonus.playedNotes")}</AppText>
                     <AppText style={s.bonusTotal}>{intl.format(score.totalNoteScore)} pts</AppText>
                 </View>
             </FadeIn>
 
             <FadeIn delay={1000} x={-100}>
                 <View style={s.bonusView}>
-                    <AppText style={s.bonusTitle}>Best Streak</AppText>
+                    <AppText style={s.bonusTitle}>{t("game.bonus.bestStreak")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
                             {bestStreak} notes X {intl.format(BEST_STREAK_BONUS)}
@@ -53,7 +53,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
 
             <FadeIn delay={1200} x={-100}>
                 <View style={s.bonusView}>
-                    <AppText style={s.bonusTitle}>Speed Bonus</AppText>
+                    <AppText style={s.bonusTitle}>{t("game.bonus.speed")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
                             {intl.format(hitsPerMinute)} NpM X {SPEED_BONUS}
@@ -65,7 +65,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
 
             <FadeIn delay={1400} x={-100}>
                 <View style={s.bonusView}>
-                    <AppText style={s.bonusTitle}>Accuracy Bonus</AppText>
+                    <AppText style={s.bonusTitle}>{t("game.bonus.accuracy")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
                             {intl.format(accuracy * 100)}% X {intl.format(ACCURACY_BONUS)}
@@ -78,7 +78,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
             {perfectAccuracyBonus ? (
                 <FadeIn delay={1500} x={-100}>
                     <View style={s.bonusView}>
-                        <AppText style={s.bonusTitle}>Perfect Accuracy Bonus</AppText>
+                        <AppText style={s.bonusTitle}>{t("game.bonus.perfectAccuracyBonus")}</AppText>
                         <AppText style={s.bonusTotal}>{intl.format(perfectAccuracyBonus)} pts</AppText>
                     </View>
                 </FadeIn>
