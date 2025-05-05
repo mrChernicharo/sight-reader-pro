@@ -92,7 +92,7 @@ export function useAllLevels() {
         // console.log("getUnlockedLevels:::", nonPracticeGames.length);
         for (const game of nonPracticeGames) {
             const level = getLevel(game.levelId);
-            //         console.log("level:::", JSON.stringify(level, null, 2));
+            // console.log("level:::", JSON.stringify(level, null, 2));
             if (!game || !level) continue;
 
             const { isGameWin } = getIsGameWin(game, level.winConditions);
@@ -142,8 +142,7 @@ export function useAllLevels() {
             }
         });
 
-        console.log("<levelStars>", { treble, bass });
-
+        // console.log("<levelStars>", { treble, bass });
         return { treble, bass };
     }, [games]);
 

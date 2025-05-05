@@ -11,20 +11,16 @@ import { AppView } from "./AppView";
 import { GameStars } from "./GameStars";
 import { useTranslation } from "@/hooks/useTranslation";
 
-const intlDate = new Intl.DateTimeFormat("en-us", { dateStyle: "medium", timeStyle: "medium" });
-
 export function GameRecord({ game }: { game: Game }) {
     const theme = useTheme();
     const { t } = useTranslation();
     const { getLevel } = useAllLevels();
 
     const level = getLevel(game.levelId);
-    const { intl } = useIntl();
+    const { intl, intlDate } = useIntl();
 
     const { isGameWin, stars } = getIsGameWin(game, level.winConditions);
     const { accuracy, attempts, successes, mistakes, hitsPerMinute, totalScore } = game.score;
-
-    console.log(game);
 
     if (!level) return null;
 
@@ -35,7 +31,23 @@ export function GameRecord({ game }: { game: Game }) {
             </AppView>
 
             <AppView>
-                <AppText>{intlDate.format(game.timestamp)}</AppText>
+                <AppText style={{ color: Colors.dark.textMute, fontSize: 13 }}>
+                    {intlDate.format(game.timestamp)}
+                </AppText>
+            </AppView>
+
+            <AppView style={s.notesContainer}>
+                {/* <AppText>{t(isGameWin ? "game.state.win" : "game.state.lose")}</AppText> */}
+
+                <AppText>{intl.format(parseInt(String(totalScore)))} pts.</AppText>
+
+                {isGameWin ? (
+                    <GameStars stars={stars} color="gold" />
+                ) : (
+                    <AppText>
+                        <Ionicons name="close-circle" color={Colors.dark.red} />
+                    </AppText>
+                )}
             </AppView>
 
             <AppView style={s.notesContainer}>
@@ -52,15 +64,7 @@ export function GameRecord({ game }: { game: Game }) {
                 <AppText>
                     <Ionicons name="eye-outline" />
                 </AppText>
-                <AppText>{intl.format(accuracy)}</AppText>
-            </AppView>
-
-            <AppView style={s.notesContainer}>
-                <AppText>{t(isGameWin ? "game.state.win" : "game.state.lose")}</AppText>
-
-                <GameStars stars={stars} />
-
-                <AppText>{intl.format(parseInt(String(totalScore)))} pts.</AppText>
+                <AppText>{intl.format(accuracy * 100)}%</AppText>
             </AppView>
         </AppView>
     );

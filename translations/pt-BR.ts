@@ -5,6 +5,7 @@ const ptBR = {
         slogan: "Leve sua leitura musical para o próximo nível",
         welcome: "Boas vindas",
         loading: "Carregando",
+        gameCount: "partidas jogadas",
     },
     routes: {
         practice: "Prática Personalizada",

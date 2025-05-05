@@ -61,11 +61,11 @@ export class ScoreManager {
     static getFinalScore(levelDurationInSeconds: number) {
         const bestStreakBonus = this.bestStreak * BEST_STREAK_BONUS;
 
-        const accuracyBonus = ACCURACY_BONUS * this.getAccuracy();
+        const accuracyBonus = Math.round(ACCURACY_BONUS * this.getAccuracy());
         const perfectAccuracyBonus = this.getAccuracy() === 1 ? PERFECT_ACCURACY_BONUS : 0;
 
         const hitsPerMinute = this.successes * (60 / levelDurationInSeconds);
-        const speedBonus = SPEED_BONUS * hitsPerMinute;
+        const speedBonus = Math.round(SPEED_BONUS * hitsPerMinute);
 
         const totalScore = this.totalNoteScore + bestStreakBonus + speedBonus + accuracyBonus + perfectAccuracyBonus;
         return {

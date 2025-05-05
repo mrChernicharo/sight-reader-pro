@@ -5,6 +5,7 @@ const en = {
         slogan: "Level up your music reading",
         welcome: "Welcome",
         loading: "Loading",
+        gameCount: "games played",
     },
     routes: {
         practice: "Custom Practice",

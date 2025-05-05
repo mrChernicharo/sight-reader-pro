@@ -26,20 +26,20 @@ export default function HistoryScreen() {
                 </AppView>
                 <AppText type="subtitle">{t("history.title")}</AppText>
 
-                <AppView>
-                    <AppText type="md">{username}</AppText>
+                <AppView style={{ flexDirection: "row", gap: 4 }}>
+                    <AppText type="md">{username} - </AppText>
+                    <AppText type="md">
+                        {games.length} {t("app.gameCount")}
+                    </AppText>
                 </AppView>
             </AppView>
 
-            {/* <AppView> */}
-
             <FlatList
-                data={games}
+                data={games.toReversed()}
                 keyExtractor={(game) => game.id}
                 renderItem={({ item: game }) => <GameRecord game={game} />}
                 style={s.flatlist}
             />
-            {/* </AppView> */}
         </SafeAreaView>
     );
 }
