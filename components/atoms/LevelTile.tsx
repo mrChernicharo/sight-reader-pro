@@ -3,13 +3,14 @@ import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 import { Level } from "@/utils/types";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Pressable } from "react-native";
 
 import { router } from "expo-router";
 import { useTranslation } from "@/hooks/useTranslation";
-import { getLevelName, toCamelCase } from "@/utils/helperFns";
+import { capitalizeStr, getLevelName, toCamelCase } from "@/utils/helperFns";
 import { GameStars } from "./GameStars";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface LevelTileProps {
     level: Level;
@@ -36,10 +37,14 @@ export function LevelTile({ level, isLocked, stars }: LevelTileProps) {
                 // router.push({});
             }}
         >
-            <AppText style={{ textAlign: "center" }}>{t(`levelName.${toCamelCase(levelName)}`)}</AppText>
-            <AppText>{levelIdx}</AppText>
-
-            <GameStars stars={stars} />
+            <AppText style={{ textAlign: "center" }}>{levelIdx}</AppText>
+            <AppText>{capitalizeStr(t(`levelName.${toCamelCase(levelName)}`))}</AppText>
+            {stars ? <GameStars stars={stars} /> : null}
+            {isLocked ? (
+                <AppText>
+                    <Ionicons name="lock-closed" size={18} />
+                </AppText>
+            ) : null}
         </Pressable>
     );
 }
