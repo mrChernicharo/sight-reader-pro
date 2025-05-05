@@ -4,7 +4,6 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { GameType } from "@/utils/enums";
 import { STYLES } from "@/utils/styles";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 
@@ -14,7 +13,7 @@ import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-m
 const s = STYLES.practice;
 
 const DURATIONS = [
-    { key: "5", value: 5 },
+    // { key: "5", value: 5 },
     { key: "15", value: 15 },
     { key: "30", value: 30 },
     { key: "45", value: 45 },

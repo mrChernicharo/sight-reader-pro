@@ -2,21 +2,22 @@ import { useAllLevels } from "@/hooks/useAllLevels";
 import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { getGameStats, getIsGameWinAndStars } from "@/utils/helperFns";
+import { getIsGameWinAndStars, getIsPracticeLevel } from "@/utils/helperFns";
 import { Game } from "@/utils/types";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
 import { GameStars } from "./GameStars";
-import { useTranslation } from "@/hooks/useTranslation";
 
 export function GameRecord({ game }: { game: Game }) {
     const theme = useTheme();
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
     const { getLevel } = useAllLevels();
 
     const level = getLevel(game.levelId);
+    const isPracticeLevel = getIsPracticeLevel(level.id);
+
     const { intl, intlDate } = useIntl();
 
     const { isGameWin, stars } = getIsGameWinAndStars(game, level.winConditions);
@@ -39,12 +40,16 @@ export function GameRecord({ game }: { game: Game }) {
             <AppView style={s.notesContainer}>
                 <AppText>{intl.format(parseInt(String(totalScore)))} pts.</AppText>
 
-                {isGameWin ? (
-                    <GameStars stars={stars} color="gold" />
-                ) : (
-                    <AppText>
-                        <Ionicons name="close-circle" color={Colors.dark.red} />
-                    </AppText>
+                {isPracticeLevel ? null : (
+                    <>
+                        {isGameWin ? (
+                            <GameStars stars={stars} color="gold" />
+                        ) : (
+                            <AppText>
+                                <Ionicons name="close-circle" color={Colors.dark.red} />
+                            </AppText>
+                        )}
+                    </>
                 )}
             </AppView>
 

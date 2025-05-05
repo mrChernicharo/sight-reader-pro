@@ -7,8 +7,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { ScoreManager, BEST_STREAK_BONUS, ACCURACY_BONUS, SPEED_BONUS } from "@/utils/ScoreManager";
-import { testBorder } from "@/utils/styles";
+import { ACCURACY_BONUS, BEST_STREAK_BONUS, ScoreManager, SPEED_BONUS } from "@/utils/ScoreManager";
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 
@@ -29,8 +28,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
     const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
     const { accuracy, attempts, bestStreak, currNoteValue, successes, mistakes, currStreak, totalNoteScore } = score;
     const { bestStreakBonus, accuracyBonus, perfectAccuracyBonus, speedBonus, totalScore, hitsPerMinute } = finalScore;
-
-    console.log({ finalScore });
+    // console.log({ finalScore });
 
     return (
         <AppView transparentBG style={s.scoreView}>

@@ -2,22 +2,19 @@ import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
-import { GameStars } from "@/components/atoms/GameStars";
 import { Confetti } from "@/components/molecules/Game/Confetti";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
 import { ScoreDisplay } from "@/components/molecules/GameStatsDisplay/ScoreDisplay";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
-import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { getIsGameWinAndStars, getIsPracticeLevel } from "@/utils/helperFns";
-import { GameScreenParams } from "@/utils/types";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { Link, router } from "expo-router";
 import { useCallback } from "react";
-import { Dimensions, StyleSheet, Text } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -105,7 +102,7 @@ export default function GameOverScreen() {
                             <AppView transparentBG style={{ ...s.line, backgroundColor: Colors.dark.text }} />
                         </FadeIn>
 
-                        <ScoreDisplay stars={stars} />
+                        {isGameWin && !isPracticeLevel ? <ScoreDisplay stars={stars} /> : null}
 
                         {isGameWin ? (
                             <>

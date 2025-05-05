@@ -87,7 +87,6 @@ export class ScoreManager {
         this.currStreak = 0;
         this.bestStreak = 0;
         this.totalNoteScore = 0;
-
-        console.log("<ScoreManager> reset");
+        // console.log("<ScoreManager> reset");
     }
 }
