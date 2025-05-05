@@ -126,8 +126,7 @@ export function SingleNoteGameComponent() {
             },
         };
 
-        console.log("<onCountdownFinish> ", { finalScore, gameScoreInfo, gameRecord });
-
+        // console.log("<onCountdownFinish> ", { finalScore, gameScoreInfo, gameRecord });
         // console.log("OK", { gameRecord });
         await saveGameRecord(gameRecord);
         router.replace({ pathname: "/game-over" });

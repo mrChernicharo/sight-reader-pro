@@ -1,6 +1,7 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
+import { GameStars } from "@/components/atoms/GameStars";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
@@ -11,7 +12,7 @@ import { testBorder } from "@/utils/styles";
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 
-export function ScoreDisplay() {
+export function ScoreDisplay({ stars }: { stars: number }) {
     const { intl } = useIntl();
     const { t } = useTranslation();
     const { getLevel } = useAllLevels();
@@ -45,9 +46,9 @@ export function ScoreDisplay() {
                     <AppText style={s.bonusTitle}>Best Streak</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
-                            {bestStreak} notes X {intl.format(BEST_STREAK_BONUS)} ={" "}
+                            {bestStreak} notes X {intl.format(BEST_STREAK_BONUS)}
                         </AppText>
-                        <AppText style={s.bonusTotal}>{intl.format(bestStreakBonus)} pts</AppText>
+                        <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(bestStreakBonus)} pts</AppText>
                     </AppText>
                 </View>
             </FadeIn>
@@ -57,9 +58,9 @@ export function ScoreDisplay() {
                     <AppText style={s.bonusTitle}>Speed Bonus</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
-                            {intl.format(hitsPerMinute)} NpM X {SPEED_BONUS} ={" "}
+                            {intl.format(hitsPerMinute)} NpM X {SPEED_BONUS}
                         </AppText>
-                        <AppText style={s.bonusTotal}>{intl.format(speedBonus)} pts</AppText>
+                        <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(speedBonus)} pts</AppText>
                     </AppText>
                 </View>
             </FadeIn>
@@ -69,9 +70,9 @@ export function ScoreDisplay() {
                     <AppText style={s.bonusTitle}>Accuracy Bonus</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
-                            {intl.format(accuracy * 100)}% X {intl.format(ACCURACY_BONUS)} ={" "}
+                            {intl.format(accuracy * 100)}% X {intl.format(ACCURACY_BONUS)}
                         </AppText>
-                        <AppText style={s.bonusTotal}>{intl.format(accuracyBonus)} pts</AppText>
+                        <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(accuracyBonus)} pts</AppText>
                     </AppText>
                 </View>
             </FadeIn>
@@ -90,8 +91,11 @@ export function ScoreDisplay() {
             </FadeIn>
 
             <AppView transparentBG style={{ alignItems: "center" }}>
-                <FadeIn delay={1600} x={-50} y={0}>
-                    <AppText type="default">{t("game.TOTAL_SCORE")}</AppText>
+                <FadeIn delay={1600} x={0} y={20}>
+                    <GameStars stars={stars} size={24} color="gold" />
+                </FadeIn>
+                <FadeIn delay={1700} x={-50} y={0}>
+                    <AppText type="mdSemiBold">{t("game.TOTAL_SCORE")}</AppText>
                 </FadeIn>
                 <FadeIn delay={1800} x={-50} y={0}>
                     <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>

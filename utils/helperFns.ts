@@ -371,7 +371,7 @@ export function stemDown(note: Note, clef: Clef) {
     }
 }
 
-export function getIsGameWin(game: Game | undefined, winConditions: WinConditions) {
+export function getIsGameWinAndStars(game: Game | undefined, winConditions: WinConditions) {
     if (!game) return { isGameWin: false, stars: 0 };
 
     const isGameWin =

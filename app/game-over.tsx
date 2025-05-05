@@ -2,6 +2,7 @@ import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
+import { GameStars } from "@/components/atoms/GameStars";
 import { Confetti } from "@/components/molecules/Game/Confetti";
 import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
 import { ScoreDisplay } from "@/components/molecules/GameStatsDisplay/ScoreDisplay";
@@ -12,30 +13,29 @@ import { useTheme } from "@/hooks/useTheme";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { getIsGameWin, getIsPracticeLevel } from "@/utils/helperFns";
+import { getIsGameWinAndStars, getIsPracticeLevel } from "@/utils/helperFns";
 import { GameScreenParams } from "@/utils/types";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function GameOverScreen() {
-    const { intl } = useIntl();
+    // const { intl } = useIntl();
     const { t } = useTranslation();
     const { allLevels, getLevel, unloadPracticeLevel } = useAllLevels();
     const theme = useTheme();
     const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
-    const { endGame, games } = useAppStore();
-    const { previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
+    const { games } = useAppStore();
+    // const { previousPage } = useLocalSearchParams() as unknown as GameScreenParams;
 
     const lastGame = games.at(-1);
 
     const level = getLevel(lastGame?.levelId || "");
     const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
-    const { isGameWin } = getIsGameWin(lastGame, level.winConditions);
+    const { isGameWin, stars } = getIsGameWinAndStars(lastGame, level.winConditions);
 
-    const emoji = isPracticeLevel ? "" : isGameWin ? " 🎉 " : " 😩 ";
     const headingText = t(
         isPracticeLevel ? "game.state.practiceEnd" : isGameWin ? "game.state.win" : "game.state.lose"
     );
@@ -82,7 +82,7 @@ export default function GameOverScreen() {
             <ScrollView
                 style={{ width: "100%" }}
                 ref={(ref) => {
-                    if (ref) setTimeout(ref.scrollToEnd, 2200);
+                    if (ref) setTimeout(ref.scrollToEnd, 2400);
                 }}
             >
                 <AppView style={{ minHeight: Dimensions.get("screen").height - (isPracticeLevel ? 60 : 0) }}>
@@ -96,7 +96,7 @@ export default function GameOverScreen() {
 
                     <AppView transparentBG style={s.messageContainer}>
                         <AppText style={{ fontFamily: "Grotesque", fontSize: 28, lineHeight: 40 }}>
-                            {headingText + emoji}
+                            {headingText}
                         </AppText>
 
                         <GameStatsDisplay level={level} />
@@ -105,9 +105,13 @@ export default function GameOverScreen() {
                             <AppView transparentBG style={{ ...s.line, backgroundColor: Colors.dark.text }} />
                         </FadeIn>
 
-                        <ScoreDisplay />
+                        <ScoreDisplay stars={stars} />
 
-                        {isGameWin ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
+                        {isGameWin ? (
+                            <>
+                                <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} />
+                            </>
+                        ) : null}
                     </AppView>
 
                     <AppView style={s.btnsContainer}>

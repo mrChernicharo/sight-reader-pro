@@ -2,7 +2,7 @@ import { useAllLevels } from "@/hooks/useAllLevels";
 import { useIntl } from "@/hooks/useIntl";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { getGameStats, getIsGameWin } from "@/utils/helperFns";
+import { getGameStats, getIsGameWinAndStars } from "@/utils/helperFns";
 import { Game } from "@/utils/types";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
@@ -19,7 +19,7 @@ export function GameRecord({ game }: { game: Game }) {
     const level = getLevel(game.levelId);
     const { intl, intlDate } = useIntl();
 
-    const { isGameWin, stars } = getIsGameWin(game, level.winConditions);
+    const { isGameWin, stars } = getIsGameWinAndStars(game, level.winConditions);
     const { accuracy, attempts, successes, mistakes, hitsPerMinute, totalScore } = game.score;
 
     if (!level) return null;
@@ -37,8 +37,6 @@ export function GameRecord({ game }: { game: Game }) {
             </AppView>
 
             <AppView style={s.notesContainer}>
-                {/* <AppText>{t(isGameWin ? "game.state.win" : "game.state.lose")}</AppText> */}
-
                 <AppText>{intl.format(parseInt(String(totalScore)))} pts.</AppText>
 
                 {isGameWin ? (

@@ -35,7 +35,7 @@ export class ScoreManager {
                 this.currStreak = 0;
                 break;
         }
-        console.log("<ScoreManager> push", this.getScore());
+        // console.log("<ScoreManager> push", this.getScore());
         return this.getScore();
     }
 

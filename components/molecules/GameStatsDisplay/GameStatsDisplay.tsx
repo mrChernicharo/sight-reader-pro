@@ -130,8 +130,10 @@ const s = StyleSheet.create({
         justifyContent: "center",
     },
     rowItem: {
+        // justifyContent: "center",
         alignItems: "center",
-        padding: 8,
+        paddingHorizontal: 8,
+        paddingVertical: 2,
         minWidth: 100,
         // borderWidth: 1,
         // borderColor: "#444",

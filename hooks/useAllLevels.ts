@@ -1,5 +1,5 @@
 import { Clef, GameType, Knowledge } from "@/utils/enums";
-import { getGameStats, getIsGameWin, padZero } from "@/utils/helperFns";
+import { getGameStats, getIsGameWinAndStars, padZero } from "@/utils/helperFns";
 import { ALL_LEVELS } from "@/utils/levels";
 import { Level, SectionedLevel } from "@/utils/types";
 import { useCallback, useMemo } from "react";
@@ -7,7 +7,6 @@ import { useAppStore } from "./useAppStore";
 import { useIntl } from "./useIntl";
 
 export function useAllLevels() {
-    const { intl } = useIntl();
     const games = useAppStore((state) => state.games);
     const knowledge = useAppStore((state) => state.knowledge);
     const practiceLevel = useAppStore((state) => state.practiceLevel);
@@ -95,7 +94,7 @@ export function useAllLevels() {
             // console.log("level:::", JSON.stringify(level, null, 2));
             if (!game || !level) continue;
 
-            const { isGameWin } = getIsGameWin(game, level.winConditions);
+            const { isGameWin } = getIsGameWinAndStars(game, level.winConditions);
 
             switch (level.type) {
                 case GameType.Melody:
@@ -135,7 +134,7 @@ export function useAllLevels() {
 
             const arr = level.clef === Clef.Treble ? treble : bass;
 
-            const { stars } = getIsGameWin(game, level.winConditions);
+            const { stars } = getIsGameWinAndStars(game, level.winConditions);
 
             if (!arr[level.index] || arr[level.index] < stars) {
                 arr[level.index] = stars;
