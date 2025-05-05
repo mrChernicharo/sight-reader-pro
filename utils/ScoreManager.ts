@@ -3,9 +3,9 @@ export const MAX_HIT_SCORE = 500;
 export const STREAK_SCORE = 20;
 
 export const BEST_STREAK_BONUS = 50;
-export const ACCURACY_BONUS = 2000;
+export const ACCURACY_BONUS = 1000;
 export const PERFECT_ACCURACY_BONUS = 1000;
-export const SPEED_BONUS = 20;
+export const SPEED_BONUS = 25;
 
 export class ScoreManager {
     static currNoteValue = 0;

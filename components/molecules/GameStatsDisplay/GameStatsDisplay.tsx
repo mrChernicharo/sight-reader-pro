@@ -119,88 +119,6 @@ export function GameStatsDisplay({ level }: GameStatsDisplayProps) {
     );
 }
 
-export function ScoreDisplay() {
-    const { intl } = useIntl();
-    const { t } = useTranslation();
-    const { getLevel } = useAllLevels();
-    const theme = useTheme();
-    // const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
-    const { games } = useAppStore();
-
-    const lastGame = games.at(-1);
-    const level = getLevel(lastGame?.levelId!);
-
-    // const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
-
-    const score = ScoreManager.getScore();
-    const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
-    const { accuracy, attempts, bestStreak, currNoteValue, successes, mistakes, currStreak, totalNoteScore } = score;
-    const { bestStreakBonus, accuracyBonus, perfectAccuracyBonus, speedBonus, totalScore, hitsPerMinute } = finalScore;
-
-    console.log({ finalScore });
-
-    return (
-        <AppView transparentBG style={s.score}>
-            {/* <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
-                    <FadeIn delay={0} x={50} duration={250} y={0}>
-                        <AppText style={{ color: Colors[theme].textMute }}>
-                            <AppText style={{ fontWeight: 900 }}>{score.hits} </AppText>
-                            <AppText>{t(score.hits == 1 ? "game.hit" : "game.hits")}</AppText>
-                        </AppText>
-                    </FadeIn>
-                    <FadeIn delay={300} x={50} duration={250} y={0}>
-                        <AppText style={{ color: Colors[theme].textMute }}>
-                            <AppText style={{ fontWeight: 900 }}>{intl.format(score.hitScore)} </AppText>
-                            <AppText>pts</AppText>
-                        </AppText>
-                        <AppText style={{ position: "absolute", left: -20, top: 0, color: Colors[theme].textMute }}>
-                            X
-                        </AppText>
-                    </FadeIn>
-                    <FadeIn delay={600} x={50} duration={250} y={0}>
-                        <AppText style={{ color: Colors[theme].textMute }}>
-                            <AppText style={{ fontWeight: 900 }}>{intl.format(score.multiplier)} </AppText>
-                            <AppText>mult</AppText>
-                        </AppText>
-                        <AppText style={{ position: "absolute", left: -20, top: 0, color: Colors[theme].textMute }}>
-                            X
-                        </AppText>
-                    </FadeIn>
-                </AppView> */}
-
-            <AppText>totalNoteScore {intl.format(score.totalNoteScore)}</AppText>
-            <AppText>
-                bestStreakBonus: {bestStreak} X {intl.format(BEST_STREAK_BONUS)} = {intl.format(bestStreakBonus)}
-            </AppText>
-            <AppText>
-                accuracyBonus {intl.format(ACCURACY_BONUS)} X {intl.format(accuracy)} = {intl.format(accuracyBonus)}
-            </AppText>
-
-            {perfectAccuracyBonus ? <AppText>perfectAccuracyBonus {intl.format(perfectAccuracyBonus)}</AppText> : null}
-
-            <AppText>
-                speedBonus {hitsPerMinute} X {SPEED_BONUS} = {intl.format(speedBonus)}
-            </AppText>
-            {/* <AppText>{bestStreakBonus}</AppText> */}
-
-            <FadeIn delay={1000} x={50} duration={250} y={0}>
-                <AppView transparentBG style={{ ...s.line, backgroundColor: Colors[theme].text }} />
-            </FadeIn>
-
-            <AppView transparentBG style={{ alignItems: "center" }}>
-                <FadeIn delay={1500} x={-50} y={0}>
-                    <AppText type="default">{t("game.TOTAL_SCORE")}</AppText>
-                </FadeIn>
-                <FadeIn delay={1600} x={-50} y={0}>
-                    <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>
-                        {intl.format(totalScore)}
-                    </AppText>
-                </FadeIn>
-            </AppView>
-        </AppView>
-    );
-}
-
 const s = StyleSheet.create({
     container: {
         // borderWidth: 1,
@@ -220,11 +138,5 @@ const s = StyleSheet.create({
     },
     separator: {
         height: 12,
-    },
-    line: { height: 1, width: 160, marginVertical: 12 },
-    score: {
-        paddingTop: 24,
-        justifyContent: "center",
-        alignItems: "center",
     },
 });

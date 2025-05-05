@@ -14,6 +14,7 @@ import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-m
 const s = STYLES.practice;
 
 const DURATIONS = [
+    { key: "5", value: 5 },
     { key: "15", value: 15 },
     { key: "30", value: 30 },
     { key: "45", value: 45 },

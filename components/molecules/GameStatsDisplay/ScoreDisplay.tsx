@@ -7,8 +7,9 @@ import { useIntl } from "@/hooks/useIntl";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { ScoreManager, BEST_STREAK_BONUS, ACCURACY_BONUS, SPEED_BONUS } from "@/utils/ScoreManager";
+import { testBorder } from "@/utils/styles";
 import { useTheme } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export function ScoreDisplay() {
     const { intl } = useIntl();
@@ -31,8 +32,110 @@ export function ScoreDisplay() {
     console.log({ finalScore });
 
     return (
-        <AppView transparentBG style={s.score}>
-            {/* <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
+        <AppView transparentBG style={s.scoreView}>
+            <FadeIn delay={800} x={-100}>
+                <View style={s.bonusView}>
+                    <AppText style={s.bonusTitle}>Played Notes</AppText>
+                    <AppText style={s.bonusTotal}>{intl.format(score.totalNoteScore)} pts</AppText>
+                </View>
+            </FadeIn>
+
+            <FadeIn delay={1000} x={-100}>
+                <View style={s.bonusView}>
+                    <AppText style={s.bonusTitle}>Best Streak</AppText>
+                    <AppText>
+                        <AppText style={s.bonusDetail}>
+                            {bestStreak} notes X {intl.format(BEST_STREAK_BONUS)} ={" "}
+                        </AppText>
+                        <AppText style={s.bonusTotal}>{intl.format(bestStreakBonus)} pts</AppText>
+                    </AppText>
+                </View>
+            </FadeIn>
+
+            <FadeIn delay={1200} x={-100}>
+                <View style={s.bonusView}>
+                    <AppText style={s.bonusTitle}>Speed Bonus</AppText>
+                    <AppText>
+                        <AppText style={s.bonusDetail}>
+                            {intl.format(hitsPerMinute)} NpM X {SPEED_BONUS} ={" "}
+                        </AppText>
+                        <AppText style={s.bonusTotal}>{intl.format(speedBonus)} pts</AppText>
+                    </AppText>
+                </View>
+            </FadeIn>
+
+            <FadeIn delay={1400} x={-100}>
+                <View style={s.bonusView}>
+                    <AppText style={s.bonusTitle}>Accuracy Bonus</AppText>
+                    <AppText>
+                        <AppText style={s.bonusDetail}>
+                            {intl.format(accuracy * 100)}% X {intl.format(ACCURACY_BONUS)} ={" "}
+                        </AppText>
+                        <AppText style={s.bonusTotal}>{intl.format(accuracyBonus)} pts</AppText>
+                    </AppText>
+                </View>
+            </FadeIn>
+
+            {perfectAccuracyBonus ? (
+                <FadeIn delay={1500} x={-100}>
+                    <View style={s.bonusView}>
+                        <AppText style={s.bonusTitle}>Perfect Accuracy Bonus</AppText>
+                        <AppText style={s.bonusTotal}>{intl.format(perfectAccuracyBonus)} pts</AppText>
+                    </View>
+                </FadeIn>
+            ) : null}
+
+            <FadeIn delay={1600} x={50} duration={250} y={0}>
+                <AppView transparentBG style={{ ...s.line, backgroundColor: Colors.dark.text }} />
+            </FadeIn>
+
+            <AppView transparentBG style={{ alignItems: "center" }}>
+                <FadeIn delay={1600} x={-50} y={0}>
+                    <AppText type="default">{t("game.TOTAL_SCORE")}</AppText>
+                </FadeIn>
+                <FadeIn delay={1800} x={-50} y={0}>
+                    <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>
+                        {intl.format(totalScore)} pts
+                    </AppText>
+                </FadeIn>
+            </AppView>
+        </AppView>
+    );
+}
+
+const s = StyleSheet.create({
+    separator: {
+        height: 12,
+    },
+
+    // line: { height: 1, width: 326, marginVertical: 12 },
+    line: { height: StyleSheet.hairlineWidth, width: 326, margin: 20 },
+    scoreView: {
+        width: 326,
+        // paddingVertical: 16,
+        justifyContent: "center",
+        alignItems: "center",
+        // ...testBorder(),
+    },
+    bonusView: {
+        width: 326,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        // ...testBorder("green"),
+    },
+    bonusTitle: {
+        color: Colors.dark.text,
+    },
+    bonusDetail: {
+        color: Colors.dark.textMute,
+    },
+    bonusTotal: {
+        fontFamily: "Grotesque",
+    },
+});
+
+{
+    /* <AppView transparentBG style={{ alignItems: "flex-end", width: 120 }}>
                     <FadeIn delay={0} x={50} duration={250} y={0}>
                         <AppText style={{ color: Colors[theme].textMute }}>
                             <AppText style={{ fontWeight: 900 }}>{score.hits} </AppText>
@@ -57,68 +160,5 @@ export function ScoreDisplay() {
                             X
                         </AppText>
                     </FadeIn>
-                </AppView> */}
-
-            <AppText>Notes Score {intl.format(score.totalNoteScore)}</AppText>
-
-            <AppText>
-                Best Streak Bonus: {bestStreak} X {intl.format(BEST_STREAK_BONUS)} = {intl.format(bestStreakBonus)}
-            </AppText>
-
-            <AppText>
-                Accuracy Bonus {intl.format(ACCURACY_BONUS)} X {intl.format(accuracy)} = {intl.format(accuracyBonus)}
-            </AppText>
-
-            {perfectAccuracyBonus ? (
-                <AppText>Perfect Accuracy Bonus {intl.format(perfectAccuracyBonus)}</AppText>
-            ) : null}
-
-            <AppText>
-                Speed Bonus {hitsPerMinute} X {SPEED_BONUS} = {intl.format(speedBonus)}
-            </AppText>
-
-            <FadeIn delay={1000} x={50} duration={250} y={0}>
-                <AppView transparentBG style={{ ...s.line, backgroundColor: Colors.dark.text }} />
-            </FadeIn>
-
-            <AppView transparentBG style={{ alignItems: "center" }}>
-                <FadeIn delay={1500} x={-50} y={0}>
-                    <AppText type="default">{t("game.TOTAL_SCORE")}</AppText>
-                </FadeIn>
-                <FadeIn delay={1600} x={-50} y={0}>
-                    <AppText style={{ fontFamily: "Grotesque", fontSize: 24, lineHeight: 36 }}>
-                        {intl.format(totalScore)}
-                    </AppText>
-                </FadeIn>
-            </AppView>
-        </AppView>
-    );
+                </AppView> */
 }
-
-const s = StyleSheet.create({
-    container: {
-        // borderWidth: 1,
-        // borderColor: "#cacacaca",
-    },
-    row: {
-        flexDirection: "row",
-        // justifyContent: "space-between",
-        justifyContent: "center",
-    },
-    rowItem: {
-        alignItems: "center",
-        padding: 8,
-        minWidth: 100,
-        // borderWidth: 1,
-        // borderColor: "#444",
-    },
-    separator: {
-        height: 12,
-    },
-    line: { height: 1, width: 160, marginVertical: 12 },
-    score: {
-        paddingTop: 24,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-});

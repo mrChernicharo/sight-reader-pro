@@ -3,7 +3,8 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { Confetti } from "@/components/molecules/Game/Confetti";
-import { GameStatsDisplay, ScoreDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
+import { GameStatsDisplay } from "@/components/molecules/GameStatsDisplay/GameStatsDisplay";
+import { ScoreDisplay } from "@/components/molecules/GameStatsDisplay/ScoreDisplay";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useIntl } from "@/hooks/useIntl";
@@ -100,6 +101,10 @@ export default function GameOverScreen() {
 
                         <GameStatsDisplay level={level} />
 
+                        <FadeIn delay={1000} x={50} y={0} duration={250}>
+                            <AppView transparentBG style={{ ...s.line, backgroundColor: Colors.dark.text }} />
+                        </FadeIn>
+
                         <ScoreDisplay />
 
                         {isGameWin ? <Confetti x={0} y={-169} duration={2000} delay={2200} height={250} /> : null}
@@ -195,4 +200,5 @@ const s = StyleSheet.create({
         backgroundColor: "transparent",
         borderWidth: StyleSheet.hairlineWidth,
     },
+    line: { height: StyleSheet.hairlineWidth, width: 326, margin: 0 },
 });

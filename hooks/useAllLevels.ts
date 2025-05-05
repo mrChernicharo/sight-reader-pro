@@ -131,6 +131,7 @@ export function useAllLevels() {
 
         games.forEach((game) => {
             const level = getLevel(game.levelId);
+            if (!level) return;
 
             const arr = level.clef === Clef.Treble ? treble : bass;
 
