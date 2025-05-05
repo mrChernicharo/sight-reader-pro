@@ -2,6 +2,7 @@ import { eventEmitter } from "@/app/_layout";
 import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
+import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
 import { useGameTour } from "@/hooks/tours/useGameTour";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
@@ -9,7 +10,6 @@ import { useSoundContext } from "@/hooks/useSoundsContext";
 import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { AppEvents, Clef, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import {
     explodeNote,
@@ -27,12 +27,11 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleProp, TextStyle, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Tooltip, { Placement } from "react-native-tooltip-2";
+import { Placement } from "react-native-tooltip-2";
 import { AttemptedNotes } from "../AttemptedNotes";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
 
 const s = STYLES.game;
 
@@ -171,11 +170,7 @@ export function SingleNoteGameComponent() {
                     content={
                         <View style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.3" />
-                            <AppButton
-                                style={{ marginVertical: 8 }}
-                                text={t("tour.game.3_ok")}
-                                onPress={goToStepFour}
-                            />
+                            <AppButton style={s.tooltipBtn} text={t("tour.game.3_ok")} onPress={goToStepFour} />
                         </View>
                     }
                 >
@@ -193,7 +188,7 @@ export function SingleNoteGameComponent() {
                 content={
                     <View style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.0" />
-                        <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepOne} />
+                        <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepOne} />
                     </View>
                 }
             />
@@ -207,7 +202,7 @@ export function SingleNoteGameComponent() {
                             {t("tour.game.4_ready")}
                         </AppText>
 
-                        <AppButton style={{ marginVertical: 8 }} text={t("tour.game.4_ok")} onPress={doFinalStep} />
+                        <AppButton style={s.tooltipBtn} text={t("tour.game.4_ok")} onPress={doFinalStep} />
                     </View>
                 }
             />
@@ -226,7 +221,7 @@ export function SingleNoteGameComponent() {
                             <AppText {...tourTextProps} type="mdSemiBold">
                                 {currNoteText}
                             </AppText>
-                            <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepTwo} />
+                            <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepTwo} />
                         </View>
                     }
                 >
@@ -245,7 +240,7 @@ export function SingleNoteGameComponent() {
                 content={
                     <View style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath="tour.game.2" />
-                        <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepThree} />
+                        <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepThree} />
                     </View>
                 }
             >

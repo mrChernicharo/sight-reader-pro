@@ -1,24 +1,24 @@
+import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
+import { FadeIn } from "@/components/atoms/FadeIn";
+import { LevelTile } from "@/components/atoms/LevelTile";
+import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
+import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
+import { BottomTabs } from "@/components/molecules/BottomTabs";
+import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { glyphs, WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
+import { glyphs } from "@/utils/constants";
+import { Clef } from "@/utils/enums";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import AppButton from "@/components/atoms/AppButton";
-import { LevelTile } from "@/components/atoms/LevelTile";
-import { TooltipTextLines } from "@/components/atoms/TooltipTextLines";
-import { BottomTabs } from "@/components/molecules/BottomTabs";
-import { useAllLevels } from "@/hooks/useAllLevels";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Tooltip, { Placement } from "react-native-tooltip-2";
-import { FadeIn } from "@/components/atoms/FadeIn";
-import { Clef } from "@/utils/enums";
-import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
+import { Placement } from "react-native-tooltip-2";
 
 const cols = 3;
 
@@ -104,7 +104,7 @@ export default function LevelSelectionScreen() {
                                                                 keypath={`tour.levelSelection.${tourStep}`}
                                                             />
                                                             <AppButton
-                                                                style={{ marginVertical: 8 }}
+                                                                style={s.tooltipBtn}
                                                                 text="OK"
                                                                 onPress={doFinalStep}
                                                             />
@@ -140,7 +140,7 @@ export default function LevelSelectionScreen() {
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
-                            <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepOne} />
+                            <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepOne} />
                         </AppView>
                     }
                 />
@@ -157,7 +157,7 @@ export default function LevelSelectionScreen() {
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
-                        <AppButton style={{ marginVertical: 8 }} text="OK" onPress={goToStepTwo} />
+                        <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepTwo} />
                     </AppView>
                 }
             >
@@ -202,6 +202,7 @@ export const s = StyleSheet.create({
         alignItems: "center",
     },
     footerFiller: { height: 40 },
+    tooltipBtn: { marginVertical: 8, minWidth: "40%" },
 });
 
 function makeGrid<T>(nums: T[], cols = 2) {

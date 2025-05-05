@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, ViewStyle } from "react-native";
+import { Dimensions, Platform, StyleSheet, ViewStyle } from "react-native";
 import { MenuOption } from "react-native-popup-menu";
 
 export const STYLES = {
@@ -35,6 +35,7 @@ export const STYLES = {
             // borderWidth: 2,
             // borderColor: "red",
         },
+        tooltipBtn: { marginVertical: 8, minWidth: "40%" },
     }),
     init: StyleSheet.create({
         container: {
@@ -72,7 +73,11 @@ export const STYLES = {
             // borderColor: "red",
         },
         btn: { width: "100%", height: 48 },
-        backLink: { position: "absolute", left: 0, top: 20 },
+        backLink: {
+            position: "absolute",
+            left: Platform.OS == "ios" ? -20 : 0,
+            top: 22,
+        },
     }),
 
     practice: StyleSheet.create({
