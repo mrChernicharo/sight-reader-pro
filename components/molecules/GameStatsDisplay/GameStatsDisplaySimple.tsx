@@ -2,7 +2,6 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { Colors } from "@/utils/Colors";
 import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
-import { GameStatsDisplayProps, LevelScore } from "@/utils/types";
 import { useAppStore } from "@/hooks/useAppStore";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
@@ -11,8 +10,14 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useIntl } from "@/hooks/useIntl";
 import { BackLink } from "@/components/atoms/BackLink";
 import { ScoreManager } from "@/utils/ScoreManager";
+import { Level } from "@/utils/types";
 
-export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDisplayProps) {
+export type GameStatsDisplaySimpleProps = {
+    level: Level;
+    hitsPerMinute: number;
+};
+
+export function GameStatsDisplaySimple({ level, hitsPerMinute }: GameStatsDisplaySimpleProps) {
     const theme = useTheme();
     const { t } = useTranslation();
     const { intl } = useIntl();

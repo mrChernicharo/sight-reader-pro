@@ -12,6 +12,7 @@ interface PracticeSettings {
     scale: Scale;
     noteRangeIndices: { low: number; high: number };
     gameType: GameType;
+    duration: number;
 }
 interface CompletedTours {
     init: boolean;
@@ -46,6 +47,7 @@ const defaultPracticeSettings: PracticeSettings = {
     scale: Scale.Diatonic,
     noteRangeIndices: defaultNoteRangeIndices,
     gameType: GameType.Single,
+    duration: 60,
 };
 
 export interface AppActions {

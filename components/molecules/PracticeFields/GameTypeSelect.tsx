@@ -19,7 +19,7 @@ const TYPES = [
 ];
 // const TYPES = Object.values(GameType).map((gt) => ({ key: gt, value: gt }));
 
-export function GameTypeSwitch() {
+export function GameTypeSelect() {
     const theme = useTheme();
     const { t } = useTranslation();
     const updatePracticeSettings = useAppStore((state) => state.updatePracticeSettings);

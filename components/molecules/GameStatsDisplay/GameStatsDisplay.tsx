@@ -5,7 +5,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { getGameStats, getIsPracticeLevel } from "@/utils/helperFns";
-import { GameScreenParams, GameStatsDisplayProps, LevelScore } from "@/utils/types";
+import { GameScreenParams, Level, LevelScore } from "@/utils/types";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { StyleSheet } from "react-native";
 import { AppText } from "../../atoms/AppText";
@@ -23,6 +23,10 @@ import {
     SPEED_BONUS,
     PERFECT_ACCURACY_BONUS,
 } from "@/utils/ScoreManager";
+
+export type GameStatsDisplayProps = {
+    level: Level;
+};
 
 export function GameStatsDisplay({ level }: GameStatsDisplayProps) {
     const theme = useTheme();
@@ -126,9 +130,7 @@ export function ScoreDisplay() {
     const lastGame = games.at(-1);
     const level = getLevel(lastGame?.levelId!);
 
-    // const level = getLevel(lastGame?.levelId || "");
     // const isPracticeLevel = getIsPracticeLevel(lastGame?.levelId);
-    // const { hasWon } = getGameStats(level, lastGame?.rounds ?? [], intl);
 
     const score = ScoreManager.getScore();
     const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);

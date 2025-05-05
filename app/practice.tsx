@@ -27,12 +27,13 @@ import RangeSlider from "../components/atoms/RangeSlider";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { FadeIn } from "@/components/atoms/FadeIn";
 import { testBorder } from "@/utils/styles";
-import { GameTypeSwitch } from "@/components/molecules/PracticeFields/GameTypeSwitch";
+import { GameTypeSelect } from "@/components/molecules/PracticeFields/GameTypeSelect";
 import { ClefSwitch } from "@/components/molecules/PracticeFields/ClefSwitch";
 import { ScaleSelect } from "@/components/molecules/PracticeFields/ScaleSelect";
 import { IsMinorSwitch } from "@/components/molecules/PracticeFields/IsMinorSwitch";
+import { DurationSelect } from "@/components/molecules/PracticeFields/DurationSelect";
 
-const durationInSeconds = 60;
+// const durationInSeconds = 60;
 // const durationInSeconds = 60;
 
 export default function PracticeScreen() {
@@ -41,7 +42,15 @@ export default function PracticeScreen() {
     const { loadPracticeLevel } = useAllLevels();
 
     const { knowledge, practiceSettings, updatePracticeSettings } = useAppStore();
-    const { clef, isMinorKey, scale, keySignature = KeySignature.C, noteRangeIndices, gameType } = practiceSettings;
+    const {
+        clef,
+        isMinorKey,
+        scale,
+        keySignature = KeySignature.C,
+        noteRangeIndices,
+        gameType,
+        duration,
+    } = practiceSettings;
 
     const keySigArray = useMemo(() => (isMinorKey ? MINOR_KEY_SIGNATURES : MAJOR_KEY_SIGNATURES), [isMinorKey]);
     const keySigIndex = useMemo(
@@ -106,7 +115,7 @@ export default function PracticeScreen() {
             skillLevel: knowledge || Knowledge.intermediary,
             clef,
             type: GameType.Single,
-            durationInSeconds,
+            durationInSeconds: duration,
             noteRanges,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20, minAccuracy: 0.8 },
             keySignature,
@@ -123,7 +132,7 @@ export default function PracticeScreen() {
             type: GameType.Melody,
             timeSignature: TimeSignature["4/4"],
             noteRanges,
-            durationInSeconds,
+            durationInSeconds: duration,
             winConditions: { [WinRank.Gold]: 30, [WinRank.Silver]: 25, [WinRank.Bronze]: 20, minAccuracy: 0.8 },
             keySignature,
             index: -1,
@@ -137,7 +146,7 @@ export default function PracticeScreen() {
             pathname: "/game-level/[id]",
             params: { id: levelId, clef, keySignature, previousPage: "/practice" },
         });
-    }, [clef, rangeLow, rangeHigh, CURR_KEY_SIGNATURES, keySignature, allNotes, scale, gameType]);
+    }, [clef, rangeLow, rangeHigh, CURR_KEY_SIGNATURES, keySignature, allNotes, scale, gameType, duration]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor: Colors[theme].bg }}>
@@ -207,7 +216,11 @@ export default function PracticeScreen() {
 
                 <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
 
-                <GameTypeSwitch />
+                <GameTypeSelect />
+
+                <AppView style={{ ...s.separator, borderColor: Colors[theme].textMute }} />
+
+                <DurationSelect />
 
                 {/* Spacer */}
                 <AppView style={{ paddingBottom: 32 }} />
