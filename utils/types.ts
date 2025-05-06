@@ -188,3 +188,10 @@ export interface LevelScore {
     accuracy: number;
     formula: string;
 }
+
+export interface NotePlayedEventData {
+    playedNote: Note;
+    currNote: Note;
+    isSuccess: boolean;
+    currNoteValue: number;
+}

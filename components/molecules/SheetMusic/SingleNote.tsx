@@ -1,6 +1,6 @@
 import { AppView } from "../../atoms/AppView";
 
-import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 // @ts-ignore
 import { Accidental } from "vexflow/src/accidental";
 // @ts-ignore
@@ -16,16 +16,17 @@ import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context"
 
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { Clef, KeySignature } from "@/utils/enums";
+import { AppEvents, Clef, KeySignature } from "@/utils/enums";
 import { getDrawNote } from "@/utils/noteFns";
-import { Note } from "@/utils/types";
+import { Note, NotePlayedEventData } from "@/utils/types";
 import { StyleSheet } from "react-native";
+import { eventEmitter } from "@/app/_layout";
+import { explodeNote, isNoteMatch, wait } from "@/utils/helperFns";
 
 export interface MusicNoteProps {
-    keys: Note[];
+    targetNote: Note;
     clef: Clef;
     keySignature: KeySignature;
-    noteColor?: string;
 }
 
 const widthPerKeySig = {
@@ -65,31 +66,83 @@ const widthPerKeySig = {
 const height = 220;
 
 export function SingleNoteComponent(props: MusicNoteProps) {
-    const { clef, keys, keySignature, noteColor } = props;
+    const { clef, keySignature, targetNote } = props;
 
-    const note = keys[0];
-    const prevNote = useRef<Note>(note);
-    const prevColor = useRef<string | undefined>(noteColor);
+    const prevNote = useRef<Note | null>(null);
+    const [playedNote, setPlayedNote] = useState<Note | null>(null);
+    const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
+
+    const width = useMemo(() => 180 + widthPerKeySig[keySignature], [keySignature]);
+
+    // const context: ReactNativeSVGContext = useMemo(() => {
+    //     const ctx = new ReactNativeSVGContext(NotoFontPack, { width });
+    //     return ctx;
+    // }, []);
+
+    // const note = keys[0];
+    // const prevColor = useRef<string | undefined>(noteColor);
+
+    // const SvgResult = useMemo(() => {
+    //     let skip = false;
+    //     if (note !== prevNote.current && noteColor === prevColor.current) skip = true;
+
+    //     prevNote.current = note;
+    //     prevColor.current = noteColor;
+
+    //     if (skip) return null;
+
+    //     const width = 180 + widthPerKeySig[keySignature];
+    //     const context = new ReactNativeSVGContext(NotoFontPack, { width });
+
+    //     return runVexFlowCode(context, clef, note, keySignature, width, Colors.dark.text, noteColor);
+    // }, [note, keySignature, clef, noteColor]);
 
     const SvgResult = useMemo(() => {
-        let skip = false;
-        if (note !== prevNote.current && noteColor === prevColor.current) skip = true;
-
-        prevNote.current = note;
-        prevColor.current = noteColor;
-
-        if (skip) return null;
-
-        const width = 180 + widthPerKeySig[keySignature];
         const context = new ReactNativeSVGContext(NotoFontPack, { width });
+        // context.clear();
 
-        return runVexFlowCode(context, clef, note, keySignature, width, Colors.dark.text, noteColor);
-    }, [note, keySignature, clef, noteColor]);
+        return runVexFlowCode2({
+            context,
+            clef,
+            targetNote,
+            playedNote,
+            keySignature,
+            width,
+        });
+    }, [playedNote, targetNote, keySignature, clef]);
+
+    useEffect(() => {
+        eventEmitter.addListener(AppEvents.NotePlayed, async (event) => {
+            const { currNote, playedNote: userNote, isSuccess, currNoteValue } = event.data as NotePlayedEventData;
+            // console.log(event);
+            setPlayedNote(userNote);
+            // setIsSuccess(isSuccess);
+            console.log("===============");
+        });
+
+        return () => eventEmitter.removeAllListeners(AppEvents.NotePlayed);
+    }, []);
 
     // useEffect(() => {
     //     console.log({ note, keySignature, clef, noteColor });
     // }, [note, keySignature, clef, noteColor]);
 
+    useEffect(() => {
+        // console.log({ playedNote, targetNote });
+    }, [playedNote, targetNote]);
+
+    useEffect(() => {
+        if (targetNote) {
+            wait(200).then(() => {
+                setPlayedNote(null);
+            });
+            // setIsSuccess(null);
+        }
+    }, [targetNote]);
+
+    // useEffect(() => {
+    //     if (!playedNote) console.log("===============");
+    // }, [playedNote]);
     // console.log("querySelector", SvgResult?.toLocaleString().split("width={1} />"));
 
     return (
@@ -112,15 +165,24 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowCode(
-    context: any,
-    clef: Clef,
-    note: Note,
-    keySignature: KeySignature,
-    width: number,
-    color: string,
-    noteColor?: string
-) {
+function runVexFlowCode2({
+    context,
+    clef,
+    targetNote,
+    playedNote,
+    keySignature,
+    width,
+}: {
+    context: ReactNativeSVGContext;
+    clef: Clef;
+    targetNote: Note;
+    playedNote: Note | null;
+    keySignature: KeySignature;
+    width: number;
+}) {
+    const color = Colors.dark.text;
+    // const color = Colors.dark.green;
+    // context.clearRect(0, 0, 300, 300);
     context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
 
     const stave = new Stave(0, 80, width);
@@ -131,38 +193,120 @@ function runVexFlowCode(
     // stave.setNoteStartX(90);
     stave.draw();
 
-    const notes = [];
-    const { drawNote, drawAccident } = getDrawNote(note, keySignature, [note]);
+    // const staveNotes: StaveNote[] = [];
+    const voices: Voice[] = [];
 
-    const isError = noteColor === Colors.dark.red;
+    const notes = [targetNote, playedNote].filter(Boolean) as Note[];
+    const noteNames = notes.map((n) => explodeNote(n).noteName);
 
-    console.log({ noteColor, isError, note, drawNote, drawAccident });
+    notes.forEach((note, i) => {
+        const { drawNote, drawAccident } = getDrawNote(note, keySignature, [note]);
 
-    const staveNote = new StaveNote({
-        clef,
-        keys: [drawNote],
-        duration: "w",
-        align_center: true,
-        glyph_font_scale: 38,
+        const staveNote = new StaveNote({
+            clef,
+            keys: [drawNote],
+            duration: "w",
+            align_center: true,
+            glyph_font_scale: 38,
+            // glyph_stroke: "green",
+            // stroke: "green",
+            // glyph_fill: "green",
+            // fill: "green",
+            // fill_color: "green",
+        });
+        // console.log({ drawNote, staveNote });
+        // staveNote
+        // staveNote.setStroke("green");
+
+        if (drawAccident) {
+            staveNote.addAccidental(0, new Accidental(drawAccident));
+        }
+
+        // staveNotes.push(staveNote);
+        const voice = new Voice({ num_beats: 4, beat_value: 4 });
+        voice.addTickables([staveNote]);
+        voices.push(voice);
     });
 
-    if (drawAccident) {
-        staveNote.addAccidental(0, new Accidental(drawAccident));
-    }
+    const formatter = new Formatter();
+    // if (noteNames.length > 0) {
+    //     const isSuccess = isNoteMatch(noteNames[0], noteNames[0]);
+    //     context.setFillStyle(isSuccess ? Colors.dark.green : Colors.dark.red);
+    // } else {
+    //     context.setFillStyle(color);
+    // }
 
-    notes.push(staveNote);
+    formatter.joinVoices(voices).formatToStave(voices, stave);
+    voices.forEach((v) => v.draw(context, stave));
 
-    const voice = new Voice({ num_beats: 4, beat_value: 4 });
-    voice.addTickables(notes);
-
-    new Formatter().joinVoices([voice]).formatToStave([voice], stave);
-    voice.draw(context, stave);
+    console.log({
+        // formatter,
+        // voices,
+        // tickContexts: formatter.tickContexts,
+        // modiferContexts: formatter.modiferContexts,
+        modiferContext: formatter.modiferContexts[0],
+        attrs: voices[0].attrs,
+    });
 
     const renderResult = context.render() as ReactNode;
+    context.clear();
 
-    const result = noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
-    return result;
+    // const result = noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
+    // return result;
+    return renderResult;
 }
+
+// function runVexFlowCode(
+//     context: any,
+//     clef: Clef,
+//     note: Note,
+//     keySignature: KeySignature,
+//     width: number,
+//     color: string,
+//     noteColor?: string
+// ) {
+//     context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
+
+//     const stave = new Stave(0, 80, width);
+//     stave.setContext(context);
+//     stave.setClef(clef);
+//     stave.setKeySignature(keySignature);
+//     // stave.setTimeSignature("4/4");
+//     // stave.setNoteStartX(90);
+//     stave.draw();
+
+//     const notes = [];
+//     const { drawNote, drawAccident } = getDrawNote(note, keySignature, [note]);
+
+//     const isError = noteColor === Colors.dark.red;
+
+//     // console.log({ noteColor, isError, note, drawNote, drawAccident });
+
+//     const staveNote = new StaveNote({
+//         clef,
+//         keys: [drawNote],
+//         duration: "w",
+//         align_center: true,
+//         glyph_font_scale: 38,
+//     });
+
+//     if (drawAccident) {
+//         staveNote.addAccidental(0, new Accidental(drawAccident));
+//     }
+
+//     notes.push(staveNote);
+
+//     const voice = new Voice({ num_beats: 4, beat_value: 4 });
+//     voice.addTickables(notes);
+
+//     new Formatter().joinVoices([voice]).formatToStave([voice], stave);
+//     voice.draw(context, stave);
+
+//     const renderResult = context.render() as ReactNode;
+
+//     const result = noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
+//     return result;
+// }
 
 type SvgStrut = {
     props: {

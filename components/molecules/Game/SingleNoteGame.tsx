@@ -37,17 +37,6 @@ const s = STYLES.game;
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
-const getNoteColor = (gameState: GameState, theme: "light" | "dark") => {
-    switch (gameState) {
-        case GameState.Idle:
-            return undefined;
-        case GameState.Success:
-            return Colors[theme].green;
-        case GameState.Mistake:
-            return Colors[theme].red;
-    }
-};
-
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
     const theme = useTheme();
@@ -65,17 +54,14 @@ export function SingleNoteGameComponent() {
     const level = getLevel(id)!;
     const possibleNotes = getPossibleNotesInLevel(level);
     const hintCount = getLevelHintCount(level.skillLevel);
-    // const isPracticeLevel = getIsPracticeLevel(currentGame?.levelId);
 
     const rounds = useMemo(() => currentGame?.rounds || [], [currentGame?.rounds]);
 
-    const [gameState, setGameState] = useState<GameState>(GameState.Idle);
     const [currNote, setCurrNote] = useState<Note>(
         () => decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
 
     async function onPianoKeyPress(notename: NoteName) {
-        if (gameState !== GameState.Idle) return;
         const { noteName, octave } = explodeNote(currNote);
         const playedNote = `${notename}/${+octave}` as Note;
         const isSuccess = isNoteMatch(notename, noteName);
@@ -85,16 +71,12 @@ export function SingleNoteGameComponent() {
         eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, currNoteValue } });
 
         if (isSuccess) {
-            setGameState(GameState.Success);
             playPianoNote(playedNote);
         } else {
-            setGameState(GameState.Mistake);
             playPianoNote(playedNote);
             playPianoNote(currNote);
             playSoundEfx(SoundEffect.WrongAnswer2);
         }
-
-        await wait(0);
 
         if (!currentGame || currentGame.type !== GameType.Single) return;
 
@@ -103,13 +85,11 @@ export function SingleNoteGameComponent() {
         const prevRound = { value: currNote, attempt: playedNote };
         const { value: nextNote } = decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes, prevRound);
         if (nextNote) setCurrNote(nextNote);
-        setGameState(GameState.Idle);
     }
 
     function onPianoKeyReleased(notename: NoteName) {}
 
     const onCountdownFinish = useCallback(async () => {
-        setGameState(GameState.Idle);
         const gameScoreInfo = ScoreManager.getScore();
         const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
 
@@ -154,8 +134,7 @@ export function SingleNoteGameComponent() {
 
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 
-    const noteColor = getNoteColor(gameState, theme);
-    const noteProps = { keys: [currNote], clef: level.clef, keySignature, noteColor };
+    const noteProps = { keys: [currNote], clef: level.clef, keySignature };
     const currNoteText = t(`music.notes.${explodeNote(currNote).noteName}`).toUpperCase();
 
     return (
@@ -225,7 +204,7 @@ export function SingleNoteGameComponent() {
                         </View>
                     }
                 >
-                    <SingleNoteGameStage noteProps={noteProps} />
+                    <SheetMusic.SingleNote keySignature={keySignature} clef={level.clef} targetNote={currNote} />
                 </WalkthroughTooltip>
             )}
 
@@ -255,23 +234,4 @@ export function SingleNoteGameComponent() {
             </WalkthroughTooltip>
         </SafeAreaView>
     );
-}
-
-export interface NotePlayedEventData {
-    playedNote: Note;
-    currNote: Note;
-    isSuccess: boolean;
-    currNoteValue: number;
-}
-
-function SingleNoteGameStage({
-    noteProps,
-}: {
-    noteProps: {
-        keys: Note[];
-        clef: Clef;
-        keySignature: KeySignature;
-    };
-}) {
-    return <SheetMusic.SingleNote {...noteProps} />;
 }

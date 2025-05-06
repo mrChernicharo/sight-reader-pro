@@ -23,7 +23,7 @@ SplashScreen.setOptions({
     duration: 1000,
 });
 
-export const eventEmitter = new NativeEventEmitter("sight-reader-pro" as any);
+export const eventEmitter = new NativeEventEmitter(NativeModules as any);
 
 export default function RootLayout() {
     const { fontsError, _hydrated } = useAppInitialization();
