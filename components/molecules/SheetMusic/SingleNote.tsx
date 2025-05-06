@@ -63,7 +63,6 @@ const widthPerKeySig = {
     [KeySignature["A#m"]]: 70,
 };
 
-const height = 220;
 const WAIT_SUCCESS = 100;
 const WAIT_MISTAKE = 350;
 
@@ -78,21 +77,30 @@ export function SingleNoteComponent(props: MusicNoteProps) {
 
     const width = useMemo(() => 180 + widthPerKeySig[keySignature], [keySignature]);
 
-    // const context: ReactNativeSVGContext = useMemo(() => {
-    //     const ctx = new ReactNativeSVGContext(NotoFontPack, { width });
-    //     return ctx;
-    // }, []);
+    const context: ReactNativeSVGContext = useMemo(() => {
+        return new ReactNativeSVGContext(NotoFontPack, { width });
+    }, [width]);
 
     const SvgResult = useMemo(() => {
         if (playedNote || targetNote) {
-            const context = new ReactNativeSVGContext(NotoFontPack, { width });
+            // const context = new ReactNativeSVGContext(NotoFontPack, { width });
             const color = Colors.dark.text;
-            context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
+            context
+                .setFont("Arial", 20, "")
+                .setFillStyle(color)
+                .setStrokeStyle(color)
+                // .setBackgroundFillStyle("black")
+                .setLineWidth(3);
+
+            console.log({ context });
 
             svgResult.current = runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, width });
+        } else {
+            context.setBackgroundFillStyle(Colors.dark.bg);
+            context.clearRect(0, 20, 400, 200);
         }
         return svgResult.current;
-    }, [playedNote, targetNote, keySignature, clef]);
+    }, [context, playedNote, targetNote, keySignature, clef]);
 
     useEffect(() => {
         eventEmitter.addListener(AppEvents.NotePlayed, async ({ data }: { data: NotePlayedEventData }) => {
@@ -156,8 +164,6 @@ function runVexFlowCode({
     const isSuccess = noteNames.length == 2 ? isNoteMatch(noteNames[0], noteNames[1]) : null;
     if (isSuccess) notes.pop(); // paint 2 notes only if mistake
 
-    // console.log({ noteNames, notes, targetNote, playedNote });
-
     const stave = new Stave(0, 80, width);
 
     stave.setContext(context);
@@ -217,7 +223,7 @@ function runVexFlowCode({
 
 const styles = StyleSheet.create({
     container: {
-        height,
+        height: 220,
         // borderWidth: 2,
         // borderStyle: "dashed",
         // backgroundColor: "#F5FCFF",
