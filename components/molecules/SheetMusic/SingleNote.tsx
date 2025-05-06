@@ -69,7 +69,7 @@ const WAIT_MISTAKE = 350;
 export function SingleNoteComponent(props: MusicNoteProps) {
     const { clef, keySignature, targetNote: propNote } = props;
 
-    const waitTime = useRef<number>();
+    const waitTime = useRef<number>(0);
     const [playedNote, setPlayedNote] = useState<Note | null>(null);
     const [targetNote, setTargetNote] = useState<Note | null>(null);
 
@@ -83,16 +83,8 @@ export function SingleNoteComponent(props: MusicNoteProps) {
 
     const SvgResult = useMemo(() => {
         if (playedNote || targetNote) {
-            // const context = new ReactNativeSVGContext(NotoFontPack, { width });
             const color = Colors.dark.text;
-            context
-                .setFont("Arial", 20, "")
-                .setFillStyle(color)
-                .setStrokeStyle(color)
-                // .setBackgroundFillStyle("black")
-                .setLineWidth(3);
-
-            console.log({ context });
+            context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
 
             svgResult.current = runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, width });
         } else {
@@ -111,9 +103,9 @@ export function SingleNoteComponent(props: MusicNoteProps) {
         return () => eventEmitter.removeAllListeners(AppEvents.NotePlayed);
     }, []);
 
-    // useEffect(() => {
-    //     console.log({ playedNote, targetNote });
-    // }, [playedNote, propNote]);
+    useEffect(() => {
+        console.log({ playedNote, targetNote });
+    }, [playedNote, targetNote]);
 
     useEffect(() => {
         setTargetNote(null);
@@ -143,24 +135,18 @@ durations:
 //  new StaveNote({ clef, keys: ["c/4", "e/4"], duration: "q" }).addAccidental(0, new Accidental("#")).addDotToAll(),
 // ];
 
-function runVexFlowCode({
-    context,
-    clef,
-    targetNote,
-    playedNote,
-    keySignature,
-    width,
-}: {
+interface RunVexFlowCodeArgs {
     context: ReactNativeSVGContext;
     clef: Clef;
     targetNote: Note | null;
     playedNote: Note | null;
     keySignature: KeySignature;
     width: number;
-}) {
+}
+
+function runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, width }: RunVexFlowCodeArgs) {
     const notes = [targetNote, playedNote].filter(Boolean) as Note[];
     const noteNames = notes.map((n) => explodeNote(n).noteName);
-
     const isSuccess = noteNames.length == 2 ? isNoteMatch(noteNames[0], noteNames[1]) : null;
     if (isSuccess) notes.pop(); // paint 2 notes only if mistake
 
@@ -224,9 +210,6 @@ function runVexFlowCode({
 const styles = StyleSheet.create({
     container: {
         height: 220,
-        // borderWidth: 2,
-        // borderStyle: "dashed",
-        // backgroundColor: "#F5FCFF",
         backgroundColor: "transparent",
         // ...testBorder("blue"),
     },
