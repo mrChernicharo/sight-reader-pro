@@ -64,6 +64,7 @@ const widthPerKeySig = {
 };
 
 const height = 220;
+const waitTime = 400;
 
 export function SingleNoteComponent(props: MusicNoteProps) {
     const { clef, keySignature, targetNote: propNote } = props;
@@ -99,27 +100,18 @@ export function SingleNoteComponent(props: MusicNoteProps) {
     }, []);
 
     // useEffect(() => {
-    //     console.log({ note, keySignature, clef, noteColor });
-    // }, [note, keySignature, clef, noteColor]);
-
-    // useEffect(() => {
     //     console.log({ playedNote, targetNote });
     // }, [playedNote, propNote]);
 
     useEffect(() => {
         setTargetNote(null);
         setPlayedNote(null);
-        wait(200).then(() => {
+        wait(waitTime).then(() => {
             setTargetNote(propNote);
         });
 
-        return () => console.log("===============");
+        return () => console.log("\n");
     }, [propNote]);
-
-    // useEffect(() => {
-    //     if (!playedNote) console.log("===============");
-    // }, [playedNote]);
-    // console.log("querySelector", SvgResult?.toLocaleString().split("width={1} />"));
 
     return (
         <AppView style={styles.container}>
@@ -159,7 +151,10 @@ function runVexFlowCode2({
     const color = Colors.dark.text;
     const notes = [targetNote, playedNote].filter(Boolean) as Note[];
     const noteNames = notes.map((n) => explodeNote(n).noteName);
-    console.log({ noteNames, notes, targetNote, playedNote });
+    const isSuccess = noteNames.length == 2 ? isNoteMatch(noteNames[0], noteNames[1]) : null;
+    if (isSuccess) notes.pop();
+
+    // console.log({ noteNames, notes, targetNote, playedNote });
 
     // const color = Colors.dark.green;
     // context.clearRect(0, 0, 300, 300);
@@ -176,22 +171,27 @@ function runVexFlowCode2({
     // const staveNotes: StaveNote[] = [];
     const voices: Voice[] = [];
 
-    notes.forEach((note, i) => {
+    notes.forEach((note, idx) => {
         const { drawNote, drawAccident } = getDrawNote(note, keySignature, [note]);
 
         const staveNote = new StaveNote({
             clef,
             keys: [drawNote],
             duration: "w",
+            // align_center: i == 1 ? true : false,
             align_center: true,
             glyph_font_scale: 38,
+            // left_modPx: i == 0 ? 0 : 90,
         });
-        // console.log({ drawNote, staveNote });
+
         // staveNote
         // staveNote.setStroke("green");
 
         if (drawAccident) {
-            staveNote.addAccidental(0, new Accidental(drawAccident));
+            const accidental = new Accidental(drawAccident);
+            accidental.setXShift(0);
+            console.log({ accidental });
+            staveNote.addAccidental(0, accidental);
         }
 
         // staveNotes.push(staveNote);
@@ -204,19 +204,54 @@ function runVexFlowCode2({
     formatter.joinVoices(voices).formatToStave(voices, stave);
 
     voices.forEach((voice, idx) => {
-        if (idx === 1 && noteNames.length >= 2) {
-            const isSuccess = isNoteMatch(noteNames[0], noteNames[1]);
-            const noteColor = isSuccess ? Colors.dark.green : Colors.dark.red;
-            context.setFillStyle(noteColor);
-        }
+        const staveNoteRef = voice.tickables[0];
 
+        staveNoteRef.setXShift(idx == 0 ? -20 : 0);
+
+        if (isSuccess != null) {
+            if (isSuccess) {
+                context.setFillStyle(Colors.dark.green);
+            }
+            //
+            else if (!isSuccess && idx == 1) {
+                context.setFillStyle(Colors.dark.red);
+            }
+        }
         voice.draw(context, stave);
     });
 
-    // console.log({
-    //     modiferContext: formatter.modiferContexts[0],
-    //     attrs: voices[0].attrs,
-    // });
+    //     try {
+    //     console.log({
+    //         staveNote,
+    //         // stemX: staveNote.getStemX(),
+    //         flagStyle: staveNote.getFlagStyle(),
+    //         x: staveNote.getX(),
+    //         // noteHeadBeginX: staveNote.getNoteHeadBeginX(),
+    //         // noteHeadBeginX: staveNote.getNoteHeadBeginX(),
+    //     });
+    // } catch (error) {
+    //     console.log(error);
+    // }
+    const staveNotes = voices.map((v) => v.tickables[0]);
+
+    try {
+        console.log({
+            voices,
+            stave,
+            staveNotes,
+            xPos: staveNotes.map((n) => n.getX()),
+            noteStyles: staveNotes.map((n) => n.getStyle()),
+            //     noteHeads: voices.map((v) => v.tickables[0].note_heads[0]),
+            //     noteHeadsX: voices.map((v) => v.tickables[0].note_heads[0].x),
+        });
+
+        staveNotes.forEach((n, idx) => {
+            n.setXShift(0);
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
     const renderResult = context.render() as ReactNode;
     // context.clear();
     // const result = noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
