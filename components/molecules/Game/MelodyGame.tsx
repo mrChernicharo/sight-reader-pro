@@ -115,34 +115,12 @@ export function useMelody() {
         startNewGame({ ...level, ...gameInfo } as CurrentGame);
     }, [id, level]);
 
-    useEffect(() => {
-        (async () => {
-            const duration = getAttemptedNoteDuration(true);
-            await wait(duration);
-
-            // setAttemptedNotes((prev) => {
-            //     prev.shift();
-            //     return prev;
-            // });
-        })();
-    }, [rounds.length]);
-
-    // useEffect(() => {
-    //     console.log({ roundResults });
-    // }, [roundResults]);
-
-    // useEffect(() => {
-    //     console.log("ROUNDS:::", rounds);
-    //     // console.log(JSON.stringify({ rounds }, null, 2));
-    // }, [rounds]);
-
     return {
         currNote,
         currRound,
         rounds,
         melodyIdx,
         hintCount,
-        // attemptedNotes,
         roundResults,
         level,
         onPianoKeyPress,
@@ -168,16 +146,14 @@ export function MelodyGameComponent() {
             </AppView>
 
             {currRound?.values ? (
-                <AppView>
-                    <SheetMusic.Melody
-                        clef={level.clef}
-                        durations={currRound.durations}
-                        keySignature={level.keySignature}
-                        timeSignature={level.timeSignature}
-                        keys={currRound.values}
-                        roundResults={roundResults}
-                    />
-                </AppView>
+                <SheetMusic.Melody
+                    clef={level.clef}
+                    durations={currRound.durations}
+                    keySignature={level.keySignature}
+                    timeSignature={level.timeSignature}
+                    keys={currRound.values}
+                    roundResults={roundResults}
+                />
             ) : null}
 
             <AttemptedNotes />

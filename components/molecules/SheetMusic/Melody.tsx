@@ -1,6 +1,6 @@
 import { AppView } from "../../atoms/AppView";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 // @ts-ignore
 // import { StaveTie } from "vexflow/src/stavetie";
 // import { Dot } from "vexflow/src/dot";
@@ -47,20 +47,32 @@ export function MelodyComponent(props: MusicNoteRangeProps) {
     const { clef, keys, durations, keySignature, timeSignature, roundResults } = props;
     const MARGIN = width * 0.06;
 
+    const context: ReactNativeSVGContext = useMemo(() => {
+        return new ReactNativeSVGContext(NotoFontPack, { width });
+    }, [width]);
+
     // console.log("props ::: MelodyComponent", props);
 
-    const svgResult = runVexFlowRangeCode(
-        width - MARGIN * 2,
-        clef,
-        keys,
-        durations,
-        keySignature,
-        timeSignature,
-        roundResults,
-        { success: Colors[theme].green, mistake: Colors[theme].red },
-        textColor
-    );
+    const svgResult = useMemo(() => {
+        context
+            .setFont("Arial", 48, "")
+            .setBackgroundFillStyle("rgba(0, 0, 0, 0)")
+            .setFillStyle(textColor)
+            .setStrokeStyle(textColor)
+            .setLineWidth(2);
 
+        return runVexFlowRangeCode(
+            context,
+            width - MARGIN * 2,
+            clef,
+            keys,
+            durations,
+            keySignature,
+            timeSignature,
+            roundResults,
+            { success: Colors[theme].green, mistake: Colors[theme].red }
+        );
+    }, [context, width, clef, keys, durations, keySignature, timeSignature, roundResults]);
     return (
         <AppView style={styles.container}>
             <AppView style={styles.sheetMusic}>
@@ -71,6 +83,7 @@ export function MelodyComponent(props: MusicNoteRangeProps) {
 }
 
 function runVexFlowRangeCode(
+    context: ReactNativeSVGContext,
     width: number,
     clef: Clef,
     keys: Note[],
@@ -78,21 +91,12 @@ function runVexFlowRangeCode(
     keySignature: KeySignature,
     timeSignature: TimeSignature,
     roundResults: (1 | 0)[],
-    colors: { success: string; mistake: string },
-    textColor: string
+    colors: { success: string; mistake: string }
 ): React.ReactNode {
-    if (keys.length <= 0) {
-        return <></>;
-    }
+    if (keys.length <= 0) return null;
+
     // console.log("runVexFlowCode ::: Melody", { keys });
-    const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
     // console.log(":::> runVexFlowRangeCode", { clef, keys, keySignature, timeSignature, width, durations });
-    context
-        .setFont("Arial", 48, "")
-        .setBackgroundFillStyle("rgba(0, 0, 0, 0)")
-        .setFillStyle(textColor)
-        .setStrokeStyle(textColor)
-        .setLineWidth(2);
 
     const stave = new Stave(0, 80, width);
     stave.setContext(context);

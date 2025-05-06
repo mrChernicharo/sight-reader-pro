@@ -103,9 +103,9 @@ export function SingleNoteComponent(props: MusicNoteProps) {
         return () => eventEmitter.removeAllListeners(AppEvents.NotePlayed);
     }, []);
 
-    useEffect(() => {
-        console.log({ playedNote, targetNote });
-    }, [playedNote, targetNote]);
+    // useEffect(() => {
+    //     console.log({ playedNote, targetNote });
+    // }, [playedNote, targetNote]);
 
     useEffect(() => {
         setTargetNote(null);
