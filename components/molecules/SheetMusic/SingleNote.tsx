@@ -66,11 +66,13 @@ const widthPerKeySig = {
 const height = 220;
 
 export function SingleNoteComponent(props: MusicNoteProps) {
-    const { clef, keySignature, targetNote } = props;
+    const { clef, keySignature, targetNote: propNote } = props;
 
     const prevNote = useRef<Note | null>(null);
     const [playedNote, setPlayedNote] = useState<Note | null>(null);
-    const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
+    const [targetNote, setTargetNote] = useState<Note | null>(null);
+
+    const svgResult = useRef<ReactNode>(null);
 
     const width = useMemo(() => 180 + widthPerKeySig[keySignature], [keySignature]);
 
@@ -79,45 +81,18 @@ export function SingleNoteComponent(props: MusicNoteProps) {
     //     return ctx;
     // }, []);
 
-    // const note = keys[0];
-    // const prevColor = useRef<string | undefined>(noteColor);
-
-    // const SvgResult = useMemo(() => {
-    //     let skip = false;
-    //     if (note !== prevNote.current && noteColor === prevColor.current) skip = true;
-
-    //     prevNote.current = note;
-    //     prevColor.current = noteColor;
-
-    //     if (skip) return null;
-
-    //     const width = 180 + widthPerKeySig[keySignature];
-    //     const context = new ReactNativeSVGContext(NotoFontPack, { width });
-
-    //     return runVexFlowCode(context, clef, note, keySignature, width, Colors.dark.text, noteColor);
-    // }, [note, keySignature, clef, noteColor]);
-
     const SvgResult = useMemo(() => {
-        const context = new ReactNativeSVGContext(NotoFontPack, { width });
-        // context.clear();
-
-        return runVexFlowCode2({
-            context,
-            clef,
-            targetNote,
-            playedNote,
-            keySignature,
-            width,
-        });
+        if (playedNote || targetNote) {
+            const context = new ReactNativeSVGContext(NotoFontPack, { width });
+            svgResult.current = runVexFlowCode2({ context, clef, targetNote, playedNote, keySignature, width });
+        }
+        return svgResult.current;
     }, [playedNote, targetNote, keySignature, clef]);
 
     useEffect(() => {
         eventEmitter.addListener(AppEvents.NotePlayed, async (event) => {
-            const { currNote, playedNote: userNote, isSuccess, currNoteValue } = event.data as NotePlayedEventData;
-            // console.log(event);
+            const { playedNote: userNote, isSuccess } = event.data as NotePlayedEventData;
             setPlayedNote(userNote);
-            // setIsSuccess(isSuccess);
-            console.log("===============");
         });
 
         return () => eventEmitter.removeAllListeners(AppEvents.NotePlayed);
@@ -127,18 +102,19 @@ export function SingleNoteComponent(props: MusicNoteProps) {
     //     console.log({ note, keySignature, clef, noteColor });
     // }, [note, keySignature, clef, noteColor]);
 
-    useEffect(() => {
-        // console.log({ playedNote, targetNote });
-    }, [playedNote, targetNote]);
+    // useEffect(() => {
+    //     console.log({ playedNote, targetNote });
+    // }, [playedNote, propNote]);
 
     useEffect(() => {
-        if (targetNote) {
-            wait(200).then(() => {
-                setPlayedNote(null);
-            });
-            // setIsSuccess(null);
-        }
-    }, [targetNote]);
+        setTargetNote(null);
+        setPlayedNote(null);
+        wait(200).then(() => {
+            setTargetNote(propNote);
+        });
+
+        return () => console.log("===============");
+    }, [propNote]);
 
     // useEffect(() => {
     //     if (!playedNote) console.log("===============");
@@ -175,12 +151,16 @@ function runVexFlowCode2({
 }: {
     context: ReactNativeSVGContext;
     clef: Clef;
-    targetNote: Note;
+    targetNote: Note | null;
     playedNote: Note | null;
     keySignature: KeySignature;
     width: number;
 }) {
     const color = Colors.dark.text;
+    const notes = [targetNote, playedNote].filter(Boolean) as Note[];
+    const noteNames = notes.map((n) => explodeNote(n).noteName);
+    console.log({ noteNames, notes, targetNote, playedNote });
+
     // const color = Colors.dark.green;
     // context.clearRect(0, 0, 300, 300);
     context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
@@ -196,9 +176,6 @@ function runVexFlowCode2({
     // const staveNotes: StaveNote[] = [];
     const voices: Voice[] = [];
 
-    const notes = [targetNote, playedNote].filter(Boolean) as Note[];
-    const noteNames = notes.map((n) => explodeNote(n).noteName);
-
     notes.forEach((note, i) => {
         const { drawNote, drawAccident } = getDrawNote(note, keySignature, [note]);
 
@@ -208,11 +185,6 @@ function runVexFlowCode2({
             duration: "w",
             align_center: true,
             glyph_font_scale: 38,
-            // glyph_stroke: "green",
-            // stroke: "green",
-            // glyph_fill: "green",
-            // fill: "green",
-            // fill_color: "green",
         });
         // console.log({ drawNote, staveNote });
         // staveNote
@@ -229,28 +201,24 @@ function runVexFlowCode2({
     });
 
     const formatter = new Formatter();
-    // if (noteNames.length > 0) {
-    //     const isSuccess = isNoteMatch(noteNames[0], noteNames[0]);
-    //     context.setFillStyle(isSuccess ? Colors.dark.green : Colors.dark.red);
-    // } else {
-    //     context.setFillStyle(color);
-    // }
-
     formatter.joinVoices(voices).formatToStave(voices, stave);
-    voices.forEach((v) => v.draw(context, stave));
 
-    console.log({
-        // formatter,
-        // voices,
-        // tickContexts: formatter.tickContexts,
-        // modiferContexts: formatter.modiferContexts,
-        modiferContext: formatter.modiferContexts[0],
-        attrs: voices[0].attrs,
+    voices.forEach((voice, idx) => {
+        if (idx === 1 && noteNames.length >= 2) {
+            const isSuccess = isNoteMatch(noteNames[0], noteNames[1]);
+            const noteColor = isSuccess ? Colors.dark.green : Colors.dark.red;
+            context.setFillStyle(noteColor);
+        }
+
+        voice.draw(context, stave);
     });
 
+    // console.log({
+    //     modiferContext: formatter.modiferContexts[0],
+    //     attrs: voices[0].attrs,
+    // });
     const renderResult = context.render() as ReactNode;
-    context.clear();
-
+    // context.clear();
     // const result = noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
     // return result;
     return renderResult;
@@ -308,85 +276,85 @@ function runVexFlowCode2({
 //     return result;
 // }
 
-type SvgStrut = {
-    props: {
-        children: {
-            props: {
-                className?: string;
-                children: {
-                    props: {
-                        children: {
-                            props: {
-                                fill: string;
-                                stroke: string;
-                                children: {
-                                    props: {
-                                        fill: string;
-                                        stroke: string;
-                                    };
-                                };
-                            };
-                        }[];
-                    };
-                }[];
-            };
-        }[];
-    };
-};
+// type SvgStrut = {
+//     props: {
+//         children: {
+//             props: {
+//                 className?: string;
+//                 children: {
+//                     props: {
+//                         children: {
+//                             props: {
+//                                 fill: string;
+//                                 stroke: string;
+//                                 children: {
+//                                     props: {
+//                                         fill: string;
+//                                         stroke: string;
+//                                     };
+//                                 };
+//                             };
+//                         }[];
+//                     };
+//                 }[];
+//             };
+//         }[];
+//     };
+// };
 
-function addColorToNoteOutput(svgStruct: any, color: string) {
-    // console.log("svgStruct", svgStruct);
-    const result: SvgStrut = {
-        ...svgStruct,
-        props: {
-            ...svgStruct.props,
-            children: svgStruct.props.children.map((staveG: any) => {
-                if (staveG.props.className === "vf-stavenote") {
-                    const svg = {
-                        ...staveG,
-                        props: {
-                            ...staveG.props,
-                            children: staveG.props.children.map((noteG: any) => ({
-                                ...noteG,
-                                props: {
-                                    ...noteG.props,
-                                    children: noteG.props.children.map((noteHeadG: any) => ({
-                                        ...noteHeadG,
-                                        props: {
-                                            ...noteHeadG.props,
-                                            fill: color,
-                                            stroke: color,
-                                            children: noteHeadG.props.children.map((notePath: any, i: number) => {
-                                                // console.log('::::addColorToNoteOutput',{ i, staveG, noteG, noteHeadG, notePath });
-                                                return {
-                                                    ...notePath,
-                                                    props: {
-                                                        ...notePath.props,
-                                                        fill: color,
-                                                        stroke: color,
-                                                        // scale,
-                                                        // onLayout: (ev: LayoutChangeEvent) => {},
-                                                        // style: {},
-                                                    },
-                                                };
-                                            }),
-                                        },
-                                    })),
-                                },
-                            })),
-                        },
-                    };
+// function addColorToNoteOutput(svgStruct: any, color: string) {
+//     // console.log("svgStruct", svgStruct);
+//     const result: SvgStrut = {
+//         ...svgStruct,
+//         props: {
+//             ...svgStruct.props,
+//             children: svgStruct.props.children.map((staveG: any) => {
+//                 if (staveG.props.className === "vf-stavenote") {
+//                     const svg = {
+//                         ...staveG,
+//                         props: {
+//                             ...staveG.props,
+//                             children: staveG.props.children.map((noteG: any) => ({
+//                                 ...noteG,
+//                                 props: {
+//                                     ...noteG.props,
+//                                     children: noteG.props.children.map((noteHeadG: any) => ({
+//                                         ...noteHeadG,
+//                                         props: {
+//                                             ...noteHeadG.props,
+//                                             fill: color,
+//                                             stroke: color,
+//                                             children: noteHeadG.props.children.map((notePath: any, i: number) => {
+//                                                 // console.log('::::addColorToNoteOutput',{ i, staveG, noteG, noteHeadG, notePath });
+//                                                 return {
+//                                                     ...notePath,
+//                                                     props: {
+//                                                         ...notePath.props,
+//                                                         fill: color,
+//                                                         stroke: color,
+//                                                         // scale,
+//                                                         // onLayout: (ev: LayoutChangeEvent) => {},
+//                                                         // style: {},
+//                                                     },
+//                                                 };
+//                                             }),
+//                                         },
+//                                     })),
+//                                 },
+//                             })),
+//                         },
+//                     };
 
-                    return svg;
-                } else {
-                    return staveG;
-                }
-            }),
-        },
-    };
+//                     return svg;
+//                 } else {
+//                     return staveG;
+//                 }
+//             }),
+//         },
+//     };
 
-    return result as React.ReactNode;
-}
+//     return result as React.ReactNode;
+// }
 
 const styles = StyleSheet.create({
     container: {
