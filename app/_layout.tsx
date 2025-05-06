@@ -11,7 +11,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
-import { NativeEventEmitter, NativeModules } from "react-native";
+import { NativeEventEmitter, NativeModules, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -44,7 +44,7 @@ export default function RootLayout() {
         );
 
     return (
-        <SafeAreaProvider style={{ paddingTop: 8 }}>
+        <SafeAreaProvider style={{ paddingTop: Platform.OS == "ios" ? 24 : 8, backgroundColor: Colors.dark.bg }}>
             <GestureHandlerRootView>
                 <MenuProvider>
                     <SoundContextProvider>

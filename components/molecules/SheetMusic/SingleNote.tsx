@@ -1,6 +1,6 @@
 import { AppView } from "../../atoms/AppView";
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
 // @ts-ignore
 import { Accidental } from "vexflow/src/accidental";
 // @ts-ignore
@@ -65,23 +65,37 @@ const widthPerKeySig = {
 const height = 220;
 
 export function SingleNoteComponent(props: MusicNoteProps) {
-    // const width = 210 + widthPerKeySig[props.keySignature];
-    const width = 180 + widthPerKeySig[props.keySignature];
-    // const { height, width, scale, fontScale } = useWindowDimensions();
-    const theme = useTheme();
-    const textColor = Colors[theme].text;
-    const context = new ReactNativeSVGContext(NotoFontPack, { width });
     const { clef, keys, keySignature, noteColor } = props;
-    const SvgResult = () => runVexFlowCode(context, clef, keys, keySignature, width, textColor, noteColor);
+
+    const note = keys[0];
+    const prevNote = useRef<Note>(note);
+    const prevColor = useRef<string | undefined>(noteColor);
+
+    const SvgResult = useMemo(() => {
+        let skip = false;
+        if (note !== prevNote.current && noteColor === prevColor.current) skip = true;
+
+        prevNote.current = note;
+        prevColor.current = noteColor;
+
+        if (skip) return null;
+
+        const width = 180 + widthPerKeySig[keySignature];
+        const context = new ReactNativeSVGContext(NotoFontPack, { width });
+
+        return runVexFlowCode(context, clef, note, keySignature, width, Colors.dark.text, noteColor);
+    }, [note, keySignature, clef, noteColor]);
+
+    // useEffect(() => {
+    //     console.log({ note, keySignature, clef, noteColor });
+    // }, [note, keySignature, clef, noteColor]);
 
     // console.log("querySelector", SvgResult?.toLocaleString().split("width={1} />"));
 
     return (
         <AppView style={styles.container}>
             <AppView style={styles.sheetMusic}>
-                <AppView style={styles.innerView}>
-                    <SvgResult />
-                </AppView>
+                <AppView style={styles.innerView}>{SvgResult}</AppView>
             </AppView>
         </AppView>
     );
@@ -101,18 +115,12 @@ durations:
 function runVexFlowCode(
     context: any,
     clef: Clef,
-    keys: Note[],
+    note: Note,
     keySignature: KeySignature,
     width: number,
     color: string,
     noteColor?: string
 ) {
-    // console.log("runVexFlowCode :::: Single", { keys });
-    if (!keys || keys.length > 1) {
-        console.error("Single Note vexFlow function can only accept 1 note!");
-        return <></>;
-    }
-
     context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
 
     const stave = new Stave(0, 80, width);
@@ -124,8 +132,11 @@ function runVexFlowCode(
     stave.draw();
 
     const notes = [];
-    const note = keys[0];
-    const { drawNote, drawAccident } = getDrawNote(note, keySignature, keys);
+    const { drawNote, drawAccident } = getDrawNote(note, keySignature, [note]);
+
+    const isError = noteColor === Colors.dark.red;
+
+    console.log({ noteColor, isError, note, drawNote, drawAccident });
 
     const staveNote = new StaveNote({
         clef,
@@ -134,6 +145,7 @@ function runVexFlowCode(
         align_center: true,
         glyph_font_scale: 38,
     });
+
     if (drawAccident) {
         staveNote.addAccidental(0, new Accidental(drawAccident));
     }
@@ -148,7 +160,8 @@ function runVexFlowCode(
 
     const renderResult = context.render() as ReactNode;
 
-    return noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
+    const result = noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
+    return result;
 }
 
 type SvgStrut = {
