@@ -1,12 +1,12 @@
 import { glyphs } from "@/utils/constants";
 import { KeySignature } from "@/utils/enums";
 import Slider from "@react-native-community/slider";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { AppText } from "../atoms/AppText";
 import { AppView } from "../atoms/AppView";
 import { useTranslation } from "@/hooks/useTranslation";
-import { STYLES } from "@/utils/styles";
+import { STYLES, testBorder } from "@/utils/styles";
 
 const s = STYLES.practice;
 
@@ -26,8 +26,8 @@ export function KeySignatureSlider({
         <AppView transparentBG style={s.menuItem}>
             <AppText>{t("music.armature")}</AppText>
 
-            <AppView style={s.menuTrigger}>
-                <AppText style={{ fontSize: 32 }}> {glyphs.flat}</AppText>
+            <AppView style={{ ...s.menuTrigger, gap: 0 }}>
+                <AppText style={ss.flatGlyph}> {glyphs.flat}</AppText>
                 <Slider
                     style={{ width: 200, height: 40 }}
                     step={1}
@@ -37,11 +37,16 @@ export function KeySignatureSlider({
                     onValueChange={setKeySigIndex}
                     minimumTrackTintColor="#5b99d4"
                     thumbTintColor="#5b99d4"
-                    maximumTrackTintColor={theme === "light" ? "black" : "white"}
+                    maximumTrackTintColor={"white"}
                     hitSlop={32}
                 />
-                <AppText style={{ fontSize: 32 }}> {glyphs.sharp}</AppText>
+                <AppText style={ss.sharpGlyph}> {glyphs.sharp}</AppText>
             </AppView>
         </AppView>
     );
 }
+
+const ss = StyleSheet.create({
+    flatGlyph: { fontSize: 36, lineHeight: 42 },
+    sharpGlyph: Platform.OS === "ios" ? { fontSize: 36, lineHeight: 40 } : { fontSize: 28, lineHeight: 28 },
+});

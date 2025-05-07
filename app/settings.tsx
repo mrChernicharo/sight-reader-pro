@@ -200,6 +200,7 @@ const s = StyleSheet.create({
         paddingHorizontal: 16,
     },
     input: {
+        height: 46,
         borderWidth: 1,
         borderColor: "#999",
         width: "100%",

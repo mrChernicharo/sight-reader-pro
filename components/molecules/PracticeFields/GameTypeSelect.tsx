@@ -39,7 +39,7 @@ export function GameTypeSelect() {
             <AppText>{t("game.type.title")}</AppText>
 
             <Menu>
-                <MenuTrigger style={s.menuTrigger}>
+                <MenuTrigger style={{ ...s.menuTrigger, marginRight: -14 }}>
                     <AppText style={{ color: Colors[theme].textMute }}>{t(`game.type.${gameType}`)}</AppText>
 
                     <Ionicons name="chevron-forward" size={20} color={Colors[theme].textMute} style={s.icon} />

@@ -51,7 +51,7 @@ export const STYLES = {
         },
         top: {
             width: "100%",
-            top: 24,
+            top: Platform.OS === "ios" ? 64 : 48,
             position: "absolute",
             alignItems: "center",
             // borderWidth: 2,
@@ -64,6 +64,7 @@ export const STYLES = {
             borderRadius: 8,
             paddingVertical: 8,
             paddingHorizontal: 16,
+            height: 46,
         },
         btnContainer: {
             position: "absolute",

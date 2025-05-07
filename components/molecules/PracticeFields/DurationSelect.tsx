@@ -43,7 +43,7 @@ export function DurationSelect() {
             <AppText>{t("levelDetails.duration")}</AppText>
 
             <Menu>
-                <MenuTrigger style={s.menuTrigger}>
+                <MenuTrigger style={{ ...s.menuTrigger, marginRight: -14 }}>
                     <AppText style={{ color: Colors[theme].textMute }}>{duration + " " + t("time.seconds")}</AppText>
 
                     <Ionicons name="chevron-forward" size={20} color={Colors[theme].textMute} style={s.icon} />
