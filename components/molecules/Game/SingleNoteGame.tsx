@@ -129,6 +129,7 @@ export function SingleNoteGameComponent() {
         return () => {
             // console.log("SINGLE NOTE GAME UNMOUNT!!!");
             ScoreManager.reset();
+            eventEmitter.removeAllListeners(AppEvents.NotePlayed);
         };
     }, []);
 

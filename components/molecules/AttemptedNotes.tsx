@@ -1,11 +1,10 @@
 import { useAppStore } from "@/hooks/useAppStore";
 import { AppEvents } from "@/utils/enums";
 import { getAttemptedNoteDuration, wait, randomUID } from "@/utils/helperFns";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useLayoutEffect } from "react";
 import { View } from "react-native";
 import { AttemptedNote } from "../atoms/AttemptedNote";
-import { NotePlayedEventData } from "./Game/SingleNoteGame";
-import { AttemptedNote as AttemptedNoteType } from "@/utils/types";
+import { AttemptedNote as AttemptedNoteType, NotePlayedEventData } from "@/utils/types";
 import { eventEmitter } from "@/app/_layout";
 import { STYLES } from "@/utils/styles";
 
@@ -15,6 +14,7 @@ export function AttemptedNotes() {
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
     const { currentGame } = useAppStore();
     const rounds = useMemo(() => currentGame?.rounds || [], [currentGame?.rounds]);
+    console.log(rounds.length);
 
     useEffect(() => {
         (async () => {
@@ -28,9 +28,9 @@ export function AttemptedNotes() {
         })();
     }, [rounds.length]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         eventEmitter.addListener(AppEvents.NotePlayed, (event) => {
-            // console.log(event);
+            console.log("event:::", event);
             const { currNote, playedNote, isSuccess, currNoteValue } = event.data as NotePlayedEventData;
 
             setAttemptedNotes((prev) => [
@@ -38,12 +38,15 @@ export function AttemptedNotes() {
                 { id: randomUID(), you: playedNote, correct: currNote, isSuccess, noteScore: currNoteValue },
             ]);
         });
-        return () => eventEmitter.removeAllListeners(AppEvents.NotePlayed);
     }, []);
 
-    // useEffect(() => {
-    //     console.log({ attemptedNotes });
-    // }, [attemptedNotes]);
+    useEffect(() => {
+        console.log({ attemptedNotes });
+    }, [attemptedNotes]);
+
+    useEffect(() => {
+        console.log({ rounds });
+    }, [rounds]);
 
     return (
         <View style={{ ...s.attemptedNotes, transform: [{ translateY: 20 }] }}>

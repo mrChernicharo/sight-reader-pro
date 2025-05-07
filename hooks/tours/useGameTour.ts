@@ -4,6 +4,7 @@ import { safelySetTourStep } from "@/utils/helperFns";
 
 export function useGameTour() {
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
+    const isTourCompleted = useAppStore((state) => state.completedTours.game);
 
     const [tourStep, setTourStep] = useState(-1);
 
@@ -25,13 +26,15 @@ export function useGameTour() {
 
     const doFinalStep = useCallback(async () => {
         await setTourCompleted("game", true);
-        setTourStep(-1);
+        safelySetTourStep(setTourStep, -1, { force: true });
     }, []);
 
     useEffect(() => {
-        // console.log("Start up game tour!!!");
-        setTimeout(() => setTourStep(0), 200);
-    }, []);
+        if (!isTourCompleted) {
+            console.log("Start up game tour!!!");
+            setTimeout(() => setTourStep(0), 200);
+        }
+    }, [isTourCompleted]);
 
     return {
         tourStep,

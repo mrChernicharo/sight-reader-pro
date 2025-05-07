@@ -1,7 +1,7 @@
 const ptBR = {
     lang: "Português",
     app: {
-        title: "Sight Reader Pro",
+        title: "MusiFlow",
         slogan: "Leve sua leitura musical para o próximo nível",
         welcome: "Boas vindas",
         loading: "Carregando",
@@ -219,7 +219,7 @@ const ptBR = {
     },
     tour: {
         init: {},
-        home: { "0": "Obrigado por usar o Sight Reader Pro!::: Vamos começar?", "0_ok": "Ok, vamos lá" },
+        home: { "0": "Obrigado por usar o MusiFlow!::: Vamos começar?", "0_ok": "Ok, vamos lá" },
         levelSelection: {
             "0": "Bem vindo à tela de Seleção de Nível",
             "1": "Selecione a Clave desejada aqui embaixo.:::Cada Clave contém vários desafios diferentes",

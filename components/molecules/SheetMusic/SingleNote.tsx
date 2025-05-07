@@ -102,8 +102,6 @@ export function SingleNoteComponent(props: MusicNoteProps) {
             waitTime.current = data.isSuccess ? WAIT_SUCCESS : WAIT_MISTAKE;
             setPlayedNote(data.playedNote);
         });
-
-        return () => eventEmitter.removeAllListeners(AppEvents.NotePlayed);
     }, []);
 
     // useEffect(() => {

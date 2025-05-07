@@ -700,11 +700,16 @@ export function pluckNoteFromMp3Filename(filename: string) {
     return filename;
 }
 
-export const safelySetTourStep = (fn: (step: number) => void, step: number) => {
-    if (Platform.OS === "android") {
-        fn(step);
-    } else {
-        fn(-1);
+export const safelySetTourStep = (fn: (step: number) => void, step: number, opts?: { force: boolean }) => {
+    if (opts?.force) {
         setTimeout(() => fn(step), 0);
+        return fn(-1);
     }
+    //
+    else if (Platform.OS === "android") {
+        return fn(step);
+    }
+    //
+    setTimeout(() => fn(step), 0);
+    return fn(-1);
 };

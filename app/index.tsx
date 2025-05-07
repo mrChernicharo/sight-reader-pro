@@ -16,6 +16,8 @@ import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { StyleProp, StyleSheet, TextStyle } from "react-native";
 // import Tooltip from "react-native-walkthrough-tooltip";
 import Tooltip, { Placement } from "react-native-tooltip-2";
+import { eventEmitter } from "./_layout";
+import { AppEvents } from "@/utils/enums";
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
@@ -39,6 +41,8 @@ export default function Home() {
     }, [setTourStep, setTourCompleted]);
 
     useLayoutEffect(() => {
+        console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
+
         if (path !== "/") return;
         setTimeout(() => {
             if (!hasCompletedTour) {

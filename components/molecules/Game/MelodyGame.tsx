@@ -136,6 +136,7 @@ export function MelodyGameComponent() {
         return () => {
             // console.log("MELODY GAME UNMOUNT!!!");
             ScoreManager.reset();
+            eventEmitter.removeAllListeners(AppEvents.NotePlayed);
         };
     }, []);
 

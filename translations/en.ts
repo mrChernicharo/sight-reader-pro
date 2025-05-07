@@ -1,7 +1,7 @@
 const en = {
     lang: "English",
     app: {
-        title: "Sight Reader Pro",
+        title: "MusiFlow",
         slogan: "Level up your music reading",
         welcome: "Welcome",
         loading: "Loading",
@@ -219,7 +219,7 @@ const en = {
     tour: {
         init: {},
         home: {
-            "0": "Thank you for using Sight Reader Pro!::: Shall we begin?",
+            "0": "Thank you for using MusiFlow!::: Shall we begin?",
             "0_ok": "Ok, let's go",
         },
         levelSelection: {

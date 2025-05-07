@@ -9,7 +9,8 @@ export function AppTextLogo({ subtitles }: { subtitles?: string }) {
             <AppView transparentBG style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
                 <AppLogo />
                 <AppText type="title" style={{ marginLeft: -2, marginTop: 4 }}>
-                    Sight Reader Pro
+                    {/* MusiFlow */}
+                    MusiFlow
                 </AppText>
             </AppView>
 
