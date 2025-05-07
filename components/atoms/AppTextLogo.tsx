@@ -2,6 +2,7 @@ import { testBorder } from "@/utils/styles";
 import { AppLogo } from "./AppLogo";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
+import { APP_NAME } from "@/utils/constants";
 
 export function AppTextLogo({ subtitles }: { subtitles?: string }) {
     return (
@@ -9,8 +10,7 @@ export function AppTextLogo({ subtitles }: { subtitles?: string }) {
             <AppView transparentBG style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
                 <AppLogo />
                 <AppText type="title" style={{ marginLeft: -2, marginTop: 4 }}>
-                    {/* MusiFlow */}
-                    MusiFlow
+                    {APP_NAME}
                 </AppText>
             </AppView>
 

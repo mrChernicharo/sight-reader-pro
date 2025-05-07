@@ -1,7 +1,9 @@
+import { APP_NAME } from "@/utils/constants";
+
 const en = {
     lang: "English",
     app: {
-        title: "MusiFlow",
+        title: `${APP_NAME}`,
         slogan: "Level up your music reading",
         welcome: "Welcome",
         loading: "Loading",
@@ -219,7 +221,7 @@ const en = {
     tour: {
         init: {},
         home: {
-            "0": "Thank you for using MusiFlow!::: Shall we begin?",
+            "0": `Thank you for using ${APP_NAME}!::: Shall we begin?`,
             "0_ok": "Ok, let's go",
         },
         levelSelection: {

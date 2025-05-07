@@ -88,15 +88,16 @@ tutorial for beginners
 
 hint color gradually fades away ✅ (need better colors)
 prevent playing piano during walkthrough ✅
-translate level names
-level colors & overall UI
-iOS walkthrough tooltip
-optimize icon imports
-style settings page
-better images for google app store
-bronze/silver/gold <-> 1,2,3 stars
+translate level names ✅
+iOS walkthrough tooltip ✅
+style settings page ✅
+better images for google app store ✅
+bronze/silver/gold <-> 1,2,3 stars ✅
 block piano spamming ✅ (needs better spam text)
+level colors & overall UI
+optimize icon imports
 restart game button
+new title -> Sight Reader Pro: Music sight reading
 
 rethink game scores!
 
