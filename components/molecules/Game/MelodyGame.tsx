@@ -26,6 +26,8 @@ import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { eventEmitter } from "@/app/_layout";
 import { ScoreManager } from "@/utils/ScoreManager";
+import { opacity } from "react-native-reanimated/lib/typescript/Colors";
+import { View } from "react-native";
 
 const s = STYLES.game;
 
@@ -45,8 +47,8 @@ export function useMelody() {
     const hintCount = getLevelHintCount(level.skillLevel);
     // const isPracticeLevel = getIsPracticeLevel(level.id);
 
-    // const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
     const [roundResults, setRoundResults] = useState<(0 | 1)[]>([]);
+    const [gameFinished, setGameFinished] = useState(false);
 
     const melodyIdx = roundResults.length;
     const isLastNote = currRound?.values ? melodyIdx >= currRound.values.length - 1 : false;
@@ -83,6 +85,8 @@ export function useMelody() {
     );
 
     const onCountdownFinish = useCallback(async () => {
+        setGameFinished(true);
+
         const gameScoreInfo = ScoreManager.getScore();
         const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
 
@@ -123,6 +127,7 @@ export function useMelody() {
         hintCount,
         roundResults,
         level,
+        gameFinished,
         onPianoKeyPress,
         onCountdownFinish,
     };
@@ -130,7 +135,8 @@ export function useMelody() {
 
 export function MelodyGameComponent() {
     const theme = useTheme();
-    const { level, currRound, currNote, hintCount, roundResults, onPianoKeyPress, onCountdownFinish } = useMelody();
+    const { level, currRound, currNote, hintCount, roundResults, gameFinished, onPianoKeyPress, onCountdownFinish } =
+        useMelody();
 
     useEffect(() => {
         return () => {
@@ -142,32 +148,34 @@ export function MelodyGameComponent() {
 
     return (
         <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
-            <AppView style={s.top}>
-                <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={level.id} />
-            </AppView>
+            <View style={{ opacity: gameFinished ? 0 : 1 }}>
+                <AppView style={s.top}>
+                    <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={level.id} />
+                </AppView>
 
-            {currRound?.values ? (
-                <SheetMusic.Melody
-                    clef={level.clef}
-                    durations={currRound.durations}
+                {currRound?.values ? (
+                    <SheetMusic.Melody
+                        clef={level.clef}
+                        durations={currRound.durations}
+                        keySignature={level.keySignature}
+                        timeSignature={level.timeSignature}
+                        keys={currRound.values}
+                        roundResults={roundResults}
+                    />
+                ) : null}
+
+                <AttemptedNotes />
+
+                <Piano
+                    gameType={GameType.Melody}
+                    hintCount={hintCount}
+                    currNote={currNote}
                     keySignature={level.keySignature}
-                    timeSignature={level.timeSignature}
-                    keys={currRound.values}
-                    roundResults={roundResults}
+                    onKeyPressed={onPianoKeyPress}
+                    onKeyReleased={() => {}}
+                    // onKeyReleased={() => releasePianoNote(currRound?.values?.[melodyIdx] || null)}
                 />
-            ) : null}
-
-            <AttemptedNotes />
-
-            <Piano
-                gameType={GameType.Melody}
-                hintCount={hintCount}
-                currNote={currNote}
-                keySignature={level.keySignature}
-                onKeyPressed={onPianoKeyPress}
-                onKeyReleased={() => {}}
-                // onKeyReleased={() => releasePianoNote(currRound?.values?.[melodyIdx] || null)}
-            />
+            </View>
         </SafeAreaView>
     );
 }

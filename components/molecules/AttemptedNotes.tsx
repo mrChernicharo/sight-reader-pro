@@ -1,12 +1,12 @@
+import { eventEmitter } from "@/app/_layout";
 import { useAppStore } from "@/hooks/useAppStore";
 import { AppEvents } from "@/utils/enums";
-import { getAttemptedNoteDuration, wait, randomUID } from "@/utils/helperFns";
-import { useState, useMemo, useEffect, useLayoutEffect } from "react";
+import { getAttemptedNoteDuration, randomUID, wait } from "@/utils/helperFns";
+import { STYLES } from "@/utils/styles";
+import { AttemptedNote as AttemptedNoteType, NotePlayedEventData } from "@/utils/types";
+import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { AttemptedNote } from "../atoms/AttemptedNote";
-import { AttemptedNote as AttemptedNoteType, NotePlayedEventData } from "@/utils/types";
-import { eventEmitter } from "@/app/_layout";
-import { STYLES } from "@/utils/styles";
 
 const s = STYLES.game;
 
@@ -28,9 +28,9 @@ export function AttemptedNotes() {
         })();
     }, [rounds.length]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         eventEmitter.addListener(AppEvents.NotePlayed, (event) => {
-            console.log("event:::", event);
+            // console.log("event:::", event);
             const { currNote, playedNote, isSuccess, currNoteValue } = event.data as NotePlayedEventData;
 
             setAttemptedNotes((prev) => [
@@ -40,13 +40,13 @@ export function AttemptedNotes() {
         });
     }, []);
 
-    useEffect(() => {
-        console.log({ attemptedNotes });
-    }, [attemptedNotes]);
+    // useEffect(() => {
+    //     console.log({ attemptedNotes });
+    // }, [attemptedNotes]);
 
-    useEffect(() => {
-        console.log({ rounds });
-    }, [rounds]);
+    // useEffect(() => {
+    //     console.log({ rounds });
+    // }, [rounds]);
 
     return (
         <View style={{ ...s.attemptedNotes, transform: [{ translateY: 20 }] }}>

@@ -113,7 +113,7 @@ function runVexFlowRangeCode(
         const shouldBeam =
             pattern.length > 1 && pattern.reduce((acc, duration) => acc + noteDurationDict[duration], 0) === 4;
 
-        console.log({ pattern, shouldBeam });
+        // console.log({ pattern, shouldBeam });
 
         const patternNotes: StaveNote[] = [];
 
@@ -171,7 +171,7 @@ function runVexFlowRangeCode(
 
     const renderResult = context.render() as ReactNode;
 
-    console.log("===================");
+    // console.log("===================");
 
     return colorizeNoteOutput(renderResult, roundResults, colors);
     // return noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;

@@ -32,6 +32,7 @@ import { AttemptedNotes } from "../AttemptedNotes";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
+import { LoadingScreen } from "../LoadingScreen";
 
 const s = STYLES.game;
 
@@ -39,8 +40,6 @@ const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as 
 
 export function SingleNoteGameComponent() {
     const { t } = useTranslation();
-    const theme = useTheme();
-    const backgroundColor = Colors[theme].bg;
 
     const { id, keySignature: keySig } = useLocalSearchParams() as unknown as GameScreenParams;
 
@@ -57,6 +56,7 @@ export function SingleNoteGameComponent() {
 
     const rounds = useMemo(() => currentGame?.rounds || [], [currentGame?.rounds]);
 
+    const [gameFinished, setGameFinished] = useState(false);
     const [currNote, setCurrNote] = useState<Note>(
         () => decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
@@ -90,6 +90,8 @@ export function SingleNoteGameComponent() {
     function onPianoKeyReleased(notename: NoteName) {}
 
     const onCountdownFinish = useCallback(async () => {
+        setGameFinished(true);
+
         const gameScoreInfo = ScoreManager.getScore();
         const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
 
@@ -135,104 +137,106 @@ export function SingleNoteGameComponent() {
 
     if (!level || !currentGame || !currNote || currentGame?.type !== GameType.Single) return null;
 
-    const noteProps = { keys: [currNote], clef: level.clef, keySignature };
     const currNoteText = t(`music.notes.${explodeNote(currNote).noteName}`).toUpperCase();
+    const backgroundColor = Colors.dark.bg;
 
     return (
         <SafeAreaView style={{ ...s.container, backgroundColor }}>
-            <View style={s.top}>
+            <View style={{ opacity: gameFinished ? 0 : 1 }}>
+                <View style={s.top}>
+                    <WalkthroughTooltip
+                        isVisible={!hasCompletedTour && tourStep == 3}
+                        placement={Placement.BOTTOM}
+                        contentStyle={{ transform: [{ translateY: 32 }] }}
+                        // @ts-ignore
+                        arrowStyle={{ transform: [{ translateY: -32 }] }}
+                        content={
+                            <View style={{ alignItems: "center" }}>
+                                <TooltipTextLines keypath="tour.game.3" />
+                                <AppButton style={s.tooltipBtn} text={t("tour.game.3_ok")} onPress={goToStepFour} />
+                            </View>
+                        }
+                    >
+                        <TimerAndStatsDisplay
+                            stopped={!hasCompletedTour}
+                            onCountdownFinish={onCountdownFinish}
+                            levelId={id}
+                        />
+                    </WalkthroughTooltip>
+                </View>
+
                 <WalkthroughTooltip
-                    isVisible={!hasCompletedTour && tourStep == 3}
-                    placement={Placement.BOTTOM}
-                    contentStyle={{ transform: [{ translateY: 32 }] }}
-                    // @ts-ignore
-                    arrowStyle={{ transform: [{ translateY: -32 }] }}
+                    isVisible={!hasCompletedTour && tourStep == 0}
+                    placement={Placement.CENTER}
                     content={
                         <View style={{ alignItems: "center" }}>
-                            <TooltipTextLines keypath="tour.game.3" />
-                            <AppButton style={s.tooltipBtn} text={t("tour.game.3_ok")} onPress={goToStepFour} />
+                            <TooltipTextLines keypath="tour.game.0" />
+                            <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepOne} />
+                        </View>
+                    }
+                />
+                <WalkthroughTooltip
+                    isVisible={!hasCompletedTour && tourStep == 4}
+                    placement={Placement.CENTER}
+                    content={
+                        <View style={{ alignItems: "center" }}>
+                            <TooltipTextLines keypath="tour.game.4" />
+                            <AppText {...tourTextProps} type="mdSemiBold">
+                                {t("tour.game.4_ready")}
+                            </AppText>
+
+                            <AppButton style={s.tooltipBtn} text={t("tour.game.4_ok")} onPress={doFinalStep} />
+                        </View>
+                    }
+                />
+
+                {/* GAME STAGE TOUR */}
+                {currNote && (
+                    <WalkthroughTooltip
+                        isVisible={!hasCompletedTour && tourStep == 1}
+                        placement={Placement.BOTTOM}
+                        // @ts-ignore
+                        arrowStyle={{ transform: [{ translateY: 60 }] }}
+                        contentStyle={{ minHeight: 128, transform: [{ translateY: -60 }] }}
+                        content={
+                            <View style={{ alignItems: "center" }}>
+                                <TooltipTextLines keypath="tour.game.1" />
+                                <AppText {...tourTextProps} type="mdSemiBold">
+                                    {currNoteText}
+                                </AppText>
+                                <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepTwo} />
+                            </View>
+                        }
+                    >
+                        <SheetMusic.SingleNote keySignature={keySignature} clef={level.clef} targetNote={currNote} />
+                    </WalkthroughTooltip>
+                )}
+
+                <AttemptedNotes />
+
+                <WalkthroughTooltip
+                    isVisible={!hasCompletedTour && tourStep == 2}
+                    placement={Placement.TOP}
+                    // @ts-ignore
+                    arrowStyle={{ transform: [{ translateY: -36 }] }}
+                    contentStyle={{ minHeight: 128, transform: [{ translateY: -36 }] }}
+                    content={
+                        <View style={{ alignItems: "center" }}>
+                            <TooltipTextLines keypath="tour.game.2" />
+                            <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepThree} />
                         </View>
                     }
                 >
-                    <TimerAndStatsDisplay
-                        stopped={!hasCompletedTour}
-                        onCountdownFinish={onCountdownFinish}
-                        levelId={id}
+                    <Piano
+                        gameType={GameType.Single}
+                        hintCount={hintCount}
+                        currNote={currNote}
+                        keySignature={keySignature}
+                        onKeyPressed={onPianoKeyPress}
+                        onKeyReleased={onPianoKeyReleased}
                     />
                 </WalkthroughTooltip>
             </View>
-
-            <WalkthroughTooltip
-                isVisible={!hasCompletedTour && tourStep == 0}
-                placement={Placement.CENTER}
-                content={
-                    <View style={{ alignItems: "center" }}>
-                        <TooltipTextLines keypath="tour.game.0" />
-                        <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepOne} />
-                    </View>
-                }
-            />
-            <WalkthroughTooltip
-                isVisible={!hasCompletedTour && tourStep == 4}
-                placement={Placement.CENTER}
-                content={
-                    <View style={{ alignItems: "center" }}>
-                        <TooltipTextLines keypath="tour.game.4" />
-                        <AppText {...tourTextProps} type="mdSemiBold">
-                            {t("tour.game.4_ready")}
-                        </AppText>
-
-                        <AppButton style={s.tooltipBtn} text={t("tour.game.4_ok")} onPress={doFinalStep} />
-                    </View>
-                }
-            />
-
-            {/* GAME STAGE TOUR */}
-            {currNote && (
-                <WalkthroughTooltip
-                    isVisible={!hasCompletedTour && tourStep == 1}
-                    placement={Placement.BOTTOM}
-                    // @ts-ignore
-                    arrowStyle={{ transform: [{ translateY: 60 }] }}
-                    contentStyle={{ minHeight: 128, transform: [{ translateY: -60 }] }}
-                    content={
-                        <View style={{ alignItems: "center" }}>
-                            <TooltipTextLines keypath="tour.game.1" />
-                            <AppText {...tourTextProps} type="mdSemiBold">
-                                {currNoteText}
-                            </AppText>
-                            <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepTwo} />
-                        </View>
-                    }
-                >
-                    <SheetMusic.SingleNote keySignature={keySignature} clef={level.clef} targetNote={currNote} />
-                </WalkthroughTooltip>
-            )}
-
-            <AttemptedNotes />
-
-            <WalkthroughTooltip
-                isVisible={!hasCompletedTour && tourStep == 2}
-                placement={Placement.TOP}
-                // @ts-ignore
-                arrowStyle={{ transform: [{ translateY: -36 }] }}
-                contentStyle={{ minHeight: 128, transform: [{ translateY: -36 }] }}
-                content={
-                    <View style={{ alignItems: "center" }}>
-                        <TooltipTextLines keypath="tour.game.2" />
-                        <AppButton style={s.tooltipBtn} text="OK" onPress={goToStepThree} />
-                    </View>
-                }
-            >
-                <Piano
-                    gameType={GameType.Single}
-                    hintCount={hintCount}
-                    currNote={currNote}
-                    keySignature={keySignature}
-                    onKeyPressed={onPianoKeyPress}
-                    onKeyReleased={onPianoKeyReleased}
-                />
-            </WalkthroughTooltip>
         </SafeAreaView>
     );
 }

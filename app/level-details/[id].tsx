@@ -3,6 +3,7 @@ import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
 import { BackLink } from "@/components/atoms/BackLink";
 import { FadeIn } from "@/components/atoms/FadeIn";
+import { GameStars } from "@/components/atoms/GameStars";
 import { SheetMusic } from "@/components/molecules/SheetMusic";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
@@ -115,36 +116,22 @@ export default function LevelDetails() {
 
                 <FadeIn y={0} x={100} delay={600}>
                     <View style={{ alignItems: "center", justifyContent: "center" }}>
-                        <AppText>
-                            <Ionicons name="star" /> {level.winConditions[WinRank.Bronze]} {t("game.NpM")}
-                        </AppText>
+                        <View style={{ flexDirection: "row", gap: 4 }}>
+                            <GameStars stars={1} color="gold" />
+                            <AppText>
+                                {level.winConditions[WinRank.Bronze]} {t("game.NpM")}
+                            </AppText>
+                        </View>
 
                         <View style={{ flexDirection: "row", gap: 4 }}>
-                            <View style={{ flexDirection: "row" }}>
-                                <AppText>
-                                    <Ionicons name="star" />
-                                </AppText>
-                                <AppText>
-                                    <Ionicons name="star" />
-                                </AppText>
-                            </View>
+                            <GameStars stars={2} color="gold" />
                             <AppText>
                                 {level.winConditions[WinRank.Silver]} {t("game.NpM")}
                             </AppText>
                         </View>
 
                         <View style={{ flexDirection: "row", gap: 4 }}>
-                            <View style={{ flexDirection: "row" }}>
-                                <AppText>
-                                    <Ionicons name="star" />
-                                </AppText>
-                                <AppText>
-                                    <Ionicons name="star" />
-                                </AppText>
-                                <AppText>
-                                    <Ionicons name="star" />
-                                </AppText>
-                            </View>
+                            <GameStars stars={3} color="gold" />
                             <AppText>
                                 {level.winConditions[WinRank.Gold]} {t("game.NpM")}
                             </AppText>

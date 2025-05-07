@@ -38,7 +38,7 @@ export function LevelTile({ level, isLocked, stars }: LevelTileProps) {
             }}
         >
             <AppText style={{ textAlign: "center" }}>{levelIdx}</AppText>
-            <AppText>{capitalizeStr(t(`levelName.${toCamelCase(levelName)}`))}</AppText>
+            <AppText numberOfLines={1}>{capitalizeStr(t(`levelName.${toCamelCase(levelName)}`))}</AppText>
             {stars ? <GameStars stars={stars} /> : null}
             {isLocked ? (
                 <AppText>
