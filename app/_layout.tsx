@@ -44,7 +44,7 @@ export default function RootLayout() {
         );
 
     return (
-        <SafeAreaProvider style={{ paddingTop: Platform.OS == "ios" ? 24 : 8, backgroundColor: Colors.dark.bg }}>
+        <SafeAreaProvider style={{ paddingTop: Platform.OS == "ios" ? 32 : 16, backgroundColor: Colors.dark.bg }}>
             <GestureHandlerRootView>
                 <MenuProvider>
                     <SoundContextProvider>

@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useAppStore } from "../useAppStore";
+import { safelySetTourStep } from "@/utils/helperFns";
 
 export function useGameTour() {
     const setTourCompleted = useAppStore((state) => state.setTourCompleted);
@@ -7,23 +8,19 @@ export function useGameTour() {
     const [tourStep, setTourStep] = useState(-1);
 
     const goToStepOne = useCallback(() => {
-        setTourStep(-1);
-        setTimeout(() => setTourStep(1), 0);
+        safelySetTourStep(setTourStep, 1);
     }, []);
 
     const goToStepTwo = useCallback(() => {
-        setTourStep(-1);
-        setTimeout(() => setTourStep(2), 0);
+        safelySetTourStep(setTourStep, 2);
     }, []);
 
     const goToStepThree = useCallback(() => {
-        setTourStep(-1);
-        setTimeout(() => setTourStep(3), 0);
+        safelySetTourStep(setTourStep, 3);
     }, []);
 
     const goToStepFour = useCallback(() => {
-        setTourStep(-1);
-        setTimeout(() => setTourStep(4), 0);
+        safelySetTourStep(setTourStep, 4);
     }, []);
 
     const doFinalStep = useCallback(async () => {

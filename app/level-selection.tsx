@@ -14,8 +14,9 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { glyphs } from "@/utils/constants";
 import { Clef } from "@/utils/enums";
+import { safelySetTourStep } from "@/utils/helperFns";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Placement } from "react-native-tooltip-2";
@@ -41,13 +42,11 @@ export default function LevelSelectionScreen() {
     const xDisplacement = clef == Clef.Treble ? 50 : -50;
 
     const goToStepOne = useCallback(() => {
-        setTourStep(-1);
-        setTimeout(() => setTourStep(1), 0);
+        safelySetTourStep(setTourStep, 1);
     }, []);
 
     const goToStepTwo = useCallback(() => {
-        setTourStep(-1);
-        setTimeout(() => setTourStep(2), 0);
+        safelySetTourStep(setTourStep, 2);
     }, []);
 
     const doFinalStep = useCallback(() => {

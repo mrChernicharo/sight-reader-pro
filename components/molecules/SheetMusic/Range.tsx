@@ -212,11 +212,14 @@ function runVexFlowRangeCode(
 }
 
 const styles = StyleSheet.create({
-    container: {},
+    container: {
+        // ...testBorder(),
+    },
     sheetMusic: {
-        flex: 1,
+        // flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        // ...testBorder(),
     },
     innerView: {
         // ...testBorder(),

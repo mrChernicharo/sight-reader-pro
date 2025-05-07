@@ -22,6 +22,7 @@ import { Note, NotePlayedEventData } from "@/utils/types";
 import { StyleSheet } from "react-native";
 import { eventEmitter } from "@/app/_layout";
 import { explodeNote, isNoteMatch, wait } from "@/utils/helperFns";
+import { useAppStore } from "@/hooks/useAppStore";
 
 export interface MusicNoteProps {
     targetNote: Note;
@@ -68,6 +69,7 @@ const WAIT_MISTAKE = 350;
 
 export function SingleNoteComponent(props: MusicNoteProps) {
     const { clef, keySignature, targetNote: propNote } = props;
+    const isTourCompleted = useAppStore((state) => state.completedTours.game);
 
     const waitTime = useRef<number>(0);
     const [playedNote, setPlayedNote] = useState<Note | null>(null);
@@ -88,8 +90,9 @@ export function SingleNoteComponent(props: MusicNoteProps) {
 
             svgResult.current = runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, width });
         } else {
-            context.setBackgroundFillStyle(Colors.dark.bg);
-            context.clearRect(0, 20, 400, 200);
+            // context.setBackgroundFillStyle(Colors.dark.bg);
+            context.setBackgroundFillStyle(isTourCompleted ? Colors.dark.bg : "rgba(0, 0, 0, 0)");
+            context.clearRect(0, 30, 400, 200);
         }
         return svgResult.current;
     }, [context, playedNote, targetNote, keySignature, clef]);

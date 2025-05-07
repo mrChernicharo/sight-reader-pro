@@ -42,27 +42,16 @@ export interface MusicNoteRangeProps {
 
 export function MelodyComponent(props: MusicNoteRangeProps) {
     const theme = useTheme();
-    const textColor = Colors[theme].text;
     const { width } = useWindowDimensions();
     const { clef, keys, durations, keySignature, timeSignature, roundResults } = props;
-    const MARGIN = width * 0.06;
-
-    const context: ReactNativeSVGContext = useMemo(() => {
-        return new ReactNativeSVGContext(NotoFontPack, { width });
-    }, [width]);
 
     // console.log("props ::: MelodyComponent", props);
 
     const svgResult = useMemo(() => {
-        context
-            .setFont("Arial", 48, "")
-            .setBackgroundFillStyle("rgba(0, 0, 0, 0)")
-            .setFillStyle(textColor)
-            .setStrokeStyle(textColor)
-            .setLineWidth(2);
+        const MARGIN = width * 0.06;
+        const textColor = Colors[theme].text;
 
         return runVexFlowRangeCode(
-            context,
             width - MARGIN * 2,
             clef,
             keys,
@@ -70,9 +59,11 @@ export function MelodyComponent(props: MusicNoteRangeProps) {
             keySignature,
             timeSignature,
             roundResults,
-            { success: Colors[theme].green, mistake: Colors[theme].red }
+            { success: Colors[theme].green, mistake: Colors[theme].red },
+            textColor
         );
-    }, [context, width, clef, keys, durations, keySignature, timeSignature, roundResults]);
+    }, [width, clef, keys, durations, keySignature, timeSignature, roundResults]);
+
     return (
         <AppView style={styles.container}>
             <AppView style={styles.sheetMusic}>
@@ -83,7 +74,6 @@ export function MelodyComponent(props: MusicNoteRangeProps) {
 }
 
 function runVexFlowRangeCode(
-    context: ReactNativeSVGContext,
     width: number,
     clef: Clef,
     keys: Note[],
@@ -91,12 +81,21 @@ function runVexFlowRangeCode(
     keySignature: KeySignature,
     timeSignature: TimeSignature,
     roundResults: (1 | 0)[],
-    colors: { success: string; mistake: string }
+    colors: { success: string; mistake: string },
+    textColor: string
 ): React.ReactNode {
-    if (keys.length <= 0) return null;
-
+    if (keys.length <= 0) {
+        return <></>;
+    }
     // console.log("runVexFlowCode ::: Melody", { keys });
+    const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
     // console.log(":::> runVexFlowRangeCode", { clef, keys, keySignature, timeSignature, width, durations });
+    context
+        .setFont("Arial", 48, "")
+        .setBackgroundFillStyle("rgba(0, 0, 0, 0)")
+        .setFillStyle(textColor)
+        .setStrokeStyle(textColor)
+        .setLineWidth(2);
 
     const stave = new Stave(0, 80, width);
     stave.setContext(context);
@@ -114,7 +113,10 @@ function runVexFlowRangeCode(
         const shouldBeam =
             pattern.length > 1 && pattern.reduce((acc, duration) => acc + noteDurationDict[duration], 0) === 4;
 
+        console.log({ pattern, shouldBeam });
+
         const patternNotes: StaveNote[] = [];
+
         for (let durIdx = 0; durIdx < pattern.length; durIdx++) {
             const note = keys[noteIdx];
             const { drawNote, drawAccident } = getDrawNote(note, keySignature, keys, noteIdx);
@@ -168,6 +170,9 @@ function runVexFlowRangeCode(
     });
 
     const renderResult = context.render() as ReactNode;
+
+    console.log("===================");
+
     return colorizeNoteOutput(renderResult, roundResults, colors);
     // return noteColor ? addColorToNoteOutput(renderResult, noteColor) : renderResult;
 }
@@ -202,47 +207,6 @@ function colorizeNoteOutput(svgStruct: any, roundResults: (1 | 0)[], colors: { s
         props: {
             ...svgStruct.props,
             children: svgStruct.props.children.map((ch: any) => {
-                // if (ch.props.d) {
-                //   const d = ch.props.d;
-                //   // if (d.length) {
-                //   //   console.log("stem!", ch.props, d);
-                //   //   return {
-                //   //     ...ch,
-                //   //     props: {
-                //   //       ...ch.props,
-                //   //       fill: color,
-                //   //       stroke: color,
-                //   //     },
-                //   //   };
-                //   // }
-
-                //   // if (d.length > 20 && d.length < 60) {
-                //   //   stemCount++;
-                //   //   console.log("stem!", ch.props, d, stemCount);
-                //   //   return {
-                //   //     ...ch,
-                //   //     props: {
-                //   //       ...ch.props,
-                //   //       fill: colors.success,
-                //   //       stroke: colors.success,
-                //   //     },
-                //   //   };
-                //   // }
-
-                //   // if (d.length >= 60 && d.length <= 160) {
-                //   //   beamCount++;
-                //   //   console.log("beam!", ch.props, d, beamCount);
-                //   //   return {
-                //   //     ...ch,
-                //   //     props: {
-                //   //       ...ch.props,
-                //   //       fill: colors.success,
-                //   //       stroke: colors.success,
-                //   //     },
-                //   //   };
-                //   // }
-                // }
-
                 if (ch.props.className === "vf-stavenote") {
                     const isSuccess = roundResults[noteCount] === 1;
                     noteCount++;

@@ -16,6 +16,7 @@ import { noteMathTable } from "./notes";
 import { FLAT_KEY_SIGNATURES, scaleTypeNoteSequences } from "./keySignature";
 import { GAME_WIN_MIN_ACCURACY } from "./constants";
 import { RelativePathString } from "expo-router";
+import { Platform } from "react-native";
 
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 export const randomUID = (length = 12) =>
@@ -699,51 +700,11 @@ export function pluckNoteFromMp3Filename(filename: string) {
     return filename;
 }
 
-// function calcLevelScore(
-//     hits: number,
-//     accuracy: number,
-//     hitsPerMinute: number,
-//     winConditions: WinConditions
-// ): LevelScore {
-//     const hitScore = 1000;
-//     let multiplier = 1;
-
-//     if (accuracy < 1 && accuracy >= 0.9) {
-//         multiplier -= 0.1;
-//     } else if (accuracy >= 0.8) {
-//         multiplier -= 0.2;
-//     } else if (accuracy >= 0.7) {
-//         multiplier -= 0.3;
-//     } else if (accuracy >= 0.6) {
-//     }
-
-//     if (hitsPerMinute >= winConditions.gold) {
-//         multiplier += 0.5;
-//     } else if (hitsPerMinute >= winConditions.silver) {
-//         multiplier += 0.4;
-//     } else if (hitsPerMinute >= winConditions.bronze) {
-//         multiplier += 0.3;
-//     }
-
-//     const score = {
-//         value: hits * hitScore * multiplier,
-//         // valueStr: intl.format(hits * hitScore * multiplier),
-//         multiplier,
-//         hits,
-//         hitScore,
-//         winConditions,
-//         accuracy,
-//         formula: `hits * hitScore * multiplier = score`,
-//     };
-//     // console.log("<<< calcLevelScore >>> ", {
-//     //   hits,
-//     //   accuracy,
-//     //   hitsPerMinute,
-//     //   winConditions,
-//     //   score,
-//     //   multiplier,
-//     //   formula: `hits${hits} * hitScore${hitScore} * multiplier${multiplier} = score${score}`,
-//     // });
-
-//     return score;
-// }
+export const safelySetTourStep = (fn: (step: number) => void, step: number) => {
+    if (Platform.OS === "android") {
+        fn(step);
+    } else {
+        fn(-1);
+        setTimeout(() => fn(step), 0);
+    }
+};

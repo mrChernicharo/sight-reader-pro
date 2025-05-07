@@ -19,7 +19,7 @@ import { Level, Note } from "@/utils/types";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -190,7 +190,9 @@ const s = StyleSheet.create({
     container: {
         position: "relative",
         alignItems: "center",
-        minHeight: Dimensions.get("window").height,
+        minHeight: Dimensions.get("window").height - (Platform.OS === "ios" ? 100 : -20),
+        // minHeight: Dimensions.get("screen").height,
+        // ...testBorder(),
         // ...testBorder(),
     },
     top: {
