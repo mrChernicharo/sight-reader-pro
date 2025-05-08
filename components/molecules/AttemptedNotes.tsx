@@ -14,7 +14,6 @@ export function AttemptedNotes() {
     const [attemptedNotes, setAttemptedNotes] = useState<AttemptedNoteType[]>([]);
     const { currentGame } = useAppStore();
     const rounds = useMemo(() => currentGame?.rounds || [], [currentGame?.rounds]);
-    console.log(rounds.length);
 
     useEffect(() => {
         (async () => {
@@ -38,6 +37,8 @@ export function AttemptedNotes() {
                 { id: randomUID(), you: playedNote, correct: currNote, isSuccess, noteScore: currNoteValue },
             ]);
         });
+
+        return () => eventEmitter.removeAllListeners(AppEvents.NotePlayed);
     }, []);
 
     // useEffect(() => {

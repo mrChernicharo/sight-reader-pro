@@ -55,7 +55,9 @@ export class ScoreManager {
     }
 
     static getAccuracy() {
-        return this.successes / this.attempts;
+        const acc = this.successes / this.attempts;
+        if (Number.isNaN(acc)) return 0;
+        return acc;
     }
 
     static getFinalScore(levelDurationInSeconds: number) {

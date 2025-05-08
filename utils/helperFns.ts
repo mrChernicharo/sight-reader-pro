@@ -18,6 +18,10 @@ import { GAME_WIN_MIN_ACCURACY } from "./constants";
 import { RelativePathString } from "expo-router";
 import { Platform } from "react-native";
 
+export const isDev = () => {
+    return process.env.NODE_ENV === "development";
+};
+
 const ID_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 export const randomUID = (length = 12) =>
     Array(length)

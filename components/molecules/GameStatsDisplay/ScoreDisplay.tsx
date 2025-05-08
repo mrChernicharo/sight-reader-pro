@@ -8,6 +8,7 @@ import { useIntl } from "@/hooks/useIntl";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { ACCURACY_BONUS, BEST_STREAK_BONUS, ScoreManager, SPEED_BONUS } from "@/utils/ScoreManager";
+import { testBorder } from "@/utils/styles";
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 
@@ -28,6 +29,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
     const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
     const { accuracy, attempts, bestStreak, currNoteValue, successes, mistakes, currStreak, totalNoteScore } = score;
     const { bestStreakBonus, accuracyBonus, perfectAccuracyBonus, speedBonus, totalScore, hitsPerMinute } = finalScore;
+    const meanNoteScore = intl.format(score.totalNoteScore / attempts);
     // console.log({ finalScore });
 
     return (
@@ -35,7 +37,11 @@ export function ScoreDisplay({ stars }: { stars: number }) {
             <FadeIn delay={800} x={-100}>
                 <View style={s.bonusView}>
                     <AppText style={s.bonusTitle}>{t("game.bonus.playedNotes")}</AppText>
-                    <AppText style={s.bonusTotal}>{intl.format(score.totalNoteScore)} pts</AppText>
+
+                    <AppText>
+                        {/* <AppText style={s.bonusDetail}>média por nota {meanNoteScore}</AppText> */}
+                        <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(score.totalNoteScore)} pts</AppText>
+                    </AppText>
                 </View>
             </FadeIn>
 
@@ -46,6 +52,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
                         <AppText style={s.bonusDetail}>
                             {bestStreak} {t("app.notes")} X {intl.format(BEST_STREAK_BONUS)}
                         </AppText>
+
                         <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(bestStreakBonus)} pts</AppText>
                     </AppText>
                 </View>
@@ -56,7 +63,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
                     <AppText style={s.bonusTitle}>{t("game.bonus.speed")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
-                            {intl.format(hitsPerMinute)} NpM X {SPEED_BONUS}
+                            {intl.format(hitsPerMinute)} {t("app.notes")}/min X {SPEED_BONUS}
                         </AppText>
                         <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(speedBonus)} pts</AppText>
                     </AppText>
@@ -123,6 +130,8 @@ const s = StyleSheet.create({
         width: 326,
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
+        minHeight: 32,
         // ...testBorder("green"),
     },
     bonusTitle: {
@@ -130,9 +139,15 @@ const s = StyleSheet.create({
     },
     bonusDetail: {
         color: Colors.dark.textMute,
+        fontWeight: "bold",
+        // fontVariant: ["small-caps"],
+        fontSize: 12,
+        // backgroundColor: "green",
+        // ...testBorder("green"),
     },
     bonusTotal: {
         fontFamily: "Grotesque",
+        // backgroundColor: "red",
     },
 });
 

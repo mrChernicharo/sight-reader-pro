@@ -94,10 +94,6 @@ style settings page ✅
 better images for google app store ✅
 bronze/silver/gold <-> 1,2,3 stars ✅
 block piano spamming ✅ (needs better spam text)
-level colors & overall UI
-optimize icon imports
-restart game button
-new title -> Sight Reader Pro: Music sight reading
 
 rethink game scores!
 
@@ -112,3 +108,12 @@ rethink game scores!
 40 streak - 500 (MAX)
 
 played mover 20 notes within
+
+=======================================
+
+level colors & overall UI
+optimize icon imports
+restart game button
+new title -> Sight Reader Pro: Music sight reading
+game-over screen -> rotating stars
+counting numbers

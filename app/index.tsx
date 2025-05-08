@@ -41,8 +41,6 @@ export default function Home() {
     }, [setTourStep, setTourCompleted]);
 
     useLayoutEffect(() => {
-        console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
-
         if (path !== "/") return;
         setTimeout(() => {
             if (!hasCompletedTour) {

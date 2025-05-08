@@ -23,6 +23,7 @@ import { StyleSheet } from "react-native";
 import { eventEmitter } from "@/app/_layout";
 import { explodeNote, isNoteMatch, wait } from "@/utils/helperFns";
 import { useAppStore } from "@/hooks/useAppStore";
+import { testBorder } from "@/utils/styles";
 
 export interface MusicNoteProps {
     targetNote: Note;
@@ -66,6 +67,7 @@ const widthPerKeySig = {
 
 const WAIT_SUCCESS = 100;
 const WAIT_MISTAKE = 350;
+const height = 260;
 
 export function SingleNoteComponent(props: MusicNoteProps) {
     const { clef, keySignature, targetNote: propNote } = props;
@@ -80,29 +82,23 @@ export function SingleNoteComponent(props: MusicNoteProps) {
     const width = useMemo(() => 180 + widthPerKeySig[keySignature], [keySignature]);
 
     const context: ReactNativeSVGContext = useMemo(() => {
-        return new ReactNativeSVGContext(NotoFontPack, { width });
+        return new ReactNativeSVGContext(NotoFontPack, { width, height });
     }, [width]);
 
     const SvgResult = useMemo(() => {
         if (playedNote || targetNote) {
             const color = Colors.dark.text;
-            context.setFont("Arial", 20, "").setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
+            context.setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
 
             svgResult.current = runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, width });
         } else {
             // context.setBackgroundFillStyle(Colors.dark.bg);
+            // context.setBackgroundFillStyle(isTourCompleted ? Colors.dark.bg : "rgba(0, 0, 0, 0)");
             context.setBackgroundFillStyle(isTourCompleted ? Colors.dark.bg : "rgba(0, 0, 0, 0)");
-            context.clearRect(0, 30, 400, 200);
+            context.clearRect(0, 20, width, height - 20);
         }
         return svgResult.current;
     }, [context, playedNote, targetNote, keySignature, clef]);
-
-    useEffect(() => {
-        eventEmitter.addListener(AppEvents.NotePlayed, async ({ data }: { data: NotePlayedEventData }) => {
-            waitTime.current = data.isSuccess ? WAIT_SUCCESS : WAIT_MISTAKE;
-            setPlayedNote(data.playedNote);
-        });
-    }, []);
 
     // useEffect(() => {
     //     console.log({ playedNote, targetNote });
@@ -210,7 +206,7 @@ function runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, w
 
 const styles = StyleSheet.create({
     container: {
-        height: 220,
+        height,
         backgroundColor: "transparent",
         // ...testBorder("blue"),
     },

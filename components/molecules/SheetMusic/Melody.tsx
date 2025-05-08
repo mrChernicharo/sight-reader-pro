@@ -1,6 +1,6 @@
 import { AppView } from "../../atoms/AppView";
 
-import React, { ReactNode, useMemo } from "react";
+import React, { ReactNode, useEffect, useMemo } from "react";
 // @ts-ignore
 // import { StaveTie } from "vexflow/src/stavetie";
 // import { Dot } from "vexflow/src/dot";
@@ -25,11 +25,13 @@ import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context"
 
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { Clef, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
-import { stemDown } from "@/utils/helperFns";
+import { AppEvents, Clef, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
+import { isDev, stemDown } from "@/utils/helperFns";
 import { getDrawNote, noteDurationDict } from "@/utils/noteFns";
 import { Note } from "@/utils/types";
 import { StyleSheet, useWindowDimensions } from "react-native";
+import { ScoreManager } from "@/utils/ScoreManager";
+import { eventEmitter } from "@/app/_layout";
 
 export interface MusicNoteRangeProps {
     keys: Note[];
@@ -45,7 +47,7 @@ export function MelodyComponent(props: MusicNoteRangeProps) {
     const { width } = useWindowDimensions();
     const { clef, keys, durations, keySignature, timeSignature, roundResults } = props;
 
-    // console.log("props ::: MelodyComponent", props);
+    // console.log("props ::: MelodyComponent", { isDev: isDev() });
 
     const svgResult = useMemo(() => {
         const MARGIN = width * 0.06;
