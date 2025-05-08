@@ -48,7 +48,7 @@ const ps = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#bbb",
         backgroundColor: "#ddd",
-        height: 160,
+        height: "100%",
         alignItems: "center",
         justifyContent: "flex-end",
     },

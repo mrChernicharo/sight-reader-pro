@@ -8,6 +8,7 @@ const en = {
         welcome: "Welcome",
         loading: "Loading",
         gameCount: "games played",
+        note: "note",
         notes: "notes",
     },
     routes: {

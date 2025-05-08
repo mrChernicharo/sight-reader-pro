@@ -16,7 +16,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
     const { intl } = useIntl();
     const { t } = useTranslation();
     const { getLevel } = useAllLevels();
-    const theme = useTheme();
+    // const theme = useTheme();
     // const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
     const { games } = useAppStore();
 
@@ -29,7 +29,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
     const finalScore = ScoreManager.getFinalScore(level.durationInSeconds);
     const { accuracy, attempts, bestStreak, currNoteValue, successes, mistakes, currStreak, totalNoteScore } = score;
     const { bestStreakBonus, accuracyBonus, perfectAccuracyBonus, speedBonus, totalScore, hitsPerMinute } = finalScore;
-    const meanNoteScore = intl.format(score.totalNoteScore / attempts);
+    // const meanNoteScore = intl.format(score.totalNoteScore / attempts);
     // console.log({ finalScore });
 
     return (
@@ -63,6 +63,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
                     <AppText style={s.bonusTitle}>{t("game.bonus.speed")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
+                            {/* {intl.format(hitsPerMinute)} {t("app.note")}/min X {SPEED_BONUS} */}
                             {intl.format(hitsPerMinute)} {t("app.notes")}/min X {SPEED_BONUS}
                         </AppText>
                         <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(speedBonus)} pts</AppText>

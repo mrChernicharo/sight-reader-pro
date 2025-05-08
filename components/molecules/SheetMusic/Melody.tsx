@@ -1,6 +1,6 @@
 import { AppView } from "../../atoms/AppView";
 
-import React, { ReactNode, useEffect, useMemo } from "react";
+import React, { ReactNode, useMemo } from "react";
 // @ts-ignore
 // import { StaveTie } from "vexflow/src/stavetie";
 // import { Dot } from "vexflow/src/dot";
@@ -25,13 +25,12 @@ import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context"
 
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { AppEvents, Clef, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
-import { isDev, stemDown } from "@/utils/helperFns";
+import { GAME_STAGE_BASE_HEIGHT } from "@/utils/constants";
+import { Clef, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
+import { stemDown } from "@/utils/helperFns";
 import { getDrawNote, noteDurationDict } from "@/utils/noteFns";
 import { Note } from "@/utils/types";
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { ScoreManager } from "@/utils/ScoreManager";
-import { eventEmitter } from "@/app/_layout";
 
 export interface MusicNoteRangeProps {
     keys: Note[];
@@ -42,7 +41,9 @@ export interface MusicNoteRangeProps {
     roundResults: (1 | 0)[];
 }
 
-const height = 260;
+const height = GAME_STAGE_BASE_HEIGHT;
+const YPOS = 100;
+const MIN_STAVE_WIDTH = 180;
 
 export function MelodyComponent(props: MusicNoteRangeProps) {
     const theme = useTheme();
@@ -92,7 +93,7 @@ function runVexFlowRangeCode(
         return <></>;
     }
     // console.log("runVexFlowCode ::: Melody", { keys });
-    const context = new ReactNativeSVGContext(NotoFontPack, { width, height: 280 });
+    const context = new ReactNativeSVGContext(NotoFontPack, { width, height });
     // console.log(":::> runVexFlowRangeCode", { clef, keys, keySignature, timeSignature, width, durations });
     context
         .setFont("Arial", 48, "")
@@ -101,7 +102,7 @@ function runVexFlowRangeCode(
         .setStrokeStyle(textColor)
         .setLineWidth(2);
 
-    const stave = new Stave(0, 80, width);
+    const stave = new Stave(0, YPOS, width);
     stave.setContext(context);
     stave.setClef(clef);
     stave.setKeySignature(keySignature);

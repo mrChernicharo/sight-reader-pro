@@ -1,6 +1,6 @@
 import { AppView } from "../../atoms/AppView";
 
-import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 // @ts-ignore
 import { Accidental } from "vexflow/src/accidental";
 // @ts-ignore
@@ -14,24 +14,17 @@ import { Formatter } from "vexflow/src/formatter";
 // @ts-ignore
 import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context";
 
-import { useTheme } from "@/hooks/useTheme";
+import { eventEmitter } from "@/app/_layout";
+import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
+import { GAME_STAGE_BASE_HEIGHT } from "@/utils/constants";
 import { AppEvents, Clef, KeySignature } from "@/utils/enums";
+import { explodeNote, isNoteMatch, wait } from "@/utils/helperFns";
 import { getDrawNote } from "@/utils/noteFns";
 import { Note, NotePlayedEventData } from "@/utils/types";
 import { StyleSheet } from "react-native";
-import { eventEmitter } from "@/app/_layout";
-import { explodeNote, isNoteMatch, wait } from "@/utils/helperFns";
-import { useAppStore } from "@/hooks/useAppStore";
-import { testBorder } from "@/utils/styles";
 
-export interface MusicNoteProps {
-    targetNote: Note;
-    clef: Clef;
-    keySignature: KeySignature;
-}
-
-const widthPerKeySig = {
+const armatureSpace = {
     [KeySignature.Cb]: 70,
     [KeySignature.Gb]: 60,
     [KeySignature.Db]: 50,
@@ -64,10 +57,20 @@ const widthPerKeySig = {
     [KeySignature["D#m"]]: 60,
     [KeySignature["A#m"]]: 70,
 };
+// const maxArmatureSpace = armatureSpace[KeySignature.Abm];
+// const safetyXMargin = 40;
+
+const height = GAME_STAGE_BASE_HEIGHT;
+const YPOS = 100;
+const MIN_STAVE_WIDTH = 180;
 
 const WAIT_SUCCESS = 100;
 const WAIT_MISTAKE = 350;
-const height = 260;
+export interface MusicNoteProps {
+    targetNote: Note;
+    clef: Clef;
+    keySignature: KeySignature;
+}
 
 export function SingleNoteComponent(props: MusicNoteProps) {
     const { clef, keySignature, targetNote: propNote } = props;
@@ -79,7 +82,7 @@ export function SingleNoteComponent(props: MusicNoteProps) {
 
     const svgResult = useRef<ReactNode>(null);
 
-    const width = useMemo(() => 180 + widthPerKeySig[keySignature], [keySignature]);
+    const width = useMemo(() => MIN_STAVE_WIDTH + armatureSpace[keySignature], [keySignature]);
 
     const context: ReactNativeSVGContext = useMemo(() => {
         return new ReactNativeSVGContext(NotoFontPack, { width, height });
@@ -87,8 +90,7 @@ export function SingleNoteComponent(props: MusicNoteProps) {
 
     const SvgResult = useMemo(() => {
         if (playedNote || targetNote) {
-            const color = Colors.dark.text;
-            context.setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
+            context.setFillStyle(Colors.dark.text).setStrokeStyle(Colors.dark.text).setLineWidth(3);
 
             const renderResult = runVexFlowCode({
                 context,
@@ -101,10 +103,8 @@ export function SingleNoteComponent(props: MusicNoteProps) {
 
             svgResult.current = renderResult;
         } else {
-            // context.setBackgroundFillStyle(Colors.dark.bg);
-            // context.setBackgroundFillStyle(isTourCompleted ? Colors.dark.bg : "rgba(0, 0, 0, 0)");
             context.setBackgroundFillStyle(isTourCompleted ? Colors.dark.bg : "rgba(0, 0, 0, 0)");
-            context.clearRect(0, 20, width, height - 20);
+            context.clearRect(0, 25, width, height);
         }
         return svgResult.current;
     }, [context, playedNote, targetNote, keySignature, clef]);
@@ -162,7 +162,7 @@ function runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, w
     const isSuccess = noteNames.length == 2 ? isNoteMatch(noteNames[0], noteNames[1]) : null;
     if (isSuccess) notes.pop(); // paint 2 notes only if mistake
 
-    const stave = new Stave(0, 80, width);
+    const stave = new Stave(0, YPOS, width);
 
     stave.setContext(context);
     stave.setClef(clef);
@@ -233,7 +233,6 @@ const styles = StyleSheet.create({
         transform: [{ scaleX: 1.4 }, { scaleY: 1.2 }],
     },
     innerView: {
-        transform: [{ translateX: 2 }],
         backgroundColor: "transparent",
         // ...testBorder(),
     },

@@ -144,34 +144,36 @@ export function MelodyGameComponent() {
     }, []);
 
     return (
-        <SafeAreaView style={[s.container, { backgroundColor: Colors[theme].bg }]}>
-            <View style={{ opacity: gameFinished ? 0 : 1 }}>
+        <SafeAreaView style={[s.outerContainer, { backgroundColor: Colors[theme].bg }]}>
+            <View style={[s.container, { opacity: gameFinished ? 0 : 1 }]}>
                 <AppView style={s.top}>
                     <TimerAndStatsDisplay onCountdownFinish={onCountdownFinish} levelId={level.id} />
                 </AppView>
 
-                {currRound?.values ? (
-                    <SheetMusic.Melody
-                        clef={level.clef}
-                        durations={currRound.durations}
+                <View style={s.mainContainer}>
+                    {currRound?.values ? (
+                        <SheetMusic.Melody
+                            clef={level.clef}
+                            durations={currRound.durations}
+                            keySignature={level.keySignature}
+                            timeSignature={level.timeSignature}
+                            keys={currRound.values}
+                            roundResults={roundResults}
+                        />
+                    ) : null}
+
+                    <AttemptedNotes />
+
+                    <Piano
+                        gameType={GameType.Melody}
+                        hintCount={hintCount}
+                        currNote={currNote}
                         keySignature={level.keySignature}
-                        timeSignature={level.timeSignature}
-                        keys={currRound.values}
-                        roundResults={roundResults}
+                        onKeyPressed={onPianoKeyPress}
+                        onKeyReleased={() => {}}
+                        // onKeyReleased={() => releasePianoNote(currRound?.values?.[melodyIdx] || null)}
                     />
-                ) : null}
-
-                <AttemptedNotes />
-
-                <Piano
-                    gameType={GameType.Melody}
-                    hintCount={hintCount}
-                    currNote={currNote}
-                    keySignature={level.keySignature}
-                    onKeyPressed={onPianoKeyPress}
-                    onKeyReleased={() => {}}
-                    // onKeyReleased={() => releasePianoNote(currRound?.values?.[melodyIdx] || null)}
-                />
+                </View>
             </View>
         </SafeAreaView>
     );

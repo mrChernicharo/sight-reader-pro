@@ -30,6 +30,7 @@ function BlackKey({ note, keyWidth, hintColor = "", disabled = false, onPressed 
                 style={{ ...s.blackNoteInner, ...bgStyle }}
                 // style={[ps.blackNote, bgStyle]}
                 onPressIn={onPress}
+                hitSlop={8}
                 // onPressOut={() => onKeyReleased(note)}
             >
                 {showPianoNoteNames && (
@@ -44,7 +45,7 @@ export const BlackPianoKey = memo(BlackKey);
 const s = StyleSheet.create({
     text: { fontWeight: 700, userSelect: "none" },
     blackNote: {
-        height: 110,
+        height: "100%",
         backgroundColor: "transparent",
     },
     blackNoteInner: {
@@ -52,7 +53,7 @@ const s = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#333",
         height: "100%",
-        width: "80%",
+        width: "74%",
         borderRadius: 6,
         zIndex: 10000,
         margin: "auto",

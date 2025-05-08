@@ -148,14 +148,7 @@ const s = StyleSheet.create({
     whiteNotes: {
         flexDirection: "row",
         justifyContent: "center",
-    },
-    whiteNote: {
-        borderWidth: 1,
-        borderColor: "#bbb",
-        backgroundColor: "#ddd",
-        height: 160,
-        alignItems: "center",
-        justifyContent: "flex-end",
+        height: 180,
     },
     blackNotes: {
         flexDirection: "row",
@@ -163,19 +156,6 @@ const s = StyleSheet.create({
         top: -10,
         backgroundColor: "transparent",
         zIndex: 100,
-    },
-    blackNote: {
-        height: 110,
-        backgroundColor: "transparent",
-    },
-    blackNoteInner: {
-        justifyContent: "flex-end",
-        alignItems: "center",
-        backgroundColor: "#333",
-        height: "100%",
-        width: "80%",
-        borderRadius: 6,
-        zIndex: 10000,
-        margin: "auto",
+        height: 125,
     },
 });

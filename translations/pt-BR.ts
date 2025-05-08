@@ -8,6 +8,7 @@ const ptBR = {
         welcome: "Boas vindas",
         loading: "Carregando",
         gameCount: "partidas jogadas",
+        note: "nota",
         notes: "notas",
     },
     routes: {

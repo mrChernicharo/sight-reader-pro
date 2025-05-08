@@ -1,39 +1,52 @@
 import { Dimensions, Platform, StyleSheet, ViewStyle } from "react-native";
 import { MenuOption } from "react-native-popup-menu";
 
+export const testBorder = (borderColor = "red"): ViewStyle => ({
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor,
+});
+
 export const STYLES = {
     game: StyleSheet.create({
+        outerContainer: {
+            flex: 1,
+            justifyContent: "space-between",
+            position: "relative",
+            paddingTop: 8,
+            // ...testBorder("purple"),
+        },
         container: {
             flex: 1,
             justifyContent: "space-between",
             position: "relative",
             paddingTop: 8,
-            // borderWidth: 1,
-            // borderColor: "blue",
+            // ...testBorder("blue"),
         },
         top: {
             position: "relative",
             height: 130,
             paddingHorizontal: 24,
-            // borderWidth: 1,
-            // borderColor: "green",
+            // ...testBorder("orange"),
         },
         backLink: {
             position: "absolute",
             zIndex: 20,
-            // top: -118,
-            // left: 0,
-            // borderWidth: 1,
-            // borderColor: "red",
         },
+
+        mainContainer: {
+            position: "relative",
+            bottom: 0,
+            ...testBorder("orange"),
+        },
+
         attemptedNotes: {
             position: "relative",
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
             height: 36,
-            // borderWidth: 2,
-            // borderColor: "red",
+            ...testBorder("forestgreen"),
         },
         tooltipBtn: { marginVertical: 8, minWidth: "40%" },
     }),
@@ -110,9 +123,3 @@ export const STYLES = {
         },
     }),
 };
-
-export const testBorder = (borderColor = "red"): ViewStyle => ({
-    borderWidth: 1,
-    borderStyle: "dashed",
-    borderColor,
-});

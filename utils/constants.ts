@@ -3,6 +3,8 @@ import { Accident, SoundEffect } from "./enums";
 import { Platform, StatusBar } from "react-native";
 
 export const APP_NAME = "Sight Reader Pro";
+
+export const GAME_STAGE_BASE_HEIGHT = 300;
 // export const APP_NAME = 'MusiFlow'
 
 export const GAME_WIN_MIN_ACCURACY = 0.6;
