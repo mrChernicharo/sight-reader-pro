@@ -29,7 +29,7 @@ export function AttemptedNotes() {
 
     useEffect(() => {
         eventEmitter.addListener(AppEvents.NotePlayed, (event) => {
-            console.log("event:::", event.data.playedNote, event.data.currNote);
+            // console.log("event:::", event.data.playedNote, event.data.currNote);
             const { currNote, playedNote, isSuccess, currNoteValue } = event.data as NotePlayedEventData;
 
             setAttemptedNotes((prev) => [

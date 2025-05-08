@@ -2,13 +2,13 @@
     "expo": {
         "name": "Sight Reader Pro",
         "slug": "sight-reader-pro",
-        "version": "1.0.28",
+        "version": "1.0.29",
         "orientation": "portrait",
         "icon": "./assets/images/app-logo.png",
         "scheme": "sight-reader-pro",
         "userInterfaceStyle": "automatic",
         "android": {
-            "versionCode": 28,
+            "versionCode": 29,
             "package": "com.chernicharo.sightreaderpro",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/app-logo.png",
