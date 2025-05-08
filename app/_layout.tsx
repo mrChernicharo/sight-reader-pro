@@ -6,7 +6,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
 import { useFonts } from "expo-font";
 import * as NavigationBar from "expo-navigation-bar";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
@@ -16,6 +16,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
+import { AppEvents } from "@/utils/enums";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -58,7 +59,7 @@ export default function RootLayout() {
 }
 
 export function useAppInitialization() {
-    // const path = usePathname();
+    const path = usePathname();
     const theme = useTheme();
 
     const [fontsLoaded, fontsError] = useFonts({
@@ -91,9 +92,10 @@ export function useAppInitialization() {
         }
     }, [soundsLoaded, fontsLoaded]);
 
-    // useEffect(() => {
-    //     console.log("path :::", path);
-    // }, [path]);
+    useEffect(() => {
+        console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
+        console.log("path :::", path);
+    }, [path]);
 
     useEffect(() => {
         NavigationBar.setVisibilityAsync("hidden");

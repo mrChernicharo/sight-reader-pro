@@ -73,7 +73,7 @@ export function SingleNoteComponent(props: MusicNoteProps) {
     const { clef, keySignature, targetNote: propNote } = props;
     const isTourCompleted = useAppStore((state) => state.completedTours.game);
 
-    const waitTime = useRef<number>(0);
+    const waitTime = useRef<number>(WAIT_MISTAKE);
     const [playedNote, setPlayedNote] = useState<Note | null>(null);
     const [targetNote, setTargetNote] = useState<Note | null>(null);
 
@@ -90,7 +90,16 @@ export function SingleNoteComponent(props: MusicNoteProps) {
             const color = Colors.dark.text;
             context.setFillStyle(color).setStrokeStyle(color).setLineWidth(3);
 
-            svgResult.current = runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, width });
+            const renderResult = runVexFlowCode({
+                context,
+                clef,
+                targetNote,
+                playedNote,
+                keySignature,
+                width,
+            });
+
+            svgResult.current = renderResult;
         } else {
             // context.setBackgroundFillStyle(Colors.dark.bg);
             // context.setBackgroundFillStyle(isTourCompleted ? Colors.dark.bg : "rgba(0, 0, 0, 0)");
@@ -100,9 +109,15 @@ export function SingleNoteComponent(props: MusicNoteProps) {
         return svgResult.current;
     }, [context, playedNote, targetNote, keySignature, clef]);
 
-    // useEffect(() => {
-    //     console.log({ playedNote, targetNote });
-    // }, [playedNote, targetNote]);
+    useEffect(() => {
+        eventEmitter.addListener(AppEvents.NotePlayed, ({ data }: { data: NotePlayedEventData }) => {
+            // console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
+            const { playedNote, isSuccess } = data;
+            // console.log("NotePlayed:::", { playedNote, isSuccess });
+            waitTime.current = isSuccess ? WAIT_SUCCESS : WAIT_MISTAKE;
+            setPlayedNote(playedNote);
+        });
+    }, []);
 
     useEffect(() => {
         setTargetNote(null);
