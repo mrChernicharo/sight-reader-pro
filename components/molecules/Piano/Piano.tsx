@@ -143,9 +143,7 @@ export function Piano({
 
 const s = StyleSheet.create({
     piano: {
-        position: "relative",
-        // paddingBottom: 20,
-        marginTop: 20,
+        // position: "relative",
     },
     whiteNotes: {
         flexDirection: "row",

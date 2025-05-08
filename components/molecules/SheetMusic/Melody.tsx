@@ -42,6 +42,8 @@ export interface MusicNoteRangeProps {
     roundResults: (1 | 0)[];
 }
 
+const height = 260;
+
 export function MelodyComponent(props: MusicNoteRangeProps) {
     const theme = useTheme();
     const { width } = useWindowDimensions();
@@ -181,7 +183,7 @@ function runVexFlowRangeCode(
 
 const styles = StyleSheet.create({
     container: {
-        height: 280,
+        height,
         // borderWidth: 2,
         // borderStyle: "dashed",
         // backgroundColor: "#F5FCFF",
