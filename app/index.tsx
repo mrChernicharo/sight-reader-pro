@@ -18,6 +18,7 @@ import { StyleProp, StyleSheet, TextStyle } from "react-native";
 import Tooltip, { Placement } from "react-native-tooltip-2";
 import { eventEmitter } from "./_layout";
 import { AppEvents } from "@/utils/enums";
+import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
@@ -98,10 +99,9 @@ export default function Home() {
                 />
             </FadeIn>
 
-            <Tooltip
+            <WalkthroughTooltip
                 isVisible={tourStep == 0}
                 placement={Placement.CENTER}
-                // topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
                 onClose={onTooltipDismiss}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>

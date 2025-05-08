@@ -7,6 +7,7 @@ interface WalkThroughTooltipProps {
     isVisible: boolean;
     placement: Placement;
     content: ReactNode;
+    onClose: () => void;
     children?: ReactNode;
     contentStyle?: StyleProp<ViewStyle>;
     arrowStyle?: StyleProp<ViewStyle>;
@@ -19,39 +20,23 @@ export function WalkthroughTooltip({
     arrowStyle,
     contentStyle,
     placement,
+    onClose,
 }: WalkThroughTooltipProps) {
-    if (children)
-        return (
-            <Tooltip
-                isVisible={isVisible}
-                placement={placement}
-                contentStyle={contentStyle}
-                // @ts-ignore
-                arrowStyle={arrowStyle}
-                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                allowChildInteraction={false}
-                closeOnChildInteraction={false}
-                closeOnBackgroundInteraction={false}
-                closeOnContentInteraction={false}
-                content={content}
-            >
-                {children}
-            </Tooltip>
-        );
-    else
-        return (
-            <Tooltip
-                isVisible={isVisible}
-                placement={placement}
-                contentStyle={contentStyle}
-                // @ts-ignore
-                arrowStyle={arrowStyle}
-                topAdjustment={WALKTHROUGH_TOP_ADJUSTMENT}
-                allowChildInteraction={false}
-                closeOnChildInteraction={false}
-                closeOnBackgroundInteraction={false}
-                closeOnContentInteraction={false}
-                content={content}
-            />
-        );
+    const tooltipProps = {
+        isVisible: isVisible,
+        placement: placement,
+        contentStyle: contentStyle,
+        // @ts-ignore
+        arrowStyle: arrowStyle,
+        topAdjustment: WALKTHROUGH_TOP_ADJUSTMENT,
+        allowChildInteraction: false,
+        closeOnChildInteraction: false,
+        closeOnBackgroundInteraction: false,
+        closeOnContentInteraction: true,
+        onClose,
+        content: content,
+    };
+
+    if (children) return <Tooltip {...tooltipProps}>{children}</Tooltip>;
+    else return <Tooltip {...tooltipProps} />;
 }

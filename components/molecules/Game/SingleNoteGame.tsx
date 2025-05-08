@@ -149,6 +149,7 @@ export function SingleNoteGameComponent() {
                         contentStyle={{ transform: [{ translateY: 32 }] }}
                         // @ts-ignore
                         arrowStyle={{ transform: [{ translateY: -32 }] }}
+                        onClose={goToStepFour}
                         content={
                             <View style={{ alignItems: "center" }}>
                                 <TooltipTextLines keypath="tour.game.3" />
@@ -167,6 +168,7 @@ export function SingleNoteGameComponent() {
                 <WalkthroughTooltip
                     isVisible={!hasCompletedTour && tourStep == 0}
                     placement={Placement.CENTER}
+                    onClose={goToStepOne}
                     content={
                         <View style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.0" />
@@ -177,6 +179,7 @@ export function SingleNoteGameComponent() {
                 <WalkthroughTooltip
                     isVisible={!hasCompletedTour && tourStep == 4}
                     placement={Placement.CENTER}
+                    onClose={doFinalStep}
                     content={
                         <View style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.4" />
@@ -197,6 +200,7 @@ export function SingleNoteGameComponent() {
                         // @ts-ignore
                         arrowStyle={{ transform: [{ translateY: 60 }] }}
                         contentStyle={{ minHeight: 128, transform: [{ translateY: -60 }] }}
+                        onClose={goToStepTwo}
                         content={
                             <View style={{ alignItems: "center" }}>
                                 <TooltipTextLines keypath="tour.game.1" />
@@ -219,6 +223,7 @@ export function SingleNoteGameComponent() {
                     // @ts-ignore
                     arrowStyle={{ transform: [{ translateY: -36 }] }}
                     contentStyle={{ minHeight: 128, transform: [{ translateY: -36 }] }}
+                    onClose={goToStepThree}
                     content={
                         <View style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath="tour.game.2" />

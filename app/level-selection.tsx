@@ -97,6 +97,7 @@ export default function LevelSelectionScreen() {
                                                     isVisible={Boolean(tourStep == 2)}
                                                     placement={Placement.RIGHT}
                                                     contentStyle={{ minHeight: 150 }}
+                                                    onClose={doFinalStep}
                                                     content={
                                                         <AppView transparentBG style={{ alignItems: "center" }}>
                                                             <TooltipTextLines
@@ -136,6 +137,7 @@ export default function LevelSelectionScreen() {
                 <WalkthroughTooltip
                     isVisible={Boolean(tourStep == 0)}
                     placement={Placement.CENTER}
+                    onClose={goToStepOne}
                     content={
                         <AppView transparentBG style={{ alignItems: "center" }}>
                             <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
@@ -153,6 +155,7 @@ export default function LevelSelectionScreen() {
                 placement={Placement.TOP}
                 contentStyle={{ transform: [{ translateY: -100 }] }}
                 arrowStyle={{ transform: [{ translateY: -100 }] }}
+                onClose={goToStepTwo}
                 content={
                     <AppView transparentBG style={{ alignItems: "center" }}>
                         <TooltipTextLines keypath={`tour.levelSelection.${tourStep}`} />
