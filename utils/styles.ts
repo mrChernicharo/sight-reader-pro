@@ -37,7 +37,7 @@ export const STYLES = {
         mainContainer: {
             position: "relative",
             bottom: 0,
-            ...testBorder("orange"),
+            // ...testBorder("orange"),
         },
 
         attemptedNotes: {
@@ -46,7 +46,7 @@ export const STYLES = {
             justifyContent: "center",
             alignItems: "center",
             height: 36,
-            ...testBorder("forestgreen"),
+            // ...testBorder("forestgreen"),
         },
         tooltipBtn: { marginVertical: 8, minWidth: "40%" },
     }),

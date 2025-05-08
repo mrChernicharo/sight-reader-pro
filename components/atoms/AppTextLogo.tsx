@@ -2,7 +2,7 @@ import { testBorder } from "@/utils/styles";
 import { AppLogo } from "./AppLogo";
 import { AppText } from "./AppText";
 import { AppView } from "./AppView";
-import { APP_NAME } from "@/utils/constants";
+import { APP_NAME } from "@/utils/APP_NAME";
 
 export function AppTextLogo({ subtitles }: { subtitles?: string }) {
     return (

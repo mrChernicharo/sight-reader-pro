@@ -1,4 +1,4 @@
-import { APP_NAME } from "@/utils/constants";
+import { APP_NAME } from "@/utils/APP_NAME";
 
 const ptBR = {
     lang: "Português",

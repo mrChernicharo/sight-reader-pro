@@ -29,12 +29,18 @@ export function AttemptedNotes() {
 
     useEffect(() => {
         eventEmitter.addListener(AppEvents.NotePlayed, (event) => {
-            // console.log("event:::", event);
+            console.log("event:::", event.data.playedNote, event.data.currNote);
             const { currNote, playedNote, isSuccess, currNoteValue } = event.data as NotePlayedEventData;
 
             setAttemptedNotes((prev) => [
                 ...prev,
-                { id: randomUID(), you: playedNote, correct: currNote, isSuccess, noteScore: currNoteValue },
+                {
+                    id: randomUID(),
+                    you: isSuccess ? currNote : playedNote, // handle notes like E#, B#, Fb & Cb
+                    correct: currNote,
+                    isSuccess,
+                    noteScore: currNoteValue,
+                },
             ]);
         });
 
