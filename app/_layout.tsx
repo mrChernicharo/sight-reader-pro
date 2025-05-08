@@ -92,10 +92,10 @@ export function useAppInitialization() {
         }
     }, [soundsLoaded, fontsLoaded]);
 
-    useEffect(() => {
-        console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
-        console.log("path :::", path);
-    }, [path]);
+    // useEffect(() => {
+    //     console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
+    //     console.log("path :::", path);
+    // }, [path]);
 
     useEffect(() => {
         NavigationBar.setVisibilityAsync("hidden");

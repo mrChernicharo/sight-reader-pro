@@ -50,7 +50,7 @@ export function AttemptedNotes() {
     // }, [rounds]);
 
     return (
-        <View style={{ ...s.attemptedNotes, transform: [{ translateY: 20 }] }}>
+        <View style={s.attemptedNotes}>
             {attemptedNotes.map((attempt) => (
                 <AttemptedNote key={attempt.id} attempt={attempt} />
             ))}

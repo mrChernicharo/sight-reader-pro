@@ -26,6 +26,7 @@ const requires = [
     require("../assets/sounds/piano-notes/Piano.mf.Ab5.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.Ab6.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.Ab7.mp3"),
+    require("../assets/sounds/piano-notes/Piano.mf.B0.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.B1.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.B2.mp3"),
     require("../assets/sounds/piano-notes/Piano.mf.B3.mp3"),

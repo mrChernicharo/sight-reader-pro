@@ -1,3 +1,4 @@
+import { eventEmitter } from "@/app/_layout";
 import { AppView } from "@/components/atoms/AppView";
 import { useAllLevels } from "@/hooks/useAllLevels";
 import { useAppStore } from "@/hooks/useAppStore";
@@ -7,7 +8,6 @@ import { Colors } from "@/utils/Colors";
 import { AppEvents, GameState, GameType, KeySignature, NoteName, SoundEffect } from "@/utils/enums";
 import {
     explodeNote,
-    getAttemptedNoteDuration,
     getLevelHintCount,
     getPossibleNotesInLevel,
     isNoteMatch,
@@ -15,19 +15,17 @@ import {
     wait,
 } from "@/utils/helperFns";
 import { decideNextRound } from "@/utils/noteFns";
+import { ScoreManager } from "@/utils/ScoreManager";
 import { STYLES } from "@/utils/styles";
 import { CurrentGame, GameScreenParams, MelodyRound, Note, Round } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AttemptedNotes } from "../AttemptedNotes";
 import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
-import { eventEmitter } from "@/app/_layout";
-import { ScoreManager } from "@/utils/ScoreManager";
-import { opacity } from "react-native-reanimated/lib/typescript/Colors";
-import { View } from "react-native";
 
 const s = STYLES.game;
 
