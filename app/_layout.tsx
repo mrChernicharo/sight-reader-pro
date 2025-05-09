@@ -95,7 +95,7 @@ export function useAppInitialization() {
     useEffect(() => {
         console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
         console.log("path :::", path);
-        console.log("Dimensions :::", Dimensions.get("screen"));
+        console.log("Dimensions :::", Dimensions.get("window"));
     }, [path]);
 
     useEffect(() => {

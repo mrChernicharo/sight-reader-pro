@@ -43,12 +43,12 @@ const s = StyleSheet.create({
     lottieContainer: {
         // borderWidth: 1,
         // borderColor: "red",
-        width: Dimensions.get("screen").width,
+        width: Dimensions.get("window").width,
         height: 0,
     },
     lottieConfetti: {
         backgroundColor: "transparent",
-        width: Dimensions.get("screen").width - 2,
+        width: Dimensions.get("window").width - 2,
         position: "absolute",
         zIndex: 0,
     },

@@ -5,7 +5,7 @@ const config = getDefaultConfig(__dirname);
 config.transformer.minifierConfig = {
     compress: {
         // The option below removes all console logs statements in production.
-        drop_console: true,
+        // drop_console: true,
     },
 };
 

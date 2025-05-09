@@ -82,7 +82,7 @@ export default function GameOverScreen() {
                     if (ref) setTimeout(ref.scrollToEnd, 2400);
                 }}
             >
-                <AppView style={{ minHeight: Dimensions.get("screen").height - (isPracticeLevel ? 60 : 0) }}>
+                <AppView style={{ minHeight: Dimensions.get("window").height - (isPracticeLevel ? 60 : 0) }}>
                     {isGameWin ? (
                         <>
                             <Confetti x={-120} duration={2000} />

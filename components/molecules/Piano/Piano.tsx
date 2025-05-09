@@ -11,6 +11,7 @@ import { Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-na
 import { WhitePianoKey } from "./WhitePianoKey";
 import { BlackPianoKey } from "./BlackPianoKey";
 import { getPianoKeyHeight } from "@/utils/device_sizes";
+import { testBorder } from "@/utils/styles";
 
 export interface PianoKeyProps {
     note: NoteName;
@@ -93,7 +94,7 @@ export function Piano({
     return (
         <View style={s.piano}>
             {/* TODO: SPLIT BLACK_NOTES IN 2 CHUNKS */}
-            <View style={{ ...s.blackNotes, left: keyboardMargin + keyWidth * 0.5 }}>
+            <View style={[s.blackNotes, { left: keyboardMargin + keyWidth * 0.52 }]}>
                 {blackNotesLeft.map((note) => {
                     const hintColor = hintPianoKey(note) ? hintColors[hints.current] : undefined;
                     return (
@@ -109,7 +110,7 @@ export function Piano({
                 })}
             </View>
 
-            <View style={{ ...s.blackNotes, right: keyboardMargin + keyWidth * 0.5 }}>
+            <View style={[s.blackNotes, { right: keyboardMargin + keyWidth * 0.48 }]}>
                 {blackNotesRight.map((note) => {
                     const hintColor = hintPianoKey(note) ? hintColors[hints.current] : undefined;
                     return (
@@ -160,5 +161,6 @@ const s = StyleSheet.create({
         backgroundColor: "transparent",
         zIndex: 100,
         height: pianoHeights.black,
+        // ...testBorder("green"),
     },
 });
