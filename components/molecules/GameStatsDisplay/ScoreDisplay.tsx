@@ -8,8 +8,6 @@ import { useIntl } from "@/hooks/useIntl";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
 import { ACCURACY_BONUS, BEST_STREAK_BONUS, ScoreManager, SPEED_BONUS } from "@/utils/ScoreManager";
-import { testBorder } from "@/utils/styles";
-import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 
 export function ScoreDisplay({ stars }: { stars: number }) {
@@ -50,7 +48,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
                     <AppText style={s.bonusTitle}>{t("game.bonus.bestStreak")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
-                            {bestStreak} {t("app.notes")} X {intl.format(BEST_STREAK_BONUS)}
+                            {bestStreak} {t("app.notes")} x {intl.format(BEST_STREAK_BONUS)}
                         </AppText>
 
                         <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(bestStreakBonus)} pts</AppText>
@@ -63,8 +61,8 @@ export function ScoreDisplay({ stars }: { stars: number }) {
                     <AppText style={s.bonusTitle}>{t("game.bonus.speed")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
-                            {/* {intl.format(hitsPerMinute)} {t("app.note")}/min X {SPEED_BONUS} */}
-                            {intl.format(hitsPerMinute)} {t("app.notes")}/min X {SPEED_BONUS}
+                            {/* {intl.format(hitsPerMinute)} {t("app.note")}/min x {SPEED_BONUS} */}
+                            {intl.format(hitsPerMinute)} {t("app.notes")}/min x {SPEED_BONUS}
                         </AppText>
                         <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(speedBonus)} pts</AppText>
                     </AppText>
@@ -76,7 +74,7 @@ export function ScoreDisplay({ stars }: { stars: number }) {
                     <AppText style={s.bonusTitle}>{t("game.bonus.accuracy")}</AppText>
                     <AppText>
                         <AppText style={s.bonusDetail}>
-                            {intl.format(accuracy * 100)}% X {intl.format(ACCURACY_BONUS)}
+                            {intl.format(accuracy * 100)}% x {intl.format(ACCURACY_BONUS)}
                         </AppText>
                         <AppText style={s.bonusTotal}>&nbsp;&nbsp;{intl.format(accuracyBonus)} pts</AppText>
                     </AppText>

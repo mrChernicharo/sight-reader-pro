@@ -45,7 +45,12 @@ export default function RootLayout() {
         );
 
     return (
-        <SafeAreaProvider style={{ paddingTop: Platform.OS == "ios" ? 32 : 16, backgroundColor: Colors.dark.bg }}>
+        <SafeAreaProvider
+            style={{
+                // paddingTop: Platform.OS == "ios" ? 32 : 16,
+                backgroundColor: Colors.dark.bg,
+            }}
+        >
             <GestureHandlerRootView>
                 <MenuProvider>
                     <SoundContextProvider>
@@ -95,7 +100,7 @@ export function useAppInitialization() {
     useEffect(() => {
         console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
         console.log("path :::", path);
-        console.log("Dimensions :::", Dimensions.get("window"));
+        console.log("Dimensions :::", Dimensions.get("screen"));
     }, [path]);
 
     useEffect(() => {

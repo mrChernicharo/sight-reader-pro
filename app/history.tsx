@@ -54,6 +54,7 @@ export default function HistoryScreen() {
 
 const s = StyleSheet.create({
     container: {
+        paddingTop: 16,
         paddingHorizontal: 24,
         width: "100%",
         minHeight: "100%",

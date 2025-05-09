@@ -173,7 +173,7 @@ export const s = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 16,
-        paddingBottom: 24,
+        paddingVertical: 24,
         minHeight: Dimensions.get("window").height,
         position: "relative",
     },

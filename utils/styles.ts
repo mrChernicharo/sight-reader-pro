@@ -1,5 +1,4 @@
 import { Dimensions, Platform, StyleSheet, ViewStyle } from "react-native";
-import { MenuOption } from "react-native-popup-menu";
 
 export const testBorder = (borderColor = "red"): ViewStyle => ({
     borderWidth: 1,
@@ -8,6 +7,9 @@ export const testBorder = (borderColor = "red"): ViewStyle => ({
 });
 
 export const STYLES = {
+    // shell: {
+    //     paddingTop: Platform.OS == "ios" ? 36 : 24,
+    // },
     game: StyleSheet.create({
         outerContainer: {
             flex: 1,

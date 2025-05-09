@@ -175,6 +175,7 @@ export default function LevelDetails() {
 
 const s = StyleSheet.create({
     container: {
+        paddingTop: 24,
         position: "relative",
         alignItems: "center",
         minHeight: Dimensions.get("window").height - (Platform.OS === "ios" ? 100 : -20),
