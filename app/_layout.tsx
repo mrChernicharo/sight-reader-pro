@@ -11,7 +11,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
-import { NativeEventEmitter, NativeModules, Platform } from "react-native";
+import { Dimensions, NativeEventEmitter, NativeModules, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -92,10 +92,11 @@ export function useAppInitialization() {
         }
     }, [soundsLoaded, fontsLoaded]);
 
-    // useEffect(() => {
-    //     console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
-    //     console.log("path :::", path);
-    // }, [path]);
+    useEffect(() => {
+        console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
+        console.log("path :::", path);
+        console.log("Dimensions :::", Dimensions.get("screen"));
+    }, [path]);
 
     useEffect(() => {
         NavigationBar.setVisibilityAsync("hidden");

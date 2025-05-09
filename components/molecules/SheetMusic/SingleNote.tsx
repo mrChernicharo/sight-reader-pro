@@ -17,12 +17,12 @@ import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context"
 import { eventEmitter } from "@/app/_layout";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
-import { GAME_STAGE_BASE_HEIGHT } from "@/utils/constants";
 import { AppEvents, Clef, KeySignature } from "@/utils/enums";
 import { explodeNote, isNoteMatch, wait } from "@/utils/helperFns";
 import { getDrawNote } from "@/utils/noteFns";
 import { Note, NotePlayedEventData } from "@/utils/types";
 import { StyleSheet } from "react-native";
+import { getScoreHeight } from "@/utils/device_sizes";
 
 const armatureSpace = {
     [KeySignature.Cb]: 70,
@@ -60,8 +60,8 @@ const armatureSpace = {
 // const maxArmatureSpace = armatureSpace[KeySignature.Abm];
 // const safetyXMargin = 40;
 
-const height = GAME_STAGE_BASE_HEIGHT;
-const YPOS = 100;
+const scoreDims = getScoreHeight();
+const height = scoreDims.stageHeight;
 const MIN_STAVE_WIDTH = 180;
 
 const WAIT_SUCCESS = 100;
@@ -162,7 +162,7 @@ function runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, w
     const isSuccess = noteNames.length == 2 ? isNoteMatch(noteNames[0], noteNames[1]) : null;
     if (isSuccess) notes.pop(); // paint 2 notes only if mistake
 
-    const stave = new Stave(0, YPOS, width);
+    const stave = new Stave(0, scoreDims.staveYPos, width);
 
     stave.setContext(context);
     stave.setClef(clef);

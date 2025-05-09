@@ -10,6 +10,7 @@ import { useCallback, useRef } from "react";
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { WhitePianoKey } from "./WhitePianoKey";
 import { BlackPianoKey } from "./BlackPianoKey";
+import { getPianoKeyHeight } from "@/utils/device_sizes";
 
 export interface PianoKeyProps {
     note: NoteName;
@@ -31,6 +32,8 @@ const hintColors: Record<number, string> = {
     1: "#a6d4bd",
     // 1: "#dddddd"  // Lightest Gray (#ddd)
 };
+
+const pianoHeights = getPianoKeyHeight();
 
 export function Piano({
     gameType,
@@ -148,7 +151,7 @@ const s = StyleSheet.create({
     whiteNotes: {
         flexDirection: "row",
         justifyContent: "center",
-        height: 180,
+        height: pianoHeights.white,
     },
     blackNotes: {
         flexDirection: "row",
@@ -156,6 +159,6 @@ const s = StyleSheet.create({
         top: -10,
         backgroundColor: "transparent",
         zIndex: 100,
-        height: 125,
+        height: pianoHeights.black,
     },
 });

@@ -25,12 +25,12 @@ import { NotoFontPack, ReactNativeSVGContext } from "standalone-vexflow-context"
 
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { GAME_STAGE_BASE_HEIGHT } from "@/utils/constants";
 import { Clef, KeySignature, NoteDuration, TimeSignature } from "@/utils/enums";
 import { stemDown } from "@/utils/helperFns";
 import { getDrawNote, noteDurationDict } from "@/utils/noteFns";
 import { Note } from "@/utils/types";
 import { StyleSheet, useWindowDimensions } from "react-native";
+import { getScoreHeight } from "@/utils/device_sizes";
 
 export interface MusicNoteRangeProps {
     keys: Note[];
@@ -41,9 +41,8 @@ export interface MusicNoteRangeProps {
     roundResults: (1 | 0)[];
 }
 
-const height = GAME_STAGE_BASE_HEIGHT;
-const YPOS = 100;
-const MIN_STAVE_WIDTH = 180;
+const scoreDims = getScoreHeight();
+const height = scoreDims.stageHeight;
 
 export function MelodyComponent(props: MusicNoteRangeProps) {
     const theme = useTheme();
@@ -102,7 +101,7 @@ function runVexFlowRangeCode(
         .setStrokeStyle(textColor)
         .setLineWidth(2);
 
-    const stave = new Stave(0, YPOS, width);
+    const stave = new Stave(0, scoreDims.staveYPos, width);
     stave.setContext(context);
     stave.setClef(clef);
     stave.setKeySignature(keySignature);

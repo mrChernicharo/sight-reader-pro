@@ -14,14 +14,14 @@ export const STYLES = {
             justifyContent: "space-between",
             position: "relative",
             paddingTop: 8,
-            // ...testBorder("purple"),
+            ...testBorder("purple"),
         },
         container: {
             flex: 1,
             justifyContent: "space-between",
             position: "relative",
             paddingTop: 8,
-            // ...testBorder("blue"),
+            ...testBorder("blue"),
         },
         top: {
             position: "relative",
@@ -36,8 +36,8 @@ export const STYLES = {
 
         mainContainer: {
             position: "relative",
-            bottom: 0,
-            // ...testBorder("orange"),
+            bottom: 16,
+            ...testBorder("orange"),
         },
 
         attemptedNotes: {
