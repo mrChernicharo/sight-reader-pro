@@ -21,8 +21,11 @@ export const Colors = {
         primary: "#4598ee",
         accent: "#ee4598",
         red: "#ff0000",
-        // green: "#01df76",
         green: "#02ba5e",
+
+        girlBG_0: "#050a19",
+        girlBG_1: "#050a19",
+        girlBG_2: "#04081a",
     },
     dark: {
         text: "#ECEDEE",
@@ -38,5 +41,9 @@ export const Colors = {
         accent: "#ee4598",
         red: "#ff0000",
         green: "#01df76",
+
+        girlBG_0: "#050a19",
+        girlBG_1: "#050a19",
+        girlBG_2: "#04081a",
     },
 };

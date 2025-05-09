@@ -13,12 +13,14 @@ import { Colors } from "@/utils/Colors";
 import { WALKTHROUGH_TOP_ADJUSTMENT } from "@/utils/constants";
 import { router, usePathname } from "expo-router";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { StyleProp, StyleSheet, TextStyle, Image, View, Text } from "react-native";
 // import Tooltip from "react-native-walkthrough-tooltip";
 import Tooltip, { Placement } from "react-native-tooltip-2";
 import { eventEmitter } from "./_layout";
 import { AppEvents } from "@/utils/enums";
 import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
+import { isDev } from "@/utils/helperFns";
+// import { BlurView } from "expo-blur";
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
 
@@ -59,77 +61,118 @@ export default function Home() {
     if (isNavigating) return <LoadingScreen />;
 
     return (
-        <AppView style={s.container}>
-            <FadeIn y={50} x={0} delay={0}>
-                <AppTextLogo subtitles={t("app.slogan")} />
-            </FadeIn>
+        <AppView style={s.outerContainer}>
+            <Image style={s.image} source={require("../assets/images/girl.03.png")} />
+            <View style={s.container}>
+                <FadeIn y={50} x={0} delay={0}>
+                    <AppTextLogo subtitles={t("app.slogan")} />
+                </FadeIn>
 
-            <FadeIn y={50} x={0} delay={250}>
-                <AppView style={s.btnGroup}>
-                    <AppButton
-                        onPress={() => navigateTo("/practice")}
-                        text={t("routes.practice")}
-                        style={{ ...s.btn, borderColor: Colors[theme].text }}
-                        textStyle={{ color: Colors[theme].text }}
-                    />
-
-                    <AppButton
-                        onPress={() => navigateTo("/history")}
-                        text={t("routes.history")}
-                        style={{ ...s.btn, borderColor: Colors[theme].text }}
-                        textStyle={{ color: Colors[theme].text }}
-                    />
-
-                    <AppButton
-                        onPress={() => navigateTo("/settings")}
-                        text={t("routes.settings")}
-                        style={{ ...s.btn, borderColor: Colors[theme].text }}
-                        textStyle={{ color: Colors[theme].text }}
-                    />
-                </AppView>
-            </FadeIn>
-
-            <FadeIn y={50} x={0} delay={500}>
-                <AppButton
-                    onPress={() => navigateTo("/level-selection")}
-                    text={t("routes.main.cta")}
-                    style={s.cta}
-                    textStyle={{ color: "white", fontSize: 24 }}
-                    activeOpacity={0.7}
-                />
-            </FadeIn>
-
-            <WalkthroughTooltip
-                isVisible={tourStep == 0}
-                placement={Placement.CENTER}
-                onClose={onTooltipDismiss}
-                content={
-                    <AppView transparentBG style={{ alignItems: "center" }}>
-                        <AppText {...tourTextProps} type="subtitle">
-                            {greetingMessage}
-                        </AppText>
-                        <TooltipTextLines keypath="tour.home.0" />
+                <FadeIn y={50} x={0} delay={250}>
+                    <AppView style={s.btnGroup}>
                         <AppButton
-                            style={{ marginVertical: 6 }}
-                            text={t("tour.home.0_ok")}
-                            onPress={onTooltipDismiss}
+                            onPress={() => navigateTo("/practice")}
+                            text={t("routes.practice")}
+                            style={{ ...s.btn, borderColor: Colors[theme].text }}
+                            textStyle={{ color: Colors[theme].text }}
                         />
+
+                        <AppButton
+                            onPress={() => navigateTo("/history")}
+                            text={t("routes.history")}
+                            style={{ ...s.btn, borderColor: Colors[theme].text }}
+                            textStyle={{ color: Colors[theme].text }}
+                        />
+
+                        <AppButton
+                            onPress={() => navigateTo("/settings")}
+                            text={t("routes.settings")}
+                            style={{ ...s.btn, borderColor: Colors[theme].text }}
+                            textStyle={{ color: Colors[theme].text }}
+                        />
+                        {isDev() ? (
+                            <AppButton
+                                onPress={() => navigateTo("/test")}
+                                text={"Test"}
+                                style={{ ...s.btn, borderColor: Colors[theme].text }}
+                                textStyle={{ color: Colors[theme].text }}
+                            />
+                        ) : null}
                     </AppView>
-                }
-            />
+                </FadeIn>
+
+                <FadeIn y={50} x={0} delay={500}>
+                    {/* <BlurView intensity={50} tint="dark"> */}
+                    <Text>hello</Text>
+                    {/* </BlurView> */}
+                    <AppButton
+                        onPress={() => navigateTo("/level-selection")}
+                        text={t("routes.main.cta")}
+                        style={s.cta}
+                        textStyle={{ color: "white", fontSize: 24, opacity: 1 }}
+                        activeOpacity={0.7}
+                    />
+                </FadeIn>
+
+                <WalkthroughTooltip
+                    isVisible={tourStep == 0}
+                    placement={Placement.CENTER}
+                    onClose={onTooltipDismiss}
+                    content={
+                        <AppView transparentBG style={{ alignItems: "center" }}>
+                            <AppText {...tourTextProps} type="subtitle">
+                                {greetingMessage}
+                            </AppText>
+                            <TooltipTextLines keypath="tour.home.0" />
+                            <AppButton
+                                style={{ marginVertical: 6 }}
+                                text={t("tour.home.0_ok")}
+                                onPress={onTooltipDismiss}
+                            />
+                        </AppView>
+                    }
+                />
+            </View>
         </AppView>
     );
 }
 
 const s = StyleSheet.create({
-    container: {
+    outerContainer: {
+        position: "relative",
         flex: 1,
         justifyContent: "space-between",
         alignItems: "center",
         paddingTop: 104,
         paddingBottom: 54,
+        backgroundColor: Colors.dark.girlBG_0,
+        zIndex: 1,
     },
-    btnGroup: { alignItems: "center", rowGap: 12, width: 200, marginTop: -32 },
-    btn: { backgroundColor: "transparent", borderWidth: StyleSheet.hairlineWidth, width: 200 },
+    container: {
+        position: "relative",
+        flex: 1,
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingTop: 104,
+        paddingBottom: 54,
+        // backgroundColor: "transparent",
+        zIndex: 10,
+    },
+    btnGroup: { backgroundColor: "transparent", alignItems: "center", rowGap: 12, width: 200, marginTop: -32 },
+    btn: {
+        backgroundColor: "#000",
+        opacity: 0.4,
+        // backdropFilter: "blur(0.3)",
+        borderWidth: StyleSheet.hairlineWidth,
+        width: 200,
+    },
     cta: { width: 300, height: 56 },
+    image: {
+        position: "absolute",
+        left: 0,
+        bottom: 0,
+        width: 280,
+        height: 420,
+        zIndex: 2,
+    },
 });
