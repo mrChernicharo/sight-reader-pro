@@ -1,6 +1,7 @@
 import AppButton from "@/components/atoms/AppButton";
 import { AppText } from "@/components/atoms/AppText";
 import { BackLink } from "@/components/atoms/BackLink";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/utils/Colors";
 import { testBorder } from "@/utils/styles";
 import { useEffect, useState } from "react";
@@ -12,24 +13,24 @@ const girlImages = [
     require("../assets/images/girl.03.png"),
 ];
 
-const bgColors = [Colors.dark.girlBG_0, Colors.dark.girlBG_1, Colors.dark.girlBG_2];
-
 export default function TestScreen() {
     const [imgIdx, setImgIdx] = useState(0);
     const onUp = () => setImgIdx((prev) => (prev == girlImages.length - 1 ? 0 : prev + 1));
     const onDown = () => setImgIdx((prev) => (prev == 0 ? girlImages.length - 1 : prev - 1));
+
+    const backgroundColor = useThemeColor({ light: Colors.light.bg, dark: Colors.dark.bg }, "bg");
 
     useEffect(() => {
         console.log(imgIdx);
     }, [imgIdx]);
 
     return (
-        <SafeAreaView style={{ minHeight: "100%", backgroundColor: bgColors[imgIdx] }}>
+        <SafeAreaView style={{ minHeight: "100%", backgroundColor }}>
             <Image style={[s.image, { transform: [{ scaleX: imgIdx === 1 ? -1 : 1 }] }]} source={girlImages[imgIdx]} />
 
             <View style={s.container}>
                 <View style={s.top}>
-                    <View style={{ position: "absolute", left: 0, top: 6 }}>
+                    <View style={{ position: "absolute", left: 0, top: 46 }}>
                         <BackLink />
                     </View>
                     <AppText type="subtitle">Test</AppText>

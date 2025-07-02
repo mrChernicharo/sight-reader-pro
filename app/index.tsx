@@ -62,7 +62,6 @@ export default function Home() {
 
     return (
         <AppView style={s.outerContainer}>
-            <Image style={s.image} source={require("../assets/images/girl.03.png")} />
             <View style={s.container}>
                 <FadeIn y={50} x={0} delay={0}>
                     <AppTextLogo subtitles={t("app.slogan")} />
@@ -102,9 +101,6 @@ export default function Home() {
                 </FadeIn>
 
                 <FadeIn y={50} x={0} delay={500}>
-                    {/* <BlurView intensity={50} tint="dark"> */}
-                    <Text>hello</Text>
-                    {/* </BlurView> */}
                     <AppButton
                         onPress={() => navigateTo("/level-selection")}
                         text={t("routes.main.cta")}
@@ -133,6 +129,8 @@ export default function Home() {
                     }
                 />
             </View>
+
+            <Image style={s.image} source={require("../assets/images/girl.03.png")} />
         </AppView>
     );
 }
@@ -145,7 +143,7 @@ const s = StyleSheet.create({
         alignItems: "center",
         paddingTop: 104,
         paddingBottom: 54,
-        backgroundColor: Colors.dark.girlBG_0,
+        // backgroundColor: Colors.dark.girlBG_0,
         zIndex: 1,
     },
     container: {
@@ -160,9 +158,8 @@ const s = StyleSheet.create({
     },
     btnGroup: { backgroundColor: "transparent", alignItems: "center", rowGap: 12, width: 200, marginTop: -32 },
     btn: {
-        backgroundColor: "#000",
-        opacity: 0.4,
-        // backdropFilter: "blur(0.3)",
+        backgroundColor: "#343434",
+        // opacity: 0.4,
         borderWidth: StyleSheet.hairlineWidth,
         width: 200,
     },

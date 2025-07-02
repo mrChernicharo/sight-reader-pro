@@ -58,9 +58,9 @@ export default function LevelSelectionScreen() {
         if (!hasCompletedTour) setTourStep(0);
     }, [hasCompletedTour]);
 
-    useEffect(() => {
-        console.log({ tourStep });
-    }, [tourStep]);
+    // useEffect(() => {
+    //     console.log({ tourStep, sectionedLevels });
+    // }, [tourStep, sectionedLevels]);
 
     return (
         <SafeAreaView style={{ minHeight: "100%", backgroundColor }}>
