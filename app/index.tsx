@@ -131,7 +131,7 @@ export default function Home() {
                 />
             </View>
 
-            <Animated.Image style={s.image} source={require("../assets/images/girl.03.png")} />
+            <Image style={s.image} source={require("../assets/images/girl.03.png")} />
         </AppView>
     );
 }
@@ -152,8 +152,8 @@ const s = StyleSheet.create({
         flex: 1,
         justifyContent: "space-between",
         alignItems: "center",
-        paddingTop: 104,
-        paddingBottom: 54,
+        paddingTop: 80,
+        paddingBottom: 24,
         // backgroundColor: "transparent",
         zIndex: 10,
     },
@@ -169,8 +169,8 @@ const s = StyleSheet.create({
         position: "absolute",
         left: 0,
         bottom: 0,
-        width: 280,
-        height: 420,
+        width: 210,
+        height: 320,
         zIndex: 2,
     },
 });

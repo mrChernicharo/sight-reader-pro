@@ -24,7 +24,7 @@ import { ScoreManager } from "@/utils/ScoreManager";
 import { STYLES } from "@/utils/styles";
 import { CurrentGame, Game, GameScreenParams, Note, SingleNoteRound } from "@/utils/types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StyleProp, TextStyle, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Placement } from "react-native-tooltip-2";
@@ -33,6 +33,7 @@ import { Piano } from "../Piano/Piano";
 import { SheetMusic } from "../SheetMusic";
 import { TimerAndStatsDisplay } from "../TimeAndStatsDisplay";
 import { LoadingScreen } from "../LoadingScreen";
+import { WAIT_MISTAKE, WAIT_SUCCESS } from "@/utils/constants";
 
 const s = STYLES.game;
 
@@ -61,7 +62,13 @@ export function SingleNoteGameComponent() {
         () => decideNextRound<SingleNoteRound>(level, keySignature, possibleNotes)?.value ?? "c/3"
     );
 
+    const isLocked = useRef(false);
     async function onPianoKeyPress(notename: NoteName) {
+        if (isLocked.current) {
+            console.warn("locked");
+            return;
+        }
+        isLocked.current = true;
         const { noteName, octave } = explodeNote(currNote);
         const playedNote = `${notename}/${+octave}` as Note;
         const isSuccess = isNoteMatch(notename, noteName);
@@ -70,14 +77,18 @@ export function SingleNoteGameComponent() {
         const { currNoteValue } = ScoreManager.push(isSuccess ? "success" : "mistake");
         eventEmitter.emit(AppEvents.NotePlayed, { data: { playedNote, currNote, isSuccess, currNoteValue } });
 
+        let lockTime = 0;
         if (isSuccess) {
             playPianoNote(playedNote);
+            lockTime = WAIT_SUCCESS;
         } else {
             playPianoNote(playedNote);
             playPianoNote(currNote);
             playSoundEfx(SoundEffect.WrongAnswer2);
+            lockTime = WAIT_MISTAKE;
         }
 
+        wait(lockTime).then(() => (isLocked.current = false));
         if (!currentGame || currentGame.type !== GameType.Single) return;
 
         addNewRound({ value: currNote, attempt: playedNote });

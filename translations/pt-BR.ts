@@ -32,6 +32,7 @@ const ptBR = {
                 title: "Você já sabe ler partituras?",
                 you: "Seu nível é",
             },
+            greeting: "Boas vindas! Bora praticar leitura musical?",
         },
         next: "Próximo",
         prev: "Anterior",

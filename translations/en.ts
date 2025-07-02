@@ -32,6 +32,7 @@ const en = {
                 title: "Can you read sheet music?",
                 you: "Your level is",
             },
+            greeting: "Welcome! Ready to practice music sight reading?",
         },
         next: "Next",
         prev: "Previous",

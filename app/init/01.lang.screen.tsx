@@ -57,7 +57,7 @@ export default function LangScreen() {
                                 }}
                             >
                                 <AppText style={{ textAlign: "center", color: Colors[theme].bg }}>
-                                    Welcome! Ready to practice music sight reading?
+                                    {t("routes.init.greeting")}
                                 </AppText>
                             </AppView>
                         </FadeIn>
@@ -68,7 +68,7 @@ export default function LangScreen() {
                                     position: "absolute",
                                     left: 132,
                                     // right: -180,
-                                    top: -160,
+                                    top: -120,
                                     width: 180,
                                     height: 400,
                                     zIndex: 1,

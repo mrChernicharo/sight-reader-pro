@@ -23,6 +23,7 @@ import { getDrawNote } from "@/utils/noteFns";
 import { Note, NotePlayedEventData } from "@/utils/types";
 import { StyleSheet } from "react-native";
 import { getScoreHeight } from "@/utils/device_sizes";
+import { WAIT_MISTAKE, WAIT_SUCCESS } from "@/utils/constants";
 
 const armatureSpace = {
     [KeySignature.Cb]: 70,
@@ -64,8 +65,6 @@ const scoreDims = getScoreHeight();
 const height = scoreDims.stageHeight;
 const MIN_STAVE_WIDTH = 180;
 
-const WAIT_SUCCESS = 100;
-const WAIT_MISTAKE = 350;
 export interface MusicNoteProps {
     targetNote: Note;
     clef: Clef;
@@ -110,7 +109,6 @@ export function SingleNoteComponent(props: MusicNoteProps) {
 
     useEffect(() => {
         eventEmitter.addListener(AppEvents.NotePlayed, ({ data }: { data: NotePlayedEventData }) => {
-            // console.log("listenerCount ::::", eventEmitter.listenerCount(AppEvents.NotePlayed));
             const { playedNote, isSuccess } = data;
             // console.log("NotePlayed:::", { playedNote, isSuccess });
             waitTime.current = isSuccess ? WAIT_SUCCESS : WAIT_MISTAKE;

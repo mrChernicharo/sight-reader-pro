@@ -28,3 +28,6 @@ export const SUPPORTED_LANGUAGES = Object.keys(TRANSLATIONS);
 export const LANGS = SUPPORTED_LANGUAGES.map((lang) => ({ key: lang, value: (TRANSLATIONS as any)[lang].lang }));
 
 export const WALKTHROUGH_TOP_ADJUSTMENT = Platform.OS === "android" ? -StatusBar.currentHeight! : 0;
+
+export const WAIT_SUCCESS = 100;
+export const WAIT_MISTAKE = 350;
