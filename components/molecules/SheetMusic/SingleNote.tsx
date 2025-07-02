@@ -90,6 +90,8 @@ export function SingleNoteComponent(props: MusicNoteProps) {
 
     const SvgResult = useMemo(() => {
         if (playedNote || targetNote) {
+            context.setBackgroundFillStyle(isTourCompleted ? Colors.dark.bg : "rgba(0, 0, 0, 0)");
+            context.clearRect(0, 25, width, height);
             context.setFillStyle(Colors.dark.text).setStrokeStyle(Colors.dark.text).setLineWidth(3);
 
             const renderResult = runVexFlowCode({
@@ -102,9 +104,6 @@ export function SingleNoteComponent(props: MusicNoteProps) {
             });
 
             svgResult.current = renderResult;
-        } else {
-            context.setBackgroundFillStyle(isTourCompleted ? Colors.dark.bg : "rgba(0, 0, 0, 0)");
-            context.clearRect(0, 25, width, height);
         }
         return svgResult.current;
     }, [context, playedNote, targetNote, keySignature, clef]);
@@ -159,6 +158,8 @@ interface RunVexFlowCodeArgs {
 function runVexFlowCode({ context, clef, targetNote, playedNote, keySignature, width }: RunVexFlowCodeArgs) {
     const notes = [targetNote, playedNote].filter(Boolean) as Note[];
     const noteNames = notes.map((n) => explodeNote(n).noteName);
+    console.log({ noteNames });
+
     const isSuccess = noteNames.length == 2 ? isNoteMatch(noteNames[0], noteNames[1]) : null;
     if (isSuccess) notes.pop(); // paint 2 notes only if mistake
 
