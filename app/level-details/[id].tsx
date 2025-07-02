@@ -178,7 +178,7 @@ const s = StyleSheet.create({
         paddingTop: 24,
         position: "relative",
         alignItems: "center",
-        minHeight: Dimensions.get("window").height - (Platform.OS === "ios" ? 100 : -20),
+        minHeight: Dimensions.get("window").height - (Platform.OS === "ios" ? 100 : 60),
         // ...testBorder(),
         // ...testBorder(),
     },
