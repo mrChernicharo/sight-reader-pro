@@ -45,7 +45,7 @@ export default function LangScreen() {
                     <AppTextLogo />
 
                     <AppView style={{ marginTop: 56 }}>
-                        <FadeIn y={-50} delay={1000}>
+                        <FadeIn y={-50} delay={2000}>
                             <AppView
                                 style={{
                                     marginTop: 56,
@@ -81,7 +81,7 @@ export default function LangScreen() {
 
                 {/* <AppView style={{ position: "absolute", width: 100, top: 100 }}></AppView> */}
 
-                <FadeIn y={50} delay={2000}>
+                <FadeIn y={50} delay={4000}>
                     <AppView
                         style={{ zIndex: 30, backgroundColor: "transparent", paddingHorizontal: 12, paddingBottom: 0 }}
                     >
@@ -108,7 +108,7 @@ export default function LangScreen() {
                 </FadeIn>
 
                 <AppView style={s.btnContainer}>
-                    <FadeIn y={50} delay={2200}>
+                    <FadeIn y={50} delay={4200}>
                         <AppButton
                             disabled={!language}
                             text={t("routes.next")}
