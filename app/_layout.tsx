@@ -1,22 +1,14 @@
 import { AppText } from "@/components/atoms/AppText";
 import { AppView } from "@/components/atoms/AppView";
-import { useAppStore } from "@/hooks/useAppStore";
+import { useAppInitialization } from "@/hooks/useAppInitialization";
 import { SoundContextProvider } from "@/hooks/useSoundsContext";
-import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
-import { wait } from "@/utils/helperFns";
-import { useFonts } from "expo-font";
-import * as NavigationBar from "expo-navigation-bar";
-import { router, usePathname } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import * as SystemUI from "expo-system-ui";
-import { useEffect } from "react";
 import { NativeEventEmitter, NativeModules } from "react-native";
 import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
-import { useAppInitialization } from "@/hooks/useAppInitialization";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({

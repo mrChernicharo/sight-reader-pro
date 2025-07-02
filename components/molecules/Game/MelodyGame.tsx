@@ -100,7 +100,9 @@ export function useMelody() {
                 ...finalScore,
             },
         });
-        router.replace({ pathname: "/game-over" });
+
+        wait(0).then(() => router.replace({ pathname: "/game-over" }));
+
         // router.replace({ pathname: isPracticeLevel ? "/practice" : "/game-over" });
     }, [level, id, rounds]);
 
