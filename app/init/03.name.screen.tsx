@@ -6,7 +6,6 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
 import { NativeSyntheticEvent, StyleSheet, TextInput, TextInputChangeEventData } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { type TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppButton from "@/components/atoms/AppButton";
 import { router } from "expo-router";

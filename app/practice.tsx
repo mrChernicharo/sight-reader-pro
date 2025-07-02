@@ -23,8 +23,7 @@ import { Level, LevelId, NoteRange } from "@/utils/types";
 import FontAwesome5 from "@expo/vector-icons/build/FontAwesome5";
 import { router } from "expo-router";
 import { useCallback, useMemo } from "react";
-import { Dimensions, StyleSheet } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Dimensions, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RangeSlider from "../components/atoms/RangeSlider";
 

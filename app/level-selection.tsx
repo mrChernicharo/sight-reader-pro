@@ -16,8 +16,7 @@ import { glyphs } from "@/utils/constants";
 import { Clef } from "@/utils/enums";
 import { safelySetTourStep } from "@/utils/helperFns";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { Dimensions, Platform, StyleSheet } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Dimensions, Platform, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Placement } from "react-native-tooltip-2";
 

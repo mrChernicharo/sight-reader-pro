@@ -1,5 +1,5 @@
 import { AppView } from "@/components/atoms/AppView";
-import LottieView from "lottie-react-native";
+// import LottieView from "lottie-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, Dimensions, Easing, StyleSheet } from "react-native";
 
@@ -11,7 +11,7 @@ export interface ConfettiProps {
     duration?: number;
 }
 
-const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
+// const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 export function Confetti(props: ConfettiProps) {
     const { height = 150, x = 0, y = 0, delay = 0, duration = 1000 } = props;
@@ -30,11 +30,11 @@ export function Confetti(props: ConfettiProps) {
 
     return (
         <AppView style={s.lottieContainer}>
-            <AnimatedLottieView
+            {/* <AnimatedLottieView
                 style={{ ...s.lottieConfetti, height, transform: [{ translateX: x }, { translateY: y }] }}
                 source={require("@/assets/lottie/confettie-explosion-animation.lottie.json")}
                 progress={animationProgress.current}
-            />
+            /> */}
         </AppView>
     );
 }

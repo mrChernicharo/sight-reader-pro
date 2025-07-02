@@ -4,6 +4,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { SoundContextProvider } from "@/hooks/useSoundsContext";
 import { useTheme } from "@/hooks/useTheme";
 import { Colors } from "@/utils/Colors";
+import { wait } from "@/utils/helperFns";
 import { useFonts } from "expo-font";
 import * as NavigationBar from "expo-navigation-bar";
 import { router, usePathname } from "expo-router";
@@ -11,12 +12,10 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
-import { Dimensions, NativeEventEmitter, NativeModules, Platform } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { NativeEventEmitter, NativeModules } from "react-native";
 import { MenuProvider } from "react-native-popup-menu";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AppRoutes from "./_app.routes";
-import { AppEvents } from "@/utils/enums";
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({
@@ -51,14 +50,12 @@ export default function RootLayout() {
                 backgroundColor: Colors.dark.bg,
             }}
         >
-            <GestureHandlerRootView>
-                <MenuProvider>
-                    <SoundContextProvider>
-                        <StatusBar translucent style="light" />
-                        <AppRoutes />
-                    </SoundContextProvider>
-                </MenuProvider>
-            </GestureHandlerRootView>
+            <MenuProvider>
+                <SoundContextProvider>
+                    <StatusBar translucent style="light" />
+                    <AppRoutes />
+                </SoundContextProvider>
+            </MenuProvider>
         </SafeAreaProvider>
     );
 }
@@ -87,7 +84,7 @@ export function useAppInitialization() {
 
     useEffect(() => {
         if (!initTourCompleted) {
-            router.replace("/init/01.lang.screen");
+            wait(0).then(() => router.replace("/init/01.lang.screen"));
         }
     }, [initTourCompleted]);
 

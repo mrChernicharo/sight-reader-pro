@@ -20,8 +20,7 @@ import { Level, Note } from "@/utils/types";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
-import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Dimensions, Platform, StyleSheet, Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LevelDetails() {

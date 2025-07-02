@@ -6,8 +6,7 @@ import { useAppStore } from "@/hooks/useAppStore";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/utils/Colors";
-import { StyleSheet } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { StyleSheet, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HistoryScreen() {

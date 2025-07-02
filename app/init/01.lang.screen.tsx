@@ -14,7 +14,6 @@ import { router } from "expo-router";
 import { useCallback, useRef } from "react";
 import { Image } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
-import { type TouchableOpacity } from "react-native-gesture-handler";
 import Animated, { FadeInLeft, FadeInRight, LinearTransition } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -45,7 +44,7 @@ export default function LangScreen() {
                     <AppTextLogo />
 
                     <AppView style={{ marginTop: 56 }}>
-                        <FadeIn y={-50} delay={2000}>
+                        <FadeIn y={-50} delay={1250}>
                             <AppView
                                 style={{
                                     marginTop: 56,

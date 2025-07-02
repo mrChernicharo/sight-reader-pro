@@ -14,8 +14,7 @@ import { Colors } from "@/utils/Colors";
 import { getIsGameWinAndStars, getIsPracticeLevel } from "@/utils/helperFns";
 import { Link, router } from "expo-router";
 import { useCallback } from "react";
-import { Dimensions, StyleSheet } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Dimensions, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function GameOverScreen() {

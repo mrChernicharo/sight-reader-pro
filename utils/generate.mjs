@@ -15,9 +15,8 @@ import { BackLink } from "@/components/atoms/BackLink";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Colors } from "@/utils/Colors";
-import { StyleSheet, useWindowDimensions } from "react-native";
+import { StyleSheet, useWindowDimensions, ScrollView } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
-import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ${capitalName}Screen() {
