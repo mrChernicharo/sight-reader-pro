@@ -45,7 +45,7 @@ export function GameTypeSelect() {
                     <Ionicons name="chevron-forward" size={20} color={Colors[theme].textMute} style={s.icon} />
                 </MenuTrigger>
 
-                <MenuOptions>
+                <MenuOptions customStyles={{}}>
                     {TYPES.map((sc) => (
                         <MenuOption
                             key={sc.key}

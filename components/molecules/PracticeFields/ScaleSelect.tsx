@@ -39,7 +39,7 @@ export function ScaleSelect() {
                     <Ionicons name="chevron-forward" size={20} color={Colors[theme].textMute} style={s.icon} />
                 </MenuTrigger>
 
-                <MenuOptions>
+                <MenuOptions customStyles={{}}>
                     {SCALES.map((sc) => (
                         <MenuOption
                             key={sc.key}

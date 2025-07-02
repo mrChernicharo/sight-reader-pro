@@ -12,7 +12,6 @@ import { STYLES } from "@/utils/styles";
 import { router } from "expo-router";
 import { useCallback, useRef } from "react";
 import { StyleSheet, Pressable, TouchableOpacity, View } from "react-native";
-// import { type TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const s = {

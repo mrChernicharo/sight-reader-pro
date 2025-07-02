@@ -55,7 +55,7 @@ export default function Home() {
 
     useEffect(() => {
         if (router.canDismiss()) {
-            router.dismissAll();
+            router.dismissTo("/");
         }
     }, []);
 

@@ -3,7 +3,7 @@ import { usePathname, router } from "expo-router";
 import { useState, useCallback, useEffect } from "react";
 
 export function useLoadingNavigation() {
-    const [isNavigating, setIsNavigating] = useState(false);
+    const [isNavigating, setIsNavigating] = useState(true);
     const path = usePathname();
 
     const navigateTo = useCallback(async (route: any) => {
