@@ -10,7 +10,7 @@ export function useLoadingNavigation() {
         setIsNavigating(true);
         // console.log("navigating to ", route);
         // await wait(10000);
-        await wait(0);
+        // await wait(0);
 
         router.push({
             pathname: route,

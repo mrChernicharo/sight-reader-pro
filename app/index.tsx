@@ -20,6 +20,7 @@ import { eventEmitter } from "./_layout";
 import { AppEvents } from "@/utils/enums";
 import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
 import { isDev } from "@/utils/helperFns";
+import Animated, { LinearTransition } from "react-native-reanimated";
 // import { BlurView } from "expo-blur";
 
 const tourTextProps = { forceBlackText: true, style: { textAlign: "center" } as StyleProp<TextStyle> };
@@ -130,7 +131,7 @@ export default function Home() {
                 />
             </View>
 
-            <Image style={s.image} source={require("../assets/images/girl.03.png")} />
+            <Animated.Image style={s.image} source={require("../assets/images/girl.03.png")} />
         </AppView>
     );
 }
