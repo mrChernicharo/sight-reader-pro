@@ -1,14 +1,14 @@
 {
     "expo": {
-        "name": "Sight Reader Pro",
+        "name": "MusiNotes",
         "slug": "sight-reader-pro",
-        "version": "1.0.30",
+        "version": "1.0.31",
         "orientation": "portrait",
         "icon": "./assets/images/app-logo.png",
         "scheme": "sight-reader-pro",
         "userInterfaceStyle": "automatic",
         "android": {
-            "versionCode": 30,
+            "versionCode": 31,
             "package": "com.chernicharo.sightreaderpro",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/app-logo.png",

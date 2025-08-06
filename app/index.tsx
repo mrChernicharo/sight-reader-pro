@@ -19,7 +19,7 @@ import Tooltip, { Placement } from "react-native-tooltip-2";
 import { eventEmitter } from "./_layout";
 import { AppEvents } from "@/utils/enums";
 import { WalkthroughTooltip } from "@/components/atoms/WalkthroughTooltip";
-import { isDev } from "@/utils/helperFns";
+import { isDev, wait } from "@/utils/helperFns";
 import Animated, { LinearTransition } from "react-native-reanimated";
 // import { BlurView } from "expo-blur";
 
@@ -38,6 +38,7 @@ export default function Home() {
     const greetingMessage = t("app.welcome") + (username ? `, ${username}` : "!");
 
     const [tourStep, setTourStep] = useState(-1);
+    const [renderIdx, forceRender] = useState(0);
 
     const onTooltipDismiss = useCallback(() => {
         setTourStep(-1);
@@ -50,13 +51,17 @@ export default function Home() {
             if (!hasCompletedTour) {
                 setTourStep(0);
             }
-        }, 0);
+        }, 200);
     }, [path, hasCompletedTour]);
 
     useEffect(() => {
         if (router.canDismiss()) {
             router.dismissTo("/");
         }
+    }, []);
+
+    useEffect(() => {
+        wait(1000).then(() => forceRender((prev) => prev + 1));
     }, []);
 
     if (isNavigating) return <LoadingScreen />;
@@ -111,24 +116,28 @@ export default function Home() {
                     />
                 </FadeIn>
 
-                <WalkthroughTooltip
-                    isVisible={tourStep == 0}
-                    placement={Placement.CENTER}
-                    onClose={onTooltipDismiss}
-                    content={
-                        <AppView transparentBG style={{ alignItems: "center" }}>
-                            <AppText {...tourTextProps} type="subtitle">
-                                {greetingMessage}
-                            </AppText>
-                            <TooltipTextLines keypath="tour.home.0" />
-                            <AppButton
-                                style={{ marginVertical: 6 }}
-                                text={t("tour.home.0_ok")}
-                                onPress={onTooltipDismiss}
-                            />
-                        </AppView>
-                    }
-                />
+                {renderIdx > 0 && (
+                    <WalkthroughTooltip
+                        isVisible={tourStep == 0}
+                        placement={Placement.CENTER}
+                        onClose={onTooltipDismiss}
+                        useReactNativeModal={false}
+                        content={
+                            <AppView transparentBG style={{ alignItems: "center" }}>
+                                <AppText {...tourTextProps} type="subtitle">
+                                    {greetingMessage}
+                                </AppText>
+                                <TooltipTextLines keypath="tour.home.0" />
+                                <AppButton
+                                    style={{ marginVertical: 6 }}
+                                    text={t("tour.home.0_ok")}
+                                    onPress={onTooltipDismiss}
+                                />
+                            </AppView>
+                        }
+                    />
+                )}
+                {/*  */}
             </View>
 
             <Image style={s.image} source={require("../assets/images/girl.03.png")} />

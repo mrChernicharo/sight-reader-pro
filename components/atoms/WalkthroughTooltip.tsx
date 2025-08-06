@@ -11,6 +11,7 @@ interface WalkThroughTooltipProps {
     children?: ReactNode;
     contentStyle?: StyleProp<ViewStyle>;
     arrowStyle?: StyleProp<ViewStyle>;
+    useReactNativeModal?: boolean;
 }
 
 export function WalkthroughTooltip({
@@ -20,21 +21,22 @@ export function WalkthroughTooltip({
     arrowStyle,
     contentStyle,
     placement,
+    useReactNativeModal = true,
     onClose,
 }: WalkThroughTooltipProps) {
     const tooltipProps = {
-        isVisible: isVisible,
-        placement: placement,
-        contentStyle: contentStyle,
-        // @ts-ignore
-        arrowStyle: arrowStyle,
+        isVisible,
+        placement,
+        contentStyle,
+        arrowStyle,
         topAdjustment: WALKTHROUGH_TOP_ADJUSTMENT,
         allowChildInteraction: false,
         closeOnChildInteraction: false,
-        closeOnBackgroundInteraction: false,
+        closeOnBackgroundInteraction: true,
         closeOnContentInteraction: true,
+        content,
+        useReactNativeModal,
         onClose,
-        content: content,
     };
 
     if (children) return <Tooltip {...tooltipProps}>{children}</Tooltip>;

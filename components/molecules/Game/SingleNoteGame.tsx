@@ -240,7 +240,7 @@ export function SingleNoteGameComponent() {
                         placement={Placement.TOP}
                         // @ts-ignore
                         arrowStyle={{ transform: [{ translateY: -36 }] }}
-                        contentStyle={{ minHeight: 128, transform: [{ translateY: -36 }] }}
+                        contentStyle={{ position: "absolute", minHeight: 128, transform: [{ translateY: -36 }] }}
                         onClose={goToStepThree}
                         content={
                             <View style={{ alignItems: "center" }}>

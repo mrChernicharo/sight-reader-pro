@@ -117,3 +117,6 @@ restart game button
 new title -> Sight Reader Pro: Music sight reading
 game-over screen -> rotating stars
 counting numbers
+better fade out piano sound
+
+==================================

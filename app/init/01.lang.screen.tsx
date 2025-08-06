@@ -47,8 +47,9 @@ export default function LangScreen() {
                         <FadeIn y={-50} delay={1250}>
                             <AppView
                                 style={{
-                                    marginTop: 56,
-                                    width: 140,
+                                    marginTop: 32,
+                                    marginLeft: -32,
+                                    width: 180,
                                     backgroundColor: Colors[theme].text,
                                     alignItems: "center",
                                     padding: 16,
