@@ -1,76 +1,71 @@
 {
-    "expo": {
-        "name": "MusiNotes",
-        "slug": "sight-reader-pro",
-        "version": "1.0.32",
-        "orientation": "portrait",
-        "icon": "./assets/images/app-logo.png",
-        "scheme": "sight-reader-pro",
-        "userInterfaceStyle": "automatic",
-        "android": {
-            "versionCode": 32,
-            "package": "com.chernicharo.sightreaderpro",
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/images/app-logo.png",
-                "backgroundColor": "#000000"
-            }
-        },
-        "ios": {
-            "supportsTablet": true,
-            "bundleIdentifier": "com.chernicharo.sightreaderpro",
-            "infoPlist": {
-                "ITSAppUsesNonExemptEncryption": false
-            }
-        },
-        "web": {
-            "bundler": "metro",
-            "output": "static",
-            "favicon": "./assets/images/favicon.png"
-        },
-        "experiments": {
-            "typedRoutes": true
-        },
-        "extra": {
-            "eas": {
-                "projectId": "2f9fca84-3023-4178-b59c-f9c2818a7c3b"
-            }
-        },
-        "plugins": [
-            "./withPageSizeCompat",
-            "expo-asset",
-            "expo-router",
-            "expo-font",
-            "expo-navigation-bar",
-            [
-                "expo-dev-launcher",
-                {
-                    "launchMode": "most-recent"
-                }
-            ],
-            [
-                "expo-splash-screen",
-                {
-                    "image": "./assets/images/app-logo.png",
-                    "backgroundColor": "#000000",
-                    "imageWidth": 240
-                }
-            ],
-            [
-                "expo-build-properties",
-                {
-                    "android": {
-                        "compileSdkVersion": 35,
-                        "targetSdkVersion": 35,
-                        "agpVersion": "8.5.1",
-                        "ndkVersion": "28.0.12433566",
-                        "packagingOptions": {
-                            "jniLibs": {
-                                "useLegacyPackaging": false
-                            }
-                        }
-                    }
-                }
-            ]
-        ]
-    }
+  "expo": {
+    "name": "MusiNotes",
+    "slug": "sight-reader-pro",
+    "version": "1.0.34",
+    "orientation": "portrait",
+    "icon": "./assets/images/app-logo.png",
+    "scheme": "sight-reader-pro",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "versionCode": 34,
+      "package": "com.chernicharo.sightreaderpro",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/app-logo.png",
+        "backgroundColor": "#000000"
+      }
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.chernicharo.sightreaderpro",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2f9fca84-3023-4178-b59c-f9c2818a7c3b"
+      }
+    },
+    "plugins": [
+      "./withPageSizeCompat",
+      "expo-asset",
+      "expo-router",
+      "expo-font",
+      "expo-navigation-bar",
+      [
+        "expo-dev-launcher",
+        {
+          "launchMode": "most-recent"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/app-logo.png",
+          "backgroundColor": "#000000",
+          "imageWidth": 240
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "useLegacyPackaging": false
+          }
+        }
+      ],
+      "react-native-audio-api"
+    ]
+  }
 }

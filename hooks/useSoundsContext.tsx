@@ -223,7 +223,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
                     const file = asset.localUri;
 
                     bufferPromises.push(
-                        audioContextRef.current!.decodeAudioDataSource(file!).then((audioBuffer) => {
+                        audioContextRef.current!.decodeAudioData(file!).then((audioBuffer: AudioBuffer) => {
                             if (asset.name.includes("Piano")) {
                                 const equivalentNotes = getEquivalentNotes(key as Note);
                                 // f#/4 and gb/4 are the same sound, but there's only ONE Piano.mf.Gb4.mp3 asset
@@ -235,7 +235,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
                                 bufferMapRef.current[key] = audioBuffer;
                             }
                             return audioBuffer;
-                        })
+                        }),
                     );
                 }
 
@@ -243,7 +243,7 @@ const SoundContextProvider = (props: { children: ReactNode }) => {
 
                 console.log(
                     `<SoundContext> Piano Sounds loaded successfully`,
-                    `Time taken ${Date.now() - timeStart}ms.`
+                    `Time taken ${Date.now() - timeStart}ms.`,
                 );
             } catch (error) {
                 console.error(error);

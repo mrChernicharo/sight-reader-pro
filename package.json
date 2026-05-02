@@ -1,7 +1,7 @@
 {
   "name": "sight-reader-pro",
   "main": "expo-router/entry",
-  "version": "1.0.32",
+  "version": "1.0.34",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -38,7 +38,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.6",
-    "react-native-audio-api": "^0.5.5",
+    "react-native-audio-api": "^0.12.1",
     "react-native-dropdown-select-list": "^2.0.5",
     "react-native-modal": "^14.0.0-rc.1",
     "react-native-popup-menu": "^0.17.0",

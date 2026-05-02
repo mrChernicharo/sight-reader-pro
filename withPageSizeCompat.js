@@ -1,22 +1,53 @@
-const { withAndroidManifest } = require('@expo/config-plugins');
+const {
+  withAndroidManifest,
+  withProjectBuildGradle,
+} = require('@expo/config-plugins');
+
+/** Oboe 1.10.0 is first Maven release with 16 KB–aligned prebuilts (see google/oboe#2126). react-native-audio-api pins 1.9.3. */
+const OBOE_VERSION = '1.10.0';
 
 /**
- * Config plugin to ensure 16KB page size compliance.
+ * Google Play: 16 KB memory page size compliance for native (.so) libraries.
  *
- * We use extractNativeLibs="true" combined with compressed libraries
- * to ensure the OS handles 16KB alignment at install time.
+ * - JNI packaging: `expo-build-properties` → `useLegacyPackaging: false`.
+ * - liboboe.so: force `com.google.oboe:oboe` to 1.10.0+ (Gradle resolution); 1.9.x AARs are not 16 KB–aligned.
+ * - Do not use `android.buildFromSource` here — Hermes-from-source needs `sdkmanager` on the build machine (breaks many EAS local builds).
  */
 module.exports = function withPageSizeCompat(config) {
-  return withAndroidManifest(config, async (config) => {
+  config = withAndroidManifest(config, async (config) => {
     const androidManifest = config.modResults;
     const application = androidManifest.manifest.application[0];
 
-    // Remove the failing attribute to fix the build error
     delete application.$['android:pageSizeCompat'];
 
-    // Force extraction so the OS can align libraries correctly on 16KB devices
     application.$['android:extractNativeLibs'] = 'true';
 
     return config;
   });
+
+  config = withProjectBuildGradle(config, (config) => {
+    let contents = config.modResults.contents;
+    const marker = '// [withPageSizeCompat] Oboe';
+
+    if (!contents.includes(marker)) {
+      contents += `
+
+${marker} ${OBOE_VERSION} — Play 16 KB–aligned liboboe.so (override react-native-audio-api’s 1.9.3).
+subprojects { subproject ->
+  subproject.configurations.configureEach { configuration ->
+    configuration.resolutionStrategy.eachDependency { details ->
+      if (details.requested.group == "com.google.oboe" && details.requested.name == "oboe") {
+        details.useVersion("${OBOE_VERSION}")
+      }
+    }
+  }
+}
+`;
+    }
+
+    config.modResults.contents = contents;
+    return config;
+  });
+
+  return config;
 };
