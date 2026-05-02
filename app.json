@@ -2,13 +2,13 @@
     "expo": {
         "name": "MusiNotes",
         "slug": "sight-reader-pro",
-        "version": "1.0.31",
+        "version": "1.0.32",
         "orientation": "portrait",
         "icon": "./assets/images/app-logo.png",
         "scheme": "sight-reader-pro",
         "userInterfaceStyle": "automatic",
         "android": {
-            "versionCode": 31,
+            "versionCode": 32,
             "package": "com.chernicharo.sightreaderpro",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/app-logo.png",
@@ -36,6 +36,7 @@
             }
         },
         "plugins": [
+            "./withPageSizeCompat",
             "expo-asset",
             "expo-router",
             "expo-font",
@@ -52,6 +53,22 @@
                     "image": "./assets/images/app-logo.png",
                     "backgroundColor": "#000000",
                     "imageWidth": 240
+                }
+            ],
+            [
+                "expo-build-properties",
+                {
+                    "android": {
+                        "compileSdkVersion": 35,
+                        "targetSdkVersion": 35,
+                        "agpVersion": "8.5.1",
+                        "ndkVersion": "28.0.12433566",
+                        "packagingOptions": {
+                            "jniLibs": {
+                                "useLegacyPackaging": false
+                            }
+                        }
+                    }
                 }
             ]
         ]
